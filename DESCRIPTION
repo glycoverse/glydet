@@ -1,10 +1,13 @@
 Package: glydet
-Title: What the Package Does (One Line, Title Case)
+Title: Describe Glycosylation Structural Properties in a Site Specific Manner
 Version: 0.0.0.9000
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+    person("Bin", "Fu", , "23110220018@m.fudan.edu.cn", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-8567-2997"))
+Description: Describe glycosylation structural properties in a site specific manner.
+    In the field of glycomics, this analytical approach is known as derived traits.
+    glydet provides functions to calculate derived traits well-defined in literature,
+    and implements a domain-specific language to define custom derived traits.
 License: MIT + file LICENSE
 Suggests: 
     testthat (>= 3.0.0)
