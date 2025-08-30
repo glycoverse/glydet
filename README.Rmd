@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# glydet
+# glydet <a href="https://glycoverse.github.io/glydet/"><img src="man/figures/logo.png" align="right" height="138" /></a>
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -22,11 +22,17 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/glycoverse/glydet/graph/badge.svg)](https://app.codecov.io/gh/glycoverse/glydet)
 <!-- badges: end -->
 
-The goal of glydet is to ...
+The goal of glydet is to describe glycosylation structural properties in a site specific manner.
+In the field of glycomics, this analytical approach is known as derived traits.
+glydet provides functions to calculate derived traits well-defined in literature,
+and implements a domain-specific language to define custom derived traits.
 
 ## Installation
 
-You can install the development version of glydet from [GitHub](https://github.com/) with:
+> [!Note]
+> This package is in development and not yet ready for production use.
+
+You can install the latest release of glydet from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
@@ -35,25 +41,4 @@ pak::pak("glycoverse/glydet")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
-
-```{r example}
-library(glydet)
-## basic example code
-```
-
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
-
-```{r cars}
-summary(cars)
-```
-
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
-
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
-```
-
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Coming soon...
