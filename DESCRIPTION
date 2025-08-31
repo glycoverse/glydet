@@ -23,8 +23,10 @@ Imports:
     glyparse (>= 0.4.3),
     glyrepr (>= 0.7.1),
     memoise,
-    purrr
-Remotes:  
+    purrr,
+    rlang,
+    tibble
+Remotes: 
     glycoverse/glymotif,
     glycoverse/glyparse,
     glycoverse/glyrepr

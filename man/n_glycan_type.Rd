@@ -8,6 +8,8 @@
 \alias{n_arm_fuc}
 \alias{n_gal}
 \alias{n_terminal_gal}
+\alias{n_sia}
+\alias{n_man}
 \title{Determine N-Glycan Key Properties}
 \usage{
 n_glycan_type(glycans)
@@ -23,6 +25,10 @@ n_arm_fuc(glycans)
 n_gal(glycans)
 
 n_terminal_gal(glycans)
+
+n_sia(glycans)
+
+n_man(glycans)
 }
 \arguments{
 \item{glycans}{A \code{glyrepr::glycan_structure()} vector, or a character vector of glycan structure strings
@@ -38,6 +44,8 @@ either "highmannose", "hybrid", "complex", or "paucimannose".
 \item \code{n_arm_fuc()}: An integer vector indicating the number of arm fucoses.
 \item \code{n_gal()}: An integer vector indicating the number of galactoses.
 \item \code{n_terminal_gal()}: An integer vector indicating the number of terminal galactoses.
+\item \code{n_sia()}: An integer vector indicating the number of sialic acids.
+\item \code{n_man()}: An integer vector indicating the number of mannoses.
 }
 }
 \description{
@@ -50,6 +58,8 @@ These functions check key properties of an N-glycan:
 \item \code{n_arm_fuc()}: Count the number of arm fucoses.
 \item \code{n_gal()}: Count the number of galactoses.
 \item \code{n_terminal_gal()}: Count the number of terminal galactoses.
+\item \code{n_sia()}: Count the number of sialic acids.
+\item \code{n_man()}: Count the number of mannoses.
 }
 }
 \section{\code{n_glycan_type()}: N-Glycan Types}{
@@ -63,7 +73,7 @@ Bisecting GlcNAc is a GlcNAc residue attached to the core mannose of N-glycans.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{     Man
         \\
-GlcNAc - Man - GlcNAc - GlcNAc
+GlcNAc - Man - GlcNAc - GlcNAc -
 ~~~~~~  /
      Man
 }\if{html}{\out{</div>}}
@@ -78,7 +88,7 @@ Core fucoses are those fucose residues attached to the core GlcNAc of an N-glyca
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{Man             Fuc  <- core fucose
    \\             |
-    Man - GlcNAc - GlcNAc
+    Man - GlcNAc - GlcNAc -
    /
 Man
 }\if{html}{\out{</div>}}
@@ -92,7 +102,7 @@ of an N-glycan.
   |
 GlcNAc - Man
             \\
-             Man - GlcNAc - GlcNAc
+             Man - GlcNAc - GlcNAc -
             /
 GlcNAc - Man
 }\if{html}{\out{</div>}}
@@ -115,11 +125,21 @@ without sialic acid capping.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{         Gal - GlcNAc - Man
          ~~~               \\
-     terminal Gal           Man - GlcNAc - GlcNAc
+     terminal Gal           Man - GlcNAc - GlcNAc -
                            /
 Neu5Ac - Gal - GlcNAc - Man
          ~~~
    not terminal Gal
 }\if{html}{\out{</div>}}
+}
+
+\section{\code{n_sia()}: Number of Sialic Acids}{
+Number of sialic acids (Neu5Ac). Neu5Gc is not counted.
+}
+
+\section{\code{n_man()}: Number of Mannoses}{
+Number of mannoses. This function assumes the Hex of the N-glycan core is mannoses.
+Also, for high-mannose and paucimannose glycans, all Hex are mannoses.
+Finally, for hybrid glycans, all the rightmost (the side without branching HexNAc) are mannoses.
 }
 
