@@ -12,6 +12,8 @@
 #' - `n_arm_fuc()`: Count the number of arm fucoses.
 #' - `n_gal()`: Count the number of galactoses.
 #' - `n_terminal_gal()`: Count the number of terminal galactoses.
+#' - `n_sia()`: Count the number of sialic acids.
+#' - `n_man()`: Count the number of mannoses.
 #'
 #' @details
 #' # `n_glycan_type()`: N-Glycan Types
@@ -26,7 +28,7 @@
 #' ```
 #'      Man
 #'         \
-#' GlcNAc - Man - GlcNAc - GlcNAc
+#' GlcNAc - Man - GlcNAc - GlcNAc -
 #' ~~~~~~  /
 #'      Man
 #' ```
@@ -41,7 +43,7 @@
 #' ```
 #' Man             Fuc  <- core fucose
 #'    \             |
-#'     Man - GlcNAc - GlcNAc
+#'     Man - GlcNAc - GlcNAc -
 #'    /
 #' Man
 #' ```
@@ -55,7 +57,7 @@
 #'   |
 #' GlcNAc - Man
 #'             \
-#'              Man - GlcNAc - GlcNAc
+#'              Man - GlcNAc - GlcNAc -
 #'             /
 #' GlcNAc - Man
 #' ```
@@ -78,12 +80,22 @@
 #' ```
 #'          Gal - GlcNAc - Man
 #'          ~~~               \
-#'      terminal Gal           Man - GlcNAc - GlcNAc
+#'      terminal Gal           Man - GlcNAc - GlcNAc -
 #'                            /
 #' Neu5Ac - Gal - GlcNAc - Man
 #'          ~~~
 #'    not terminal Gal
 #' ```
+#'
+#' # `n_sia()`: Number of Sialic Acids
+#'
+#' Number of sialic acids (Neu5Ac). Neu5Gc is not counted.
+#'
+#' # `n_man()`: Number of Mannoses
+#'
+#' Number of mannoses. This function assumes the Hex of the N-glycan core is mannoses.
+#' Also, for high-mannose and paucimannose glycans, all Hex are mannoses.
+#' Finally, for hybrid glycans, all the rightmost (the side without branching HexNAc) are mannoses.
 #'
 #' @param glycans A `glyrepr::glycan_structure()` vector, or a character vector of glycan structure strings
 #'   supported by `glyparse::auto_parse()`.
@@ -97,6 +109,8 @@
 #' - `n_arm_fuc()`: An integer vector indicating the number of arm fucoses.
 #' - `n_gal()`: An integer vector indicating the number of galactoses.
 #' - `n_terminal_gal()`: An integer vector indicating the number of terminal galactoses.
+#' - `n_sia()`: An integer vector indicating the number of sialic acids.
+#' - `n_man()`: An integer vector indicating the number of mannoses.
 #'
 #' @export
 n_glycan_type <- function(glycans) {
@@ -164,6 +178,23 @@ n_terminal_gal <- function(glycans) {
   glycans <- .process_n_glycans(glycans)
   gal_motif <- .get_n_glycan_motif("gal")
   glymotif::count_motif(glycans, gal_motif, alignment = "terminal", ignore_linkages = TRUE)
+}
+
+#' @rdname n_glycan_type
+#' @export
+n_sia <- function(glycans) {
+  glycans <- .process_n_glycans(glycans)
+  glyrepr::count_mono(glycans, "NeuAc")
+}
+
+#' @rdname n_glycan_type
+#' @export
+n_man <- function(glycans) {
+  glycans <- .process_n_glycans(glycans)
+  gal_motif <- .get_n_glycan_motif("gal")
+  n_hex <- glyrepr::count_mono(glycans, "Hex")
+  n_gal <- glymotif::count_motif(glycans, gal_motif, alignment = "substructure", ignore_linkages = TRUE)
+  n_hex - n_gal
 }
 
 .process_n_glycans <- function(glycans) {
