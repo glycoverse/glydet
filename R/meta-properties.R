@@ -33,9 +33,14 @@
 #' get_meta_properties(glycans, fns)
 #'
 #' @export
-get_meta_properties <- function(glycans, mp_fns = all_mp_fns()) {
+get_meta_properties <- function(glycans, mp_fns = NULL) {
   glycans <- .process_glycans(glycans)
-  mp_fns <- purrr::map(mp_fns, rlang::as_function)
+  if (is.null(mp_fns)) {
+    mp_fns <- all_mp_fns()
+  } else {
+    mp_fns <- purrr::map(mp_fns, rlang::as_function)
+    checkmate::assert_named(mp_fns)
+  }
   tibble::as_tibble(purrr::map(mp_fns, ~ .x(glycans)))
 }
 
@@ -59,7 +64,7 @@ get_meta_properties <- function(glycans, mp_fns = all_mp_fns()) {
 #' @seealso [get_meta_properties()], [glyexp::experiment()]
 #'
 #' @export
-add_meta_properties <- function(exp, mp_fns = all_mp_fns(), struc_col = "glycan_structure") {
+add_meta_properties <- function(exp, mp_fns = NULL, struc_col = "glycan_structure") {
   checkmate::assert_class(exp, "glyexp_experiment")
   checkmate::assert_string(struc_col)
 

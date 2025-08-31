@@ -4,7 +4,7 @@
 \alias{get_meta_properties}
 \title{Get Meta-Properties of Glycans}
 \usage{
-get_meta_properties(glycans, mp_fns = all_mp_fns())
+get_meta_properties(glycans, mp_fns = NULL)
 }
 \arguments{
 \item{glycans}{A \code{glyrepr::glycan_structure()} vector, or a character vector of glycan structure strings

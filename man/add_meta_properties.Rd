@@ -4,7 +4,7 @@
 \alias{add_meta_properties}
 \title{Add Meta-Properties to Experiment}
 \usage{
-add_meta_properties(exp, mp_fns = all_mp_fns(), struc_col = "glycan_structure")
+add_meta_properties(exp, mp_fns = NULL, struc_col = "glycan_structure")
 }
 \arguments{
 \item{exp}{An \code{\link[glyexp:experiment]{glyexp::experiment()}} object.}
