@@ -2,6 +2,37 @@
 # These functions all work with generic glycans. (e.g. "Hex", "HexNAc")
 
 
+#' Get All Meta-Property Functions
+#'
+#' This function returns a named list of all meta-property functions:
+#' - "T": `n_glycan_type()`: type of the glycan
+#' - "B": `has_bisecting()`: whether the glycan has a bisecting GlcNAc
+#' - "nA": `n_antennae()`: number of antennae
+#' - "nFc": `n_core_fuc()`: number of core fucoses
+#' - "nFa": `n_arm_fuc()`: number of arm fucoses
+#' - "nG": `n_gal()`: number of galactoses
+#' - "nGt": `n_terminal_gal()`: number of terminal galactoses
+#' - "nS": `n_sia()`: number of sialic acids
+#' - "nM": `n_man()`: number of mannoses
+#'
+#' @returns
+#' A named list of meta-property functions.
+#'
+#' @export
+all_mp_fns <- function() {
+  list(
+    "T" = n_glycan_type,
+    "B" = has_bisecting,
+    "nA" = n_antennae,
+    "nFc" = n_core_fuc,
+    "nFa" = n_arm_fuc,
+    "nG" = n_gal,
+    "nGt" = n_terminal_gal,
+    "nS" = n_sia,
+    "nM" = n_man
+  )
+}
+
 #' Determine N-Glycan Key Properties
 #'
 #' These functions check key properties of an N-glycan:
