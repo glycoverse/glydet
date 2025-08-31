@@ -38,3 +38,37 @@ test_that("get_meta_properties works with custom meta-property functions", {
   )
   expect_equal(result, expected)
 })
+
+test_that("add_meta_properties works with default meta-property functions", {
+  exp <- glyexp::real_experiment |>
+    glyexp::slice_head_var(n = 10)
+  exp <- add_meta_properties(exp)
+  expect_true(all(c("T", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+})
+
+test_that("add_meta_properties works with custom meta-property functions", {
+  exp <- glyexp::real_experiment |>
+    glyexp::slice_head_var(n = 10)
+  exp <- add_meta_properties(exp, list(
+    nN = ~ glyrepr::count_mono(.x, "HexNAc"),
+    nH = ~ glyrepr::count_mono(.x, "Hex")
+  ))
+  expect_true(all(c("nN", "nH") %in% colnames(exp$var_info)))
+})
+
+test_that("add_meta_properties works with custom struc_col", {
+  exp <- glyexp::real_experiment |>
+    glyexp::slice_head_var(n = 10) |>
+    glyexp::rename_var(struc = glycan_structure)
+  exp <- add_meta_properties(exp, struc_col = "struc")
+  expect_true(all(c("T", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+})
+
+test_that("add_meta_properties throws error if struc_col not found", {
+  exp <- glyexp::real_experiment |>
+    glyexp::slice_head_var(n = 10)
+  expect_error(
+    add_meta_properties(exp, struc_col = "struc"),
+    "Column struc not found in var_info."
+  )
+})
