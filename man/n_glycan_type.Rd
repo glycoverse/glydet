@@ -60,11 +60,15 @@ These functions check key properties of an N-glycan:
 \item \code{n_sia()}: Count the number of sialic acids.
 \item \code{n_man()}: Count the number of mannoses.
 }
-}
-\details{
+
 All functions assume the glycans are N-glycans without validation,
 thus may return meaningless values for non-N-glycans.
 Therefore, please make sure to pass in N-glycans only.
+
+All functions put minimum requirement on the glycans,
+i.e. they work with glycans with generic monosaccharides (e.g. "Hex", "HexNAc")
+and no linkage information.
+This type of structures are common in glycoproteomics and glycomics studies.
 }
 \section{\code{n_glycan_type()}: N-Glycan Types}{
 Four types of N-glycans are recognized: high mannose, hybrid, complex, and paucimannose.

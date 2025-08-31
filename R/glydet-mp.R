@@ -35,6 +35,7 @@ all_mp_fns <- function() {
 
 #' Determine N-Glycan Key Properties
 #'
+#' @description
 #' These functions check key properties of an N-glycan:
 #' - `n_glycan_type()`: Determine the N-glycan type.
 #' - `has_bisecting()`: Check if the glycan has a bisecting GlcNAc.
@@ -49,6 +50,11 @@ all_mp_fns <- function() {
 #' All functions assume the glycans are N-glycans without validation,
 #' thus may return meaningless values for non-N-glycans.
 #' Therefore, please make sure to pass in N-glycans only.
+#'
+#' All functions put minimum requirement on the glycans,
+#' i.e. they work with glycans with generic monosaccharides (e.g. "Hex", "HexNAc")
+#' and no linkage information.
+#' This type of structures are common in glycoproteomics and glycomics studies.
 #'
 #' @details
 #' # `n_glycan_type()`: N-Glycan Types
