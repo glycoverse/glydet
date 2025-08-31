@@ -46,6 +46,10 @@ all_mp_fns <- function() {
 #' - `n_sia()`: Count the number of sialic acids.
 #' - `n_man()`: Count the number of mannoses.
 #'
+#' All functions assume the glycans are N-glycans without validation,
+#' thus may return meaningless values for non-N-glycans.
+#' Therefore, please make sure to pass in N-glycans only.
+#'
 #' @details
 #' # `n_glycan_type()`: N-Glycan Types
 #'
@@ -128,8 +132,7 @@ all_mp_fns <- function() {
 #' Also, for high-mannose and paucimannose glycans, all Hex are mannoses.
 #' Finally, for hybrid glycans, all the rightmost (the side without branching HexNAc) are mannoses.
 #'
-#' @param glycans A `glyrepr::glycan_structure()` vector, or a character vector of glycan structure strings
-#'   supported by `glyparse::auto_parse()`.
+#' @param glycans A `glyrepr::glycan_structure()` vector.
 #'
 #' @returns
 #' - `n_glycan_type()`: A factor vector indicating the N-glycan type,
@@ -145,7 +148,6 @@ all_mp_fns <- function() {
 #'
 #' @export
 n_glycan_type <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   motif_names <- c("core", "pauciman", "hybrid", "highman")
   motifs <- purrr::map(motif_names, .get_n_glycan_motif)
   motifs <- do.call(c, motifs)
@@ -166,7 +168,6 @@ n_glycan_type <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 has_bisecting <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   bisect_motif <- .get_n_glycan_motif("bisect")
   glymotif::have_motif(glycans, bisect_motif, alignment = "core", ignore_linkages = TRUE)
 }
@@ -174,7 +175,6 @@ has_bisecting <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 n_antennae <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   antenna_motif <- .get_n_glycan_motif("antenna")
   glymotif::count_motif(glycans, antenna_motif, alignment = "core", ignore_linkages = TRUE)
 }
@@ -182,7 +182,6 @@ n_antennae <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 n_core_fuc <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   core_fuc_motif <- .get_n_glycan_motif("core_fuc")
   glymotif::count_motif(glycans, core_fuc_motif, alignment = "core", ignore_linkages = TRUE)
 }
@@ -190,7 +189,6 @@ n_core_fuc <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 n_arm_fuc <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   arm_fuc_motif <- .get_n_glycan_motif("arm_fuc")
   glymotif::count_motif(glycans, arm_fuc_motif, alignment = "core", ignore_linkages = TRUE)
 }
@@ -198,7 +196,6 @@ n_arm_fuc <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 n_gal <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   gal_motif <- .get_n_glycan_motif("gal")
   glymotif::count_motif(glycans, gal_motif, alignment = "substructure", ignore_linkages = TRUE)
 }
@@ -206,7 +203,6 @@ n_gal <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 n_terminal_gal <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   gal_motif <- .get_n_glycan_motif("gal")
   glymotif::count_motif(glycans, gal_motif, alignment = "terminal", ignore_linkages = TRUE)
 }
@@ -214,38 +210,16 @@ n_terminal_gal <- function(glycans) {
 #' @rdname n_glycan_type
 #' @export
 n_sia <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   glyrepr::count_mono(glycans, "NeuAc")
 }
 
 #' @rdname n_glycan_type
 #' @export
 n_man <- function(glycans) {
-  glycans <- .process_n_glycans(glycans)
   gal_motif <- .get_n_glycan_motif("gal")
   n_hex <- glyrepr::count_mono(glycans, "Hex")
   n_gal <- glymotif::count_motif(glycans, gal_motif, alignment = "substructure", ignore_linkages = TRUE)
   n_hex - n_gal
-}
-
-.process_n_glycans <- function(glycans) {
-  glycans <- .process_glycans(glycans)
-  glycans <- glyrepr::convert_to_generic(glycans)
-  glycans <- glyrepr::remove_linkages(glycans)
-  glycans <- glyrepr::remove_substituents(glycans)
-  .assert_n_glycans(glycans)
-  glycans
-}
-
-.assert_n_glycans <- function(glycans) {
-  core_motif <- .get_n_glycan_motif("core")
-  is_n_glycan <- glymotif::have_motif(glycans, core_motif, alignment = "core", ignore_linkages = TRUE)
-  if (!all(is_n_glycan)) {
-    cli::cli_abort(c(
-      "All glycans must be N-glycans.",
-      "x" = "These glycans are not N-glycans at indices {.val {which(!is_n_glycan)}}."
-    ))
-  }
 }
 
 .get_n_glycan_motif <- function(name) {

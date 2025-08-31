@@ -31,8 +31,7 @@ n_sia(glycans)
 n_man(glycans)
 }
 \arguments{
-\item{glycans}{A \code{glyrepr::glycan_structure()} vector, or a character vector of glycan structure strings
-supported by \code{glyparse::auto_parse()}.}
+\item{glycans}{A \code{glyrepr::glycan_structure()} vector.}
 }
 \value{
 \itemize{
@@ -61,6 +60,11 @@ These functions check key properties of an N-glycan:
 \item \code{n_sia()}: Count the number of sialic acids.
 \item \code{n_man()}: Count the number of mannoses.
 }
+}
+\details{
+All functions assume the glycans are N-glycans without validation,
+thus may return meaningless values for non-N-glycans.
+Therefore, please make sure to pass in N-glycans only.
 }
 \section{\code{n_glycan_type()}: N-Glycan Types}{
 Four types of N-glycans are recognized: high mannose, hybrid, complex, and paucimannose.

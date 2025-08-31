@@ -209,25 +209,6 @@ test_that("n_man counts mannoses correctly", {
   expect_equal(n_man(glycans), c(3L, 6L, 5L, 3L))
 })
 
-# ========== Non-N-glycan handling ==========
-test_that("functions handle non-N-glycans properly", {
-  # The new version should throw an error for non-N-glycans
-  expect_error(n_glycan_type(o_glycan_core_1()), "not N-glycans")
-  expect_error(has_bisecting(o_glycan_core_1()), "not N-glycans")
-  expect_error(n_antennae(o_glycan_core_1()), "not N-glycans")
-  expect_error(n_core_fuc(o_glycan_core_1()), "not N-glycans")
-  expect_error(n_arm_fuc(o_glycan_core_1()), "not N-glycans")
-  expect_error(n_gal(o_glycan_core_1()), "not N-glycans")
-  expect_error(n_terminal_gal(o_glycan_core_1()), "not N-glycans")
-})
-
-# ========== Multi-format Support ==========
-test_that("N-glycan functions support multiple structure formats", {
-  # Test IUPAC-condensed format
-  glycan_iupac <- "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
-  expect_equal(n_glycan_type(glycan_iupac), factor("paucimannose", levels = c("paucimannose", "hybrid", "highmannose", "complex")))
-})
-
 # ========== Processing and Simplification ==========
 test_that("processing handles linkages, generics, and substituents correctly", {
   glycans <- c(
@@ -236,6 +217,7 @@ test_that("processing handles linkages, generics, and substituents correctly", {
     "Gal(??-?)GlcNAc(??-?)Man(??-?)[GlcNAc(??-?)Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(?1-",
     "Hex(??-?)HexNAc(??-?)Hex(??-?)[HexNAc(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(?1-"
   )
+  glycans <- glyrepr::as_glycan_structure(glycans)
 
   # Should work fine and be processed as generic
   expect_identical(n_antennae(glycans), c(2L, 2L, 2L, 2L))
