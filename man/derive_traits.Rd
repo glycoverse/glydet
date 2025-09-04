@@ -2,9 +2,12 @@
 % Please edit documentation in R/derive-traits.R
 \name{derive_traits}
 \alias{derive_traits}
+\alias{derive_traits_}
 \title{Calculate Derived Traits}
 \usage{
 derive_traits(exp, trait_fns = NULL, mp_fns = NULL)
+
+derive_traits_(tbl, data_type, trait_fns, mp_fns)
 }
 \arguments{
 \item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,

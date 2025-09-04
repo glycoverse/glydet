@@ -171,6 +171,6 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
 
 #' @rdname derive_traits
 #' @export
-derive_traits_ <- function(tbl, trait_fns, mp_fns) {
+derive_traits_ <- function(tbl, data_type, trait_fns, mp_fns) {
   # TODO: implement
 }
