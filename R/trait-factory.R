@@ -80,6 +80,6 @@ prop <- function(cond, within = NULL, na_action = "keep") {
     if (na_action == "zero") {
       res[is.na(res)] <- 0
     }
-    res
+    unname(res)
   }
 }

@@ -1,0 +1,95 @@
+create_expr_mat <- function() {
+  expr_mat <- matrix(
+    c(1, 0, 1,
+      1, 1, 1,
+      1, 1, 0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  expr_mat
+}
+
+test_that("prop(nFc > 0) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(nFc = c(1, 0, 1))
+  trait_fn <- prop(nFc > 0)
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(2/3, 1/2, 1/2))
+})
+
+test_that("prop(nFc > 0 & nS > 0) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nFc = c(1, 0, 1),
+    nS = c(1, 1, 0)
+  )
+
+  trait_fn <- prop(nFc > 0 & nS > 0)
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(1/3, 0, 1/2))
+})
+
+test_that("prop(nFc > 0, within = (T == 'complex')) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nFc = c(1, 0, 1),
+    T = c("complex", "complex", "hybrid")
+  )
+
+  trait_fn <- prop(nFc > 0, within = (T == "complex"))
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(1/2, 0, 1/2))
+})
+
+test_that("prop() handles Inf", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nFc = c(1, 0, 1),
+    T = c("hybrid", "hybrid", "hybrid")  # no complex here
+  )
+
+  trait_fn <- prop(nFc > 0, within = (T == "complex"))
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, rep(NA_real_, 3))
+})
+
+test_that("prop() handles NA through na_action = 'zero'", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nFc = c(1, 0, 1),
+    T = c("hybrid", "hybrid", "hybrid")  # no complex here
+  )
+
+  trait_fn <- prop(nFc > 0, within = (T == "complex"), na_action = "zero")
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, rep(0, 3))
+})
+
+test_that("prop() handles NA in expr_mat", {
+  expr_mat <- matrix(
+    c(NA, 0, 1,
+      1, 1, 1,
+      1, 1, 0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+
+  mp_tbl <- tibble::tibble(
+    nFc = c(1, 0, 1),
+  )
+
+  trait_fn <- prop(nFc > 0)
+  result <- trait_fn(expr_mat, mp_tbl)
+  # The first sample is 1/2, because NA is ignored
+  expect_equal(result, c(1/2, 1/2, 1/2))
+})
+
+test_that("prop() handles NA in cond and within", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(nFc = c(NA, 0, 1))
+  trait_fn <- prop(nFc > 0)
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(1/3, 1/2, 0))
+})
