@@ -14,19 +14,12 @@
 #' or the proportion of tetra-antennary glycans within all complex glycans.
 #' This type of traits is the most common type of glycan derived traits.
 #'
-#' @param cond Condition to use for defining the smaller group.
-#'   An expression that evaluates to a logical vector.
-#'   The names of all built-in meta-properties (see [all_mp_fns()]) can be used in the expression.
-#' @param within Condition to use for defining the larger group,
-#'   with the same format as `cond`.
-#'   If `NULL` (default), all glycans are used as the larger group.
-#' @param na_action How to handle missing values.
-#'   - "keep" (default): keep the missing values as NA.
-#'   - "zero": set the missing values to 0.
+#' @details
+#' You can use `prop()` to create proportion trait easily.
 #'
-#' @returns A derived trait function.
+#' For example:
 #'
-#' @examples
+#' ```r
 #' # Proportion of core-fucosylated glycans within all glycans
 #' prop(nFc > 0)
 #'
@@ -35,10 +28,38 @@
 #'
 #' # Proportion of sialylated and fucosylated glycans within all glycans
 #' prop(nS > 0 & nFc > 0)
+#' ```
 #'
-#' # Proportion of tetra-antennary glycans within all complex glycans
+#' Note that the last example uses `&` for logical AND.
+#' Actually, you can use any logical operator in the expression in R (e.g., `|`, `!`, etc.).
+#'
+#' If you want to perform a pre-filtering before calculating the proportion,
+#' for example, you want to calculate the proportion of core-fucosylated glycans within only complex glycans,
+#' you can use `within` to define the denominator.
+#'
+#' ```r
+#' # Proportion of core-fucosylated glycans within complex glycans
 #' prop(nFc > 0, within = (T == "complex"))
 #'
+#' # Proportion of core-fucosylated glycans with tetra-antenary complex glycans
+#' prop(nFc > 0, within = (T == "complex" & nA == 4))
+#' ```
+#'
+#' The parentheses around the condition in `within` are optional,
+#' but it is recommended to use them for clarity.
+#'
+#' @param cond Condition to use for defining the smaller group.
+#'   An expression that evaluates to a logical vector.
+#'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
+#'   can be used in the expression.
+#' @param within Condition to use for defining the larger group,
+#'   with the same format as `cond`.
+#'   If `NULL` (default), all glycans are used as the larger group.
+#' @param na_action How to handle missing values.
+#'   - "keep" (default): keep the missing values as NA.
+#'   - "zero": set the missing values to 0.
+#'
+#' @returns A derived trait function.
 #' @export
 prop <- function(cond, within = NULL, na_action = "keep") {
   cond <- rlang::enquo(cond)

@@ -9,7 +9,8 @@ prop(cond, within = NULL, na_action = "keep")
 \arguments{
 \item{cond}{Condition to use for defining the smaller group.
 An expression that evaluates to a logical vector.
-The names of all built-in meta-properties (see \code{\link[=all_mp_fns]{all_mp_fns()}}) can be used in the expression.}
+The names of all built-in meta-properties (see \code{\link[=all_mp_fns]{all_mp_fns()}}) and custom meta-properties
+can be used in the expression.}
 
 \item{within}{Condition to use for defining the larger group,
 with the same format as \code{cond}.
@@ -30,8 +31,12 @@ For example, the proportion of sialylated glycans within all glycans,
 or the proportion of tetra-antennary glycans within all complex glycans.
 This type of traits is the most common type of glycan derived traits.
 }
-\examples{
-# Proportion of core-fucosylated glycans within all glycans
+\details{
+You can use \code{prop()} to create proportion trait easily.
+
+For example:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Proportion of core-fucosylated glycans within all glycans
 prop(nFc > 0)
 
 # Proportion of complex glycans within all glycans
@@ -39,8 +44,22 @@ prop(T == "complex")
 
 # Proportion of sialylated and fucosylated glycans within all glycans
 prop(nS > 0 & nFc > 0)
+}\if{html}{\out{</div>}}
 
-# Proportion of tetra-antennary glycans within all complex glycans
+Note that the last example uses \code{&} for logical AND.
+Actually, you can use any logical operator in the expression in R (e.g., \code{|}, \code{!}, etc.).
+
+If you want to perform a pre-filtering before calculating the proportion,
+for example, you want to calculate the proportion of core-fucosylated glycans within only complex glycans,
+you can use \code{within} to define the denominator.
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Proportion of core-fucosylated glycans within complex glycans
 prop(nFc > 0, within = (T == "complex"))
 
+# Proportion of core-fucosylated glycans with tetra-antenary complex glycans
+prop(nFc > 0, within = (T == "complex" & nA == 4))
+}\if{html}{\out{</div>}}
+
+The parentheses around the condition in \code{within} are optional,
+but it is recommended to use them for clarity.
 }
