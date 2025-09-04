@@ -2,6 +2,7 @@
 
 export(add_meta_properties)
 export(all_mp_fns)
+export(derive_traits)
 export(get_meta_properties)
 export(has_bisecting)
 export(n_antennae)
@@ -12,3 +13,4 @@ export(n_glycan_type)
 export(n_man)
 export(n_sia)
 export(n_terminal_gal)
+export(prop)
