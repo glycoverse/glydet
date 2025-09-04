@@ -1,9 +1,8 @@
 # This file contains helper functions for creating derived trait functions.
 #
 # A derived trait function has the following signature:
-# `function(expr_mat, glycans, mp_tbl)`
+# `function(expr_mat, mp_tbl)`
 # - `expr_mat`: a expression matrix (samples as columns and glycans as rows)
-# - `glycans`: a `glyrepr::glycan_structure()` vector
 # - `mp_tbl`: a tibble with the meta-properties of the glycans
 
 
@@ -66,7 +65,7 @@ prop <- function(cond, within = NULL, na_action = "keep") {
   within <- rlang::enquo(within)
   checkmate::assert_choice(na_action, c("keep", "zero"))
 
-  function(expr_mat, glycans, mp_tbl) {
+  function(expr_mat, mp_tbl) {
     cond <- rlang::eval_tidy(cond, data = mp_tbl)
     within <- rlang::eval_tidy(within, data = mp_tbl)
     if (is.null(within)) {

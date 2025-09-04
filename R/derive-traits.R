@@ -102,7 +102,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   expr_mat <- exp$expr_mat
   glycans <- exp$var_info[["glycan_structure"]]
   mp_tbl <- get_meta_properties(glycans, mp_fns)
-  res_mat <- .derive_traits_mat(expr_mat, glycans, trait_fns, mp_tbl)
+  res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
   var_info <- tibble::tibble(
     variable = paste0("V", seq_len(nrow(res_mat))),
     trait = names(trait_fns)
@@ -122,11 +122,10 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   # TODO: Handle other columns.
 
   derive_one_site <- function(site_idx) {
-    site_glycans <- exp$var_info[["glycan_structure"]][site_idx]
     site_expr_mat <- exp$expr_mat[site_idx, , drop = FALSE]
     site_mp_tbl <- mp_tbl[site_idx, ]
 
-    res_mat <- .derive_traits_mat(site_expr_mat, site_glycans, trait_fns, site_mp_tbl)
+    res_mat <- .derive_traits_mat(site_expr_mat, trait_fns, site_mp_tbl)
     res_var_info <- tibble::tibble(
       variable = NA_character_,  # Placeholder, will be replaced later
       protein = unique(exp$var_info[["protein"]][site_idx]),
@@ -152,7 +151,6 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
 #' Calculate Derived Traits from a Matrix
 #'
 #' @param expr_mat A matrix of expression values with samples as columns and glycans as rows.
-#' @param glycans A `glyrepr::glycan_structure()` vector.
 #' @param trait_fns A named list of derived trait functions.
 #' @param mp_tbl A tibble with the meta-properties of the glycans.
 #'
@@ -161,8 +159,8 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
 #'   Column names are the names of the samples.
 #'
 #' @noRd
-.derive_traits_mat <- function(expr_mat, glycans, trait_fns, mp_tbl) {
-  res_list <- purrr::map(trait_fns, ~ .x(expr_mat, glycans, mp_tbl))
+.derive_traits_mat <- function(expr_mat, trait_fns, mp_tbl) {
+  res_list <- purrr::map(trait_fns, ~ .x(expr_mat, mp_tbl))
   res_mat <- do.call(rbind, res_list)
   rownames(res_mat) <- names(trait_fns)
   colnames(res_mat) <- colnames(expr_mat)
