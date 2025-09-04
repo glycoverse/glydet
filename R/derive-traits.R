@@ -98,6 +98,20 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   )
 }
 
+#' @rdname derive_traits
+#' @export
+derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
+  switch(
+    data_type,
+    glycomics = .derive_traits_glycomics_(tbl, trait_fns, mp_fns),
+    glycoproteomics = .derive_traits_glycoproteomics_(tbl, trait_fns, mp_fns),
+    cli::cli_abort(c(
+      "{.arg data_type} must be {.val glycomics} or {.val glycoproteomics}.",
+      "x" = "Got {.val {data_type}}."
+    ))
+  )
+}
+
 .derive_traits_glycomics <- function(exp, trait_fns, mp_fns) {
   expr_mat <- exp$expr_mat
   glycans <- exp$var_info[["glycan_structure"]]
@@ -178,6 +192,27 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
     dplyr::distinct()
 }
 
+.derive_traits_glycomics_ <- function(tbl, trait_fns, mp_fns) {
+  data_wide <-  tidyr::pivot_wider(tbl, id_cols = "glycan_structure", names_from = "sample", values_from = "value")
+  expr_mat <- as.matrix(data_wide[, -1])
+  glycans <- data_wide[["glycan_structure"]]
+  mp_tbl <- get_meta_properties(glycans, mp_fns)
+  res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
+  res_mat |>
+    tibble::as_tibble() |>
+    dplyr::mutate(trait = names(trait_fns)) |>
+    tidyr::pivot_longer(-dplyr::all_of("trait"), names_to = "sample", values_to = "value")
+}
+
+.derive_traits_glycoproteomics_ <- function(tbl, trait_fns, mp_fns) {
+  tbl |>
+    dplyr::nest_by(.data$protein, .data$protein_site) |>
+    dplyr::mutate(trait_data = list(.derive_traits_glycomics_(.data$data, trait_fns, mp_fns))) |>
+    dplyr::select(dplyr::all_of(c("protein", "protein_site", "trait_data"))) |>
+    tidyr::unnest("trait_data") |>
+    dplyr::ungroup()
+}
+
 #' Calculate Derived Traits from a Matrix
 #'
 #' @param expr_mat A matrix of expression values with samples as columns and glycans as rows.
@@ -195,10 +230,4 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   rownames(res_mat) <- names(trait_fns)
   colnames(res_mat) <- colnames(expr_mat)
   res_mat
-}
-
-#' @rdname derive_traits
-#' @export
-derive_traits_ <- function(tbl, data_type, trait_fns, mp_fns) {
-  # TODO: implement
 }

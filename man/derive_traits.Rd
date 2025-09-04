@@ -7,7 +7,7 @@
 \usage{
 derive_traits(exp, trait_fns = NULL, mp_fns = NULL)
 
-derive_traits_(tbl, data_type, trait_fns, mp_fns)
+derive_traits_(tbl, data_type, trait_fns = NULL, mp_fns = NULL)
 }
 \arguments{
 \item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,

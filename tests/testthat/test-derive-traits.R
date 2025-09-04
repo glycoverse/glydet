@@ -217,3 +217,104 @@ test_that("derive_traits keeps glycosite descriptive columns in var_info", {
     c("variable", "protein", "protein_site", "gene", "trait")
   )
 })
+
+test_that("derive_traits_() works for glycomics experiments", {
+  glycan_structure <- glyparse::parse_iupac_condensed(c(
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+  ))
+  tbl <- tibble::tibble(
+    sample = rep(c("S1", "S2", "S3"), 3),
+    glycan_structure = rep(glycan_structure, each = 3),
+    value = c(1, 0, 1, 1, 1, 1, 1, 1, 0)
+  )
+
+  trait_fns <- list(
+    TFc = prop(nFc > 0),
+    TC = prop(T == "complex")
+  )
+  trait_tbl <- derive_traits_(tbl, "glycomics", trait_fns)
+
+  # Test trait_tbl
+  expected <- tibble::tibble(
+    trait = rep(c("TFc", "TC"), each = 3),
+    sample = rep(c("S1", "S2", "S3"), 2),
+    value = c(1/3, 0.5, 0.5, 2/3, 1, 0.5)
+  )
+  expect_equal(trait_tbl, expected)
+})
+
+test_that("derive_traits_() works for glycoproteomics experiments", {
+  glycan_structure <- glyparse::parse_iupac_condensed(c(
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+  ))
+  tbl <- tibble::tibble(
+    sample = rep(c("S1", "S2", "S3"), 6),
+    protein = rep(c("P1", "P2"), each = 9),
+    protein_site = rep(c(10L, 20L), each = 9),
+    glycan_structure = rep(rep(glycan_structure, each = 3), 2),
+    value = c(1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+  )
+
+  trait_fns <- list(
+    TFc = prop(nFc > 0),
+    TC = prop(T == "complex")
+  )
+  trait_tbl <- derive_traits_(tbl, "glycoproteomics", trait_fns)
+
+  # Test trait_tbl
+  expected <- tibble::tibble(
+    protein = rep(c("P1", "P2"), each = 6),
+    protein_site = rep(c(10L, 20L), each = 6),
+    trait = rep(rep(c("TFc", "TC"), each = 3), 2),
+    sample = rep(c("S1", "S2", "S3"), 4),
+    value = c(1/3, 0.5, 0.5, 2/3, 1, 0.5, 1/3, 1/3, 1/3, 2/3, 2/3, 2/3)
+  )
+  expect_equal(trait_tbl, expected)
+})
+
+test_that("derive_traits_() raises error for invalid data type", {
+  tbl <- tibble::tibble(
+    sample = c("S1", "S2", "S3"),
+    variable = c("V1", "V2", "V3"),
+    value = c(1, 0, 1)
+  )
+  expect_error(derive_traits_(tbl, "invalid"), 'must be "glycomics" or "glycoproteomics"')
+})
+
+test_that("derive_traits_ ignores other columns for glycomics experiments", {
+  glycan_structure <- glyparse::parse_iupac_condensed(c(
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+  ))
+  tbl <- tibble::tibble(
+    sample = c("S1", "S2", "S3"),
+    glycan_structure = glycan_structure,
+    value = c(1, 0, 1),
+    other = c("A", "B", "C")
+  )
+  trait_tbl <- derive_traits_(tbl, "glycomics", trait_fns = list(TFc = prop(nFc > 0)))
+  expect_equal(colnames(trait_tbl), c("trait", "sample", "value"))
+})
+
+test_that("derive_traits_ ignores other columns for glycoproteomics experiments", {
+  glycan_structure <- glyparse::parse_iupac_condensed(c(
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+  ))
+  tbl <- tibble::tibble(
+    sample = c("S1", "S2", "S3"),
+    protein = c("P1", "P2", "P3"),
+    protein_site = c(10L, 20L, 30L),
+    glycan_structure = glycan_structure,
+    value = c(1, 0, 1),
+    other = c("A", "B", "C")
+  )
+  trait_tbl <- derive_traits_(tbl, "glycoproteomics", trait_fns = list(TFc = prop(nFc > 0)))
+  expect_equal(colnames(trait_tbl), c("protein", "protein_site", "trait", "sample", "value"))
+})

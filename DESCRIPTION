@@ -27,7 +27,8 @@ Imports:
     purrr,
     rlang,
     stringr,
-    tibble
+    tibble,
+    tidyr
 Remotes: 
     glycoverse/glymotif,
     glycoverse/glyparse,
