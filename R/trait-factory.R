@@ -42,21 +42,20 @@
 #' @export
 prop <- function(cond, within = NULL, na_action = "keep") {
   cond <- rlang::enquo(cond)
-  if (is.null(within)) {
-    within <- rlang::quo(TRUE)
-  } else {
-    within <- rlang::enquo(within)
-  }
+  within <- rlang::enquo(within)
   checkmate::assert_choice(na_action, c("keep", "zero"))
 
   function(expr_mat, glycans, mp_tbl) {
     cond <- rlang::eval_tidy(cond, data = mp_tbl)
     within <- rlang::eval_tidy(within, data = mp_tbl)
+    if (is.null(within)) {
+      within <- rep(TRUE, nrow(expr_mat))
+    }
     cond[is.na(cond)] <- FALSE
     within[is.na(within)] <- FALSE
-    nom <- colSums(expr_mat[cond & within, , drop = FALSE], na.rm = TRUE)
+    num <- colSums(expr_mat[cond & within, , drop = FALSE], na.rm = TRUE)
     denom <- colSums(expr_mat[within, , drop = FALSE], na.rm = TRUE)
-    res <- nom / denom
+    res <- num / denom
     res[!is.finite(res)] <- NA
     if (na_action == "zero") {
       res[is.na(res)] <- 0
