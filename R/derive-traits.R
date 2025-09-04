@@ -141,11 +141,41 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   res_var_info <- do.call(rbind, purrr::map(res_list, ~ .x$res_var_info))
   res_var_info$variable <- paste0("V", seq_len(nrow(res_var_info)))
   rownames(res_mat) <- res_var_info$variable
+  glycosite_descriptions <- .get_glycosite_var_info(exp$var_info)
+  res_var_info <- dplyr::left_join(res_var_info, glycosite_descriptions, by = c("protein", "protein_site"))
 
   exp$expr_mat <- res_mat
   exp$var_info <- res_var_info
   exp$meta_data$exp_type <- "traitomics"
   exp
+}
+
+#' Get Glycosite Descriptive Columns
+#'
+#' Some columns are descriptive columns of glycosites.
+#' That is, for each combination of `protein` and `protein_site`,
+#' there is only one value for these columns.
+#' A common example is `gene`.
+#' This function returns the distinct values of these columns,
+#' along with `protein` and `protein_site`.
+#' It is used to be left joined with the resulting var_info table in `derive_traits()`.
+#'
+#' @param var_info A tibble with the variable information.
+#'
+#' @returns A tibble with the distinct values of the descriptive columns,
+#'   along with `protein` and `protein_site`.
+#'
+#' @noRd
+.get_glycosite_var_info <- function(var_info) {
+  cols <- var_info |>
+    dplyr::group_by(.data$protein, .data$protein_site) |>
+    dplyr::summarise(dplyr::across(dplyr::everything(), dplyr::n_distinct)) |>
+    dplyr::ungroup() |>
+    dplyr::select(dplyr::where(~ all(.x == 1))) |>
+    colnames()
+  var_info |>
+    dplyr::select(dplyr::all_of(c("protein", "protein_site", cols))) |>
+    dplyr::distinct()
 }
 
 #' Calculate Derived Traits from a Matrix

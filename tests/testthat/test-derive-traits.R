@@ -172,3 +172,48 @@ test_that("derive_traits works with custom meta-properties", {
   # Test meta_data
   expect_equal(trait_exp$meta_data$exp_type, "traitomics")
 })
+
+test_that("derive_traits keeps glycosite descriptive columns in var_info", {
+  strucs <- glyparse::parse_iupac_condensed(c(
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+  ))
+  comps <- glyrepr::as_glycan_composition(strucs)
+  var_info <- tibble::tibble(
+    variable = paste0("V", 1:6),  # index column
+    protein = rep(c("P1", "P2"), each = 3),  # keep
+    protein_site = rep(c(10L, 20L), each = 3),  # keep
+    gene = rep(c("G1", "G2"), each = 3),  # keep
+    glycan_structure = rep(strucs, 2),  # remove
+    glycan_composition = rep(comps, 2)  # remove
+  )
+  sample_info <- tibble::tibble(sample = paste0("S", 1:3))
+  expr_mat <- matrix(
+    # Site 1
+    c(1, 0, 1,
+      1, 1, 1,
+      1, 1, 0,
+    # Site 2
+      1, 1, 1,
+      1, 1, 1,
+      1, 1, 1),
+    nrow = 6, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- paste0("V", 1:6)
+  colnames(expr_mat) <- paste0("S", 1:3)
+  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+
+  # Calculate derived traits
+  trait_fns <- list(
+    TFc = prop(nFc > 0),
+    TC = prop(T == "complex")
+  )
+  trait_exp <- derive_traits(exp, trait_fns)
+
+  # Test var_info
+  expect_setequal(
+    colnames(trait_exp$var_info),
+    c("variable", "protein", "protein_site", "gene", "trait")
+  )
+})
