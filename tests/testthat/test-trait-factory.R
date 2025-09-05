@@ -112,3 +112,33 @@ test_that("ratio(B, !B, within = (T == 'complex')) works", {
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(1, 0, 1))
 })
+
+test_that("wmean(nA) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(nA = c(1, 2, 3))
+  trait_fn <- wmean(nA)
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(2, 2.5, 1.5))
+})
+
+test_that("wmean(nA, within = (T == 'complex')) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nA = c(1, 2, 3),
+    T = c("complex", "complex", "hybrid")
+  )
+  trait_fn <- wmean(nA, within = (T == "complex"))
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(1.5, 2, 1.5))
+})
+
+test_that("wmean(nS / nA) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nA = c(1, 2, 3),
+    nS = c(0, 1, 3)
+  )
+  trait_fn <- wmean(nS / nA)
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(0.5, 0.75, 0.25))
+})

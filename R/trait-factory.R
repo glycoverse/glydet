@@ -155,3 +155,70 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
     unname(res)
   }
 }
+
+#' Create a Weighted-Mean Trait
+#'
+#' A weighted-mean trait is the average value of some quantitative property within a group of glycans,
+#' weighted by the abundance of the glycans.
+#' For example, the average number of antennae within all complex glycans,
+#' or the average number of sialic acids within all glycans.
+#'
+#' @details
+#' You can use `wmean()` to create weighted-mean trait easily.
+#'
+#' For example:
+#'
+#' ```r
+#' # Weighted mean of the number of sialic acids within all glycans
+#' wmean(nS)
+#'
+#' # Average degree of sialylation per antenna within all glycans
+#' wmean(nS / nA)
+#' ```
+#'
+#' Note that the last example uses `/` for division.
+#' Actually, you can use any arithmetic operator in the expression in R (e.g., `*`, `+`, `-`, etc.).
+#'
+#' If you want to perform a pre-filtering before calculating the weighted-mean,
+#' for example, you want to calculate the average degree of sialylation per antenna within only complex glycans,
+#' you can use `within` to define the restriction.
+#'
+#' ```r
+#' # Average number of antennae within complex glycans
+#' wmean(nA, within = (T == "complex"))
+#' ```
+#'
+#' @param val_cond Condition to use for defining the value.
+#'   An expression that evaluates to a numeric vector.
+#'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
+#'   can be used in the expression.
+#' @param within Condition to set a restriction for the glycans. Same format as `val_cond`.
+#' @param na_action How to handle missing values.
+#'   - "keep" (default): keep the missing values as NA.
+#'   - "zero": set the missing values to 0.
+#'
+#' @returns A derived trait function.
+#' @export
+wmean <- function(val_cond, within = NULL, na_action = "keep") {
+  val_cond <- rlang::enquo(val_cond)
+  within <- rlang::enquo(within)
+  checkmate::assert_choice(na_action, c("keep", "zero"))
+
+  function(expr_mat, mp_tbl) {
+    val <- rlang::eval_tidy(val_cond, data = mp_tbl)
+    within <- rlang::eval_tidy(within, data = mp_tbl)
+    if (is.null(within)) {
+      within <- rep(TRUE, nrow(expr_mat))
+    }
+    within[is.na(within)] <- FALSE
+    val_mat <- expr_mat * val
+    num <- colSums(val_mat[within, , drop = FALSE], na.rm = TRUE)
+    denom <- colSums(expr_mat[within, , drop = FALSE], na.rm = TRUE)
+    res <- num / denom
+    res[!is.finite(res)] <- NA
+    if (na_action == "zero") {
+      res[is.na(res)] <- 0
+    }
+    unname(res)
+  }
+}
