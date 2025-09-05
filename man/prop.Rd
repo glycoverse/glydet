@@ -30,6 +30,7 @@ A proportion trait is the proportion of certain group of glycans within a larger
 For example, the proportion of sialylated glycans within all glycans,
 or the proportion of tetra-antennary glycans within all complex glycans.
 This type of traits is the most common type of glycan derived traits.
+It can be regarded as a special case of the ratio trait (see \code{\link[=ratio]{ratio()}}).
 }
 \details{
 You can use \code{prop()} to create proportion trait easily.

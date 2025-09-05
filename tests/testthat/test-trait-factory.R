@@ -93,3 +93,22 @@ test_that("prop() handles NA in cond and within", {
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(1/3, 1/2, 0))
 })
+
+test_that("ratio(T == 'complex, T == 'hybrid') works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(T = c("complex", "complex", "hybrid"))
+  trait_fn <- ratio(T == "complex", T == "hybrid")
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(2, 1, NA))
+})
+
+test_that("ratio(B, !B, within = (T == 'complex')) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    B = c(1, 0, 1),
+    T = c("complex", "complex", "hybrid")
+  )
+  trait_fn <- ratio(B, !B, within = (T == "complex"))
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(1, 0, 1))
+})
