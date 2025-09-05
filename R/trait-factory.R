@@ -136,17 +136,17 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
   checkmate::assert_choice(na_action, c("keep", "zero"))
 
   function(expr_mat, mp_tbl) {
-    num <- rlang::eval_tidy(num_cond, data = mp_tbl)
-    denom <- rlang::eval_tidy(denom_cond, data = mp_tbl)
+    num_cond <- rlang::eval_tidy(num_cond, data = mp_tbl)
+    denom_cond <- rlang::eval_tidy(denom_cond, data = mp_tbl)
     within <- rlang::eval_tidy(within, data = mp_tbl)
     if (is.null(within)) {
       within <- rep(TRUE, nrow(expr_mat))
     }
-    num[is.na(num)] <- FALSE
-    denom[is.na(denom)] <- FALSE
+    num_cond[is.na(num_cond)] <- FALSE
+    denom_cond[is.na(denom_cond)] <- FALSE
     within[is.na(within)] <- FALSE
-    num <- colSums(expr_mat[num & within, , drop = FALSE], na.rm = TRUE)
-    denom <- colSums(expr_mat[denom & within, , drop = FALSE], na.rm = TRUE)
+    num <- colSums(expr_mat[num_cond & within, , drop = FALSE], na.rm = TRUE)
+    denom <- colSums(expr_mat[denom_cond & within, , drop = FALSE], na.rm = TRUE)
     res <- num / denom
     res[!is.finite(res)] <- NA
     if (na_action == "zero") {
