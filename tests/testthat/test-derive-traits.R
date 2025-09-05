@@ -173,6 +173,34 @@ test_that("derive_traits works with custom meta-properties", {
   expect_equal(trait_exp$meta_data$exp_type, "traitomics")
 })
 
+test_that("derive_traits works with default traits", {
+  # Construct a test experiment
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3"),
+    glycan_structure = glyparse::parse_iupac_condensed(c(
+      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    ))
+  )
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  expr_mat <- matrix(
+    c(1, 0, 1,
+      1, 1, 1,
+      1, 1, 0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+
+  # Calculate derived traits
+  trait_exp <- derive_traits(exp)
+
+  # Test var_info
+  expect_setequal(trait_exp$var_info$trait, names(all_traits()))
+})
+
 test_that("derive_traits keeps glycosite descriptive columns in var_info", {
   strucs <- glyparse::parse_iupac_condensed(c(
     "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
@@ -317,4 +345,19 @@ test_that("derive_traits_ ignores other columns for glycoproteomics experiments"
   )
   trait_tbl <- derive_traits_(tbl, "glycoproteomics", trait_fns = list(TFc = prop(nFc > 0)))
   expect_equal(colnames(trait_tbl), c("protein", "protein_site", "trait", "sample", "value"))
+})
+
+test_that("derive_traits_ works with default traits", {
+  glycan_structure <- glyparse::parse_iupac_condensed(c(
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+  ))
+  tbl <- tibble::tibble(
+    sample = rep(c("S1", "S2", "S3"), 3),
+    glycan_structure = rep(glycan_structure, each = 3),
+    value = c(1, 0, 1, 1, 1, 1, 1, 1, 0)
+  )
+  trait_tbl <- derive_traits_(tbl, "glycomics")
+  expect_setequal(trait_tbl$trait, names(all_traits()))
 })

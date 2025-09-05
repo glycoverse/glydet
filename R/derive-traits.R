@@ -38,7 +38,7 @@
 #' @param data_type Either "glycomics" or "glycoproteomics". Only needed for `derive_traits_()`.
 #' @param trait_fns A named list of derived trait functions created by trait factories.
 #'   Names of the list are the names of the derived traits.
-#'   Default is `NULL`, which means all derived traits in the package are calculated.
+#'   Default is `NULL`, which means all derived traits in [all_traits()] are calculated.
 #' @param mp_fns A named list of meta-property functions.
 #'   This parameter is useful if your trait functions use custom meta-properties
 #'   other than those in [all_mp_fns()].
@@ -84,7 +84,7 @@
 derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
-    rlang::abort("Not implemented.")
+    trait_fns <- all_traits()
   }
 
   switch(
@@ -101,6 +101,9 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
 #' @rdname derive_traits
 #' @export
 derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
+  if (is.null(trait_fns)) {
+    trait_fns <- all_traits()
+  }
   switch(
     data_type,
     glycomics = .derive_traits_glycomics_(tbl, trait_fns, mp_fns),
