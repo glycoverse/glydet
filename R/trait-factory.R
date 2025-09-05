@@ -5,7 +5,6 @@
 # - `expr_mat`: a expression matrix (samples as columns and glycans as rows)
 # - `mp_tbl`: a tibble with the meta-properties of the glycans
 
-
 #' Create a Propotion Trait
 #'
 #' A proportion trait is the proportion of certain group of glycans within a larger group of glycans.
@@ -64,25 +63,17 @@
 prop <- function(cond, within = NULL, na_action = "keep") {
   cond <- rlang::enquo(cond)
   within <- rlang::enquo(within)
-  checkmate::assert_choice(na_action, c("keep", "zero"))
 
-  function(expr_mat, mp_tbl) {
-    cond <- rlang::eval_tidy(cond, data = mp_tbl)
-    within <- rlang::eval_tidy(within, data = mp_tbl)
-    if (is.null(within)) {
-      within <- rep(TRUE, nrow(expr_mat))
-    }
-    cond[is.na(cond)] <- FALSE
-    within[is.na(within)] <- FALSE
-    num <- colSums(expr_mat[cond & within, , drop = FALSE], na.rm = TRUE)
-    denom <- colSums(expr_mat[within, , drop = FALSE], na.rm = TRUE)
-    res <- num / denom
-    res[!is.finite(res)] <- NA
-    if (na_action == "zero") {
-      res[is.na(res)] <- 0
-    }
-    unname(res)
+  # Create calculation function for proportion
+  calc_fn <- function(expr_mat, mp_tbl, within_cond) {
+    cond_eval <- rlang::eval_tidy(cond, data = mp_tbl)
+    cond_eval[is.na(cond_eval)] <- FALSE
+    num <- colSums(expr_mat[cond_eval & within_cond, , drop = FALSE], na.rm = TRUE)
+    denom <- colSums(expr_mat[within_cond, , drop = FALSE], na.rm = TRUE)
+    list(num = num, denom = denom)
   }
+
+  .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action)
 }
 
 #' Create a Ratio Trait
@@ -133,27 +124,19 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
   num_cond <- rlang::enquo(num_cond)
   denom_cond <- rlang::enquo(denom_cond)
   within <- rlang::enquo(within)
-  checkmate::assert_choice(na_action, c("keep", "zero"))
 
-  function(expr_mat, mp_tbl) {
-    num_cond <- rlang::eval_tidy(num_cond, data = mp_tbl)
-    denom_cond <- rlang::eval_tidy(denom_cond, data = mp_tbl)
-    within <- rlang::eval_tidy(within, data = mp_tbl)
-    if (is.null(within)) {
-      within <- rep(TRUE, nrow(expr_mat))
-    }
-    num_cond[is.na(num_cond)] <- FALSE
-    denom_cond[is.na(denom_cond)] <- FALSE
-    within[is.na(within)] <- FALSE
-    num <- colSums(expr_mat[num_cond & within, , drop = FALSE], na.rm = TRUE)
-    denom <- colSums(expr_mat[denom_cond & within, , drop = FALSE], na.rm = TRUE)
-    res <- num / denom
-    res[!is.finite(res)] <- NA
-    if (na_action == "zero") {
-      res[is.na(res)] <- 0
-    }
-    unname(res)
+  # Create calculation function for ratio
+  calc_fn <- function(expr_mat, mp_tbl, within_cond) {
+    num_cond_eval <- rlang::eval_tidy(num_cond, data = mp_tbl)
+    denom_cond_eval <- rlang::eval_tidy(denom_cond, data = mp_tbl)
+    num_cond_eval[is.na(num_cond_eval)] <- FALSE
+    denom_cond_eval[is.na(denom_cond_eval)] <- FALSE
+    num <- colSums(expr_mat[num_cond_eval & within_cond, , drop = FALSE], na.rm = TRUE)
+    denom <- colSums(expr_mat[denom_cond_eval & within_cond, , drop = FALSE], na.rm = TRUE)
+    list(num = num, denom = denom)
   }
+
+  .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action)
 }
 
 #' Create a Weighted-Mean Trait
@@ -202,19 +185,36 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
 wmean <- function(val_cond, within = NULL, na_action = "keep") {
   val_cond <- rlang::enquo(val_cond)
   within <- rlang::enquo(within)
+
+  # Create calculation function for weighted mean
+  calc_fn <- function(expr_mat, mp_tbl, within_cond) {
+    val <- rlang::eval_tidy(val_cond, data = mp_tbl)
+    val_mat <- expr_mat * val
+    num <- colSums(val_mat[within_cond, , drop = FALSE], na.rm = TRUE)
+    denom <- colSums(expr_mat[within_cond, , drop = FALSE], na.rm = TRUE)
+    list(num = num, denom = denom)
+  }
+
+  .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action)
+}
+
+# Internal helper function to create trait calculators with common logic
+.create_trait_calculator <- function(calc_fn, within_quo, na_action = "keep") {
   checkmate::assert_choice(na_action, c("keep", "zero"))
 
   function(expr_mat, mp_tbl) {
-    val <- rlang::eval_tidy(val_cond, data = mp_tbl)
-    within <- rlang::eval_tidy(within, data = mp_tbl)
-    if (is.null(within)) {
-      within <- rep(TRUE, nrow(expr_mat))
+    # Evaluate within condition
+    within_cond <- rlang::eval_tidy(within_quo, data = mp_tbl)
+    if (is.null(within_cond)) {
+      within_cond <- rep(TRUE, nrow(expr_mat))
     }
-    within[is.na(within)] <- FALSE
-    val_mat <- expr_mat * val
-    num <- colSums(val_mat[within, , drop = FALSE], na.rm = TRUE)
-    denom <- colSums(expr_mat[within, , drop = FALSE], na.rm = TRUE)
-    res <- num / denom
+    within_cond[is.na(within_cond)] <- FALSE
+
+    # Calculate numerator and denominator using the provided calculation function
+    result <- calc_fn(expr_mat, mp_tbl, within_cond)
+
+    # Apply common post-processing
+    res <- result$num / result$denom
     res[!is.finite(res)] <- NA
     if (na_action == "zero") {
       res[is.na(res)] <- 0
