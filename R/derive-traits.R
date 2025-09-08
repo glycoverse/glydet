@@ -135,9 +135,6 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   glycosites <- stringr::str_c(exp$var_info[["protein"]], exp$var_info[["protein_site"]], sep = "@")
   splits <- split(seq_along(glycosites), glycosites)
 
-  # For now, all other columns in the var_info table are dropped.
-  # TODO: Handle other columns.
-
   derive_one_site <- function(site_idx) {
     site_expr_mat <- exp$expr_mat[site_idx, , drop = FALSE]
     site_mp_tbl <- mp_tbl[site_idx, ]
