@@ -10,7 +10,11 @@ Description: Describe glycosylation structural properties in a site specific man
     and implements a domain-specific language to define custom derived traits.
 License: MIT + file LICENSE
 Suggests: 
-    testthat (>= 3.0.0)
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0),
+    glyexp (>= 0.8.0),
+    glyclean (>= 0.6.3)
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -29,7 +33,10 @@ Imports:
     stringr,
     tibble,
     tidyr
-Remotes: 
+Remotes:  
     glycoverse/glymotif,
     glycoverse/glyparse,
-    glycoverse/glyrepr
+    glycoverse/glyrepr,
+    glycoverse/glyexp,
+    glycoverse/glyclean
+VignetteBuilder: knitr

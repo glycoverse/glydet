@@ -1,0 +1,226 @@
+---
+title: "Get Started with glydet"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Get Started with glydet}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+🧬 N-glycans are among nature's most fascinating molecular structures—ubiquitous
+yet highly constrained by strict biosynthesis rules.
+This structural discipline creates a unique opportunity:
+we can describe entire N-glycomes using carefully designed variables,
+such as the proportion of core-fucosylated glycans,
+the fraction of sialylated structures,
+or the average degree of sialylation per galactose.
+
+In the N-glycomics world,
+these descriptive variables are known as **"derived traits"** —
+powerful summaries that capture biological meaning far beyond simple glycan abundances 
+(the so-called "direct traits").
+
+Enter `glydet` 🚀—your toolkit for calculating derived traits with unprecedented precision.
+But here's where it gets exciting:
+`glydet` brings the power of derived traits to the glycoproteomics community for the first time,
+enabling **site-specific trait analysis**.
+Plus, it features an intuitive domain-specific language that lets you define custom traits tailored to your research needs.
+
+**Important Note:** This package is built on the [glyrepr](https://github.com/glycoverse/glyrepr) package,
+and heavily relies on the [glyexp](https://github.com/glycoverse/glyexp) package.
+If you are not familiar with these two packages,
+we highly recommend checking out their introductions first.
+
+```{r setup}
+library(glydet)
+library(glyrepr)
+library(glyexp)
+library(glyclean)
+library(glystats)
+```
+
+## 🎯 Dive Right In: Your First Analysis
+
+Ready to see `glydet` in action?
+Let's jump straight into a real-world example that demonstrates its power!
+We'll work with `glyexp::real_experiment` — 
+an authentic N-glycoproteomics dataset from 12 patients with varying liver conditions. 
+
+⚠️ **Pro tip:** Always preprocess your data with `glyclean` before diving into trait analysis.
+This ensures your results are as clean and reliable as your data!
+
+```{r}
+exp <- auto_clean(real_experiment)  # Preprocess the data
+exp
+```
+
+Let's take a quick peek at our dataset to understand what we're working with:
+
+```{r}
+get_var_info(exp)
+```
+
+```{r}
+get_sample_info(exp)
+```
+
+```{r}
+get_expr_mat(exp)[1:5, 1:5]
+```
+
+Now for the magic moment ✨—let's calculate some derived traits!
+
+```{r}
+trait_exp <- derive_traits(exp)
+trait_exp
+```
+
+Voilà! What you see is a brand new `experiment()` object with "traitomics" type.
+Think of it as your original dataset's sophisticated cousin 🎭 —
+instead of tracking "quantification of each glycan on each glycosite in each sample,"
+it now contains "the value of each derived trait on each glycosite in each sample."
+
+```{r}
+get_var_info(trait_exp)
+```
+
+```{r}
+# These are the trait values!
+get_expr_mat(trait_exp)[1:5, 1:5]
+```
+
+🎉 **Congratulations!** You've just calculated a comprehensive suite of derived traits in a site-specific manner:
+
+- **`TM`**: Proportion of high-mannose glycans
+- **`TH`**: Proportion of hybrid glycans  
+- **`TC`**: Proportion of complex glycans
+- **`MM`**: Average number of mannoses within high-mannose glycans
+- **`CA2`**: Proportion of bi-antennary glycans within complex glycans
+- **`CA3`**: Proportion of tri-antennary glycans within complex glycans
+- **`CA4`**: Proportion of tetra-antennary glycans within complex glycans
+- **`TF`**: Proportion of fucosylated glycans
+- **`TFc`**: Proportion of core-fucosylated glycans
+- **`TFa`**: Proportion of arm-fucosylated glycans
+- **`TB`**: Proportion of glycans with bisecting GlcNAc
+- **`SG`**: Average degree of sialylation per galactose
+- **`GA`**: Average degree of galactosylation per antenna
+- **`TS`**: Proportion of sialylated glycans
+
+💡 **The key insight:** We treat the glycans on each glycosite as a separate mini-glycome,
+then calculate derived traits for each one across all samples.
+For instance, if a particular glycosite hosts 10 different glycans,
+the `TFc` value represents the proportion of core-fucosylated glycans within those 10 structures in each sample.
+
+Now comes the fun part!
+📊 You can leverage all the powerful functions in the `glystats` package to analyze your derived traits.
+Let's demonstrate with an ANOVA analysis to identify glycosites with significantly different levels of core-fucosylation across conditions:
+
+```{r}
+anova_res <- gly_anova(trait_exp)
+anova_res$tidy_result$main_test |>
+  dplyr::filter(trait == "TFc", p_adj < 0.05)
+```
+
+🔍 **Discovery time!** We've identified several glycosites with statistically significant differences
+in core-fucosylation levels across our patient groups —
+exactly the kind of biological insights that make derived traits so powerful!
+
+## 🔧 Under the Hood: Understanding Meta-Properties
+
+Curious about how the magic happens?
+Let's lift the hood and explore `glydet`'s inner workings—but don't worry,
+we'll keep things accessible! 
+
+The key concept you need to understand is **"meta-properties"** -
+think of them as the molecular fingerprints of individual glycans.
+
+🆚 **What's the difference?**
+
+- **Derived traits** describe entire glycomes (or all glycans on a glycosite) and their values fluctuate across samples
+- **Meta-properties** describe individual glycans regardless of their abundance —
+like counting antennae,core fucoses, or sialic acids on a single structure
+
+🧠 **The connection:** Meta-properties are the building blocks for derived traits.
+When you call `derive_traits()`,
+`glydet` automatically calculates meta-properties for all glycans first,
+then uses this information to compute the derived traits you see.
+
+Want to work with meta-properties directly? 🛠️ You're in luck! `glydet` provides two handy functions:
+
+- **`get_meta_properties()`**: Calculate meta-properties for any set of glycans
+- **`add_meta_properties()`**: Enrich your `experiment()` object by adding meta-properties to variable information
+
+### 🔬 get_meta_properties()
+
+Let's see `get_meta_properties()` in action!
+We'll extract a few glycan structures from our dataset:
+
+```{r}
+glycans <- unique(get_var_info(exp)$glycan_structure)[1:5]
+glycans
+```
+
+📝 **Note:** `glycans` is a `glyrepr::glycan_structure()` vector—these are standardized representations of glycan structures.
+
+Now watch the magic happen as we calculate their meta-properties:
+
+```{r}
+get_meta_properties(glycans)
+```
+
+### 📈 add_meta_properties()
+
+Working with `glyexp::experiment()` objects? Perfect!
+You can supercharge your variable information by adding meta-properties directly:
+
+```{r}
+exp_with_mp <- add_meta_properties(exp)
+get_var_info(exp_with_mp)
+```
+
+✨ **Look at that transformation!** Your variable information is now enriched with multiple meta-property columns.
+This opens up powerful filtering possibilities based on structural features. 
+
+For instance, let's filter for all glycoforms containing high-mannose glycans:
+
+```{r}
+exp_with_mp |>
+  filter_var(T == "highmannose")
+```
+
+### 🧰 Meta-Property Functions: Your Structural Toolkit
+
+Behind the scenes, meta-properties are actually functions that take `glyrepr::glycan_structure()` vectors
+and return corresponding property values.
+`glydet` comes packed with a comprehensive library of built-in meta-property functions:
+
+```{r}
+names(all_mp_fns())
+```
+
+📚 **Your complete toolkit:** Here's the full roster of built-in meta-property functions:
+
+| Name | Function | Description |
+|------|----------|-------------|
+| `T` | `n_glycan_type()` | Type of the glycan, either "complex", "hybrid", "highmannose", or "pausimannose" |
+| `B` | `has_bisecting()` | Whether the glycan has a bisecting GlcNAc |
+| `nA` | `n_antennae()` | Number of antennae |
+| `nFc` | `n_core_fuc()` | Number of core fucoses |
+| `nFa` | `n_arm_fuc()` | Number of arm fucoses |
+| `nG` | `n_gal()` | Number of galactoses |
+| `nGt` | `n_terminal_gal()` | Number of terminal galactoses |
+| `nS` | `n_sia()` | Number of sialic acids |
+| `nM` | `n_man()` | Number of mannoses |
+
+Each function can be called directly for quick structural analysis:
+
+```{r}
+n_glycan_type(glycans)
+```
