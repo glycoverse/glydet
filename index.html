@@ -32,7 +32,14 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="articles/glydet.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><a class="dropdown-item" href="articles/custom-traits.html">Defining Custom Traits</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -57,18 +64,102 @@
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<blockquote>
-<p>[!Note] This package is in development and not yet ready for production use.</p>
-</blockquote>
 <p>You can install the latest release of glydet from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
-<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"glycoverse/glydet"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"glycoverse/glydet@*release"</span><span class="op">)</span></span></code></pre></div>
+<p>Or install the development version:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"glycoverse/glydet"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level2">
+<h2 id="documentation">Documentation<a class="anchor" aria-label="anchor" href="#documentation"></a>
+</h2>
+<ul>
+<li>🚀 Get started: <a href="https://glycoverse.github.io/glydet/articles/glydet.html">Here</a>
+</li>
+<li>🔧 Custom derived traits: <a href="https://glycoverse.github.io/glydet/articles/custom-traits.html">Here</a>
+</li>
+<li>📚 Reference: <a href="https://glycoverse.github.io/glydet/reference/index.html">Here</a>
+</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="role-in-glycoverse">Role in <code>glycoverse</code>
+<a class="anchor" aria-label="anchor" href="#role-in-glycoverse"></a>
+</h2>
+<p>glydet is a high-level package in the <code>glycoverse</code> ecosystem. It is designed to be used by glycomics or glycoproteomics researchers directly to calculate derived traits. It is built on top of many other packages in the <code>glycoverse</code> ecosystem, including <code>glyexp</code>, <code>glyrepr</code>, <code>glyparse</code>, and <code>glymotif</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>Coming soon…</p>
+<p>First, let’s load necessary packages and get the data ready.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyexp/" class="external-link">glyexp</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyclean/" class="external-link">glyclean</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'glyclean'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     aggregate</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glydet/">glydet</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ℹ Normalizing data (Median)</span></span>
+<span><span class="co">#&gt; ✔ Normalizing data (Median) [67ms]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Removing variables with &gt;50% missing values</span></span>
+<span><span class="co">#&gt; ✔ Removing variables with &gt;50% missing values [35ms]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Imputing missing values</span></span>
+<span><span class="co">#&gt; ℹ Sample size &lt;= 30, using sample minimum imputation</span></span>
+<span><span class="co">#&gt; ℹ Imputing missing values✔ Imputing missing values [10ms]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Aggregating data</span></span>
+<span><span class="co">#&gt; ✔ Aggregating data [326ms]</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ℹ Normalizing data again</span></span>
+<span><span class="co">#&gt; ✔ Normalizing data again [7ms]</span></span>
+<span><span class="va">exp</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ℹ Expression matrix: 12 samples, 3880 variables</span></span>
+<span><span class="co">#&gt; ℹ Sample information fields: group &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; ℹ Variable information fields: protein &lt;chr&gt;, gene &lt;chr&gt;, glycan_composition &lt;glyrpr_c&gt;, glycan_structure &lt;glyrpr_s&gt;, protein_site &lt;int&gt;</span></span></code></pre></div>
+<p>Now, let’s calculate some derived traits!</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
+<span><span class="va">trait_exp</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; ── Experiment ──────────────────────────────────────────────────────────────────</span></span>
+<span><span class="co">#&gt; ℹ Expression matrix: 12 samples, 3836 variables</span></span>
+<span><span class="co">#&gt; ℹ Sample information fields: group &lt;chr&gt;</span></span>
+<span><span class="co">#&gt; ℹ Variable information fields: protein &lt;chr&gt;, protein_site &lt;int&gt;, trait &lt;chr&gt;, gene &lt;chr&gt;</span></span></code></pre></div>
+<p>Voilà! What you see is a brand new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> object with “traitomics” type. Think of it as your original dataset’s sophisticated cousin 🎭 — instead of tracking “quantification of each glycan on each glycosite in each sample,” it now contains “the value of each derived trait on each glycosite in each sample.”</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">trait_exp</span><span class="op">)</span></span>
+<span><span class="co">#&gt; # A tibble: 3,836 × 5</span></span>
+<span><span class="co">#&gt;    variable protein protein_site trait gene </span></span>
+<span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;          &lt;int&gt; &lt;chr&gt; &lt;chr&gt;</span></span>
+<span><span class="co">#&gt;  1 V1       A6NJW9            49 TM    CD8B2</span></span>
+<span><span class="co">#&gt;  2 V2       A6NJW9            49 TH    CD8B2</span></span>
+<span><span class="co">#&gt;  3 V3       A6NJW9            49 TC    CD8B2</span></span>
+<span><span class="co">#&gt;  4 V4       A6NJW9            49 MM    CD8B2</span></span>
+<span><span class="co">#&gt;  5 V5       A6NJW9            49 CA2   CD8B2</span></span>
+<span><span class="co">#&gt;  6 V6       A6NJW9            49 CA3   CD8B2</span></span>
+<span><span class="co">#&gt;  7 V7       A6NJW9            49 CA4   CD8B2</span></span>
+<span><span class="co">#&gt;  8 V8       A6NJW9            49 TF    CD8B2</span></span>
+<span><span class="co">#&gt;  9 V9       A6NJW9            49 TFc   CD8B2</span></span>
+<span><span class="co">#&gt; 10 V10      A6NJW9            49 TFa   CD8B2</span></span>
+<span><span class="co">#&gt; # ℹ 3,826 more rows</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_expr_mat.html" class="external-link">get_expr_mat</a></span><span class="op">(</span><span class="va">trait_exp</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="co">#&gt;    C1 C2 C3 H1 H2</span></span>
+<span><span class="co">#&gt; V1  0  0  0  0  0</span></span>
+<span><span class="co">#&gt; V2  0  0  0  0  0</span></span>
+<span><span class="co">#&gt; V3  1  1  1  1  1</span></span>
+<span><span class="co">#&gt; V4 NA NA NA NA NA</span></span>
+<span><span class="co">#&gt; V5  1  1  1  1  1</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="license">

@@ -5,8 +5,21 @@
 <url><loc>https://glycoverse.github.io/glydet/LICENSE-text.html</loc></url>
 <url><loc>https://glycoverse.github.io/glydet/LICENSE.html</loc></url>
 <url><loc>https://glycoverse.github.io/glydet/SUPPORT.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/articles/custom-traits.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/articles/glydet.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/articles/index.html</loc></url>
 <url><loc>https://glycoverse.github.io/glydet/authors.html</loc></url>
 <url><loc>https://glycoverse.github.io/glydet/index.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/add_meta_properties.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/all_mp_fns.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/all_traits.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/derive_traits.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/get_meta_properties.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/glydet-package.html</loc></url>
 <url><loc>https://glycoverse.github.io/glydet/reference/index.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/n_glycan_type.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/prop.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/ratio.html</loc></url>
+<url><loc>https://glycoverse.github.io/glydet/reference/wmean.html</loc></url>
 </urlset>
 
