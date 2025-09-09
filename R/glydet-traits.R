@@ -1,3 +1,25 @@
+#' Get All Derived Traits
+#'
+#' This function returns a named list of all derived traits:
+#' - "TM": `prop(T == "highmannose")`
+#' - "TH": `prop(T == "hybrid")`
+#' - "TC": `prop(T == "complex")`
+#' - "MM": `wmean(nM, within = (T == "highmannose"))`
+#' - "CA2": `prop(nA == 2, within = (T == "complex"))`
+#' - "CA3": `prop(nA == 3, within = (T == "complex"))`
+#' - "CA4": `prop(nA == 4, within = (T == "complex"))`
+#' - "TF": `prop((nFc + nFa) > 0)`
+#' - "TFc": `prop(nFc > 0)`
+#' - "TFa": `prop(nFa > 0)`
+#' - "TB": `prop(B)`
+#' - "SG": `wmean(nS / nG)`
+#' - "GA": `wmean(nG / nA)`
+#' - "TS": `prop(nS > 0)`
+#'
+#' @returns
+#' A named list of derived traits.
+#'
+#' @export
 all_traits <- function() {
   list(
     # Proportion of highmannose glycans

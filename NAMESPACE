@@ -2,6 +2,7 @@
 
 export(add_meta_properties)
 export(all_mp_fns)
+export(all_traits)
 export(derive_traits)
 export(derive_traits_)
 export(get_meta_properties)
