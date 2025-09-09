@@ -224,3 +224,45 @@ Each function can be called directly for quick structural analysis:
 ```{r}
 n_glycan_type(glycans)
 ```
+
+## 🧩 Working with Structural Ambiguity
+
+An important design principle of `glydet` is its ability to handle glycan structures with varying levels of detail.
+All built-in meta-properties and derived traits are designed to work with the **minimum information typically available**
+for N-glycans in most experimental scenarios.
+
+### 🔧 Generic vs. Specific Monosaccharides
+
+`glydet` works seamlessly with generic monosaccharide names (e.g., "Hex", "HexNAc", "dHex") and structures lacking linkage information.
+This level of structural resolution reflects what is commonly achievable in glycoproteomics workflows,
+where complete structural determination is often challenging.
+
+For example, this ambiguous structure works perfectly:
+
+```{r}
+# Generic monosaccharides with unknown linkages ❓
+ambiguous_glycan <- "HexNAc(??-?)Hex(??-?)[Hex(??-?)]Hex(??-?)HexNAc(??-?)[dHex(??-?)]HexNAc(??-"
+```
+
+### ✨ Handling Detailed Structures 
+
+This design philosophy doesn't limit `glydet`'s applicability to well-characterized structures.
+The package equally handles glycans with complete structural information:
+
+```{r}
+# Fully specified structure with specific monosaccharides and linkages ✅
+detailed_glycan <- "GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-3)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-"
+```
+
+### 🚀 Extending Functionality
+
+When working with highly detailed structural information,
+you may want to create specialized meta-property functions that leverage specific monosaccharide identities or linkage patterns.
+This allows you to define custom derived traits that capture structural features beyond the generic framework provided by the built-in functions.
+
+## What's Next?
+
+Now you have a good understanding of `glydet` and how to use it.
+You can start to define your own meta-property functions and derived traits.
+Check out the [Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette
+to learn how to define your own derived traits.
