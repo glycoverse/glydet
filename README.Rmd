@@ -29,16 +29,61 @@ and implements a domain-specific language to define custom derived traits.
 
 ## Installation
 
-> [!Note]
-> This package is in development and not yet ready for production use.
-
 You can install the latest release of glydet from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("pak")
-pak::pak("glycoverse/glydet")
+# install.packages("devtools")
+devtools::install_github("glycoverse/glydet@*release")
 ```
+
+Or install the development version:
+
+``` r
+devtools::install_github("glycoverse/glydet")
+```
+
+## Documentation
+
+- 🚀 Get started: [Here](https://glycoverse.github.io/glydet/articles/glydet.html)
+- 🔧 Custom derived traits: [Here](https://glycoverse.github.io/glydet/articles/custom-traits.html)
+- 📚 Reference: [Here](https://glycoverse.github.io/glydet/reference/index.html)
+
+## Role in `glycoverse`
+
+glydet is a high-level package in the `glycoverse` ecosystem.
+It is designed to be used by glycomics or glycoproteomics researchers directly to calculate derived traits.
+It is built on top of many other packages in the `glycoverse` ecosystem,
+including `glyexp`, `glyrepr`, `glyparse`, and `glymotif`.
 
 ## Example
 
-Coming soon...
+First, let's load necessary packages and get the data ready.
+
+```{r}
+library(glyexp)
+library(glyclean)
+library(glydet)
+
+exp <- auto_clean(real_experiment)
+exp
+```
+
+Now, let's calculate some derived traits!
+
+```{r}
+trait_exp <- derive_traits(exp)
+trait_exp
+```
+
+Voilà! What you see is a brand new `experiment()` object with "traitomics" type.
+Think of it as your original dataset's sophisticated cousin 🎭 —
+instead of tracking "quantification of each glycan on each glycosite in each sample,"
+it now contains "the value of each derived trait on each glycosite in each sample."
+
+```{r}
+get_var_info(trait_exp)
+```
+
+```{r}
+get_expr_mat(trait_exp)[1:5, 1:5]
+```
