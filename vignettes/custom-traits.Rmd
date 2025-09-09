@@ -1,0 +1,398 @@
+---
+title: "Defining Custom Traits"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Defining Custom Traits}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This vignette provides a comprehensive guide for defining custom derived traits using `glydet`.
+Before proceeding, please ensure you have read the "Get Started with glydet" vignette
+and are familiar with the fundamental concepts of derived traits and meta-properties.
+
+```{r setup}
+library(glydet)
+```
+
+## Custom Traits
+
+`glydet` provides three trait factory functions for creating custom derived traits:
+
+- `prop()` for calculating the abundance proportion of a specific glycan subset
+- `ratio()` for computing the abundance ratio between two glycan subsets
+- `wmean()` for calculating the weighted mean of a quantitative property, weighted by glycan abundances
+
+All derived traits in `glydet` are constructed using these three factory functions.
+The definitions of all built-in traits demonstrate their usage:
+
+- `TM`: `prop(T == "highmannose")`
+- `TH`: `prop(T == "hybrid")`
+- `TC`: `prop(T == "complex")`
+- `MM`: `wmean(nM, within = (T == "highmannose"))`
+- `CA2`: `prop(nA == 2, within = (T == "complex"))`
+- `CA3`: `prop(nA == 3, within = (T == "complex"))`
+- `CA4`: `prop(nA == 4, within = (T == "complex"))`
+- `TF`: `prop((nFc + nFa) > 0)`
+- `TFc`: `prop(nFc > 0)`
+- `TFa`: `prop(nFa > 0)`
+- `TB`: `prop(B)`
+- `SG`: `wmean(nS / nG)`
+- `GA`: `wmean(nG / nA)`
+- `TS`: `prop(nS > 0)`
+
+These definitions utilize meta-properties as building blocks.
+For instance, `T` represents glycan type, `nM` denotes the number of mannose residues, and so forth.
+To retrieve all available built-in meta-properties, use `names(all_mp_fns())`.
+
+The complete list of built-in meta-properties is provided below:
+
+| Name | Function | Type | Description |
+|------|----------|------|-------------|
+| `T` | `n_glycan_type()` | factor | Type of the glycan, either "complex", "hybrid", "highmannose", or "pausimannose" |
+| `B` | `has_bisecting()` | logical | Whether the glycan has a bisecting GlcNAc |
+| `nA` | `n_antennae()` | integer | Number of antennae |
+| `nFc` | `n_core_fuc()` | integer | Number of core fucoses |
+| `nFa` | `n_arm_fuc()` |integer | Number of arm fucoses |
+| `nG` | `n_gal()` | integer | Number of galactoses |
+| `nGt` | `n_terminal_gal()` | integer | Number of terminal galactoses |
+| `nS` | `n_sia()` | integer | Number of sialic acids |
+| `nM` | `n_man()` | integer | Number of mannoses |
+
+The following sections provide detailed explanations of each factory function.
+
+### `prop()`
+
+`prop()` creates proportion traits, which represent the most common type of derived traits.
+These traits calculate the relative abundance of a specific glycan subset within a defined population.
+Examples include the proportion of core-fucosylated glycans within all glycans,
+or the proportion of tetra-antennary glycans within the complex glycan subset.
+
+`prop()` accepts an expression that evaluates to a logical vector.
+Both built-in and custom meta-properties (covered later) can be referenced within the expression.
+
+For example, the proportion of core-fucosylated glycans within all glycans is defined as:
+
+```r
+prop(nFc > 0)
+```
+
+Since `nFc` is an integer meta-property representing the number of core fucoses,
+the expression `nFc > 0` evaluates to a logical vector, creating a valid trait definition.
+
+Consider this simpler example:
+
+```r
+prop(B)
+```
+
+This demonstrates a straightforward trait definition.
+Since `B` (bisecting GlcNAc presence) is already a logical meta-property,
+`prop(B)` constitutes a valid trait definition.
+
+A more complex example demonstrates compound logical operations:
+
+```r
+prop(nS > 0 & nFa > 0)
+```
+
+This trait calculates the proportion of glycans containing both sialic acid and arm fucose.
+Both `nS > 0` and `nFa > 0` represent logical expressions,
+combined using the logical AND operator (`&`).
+Any R logical operator (including `|`, `!`, etc.) can be utilized within these expressions.
+
+Arithmetic calculations can also be incorporated within expressions.
+For example, the `CF` trait is defined as:
+
+```r
+prop(nFc + nFa > 0)
+```
+
+As a general principle, any R expression that evaluates to a logical vector is valid for use with `prop()`.
+
+The traits described above calculate proportions relative to the entire glycan population.
+To customize the denominator (reference population), the `within` parameter can be employed.
+For example, calculating the proportion of bi-antennary glycans within the **complex** glycan subset (`CA2`) requires this approach.
+
+The `within` parameter accepts an expression that evaluates to a logical vector,
+following the same syntax as the primary parameter.
+
+The `CA2` trait is defined as follows:
+
+```r
+prop(nA == 2, within = (T == "complex"))
+```
+
+Note that parentheses around `T == "complex"` are optional.
+Consequently, this alternative definition is equally valid:
+
+```r
+prop(nA == 2, within = T == "complex")
+```
+
+Combining these two parameters enables the creation of sophisticated trait definitions.
+For instance, the proportion of sialylated glycans within the subset of core-fucosylated tetra-antennary glycans is defined as:
+
+```r
+prop(nS > 0, within = (nFc > 0 & nA == 4))
+```
+
+Having mastered the usage of `prop()`,
+examine the definitions of built-in proportion traits to reinforce your understanding.
+
+Practice exercises:
+
+1. Define a trait calculating the proportion of glycans containing terminal galactose.
+2. Define a trait calculating the proportion of glycans with terminal galactose but no sialic acid.
+3. Define a trait calculating the proportion of glycans with exactly two antennae and no bisecting GlcNAc.
+4. Define a trait calculating the proportion of glycans with bisecting GlcNAc within the bi-antennary glycan subset.
+
+Solutions are provided at the end of this vignette.
+
+### `ratio()`
+
+`ratio()` creates ratio traits that represent the quotient of total abundances between two glycan groups.
+Examples include the ratio of complex to hybrid glycans,
+or the ratio of bisecting to non-bisecting glycans.
+
+`ratio()` accepts two expressions that evaluate to logical vectors, similar to `prop()`.
+
+For example, the ratio of complex to hybrid glycans is defined as:
+
+```r
+ratio(T == "complex", T == "hybrid")
+```
+
+The first expression defines the numerator, while the second expression defines the denominator.
+
+The `within` parameter can be employed to apply restrictions to both numerator and denominator.
+For example, the ratio of bisecting to non-bisecting glycans within the bi-antennary subset is defined as:
+
+```r
+ratio(B, !B, within = (nA == 2))
+```
+
+This represents syntactic sugar for the more verbose:
+
+```r
+ratio(B & (nA == 2), (!B) & (nA == 2))
+```
+
+The `within` parameter provides clearer semantics and reduces redundancy.
+
+Note that `prop()` represents a special case of `ratio()`,
+where `prop(cond, within)` is mathematically equivalent to `ratio(cond & within, within)`.
+The following two definitions are functionally identical:
+
+```r
+# using prop()
+prop(nFc > 0, within = (T == "complex"))
+
+# using ratio()
+ratio(nFc > 0 & T == "complex", T == "complex")
+```
+
+However, `prop()` is recommended when appropriate for enhanced readability,
+as it provides more intuitive semantics that align with natural language.
+The `prop()` example above can be interpreted as "the proportion of core-fucosylated glycans within all complex glycans,"
+whereas the `ratio()` version requires additional cognitive processing.
+
+Practice exercises:
+
+1. Define a trait calculating the ratio of core-fucosylated to non-core-fucosylated glycans.
+2. Define a trait calculating the ratio of tetra-antennary to tri-antennary glycans within the complex glycan subset.
+3. Redefine the `CA2` trait using `ratio()`.
+
+### `wmean()`
+
+`wmean()` creates weighted-mean traits, which represent the most sophisticated yet powerful type of derived traits.
+These traits calculate the abundance-weighted average of quantitative properties across glycan populations.
+Examples include the average number of antennae across all glycans,
+or the average degree of sialylation per galactose across the entire glycan repertoire.
+
+Before exploring `wmean()` usage, it is essential to understand the weighted-mean concept.
+
+Consider three glycans: `G1`, `G2`, and `G3`.
+Their respective antennae counts are 1, 2, and 3,
+with relative abundances of 50%, 20%, and 30%.
+The weighted-mean number of antennae is calculated as:
+
+```{r}
+(1 * 0.5 + 2 * 0.2 + 3 * 0.3) / (0.5 + 0.2 + 0.3)
+```
+
+This value represents the abundance-weighted average degree of branching across the glycan population.
+
+This concept provides substantial analytical power,
+enabling the calculation of numerous biologically meaningful traits.
+
+Consider another example: the average degree of sialylation per antenna across all glycans.
+Using the same three glycans (`G1`, `G2`, and `G3`) with antennae counts of 1, 2, and 3,
+sialic acid counts of 1, 1, and 3, respectively,
+and relative abundances of 50%, 20%, and 30%.
+
+First, calculate the sialylation degree per antenna for each glycan
+(sialic acid count divided by antenna count):
+
+```{r}
+c(1/1, 1/2, 3/3)
+```
+
+Subsequently, incorporate the abundance weighting:
+
+```{r}
+(1/1 * 0.5 + 1/2 * 0.2 + 3/3 * 0.3) / (0.5 + 0.2 + 0.3)
+```
+
+This yields the abundance-weighted average degree of sialylation per antenna across the glycan population.
+
+Having established the weighted-mean concept
+and mastered `prop()` and `ratio()` fundamentals,
+we can now examine `wmean()` implementation.
+
+`wmean()` accepts expressions that evaluate to numeric vectors,
+contrasting with the logical vectors required by `prop()` and `ratio()`.
+
+For example, the average number of antennae across all glycans is defined as:
+
+```r
+wmean(nA)
+```
+
+The average degree of sialylation per antenna across all glycans is defined as:
+
+```r
+wmean(nS / nA)
+```
+
+The `within` parameter can be utilized to restrict the weighted-mean calculation to specific glycan subsets.
+For example, the average number of antennae within complex glycans is defined as:
+
+```r
+wmean(nA, within = (T == "complex"))
+```
+
+Practice exercises:
+
+1. Define a trait calculating the average degree of sialylation per antenna.
+2. Define a trait calculating the average number of arm fucoses.
+
+### Using Custom Traits
+
+Having learned how to define custom traits, we can now implement them.
+
+`derive_traits()` includes a `trait_fns` parameter that accepts a named list of derived trait functions.
+Note that the three factory functions described above return functions as their output.
+
+```{r}
+class(prop(nFc > 0))
+```
+
+R supports functional programming paradigms, treating functions as first-class objects.
+Functions can be passed as arguments to other functions and returned from function calls.
+
+While understanding this concept enhances R proficiency,
+it is not prerequisite for usage—simply define traits as a named list and provide it to the `trait_fns` parameter.
+
+The following example examines sialylation degree within glycan subsets of varying antenna counts:
+
+```r
+my_traits <- list(
+  A2SG = wmean(nS / nA, within = (nA == 2)),
+  A3SG = wmean(nS / nA, within = (nA == 3)),
+  A4SG = wmean(nS / nA, within = (nA == 4))
+)
+derive_traits(exp, trait_fns = my_traits)
+```
+
+The identifiers "A2SG", "A3SG", and "A4SG" represent the derived trait names.
+
+When `trait_fns` is omitted, `derive_traits()` internally invokes `all_traits()` to utilize built-in trait functions.
+
+## Custom Meta-Properties
+
+The preceding examples utilized exclusively built-in meta-properties.
+Custom meta-properties can be defined by providing a named list of meta-property functions
+to the `mp_fns` parameter of `derive_traits()`.
+
+Meta-property functions must accept a `glyrepr::glycan_structure()` vector
+and return a vector of corresponding meta-property values.
+
+For example, the built-in meta-property `B` is defined as follows:
+
+```r
+# Simplified version for illustration purposes
+function(glycans) {
+  motif <- "HexNAc(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"
+  glymotif::have_motif(glycans, motif, alignment = "core")
+}
+```
+
+This implementation utilizes `glymotif::have_motif()` to determine motif presence within glycan structures.
+Meta-property function definitions offer considerable flexibility.
+Any tools from the `glycoverse` ecosystem or broader R environment can be employed,
+provided the function accepts a `glyrepr::glycan_structure()` vector and returns an atomic vector.
+All built-in meta-properties utilize the `glymotif` package for motif matching and counting operations.
+For detailed information, consult the [glymotif documentation](https://glycoverse.github.io/glymotif/).
+
+The following example demonstrates custom meta-property creation:
+
+```r
+my_mp_fns <- list(
+  # Number of Lewis antigens
+  nLe = ~ glymotif::count_motif(.x, "Hex(??-?)[dHex(??-?)]HexNAc(??-"),
+  # Number of poly-LacNAc units
+  nPl = ~ glymotif::count_motif(.x, "Hex(??-?)HexNAc(??-?)Hex(??-?)HexNAc(??-")
+)
+```
+
+Note that purrr-style lambda functions provide a concise syntax for meta-property function definitions.
+
+Traits can be defined using these new meta-properties:
+
+```r
+my_traits <- list(
+  # Average number of Lewis antigens per antenna
+  LeA = wmean(nLe / nA),
+  # Average number of poly-LacNAc units per glycan
+  Pl = wmean(nPl)
+)
+```
+
+These expressions incorporate both custom meta-properties (`nLe` and `nPl`) and the built-in meta-property `nA`.
+
+Implementation of these custom meta-properties and traits proceeds as follows:
+
+```r
+derive_traits(exp, trait_fns = my_traits, mp_fns = c(my_mp_fns, all_mp_fns()))
+```
+
+Ensure that custom meta-properties are combined with built-in meta-properties
+when the latter are required within trait expressions.
+
+## Exercise Solutions
+
+**`prop()`**
+
+1. `prop(nGt > 0)`
+2. `prop(nGt > 0 & nS == 0)`
+3. `prop(nA == 2 & !B)`
+4. `prop(B, within = (nA == 2))`
+
+**`ratio()`**
+
+1. `ratio(nFc > 0, nFc == 0)`
+2. `ratio(nA == 4, nA == 3, within = (T == "complex"))`
+3. `ratio(nA == 2 & T == "complex", T == "complex")`
+
+**`wmean()`**
+
+1. `wmean(nS / nA)`
+2. `wmean(nFa)`
