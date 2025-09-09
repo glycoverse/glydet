@@ -19,7 +19,7 @@ as not all glycoproteomics identification softwares provide this information.}
 
 \item{trait_fns}{A named list of derived trait functions created by trait factories.
 Names of the list are the names of the derived traits.
-Default is \code{NULL}, which means all derived traits in the package are calculated.}
+Default is \code{NULL}, which means all derived traits in \code{\link[=all_traits]{all_traits()}} are calculated.}
 
 \item{mp_fns}{A named list of meta-property functions.
 This parameter is useful if your trait functions use custom meta-properties
