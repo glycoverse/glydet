@@ -26,14 +26,14 @@ You can install the latest release of glydet from
 [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("glycoverse/glydet@*release")
+# install.packages("remotes")
+remotes::install_github("glycoverse/glydet@*release")
 ```
 
 Or install the development version:
 
 ``` r
-devtools::install_github("glycoverse/glydet")
+remotes::install_github("glycoverse/glydet")
 ```
 
 ## Documentation
@@ -69,17 +69,17 @@ library(glydet)
 
 exp <- auto_clean(real_experiment)
 #> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [67ms]
+#> ✔ Normalizing data (Median) [71ms]
 #> 
 #> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [35ms]
+#> ✔ Removing variables with >50% missing values [38ms]
 #> 
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
 #> ℹ Imputing missing values✔ Imputing missing values [10ms]
 #> 
 #> ℹ Aggregating data
-#> ✔ Aggregating data [326ms]
+#> ✔ Aggregating data [349ms]
 #> 
 #> ℹ Normalizing data again
 #> ✔ Normalizing data again [7ms]

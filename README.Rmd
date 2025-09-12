@@ -32,14 +32,14 @@ and implements a domain-specific language to define custom derived traits.
 You can install the latest release of glydet from [GitHub](https://github.com/) with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("glycoverse/glydet@*release")
+# install.packages("remotes")
+remotes::install_github("glycoverse/glydet@*release")
 ```
 
 Or install the development version:
 
 ``` r
-devtools::install_github("glycoverse/glydet")
+remotes::install_github("glycoverse/glydet")
 ```
 
 ## Documentation
