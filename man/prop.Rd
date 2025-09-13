@@ -2,7 +2,7 @@
 % Please edit documentation in R/trait-factory.R
 \name{prop}
 \alias{prop}
-\title{Create a Propotion Trait}
+\title{Create a Proportion Trait}
 \usage{
 prop(cond, within = NULL, na_action = "keep")
 }

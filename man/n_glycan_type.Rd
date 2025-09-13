@@ -88,7 +88,7 @@ GlcNAc - Man - GlcNAc - GlcNAc -
 }
 
 \section{\code{n_antennae()}: Number of Antennae}{
-The number of antennae is the number of branching GlcNAc to the core mannoses。
+The number of antennae is the number of branching GlcNAc to the core mannoses.
 }
 
 \section{\code{n_core_fuc()}: Number of Core Fucoses}{
@@ -103,7 +103,7 @@ Man
 }
 
 \section{\code{n_arm_fuc()}: Number of Arm Fucoses}{
-Arm focuses are thoses focuse residues attached to the branching GlcNAc
+Arm focuses are those focuse residues attached to the branching GlcNAc
 of an N-glycan.
 
 \if{html}{\out{<div class="sourceCode">}}\preformatted{ Fuc  <- arm fucose

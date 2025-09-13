@@ -5,7 +5,7 @@
 # - `expr_mat`: a expression matrix (samples as columns and glycans as rows)
 # - `mp_tbl`: a tibble with the meta-properties of the glycans
 
-#' Create a Propotion Trait
+#' Create a Proportion Trait
 #'
 #' A proportion trait is the proportion of certain group of glycans within a larger group of glycans.
 #' For example, the proportion of sialylated glycans within all glycans,
