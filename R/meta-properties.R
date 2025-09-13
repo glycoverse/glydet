@@ -67,13 +67,7 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 add_meta_properties <- function(exp, mp_fns = NULL, struc_col = "glycan_structure") {
   checkmate::assert_class(exp, "glyexp_experiment")
   checkmate::assert_string(struc_col)
-
-  if (!struc_col %in% colnames(exp$var_info)) {
-    cli::cli_abort(c(
-      "Column {.field {struc_col}} not found in {.field var_info}.",
-      "i" = "Got {.col {colnames(exp$var_info)}}."
-    ))
-  }
+  .check_var_info_cols(exp, struc_col)
 
   meta_properties <- get_meta_properties(exp$var_info[[struc_col]], mp_fns)
   exp$var_info <- dplyr::bind_cols(exp$var_info, meta_properties)

@@ -246,6 +246,18 @@ test_that("derive_traits keeps glycosite descriptive columns in var_info", {
   )
 })
 
+test_that("derive_traits raises error for missing columns", {
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3")
+  )
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  expr_mat <- matrix(c(1, 0, 1, 1, 1, 1, 1, 1, 0), nrow = 3, ncol = 3, byrow = TRUE)
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  expect_error(derive_traits(exp), "Variable information must contain the following columns: glycan_structure.")
+})
+
 test_that("derive_traits_() works for glycomics experiments", {
   glycan_structure <- glyparse::parse_iupac_condensed(c(
     "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9

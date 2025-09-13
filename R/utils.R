@@ -9,3 +9,14 @@
   }
   glycans
 }
+
+.check_var_info_cols <- function(exp, cols) {
+  has_cols <- cols %in% colnames(exp$var_info)
+  if (!all(has_cols)) {
+    missing_cols <- cols[!has_cols]
+    cli::cli_abort(c(
+      "Variable information must contain the following columns: {.field {cols}}.",
+      "x" = "Cannot find {.field {missing_cols}} in {.field var_info}."
+    ))
+  }
+}

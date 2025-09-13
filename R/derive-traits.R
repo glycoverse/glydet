@@ -116,6 +116,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 }
 
 .derive_traits_glycomics <- function(exp, trait_fns, mp_fns) {
+  .check_var_info_cols(exp, "glycan_structure")
   expr_mat <- exp$expr_mat
   glycans <- exp$var_info[["glycan_structure"]]
   mp_tbl <- get_meta_properties(glycans, mp_fns)
@@ -131,6 +132,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 }
 
 .derive_traits_glycoproteomics <- function(exp, trait_fns, mp_fns) {
+  .check_var_info_cols(exp, c("glycan_structure", "protein", "protein_site"))
   mp_tbl <- get_meta_properties(exp$var_info[["glycan_structure"]], mp_fns)
   glycosites <- stringr::str_c(exp$var_info[["protein"]], exp$var_info[["protein_site"]], sep = "@")
   splits <- split(seq_along(glycosites), glycosites)

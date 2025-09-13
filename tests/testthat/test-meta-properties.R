@@ -69,6 +69,6 @@ test_that("add_meta_properties throws error if struc_col not found", {
     glyexp::slice_head_var(n = 10)
   expect_error(
     add_meta_properties(exp, struc_col = "struc"),
-    "Column struc not found in var_info."
+    "Variable information must contain the following columns: struc."
   )
 })
