@@ -59,15 +59,37 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 #'   purrr-style lambda functions are supported.
 #' @param struc_col The column name of the glycan structures in the variable information tibble.
 #'   Default is "glycan_structure".
+#' @param overwrite Whether to overwrite the existing meta-property columns.
+#'   Default is FALSE, raising an error if the existing columns are found.
 #'
 #' @return An [glyexp::experiment()] object with meta-properties added to the variable information.
 #' @seealso [get_meta_properties()], [glyexp::experiment()]
 #'
 #' @export
-add_meta_properties <- function(exp, mp_fns = NULL, struc_col = "glycan_structure") {
+add_meta_properties <- function(exp, mp_fns = NULL, struc_col = "glycan_structure", overwrite = FALSE) {
   checkmate::assert_class(exp, "glyexp_experiment")
   checkmate::assert_string(struc_col)
+  checkmate::assert_flag(overwrite)
   .check_var_info_cols(exp, struc_col)
+
+  if (is.null(mp_fns)) {
+    mp_names <- names(all_mp_fns())
+  } else {
+    mp_names <- names(mp_fns)
+  }
+  if (overwrite) {
+    # Remove the existing meta-property columns if any
+    exp$var_info <- exp$var_info[, setdiff(colnames(exp$var_info), mp_names)]
+  } else {
+    # Check if any existing columns are the same as the new meta-property names
+    exist_mp_names <- intersect(mp_names, colnames(exp$var_info))
+    if (length(exist_mp_names) > 0) {
+      cli::cli_abort(c(
+        "Variable information tibble must not contain columns with the same names as the meta-properties.",
+        "x" = "The following columns already exist: {.field {exist_mp_names}}."
+      ))
+    }
+  }
 
   meta_properties <- get_meta_properties(exp$var_info[[struc_col]], mp_fns)
   exp$var_info <- dplyr::bind_cols(exp$var_info, meta_properties)

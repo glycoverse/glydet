@@ -72,3 +72,21 @@ test_that("add_meta_properties throws error if struc_col not found", {
     "Variable information must contain the following columns: struc."
   )
 })
+
+test_that("add_meta_properties throws error if existing columns are the same as the new meta-property names", {
+  exp <- glyexp::real_experiment |>
+    glyexp::slice_head_var(n = 10) |>
+    glyexp::mutate_var(T = "complex")
+  expect_error(
+    add_meta_properties(exp, overwrite = FALSE),
+    "Variable information tibble must not contain columns with the same names as the meta-properties."
+  )
+})
+
+test_that("add_meta_properties works with overwrite = TRUE", {
+  exp <- glyexp::real_experiment |>
+    glyexp::slice_head_var(n = 10) |>
+    glyexp::mutate_var(T = "complex")
+  exp <- add_meta_properties(exp, overwrite = TRUE)
+  expect_true(all(c("T", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+})
