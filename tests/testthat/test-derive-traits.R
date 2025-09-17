@@ -32,7 +32,7 @@ test_that("derive_traits works for glycomics experiments", {
       2/3, 1, 0.5),
     nrow = 2, ncol = 3, byrow = TRUE
   )
-  rownames(expected_expr_mat) <- c("TFc", "TC")
+  rownames(expected_expr_mat) <- c("V1", "V2")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 
@@ -155,7 +155,7 @@ test_that("derive_traits works with custom meta-properties", {
     ),
     nrow = 2, ncol = 3, byrow = TRUE
   )
-  rownames(expected_expr_mat) <- c("many_N", "many_H")
+  rownames(expected_expr_mat) <- c("V1", "V2")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 

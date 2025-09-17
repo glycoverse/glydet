@@ -4,7 +4,12 @@
 \alias{add_meta_properties}
 \title{Add Meta-Properties to Experiment}
 \usage{
-add_meta_properties(exp, mp_fns = NULL, struc_col = "glycan_structure")
+add_meta_properties(
+  exp,
+  mp_fns = NULL,
+  struc_col = "glycan_structure",
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{exp}{An \code{\link[glyexp:experiment]{glyexp::experiment()}} object.}
@@ -17,6 +22,9 @@ purrr-style lambda functions are supported.}
 
 \item{struc_col}{The column name of the glycan structures in the variable information tibble.
 Default is "glycan_structure".}
+
+\item{overwrite}{Whether to overwrite the existing meta-property columns.
+Default is FALSE, raising an error if the existing columns are found.}
 }
 \value{
 An \code{\link[glyexp:experiment]{glyexp::experiment()}} object with meta-properties added to the variable information.

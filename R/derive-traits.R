@@ -125,6 +125,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
     variable = paste0("V", seq_len(nrow(res_mat))),
     trait = names(trait_fns)
   )
+  rownames(res_mat) <- var_info$variable
   exp$expr_mat <- res_mat
   exp$var_info <- var_info
   exp$meta_data$exp_type <- "traitomics"
