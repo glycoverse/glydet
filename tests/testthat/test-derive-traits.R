@@ -373,3 +373,13 @@ test_that("derive_traits_ works with default traits", {
   trait_tbl <- derive_traits_(tbl, "glycomics")
   expect_setequal(trait_tbl$trait, names(all_traits()))
 })
+
+test_that("derive_traits raises error for empty trait_fns", {
+  exp <- glyexp::toy_experiment
+  expect_error(derive_traits(exp, trait_fns = list()), "must be a non-empty named list or NULL.")
+})
+
+test_that("derive_traits_ raises error for empty trait_fns", {
+  tbl <- tibble::as_tibble(glyexp::toy_experiment)
+  expect_error(derive_traits_(tbl, "glycomics", trait_fns = list()), "must be a non-empty named list or NULL.")
+})

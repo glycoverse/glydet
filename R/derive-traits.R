@@ -87,6 +87,10 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
     trait_fns <- all_traits()
+  } else {
+    if (length(trait_fns) == 0) {
+      cli::cli_abort("{.arg trait_fns} must be a non-empty named list or NULL.")
+    }
   }
 
   switch(
@@ -105,7 +109,12 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
 derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   if (is.null(trait_fns)) {
     trait_fns <- all_traits()
+  } else {
+    if (length(trait_fns) == 0) {
+      cli::cli_abort("{.arg trait_fns} must be a non-empty named list or NULL.")
+    }
   }
+
   switch(
     data_type,
     glycomics = .derive_traits_glycomics_(tbl, trait_fns, mp_fns),
