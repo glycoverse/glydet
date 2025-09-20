@@ -15,7 +15,8 @@ Suggests:
     testthat (>= 3.0.0),
     glyexp (>= 0.8.0),
     glyclean (>= 0.6.3),
-    glystats (>= 0.4.1)
+    glystats (>= 0.4.1),
+    missForest
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
