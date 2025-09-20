@@ -69,7 +69,9 @@ The complete list of built-in meta-properties is provided below:
 
 The following sections provide detailed explanations of each factory function.
 
-### `prop()`
+### Trait Factories
+
+#### `prop()`
 
 `prop()` creates proportion traits, which represent the most common type of derived traits.
 These traits calculate the relative abundance of a specific glycan subset within a defined population.
@@ -163,7 +165,7 @@ Practice exercises:
 
 Solutions are provided at the end of this vignette.
 
-### `ratio()`
+#### `ratio()`
 
 `ratio()` creates ratio traits that represent the quotient of total abundances between two glycan groups.
 Examples include the ratio of complex to hybrid glycans,
@@ -217,7 +219,7 @@ Practice exercises:
 2. Define a trait calculating the ratio of tetra-antennary to tri-antennary glycans within the complex glycan subset.
 3. Redefine the `CA2` trait using `ratio()`.
 
-### `wmean()`
+#### `wmean()`
 
 `wmean()` creates weighted-mean traits, which represent the most sophisticated yet powerful type of derived traits.
 These traits calculate the abundance-weighted average of quantitative properties across glycan populations.
@@ -322,6 +324,28 @@ derive_traits(exp, trait_fns = my_traits)
 The identifiers "A2SG", "A3SG", and "A4SG" represent the derived trait names.
 
 When `trait_fns` is omitted, `derive_traits()` internally invokes `all_traits()` to utilize built-in trait functions.
+
+### Validating Trait Definitions
+
+How can you ensure your trait definitions are accurate and meaningful?
+The `explain_trait()` function provides an intuitive way to validate your trait definitions by generating human-readable explanations.
+
+This function helps you:
+
+- Verify that your trait logic matches your intended analysis
+- Understand complex trait expressions at a glance  
+- Debug and refine trait definitions before deployment
+
+Let's examine the `A2SG` trait defined earlier as an example:
+
+```{r}
+explain_trait(wmean(nS / nA, within = (nA == 2)))
+```
+
+The function interprets your trait expression and returns a clear,
+natural language description of what the trait calculates.
+This validation step is particularly valuable when working with complex trait definitions
+or when collaborating with team members who need to understand your analytical approach.
 
 ## Custom Meta-Properties
 
