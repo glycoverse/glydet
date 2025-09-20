@@ -40,7 +40,7 @@ The definitions of all built-in traits demonstrate their usage:
 - `CA2`: `prop(nA == 2, within = (T == "complex"))`
 - `CA3`: `prop(nA == 3, within = (T == "complex"))`
 - `CA4`: `prop(nA == 4, within = (T == "complex"))`
-- `TF`: `prop((nFc + nFa) > 0)`
+- `TF`: `prop(nF > 0)`
 - `TFc`: `prop(nFc > 0)`
 - `TFa`: `prop(nFa > 0)`
 - `TB`: `prop(B)`
@@ -59,6 +59,7 @@ The complete list of built-in meta-properties is provided below:
 | `T` | `n_glycan_type()` | factor | Type of the glycan, either "complex", "hybrid", "highmannose", or "pausimannose" |
 | `B` | `has_bisecting()` | logical | Whether the glycan has a bisecting GlcNAc |
 | `nA` | `n_antennae()` | integer | Number of antennae |
+| `nF` | `n_fuc()` | integer | Number of fucoses |
 | `nFc` | `n_core_fuc()` | integer | Number of core fucoses |
 | `nFa` | `n_arm_fuc()` |integer | Number of arm fucoses |
 | `nG` | `n_gal()` | integer | Number of galactoses |
@@ -110,6 +111,12 @@ Any R logical operator (including `|`, `!`, etc.) can be utilized within these e
 
 Arithmetic calculations can also be incorporated within expressions.
 For example, the `CF` trait is defined as:
+
+```r
+prop(nF > 0)
+```
+
+We know that `nFc + nFa` is equivalent to `nF`, so the above definition is equivalent to:
 
 ```r
 prop(nFc + nFa > 0)

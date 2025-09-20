@@ -212,6 +212,7 @@ names(all_mp_fns())
 | `T` | `n_glycan_type()` | Type of the glycan, either "complex", "hybrid", "highmannose", or "pausimannose" |
 | `B` | `has_bisecting()` | Whether the glycan has a bisecting GlcNAc |
 | `nA` | `n_antennae()` | Number of antennae |
+| `nF` | `n_fuc()` | Number of fucoses |
 | `nFc` | `n_core_fuc()` | Number of core fucoses |
 | `nFa` | `n_arm_fuc()` | Number of arm fucoses |
 | `nG` | `n_gal()` | Number of galactoses |
