@@ -1,3 +1,9 @@
+# glydet 0.3.1
+
+## Minor improvements and bug fixes
+
+* Add `missForest` to the Suggests field in DESCRIPTION. This package is used in vignettes to impute missing values for glycomics data.
+
 # glydet 0.3.0
 
 ## New features
