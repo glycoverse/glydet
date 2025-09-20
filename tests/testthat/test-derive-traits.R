@@ -383,3 +383,13 @@ test_that("derive_traits_ raises error for empty trait_fns", {
   tbl <- tibble::as_tibble(glyexp::toy_experiment)
   expect_error(derive_traits_(tbl, "glycomics", trait_fns = list()), "must be a non-empty named list or NULL.")
 })
+
+test_that("derive_traits raises error when trait_fns has no names", {
+  exp <- glyexp::toy_experiment
+  expect_error(derive_traits(exp, trait_fns = list(prop(nFc > 0))), "must be a non-empty named list or NULL.")
+})
+
+test_that("derive_traits_ raises error when trait_fns has no names", {
+  tbl <- tibble::as_tibble(glyexp::toy_experiment)
+  expect_error(derive_traits_(tbl, "glycomics", trait_fns = list(prop(nFc > 0))), "must be a non-empty named list or NULL.")
+})

@@ -89,8 +89,19 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
     trait_fns <- all_traits()
   } else {
     if (length(trait_fns) == 0) {
-      cli::cli_abort("{.arg trait_fns} must be a non-empty named list or NULL.")
+      cli::cli_abort(c(
+        "{.arg trait_fns} must be a non-empty named list or NULL.",
+        "x" = "Got an empty list."
+      ))
     }
+  }
+  if (!checkmate::test_named(trait_fns)) {
+    cli::cli_abort(c(
+      "{.arg trait_fns} must be a non-empty named list or NULL.",
+      "x" = "Got a list with no names.",
+      "i" = "Please add names to the list as the names of the derived traits.",
+      "i" = "Call {.fn all_traits} to see an example."
+    ))
   }
 
   switch(
@@ -111,8 +122,19 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
     trait_fns <- all_traits()
   } else {
     if (length(trait_fns) == 0) {
-      cli::cli_abort("{.arg trait_fns} must be a non-empty named list or NULL.")
+      cli::cli_abort(c(
+        "{.arg trait_fns} must be a non-empty named list or NULL.",
+        "x" = "Got an empty list."
+      ))
     }
+  }
+  if (!checkmate::test_named(trait_fns)) {
+    cli::cli_abort(c(
+      "{.arg trait_fns} must be a non-empty named list or NULL.",
+      "x" = "Got a list with no names.",
+      "i" = "Please add names to the list as the names of the derived traits.",
+      "i" = "Call {.fn all_traits} to see an example."
+    ))
   }
 
   switch(
