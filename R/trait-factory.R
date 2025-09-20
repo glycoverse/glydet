@@ -84,13 +84,16 @@ prop <- function(cond, within = NULL, na_action = "keep") {
 
 #' @export
 print.glydet_prop <- function(x, ...) {
-  cond <- attr(x, "cond")
-  within <- attr(x, "within")
+  cond_expr <- rlang::expr_text(attr(x, "cond"))
+  within_expr <- rlang::expr_text(attr(x, "within"))
   na_action <- attr(x, "na_action")
-  if (is.null(within)) {
-    cli::cli_text("prop({.strong {rlang::expr_text(cond)}}, na_action = \"{na_action}\")")
+  if (within_expr == "NULL") {
+    cli::cli_text("prop({.strong {cond_expr}}, na_action = \"{na_action}\")")
   } else {
-    cli::cli_text("prop({.strong {rlang::expr_text(cond)}}, within = {.strong ({rlang::expr_text(within)})}, na_action = \"{na_action}\")")
+    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
+      within_expr <- stringr::str_sub(within_expr, 2, -2)
+    }
+    cli::cli_text("prop({.strong {cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
 }
@@ -167,14 +170,17 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
 
 #' @export
 print.glydet_ratio <- function(x, ...) {
-  num_cond <- attr(x, "num_cond")
-  denom_cond <- attr(x, "denom_cond")
-  within <- attr(x, "within")
+  num_cond_expr <- rlang::expr_text(attr(x, "num_cond"))
+  denom_cond_expr <- rlang::expr_text(attr(x, "denom_cond"))
+  within_expr <- rlang::expr_text(attr(x, "within"))
   na_action <- attr(x, "na_action")
-  if (is.null(within)) {
-    cli::cli_text("ratio({.strong {rlang::expr_text(num_cond)}}, {.strong {rlang::expr_text(denom_cond)}}, na_action = \"{na_action}\")")
+  if (within_expr == "NULL") {
+    cli::cli_text("ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, na_action = \"{na_action}\")")
   } else {
-    cli::cli_text("ratio({.strong {rlang::expr_text(num_cond)}}, {.strong {rlang::expr_text(denom_cond)}}, within = {.strong ({rlang::expr_text(within)})}, na_action = \"{na_action}\")")
+    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
+      within_expr <- stringr::str_sub(within_expr, 2, -2)
+    }
+    cli::cli_text("ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
 }
@@ -246,13 +252,16 @@ wmean <- function(val_cond, within = NULL, na_action = "keep") {
 
 #' @export
 print.glydet_wmean <- function(x, ...) {
-  val_cond <- attr(x, "val_cond")
-  within <- attr(x, "within")
+  val_cond_expr <- rlang::expr_text(attr(x, "val_cond"))
+  within_expr <- rlang::expr_text(attr(x, "within"))
   na_action <- attr(x, "na_action")
-  if (is.null(within)) {
-    cli::cli_text("wmean({.strong {rlang::expr_text(val_cond)}}, na_action = \"{na_action}\")")
+  if (within_expr == "NULL") {
+    cli::cli_text("wmean({.strong {val_cond_expr}}, na_action = \"{na_action}\")")
   } else {
-    cli::cli_text("wmean({.strong {rlang::expr_text(val_cond)}}, within = {.strong ({rlang::expr_text(within)})}, na_action = \"{na_action}\")")
+    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
+      within_expr <- stringr::str_sub(within_expr, 2, -2)
+    }
+    cli::cli_text("wmean({.strong {val_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
 }

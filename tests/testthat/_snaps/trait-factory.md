@@ -15,6 +15,13 @@
 ---
 
     Code
+      print(prop(nFc > 0, within = (T == "complex")))
+    Message
+      prop(nFc > 0, within = (T == "complex"), na_action = "keep")
+
+---
+
+    Code
       print(prop(nFc > 0, within = NULL))
     Message
       prop(nFc > 0, na_action = "keep")
@@ -44,6 +51,14 @@
 ---
 
     Code
+      print(ratio(T == "complex", T == "hybrid", within = (T == "complex")))
+    Message
+      ratio(T == "complex", T == "hybrid", within = (T == "complex"), na_action =
+      "keep")
+
+---
+
+    Code
       print(ratio(T == "complex", T == "hybrid", within = NULL))
     Message
       ratio(T == "complex", T == "hybrid", na_action = "keep")
@@ -66,6 +81,13 @@
 
     Code
       print(wmean(nA, within = T == "complex"))
+    Message
+      wmean(nA, within = (T == "complex"), na_action = "keep")
+
+---
+
+    Code
+      print(wmean(nA, within = (T == "complex")))
     Message
       wmean(nA, within = (T == "complex"), na_action = "keep")
 
