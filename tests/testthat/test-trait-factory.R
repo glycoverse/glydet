@@ -142,3 +142,24 @@ test_that("wmean(nS / nA) works", {
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(0.5, 0.75, 0.25))
 })
+
+test_that("prop print", {
+  expect_snapshot(print(prop(nFc > 0)))
+  expect_snapshot(print(prop(nFc > 0, within = T == "complex")))
+  expect_snapshot(print(prop(nFc > 0, within = NULL)))
+  expect_snapshot(print(prop(nFc > 0, na_action = "zero")))
+})
+
+test_that("ratio print", {
+  expect_snapshot(print(ratio(T == "complex", T == "hybrid")))
+  expect_snapshot(print(ratio(T == "complex", T == "hybrid", within = T == "complex")))
+  expect_snapshot(print(ratio(T == "complex", T == "hybrid", within = NULL)))
+  expect_snapshot(print(ratio(T == "complex", T == "hybrid", na_action = "zero")))
+})
+
+test_that("wmean print", {
+  expect_snapshot(print(wmean(nA)))
+  expect_snapshot(print(wmean(nA, within = T == "complex")))
+  expect_snapshot(print(wmean(nA, within = NULL)))
+  expect_snapshot(print(wmean(nA, na_action = "zero")))
+})

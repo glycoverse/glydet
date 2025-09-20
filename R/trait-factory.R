@@ -73,7 +73,26 @@ prop <- function(cond, within = NULL, na_action = "keep") {
     list(num = num, denom = denom)
   }
 
-  .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action)
+  structure(
+    .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
+    cond = rlang::quo_get_expr(cond),
+    within = rlang::quo_get_expr(within),
+    na_action = na_action,
+    class = "glydet_prop"
+  )
+}
+
+#' @export
+print.glydet_prop <- function(x, ...) {
+  cond <- attr(x, "cond")
+  within <- attr(x, "within")
+  na_action <- attr(x, "na_action")
+  if (is.null(within)) {
+    cli::cli_text("prop({.strong {rlang::expr_text(cond)}}, na_action = \"{na_action}\")")
+  } else {
+    cli::cli_text("prop({.strong {rlang::expr_text(cond)}}, within = {.strong ({rlang::expr_text(within)})}, na_action = \"{na_action}\")")
+  }
+  invisible(x)
 }
 
 #' Create a Ratio Trait
@@ -136,7 +155,28 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
     list(num = num, denom = denom)
   }
 
-  .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action)
+  structure(
+    .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
+    num_cond = rlang::quo_get_expr(num_cond),
+    denom_cond = rlang::quo_get_expr(denom_cond),
+    within = rlang::quo_get_expr(within),
+    na_action = na_action,
+    class = "glydet_ratio"
+  )
+}
+
+#' @export
+print.glydet_ratio <- function(x, ...) {
+  num_cond <- attr(x, "num_cond")
+  denom_cond <- attr(x, "denom_cond")
+  within <- attr(x, "within")
+  na_action <- attr(x, "na_action")
+  if (is.null(within)) {
+    cli::cli_text("ratio({.strong {rlang::expr_text(num_cond)}}, {.strong {rlang::expr_text(denom_cond)}}, na_action = \"{na_action}\")")
+  } else {
+    cli::cli_text("ratio({.strong {rlang::expr_text(num_cond)}}, {.strong {rlang::expr_text(denom_cond)}}, within = {.strong ({rlang::expr_text(within)})}, na_action = \"{na_action}\")")
+  }
+  invisible(x)
 }
 
 #' Create a Weighted-Mean Trait
@@ -195,7 +235,26 @@ wmean <- function(val_cond, within = NULL, na_action = "keep") {
     list(num = num, denom = denom)
   }
 
-  .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action)
+  structure(
+    .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
+    val_cond = rlang::quo_get_expr(val_cond),
+    within = rlang::quo_get_expr(within),
+    na_action = na_action,
+    class = "glydet_wmean"
+  )
+}
+
+#' @export
+print.glydet_wmean <- function(x, ...) {
+  val_cond <- attr(x, "val_cond")
+  within <- attr(x, "within")
+  na_action <- attr(x, "na_action")
+  if (is.null(within)) {
+    cli::cli_text("wmean({.strong {rlang::expr_text(val_cond)}}, na_action = \"{na_action}\")")
+  } else {
+    cli::cli_text("wmean({.strong {rlang::expr_text(val_cond)}}, within = {.strong ({rlang::expr_text(within)})}, na_action = \"{na_action}\")")
+  }
+  invisible(x)
 }
 
 # Internal helper function to create trait calculators with common logic
