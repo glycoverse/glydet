@@ -15,7 +15,9 @@ you should preprocess the data using the \code{glyclean} package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using \code{glyclean::aggregate()}.
 Also, please make sure that the \code{glycan_structure} column is present in the \code{var_info} table,
-as not all glycoproteomics identification softwares provide this information.}
+as not all glycoproteomics identification softwares provide this information.
+"glycan_structure" can be a \code{glyrepr::glycan_structure()} vector,
+or a character vector of glycan structure strings supported by \code{glyparse::auto_parse()}.}
 
 \item{trait_fns}{A named list of derived trait functions created by trait factories.
 Names of the list are the names of the derived traits.

@@ -16,6 +16,8 @@
 #'   "gfs" (glycoforms with structures) level using `glyclean::aggregate()`.
 #'   Also, please make sure that the `glycan_structure` column is present in the `var_info` table,
 #'   as not all glycoproteomics identification softwares provide this information.
+#'   "glycan_structure" can be a `glyrepr::glycan_structure()` vector,
+#'   or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
 #' @param tbl
 #'   A tibble in tidy format, with the following columns:
 #'   - `sample`: sample ID
