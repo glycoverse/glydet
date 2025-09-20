@@ -3,6 +3,7 @@
 n_glycan_type(): Determine the N-glycan type.
 has_bisecting(): Check if the glycan has a bisecting GlcNAc.
 n_antennae(): Count the number of antennae.
+n_fuc(): Count the number of fucoses.
 n_core_fuc(): Count the number of core fucoses.
 n_arm_fuc(): Count the number of arm fucoses.
 n_gal(): Count the number of galactoses.
@@ -21,6 +22,7 @@ This type of structures are common in glycoproteomics and glycomics studies.'><m
 n_glycan_type(): Determine the N-glycan type.
 has_bisecting(): Check if the glycan has a bisecting GlcNAc.
 n_antennae(): Count the number of antennae.
+n_fuc(): Count the number of fucoses.
 n_core_fuc(): Count the number of core fucoses.
 n_arm_fuc(): Count the number of arm fucoses.
 n_gal(): Count the number of galactoses.
@@ -43,7 +45,7 @@ This type of structures are common in glycoproteomics and glycomics studies.'><m
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,6 +78,7 @@ This type of structures are common in glycoproteomics and glycomics studies.'><m
     <p>These functions check key properties of an N-glycan:</p><ul><li><p><code>n_glycan_type()</code>: Determine the N-glycan type.</p></li>
 <li><p><code>has_bisecting()</code>: Check if the glycan has a bisecting GlcNAc.</p></li>
 <li><p><code>n_antennae()</code>: Count the number of antennae.</p></li>
+<li><p><code>n_fuc()</code>: Count the number of fucoses.</p></li>
 <li><p><code>n_core_fuc()</code>: Count the number of core fucoses.</p></li>
 <li><p><code>n_arm_fuc()</code>: Count the number of arm fucoses.</p></li>
 <li><p><code>n_gal()</code>: Count the number of galactoses.</p></li>
@@ -98,6 +101,8 @@ This type of structures are common in glycoproteomics and glycomics studies.</p>
 <span><span class="fu">has_bisecting</span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">n_antennae</span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">n_fuc</span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">n_core_fuc</span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span></span>
 <span></span>
@@ -127,6 +132,7 @@ This type of structures are common in glycoproteomics and glycomics studies.</p>
 either "highmannose", "hybrid", "complex", or "paucimannose".</p></li>
 <li><p><code>has_bisecting()</code>: A logical vector indicating if the glycan has a bisecting GlcNAc.</p></li>
 <li><p><code>n_antennae()</code>: An integer vector indicating the number of antennae.</p></li>
+<li><p><code>n_fuc()</code>: An integer vector indicating the number of fucoses.</p></li>
 <li><p><code>n_core_fuc()</code>: An integer vector indicating the number of core fucoses.</p></li>
 <li><p><code>n_arm_fuc()</code>: An integer vector indicating the number of arm fucoses.</p></li>
 <li><p><code>n_gal()</code>: An integer vector indicating the number of galactoses.</p></li>
@@ -152,6 +158,11 @@ see <a href="https://www.ncbi.nlm.nih.gov/books/NBK579964/#_s9_2_" class="extern
     <div class="section level2">
     <h2 id="n-antennae-number-of-antennae"><code>n_antennae()</code>: Number of Antennae<a class="anchor" aria-label="anchor" href="#n-antennae-number-of-antennae"></a></h2>
     <p>The number of antennae is the number of branching GlcNAc to the core mannoses.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="n-fuc-number-of-fucoses"><code>n_fuc()</code>: Number of Fucoses<a class="anchor" aria-label="anchor" href="#n-fuc-number-of-fucoses"></a></h2>
+    <p>Number of fucoses.
+This function assumes the fucose is a dHex.</p>
     </div>
     <div class="section level2">
     <h2 id="n-core-fuc-number-of-core-fucoses"><code>n_core_fuc()</code>: Number of Core Fucoses<a class="anchor" aria-label="anchor" href="#n-core-fuc-number-of-core-fucoses"></a></h2>

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -117,7 +117,7 @@ demonstrate their usage:</p>
 <code>prop(nA == 4, within = (T == "complex"))</code>
 </li>
 <li>
-<code>TF</code>: <code>prop((nFc + nFa) &gt; 0)</code>
+<code>TF</code>: <code>prop(nF &gt; 0)</code>
 </li>
 <li>
 <code>TFc</code>: <code>prop(nFc &gt; 0)</code>
@@ -177,36 +177,42 @@ built-in meta-properties, use <code>names(all_mp_fns())</code>.</p>
 <td>Number of antennae</td>
 </tr>
 <tr class="even">
+<td><code>nF</code></td>
+<td><code><a href="../reference/n_glycan_type.html">n_fuc()</a></code></td>
+<td>integer</td>
+<td>Number of fucoses</td>
+</tr>
+<tr class="odd">
 <td><code>nFc</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_core_fuc()</a></code></td>
 <td>integer</td>
 <td>Number of core fucoses</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>nFa</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_arm_fuc()</a></code></td>
 <td>integer</td>
 <td>Number of arm fucoses</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>nG</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_gal()</a></code></td>
 <td>integer</td>
 <td>Number of galactoses</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>nGt</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_terminal_gal()</a></code></td>
 <td>integer</td>
 <td>Number of terminal galactoses</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>nS</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_sia()</a></code></td>
 <td>integer</td>
 <td>Number of sialic acids</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>nM</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_man()</a></code></td>
 <td>integer</td>
@@ -217,9 +223,12 @@ built-in meta-properties, use <code>names(all_mp_fns())</code>.</p>
 <p>The following sections provide detailed explanations of each factory
 function.</p>
 <div class="section level3">
-<h3 id="prop">
-<code>prop()</code><a class="anchor" aria-label="anchor" href="#prop"></a>
+<h3 id="trait-factories">Trait Factories<a class="anchor" aria-label="anchor" href="#trait-factories"></a>
 </h3>
+<div class="section level4">
+<h4 id="prop">
+<code>prop()</code><a class="anchor" aria-label="anchor" href="#prop"></a>
+</h4>
 <p><code><a href="../reference/prop.html">prop()</a></code> creates proportion traits, which represent the
 most common type of derived traits. These traits calculate the relative
 abundance of a specific glycan subset within a defined population.
@@ -255,6 +264,10 @@ these expressions.</p>
 <p>Arithmetic calculations can also be incorporated within expressions.
 For example, the <code>CF</code> trait is defined as:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nF</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<p>We know that <code>nFc + nFa</code> is equivalent to <code>nF</code>,
+so the above definition is equivalent to:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">+</span> <span class="va">nFa</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p>As a general principle, any R expression that evaluates to a logical
 vector is valid for use with <code><a href="../reference/prop.html">prop()</a></code>.</p>
@@ -268,18 +281,18 @@ approach.</p>
 evaluates to a logical vector, following the same syntax as the primary
 parameter.</p>
 <p>The <code>CA2</code> trait is defined as follows:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Note that parentheses around <code>T == "complex"</code> are
 optional. Consequently, this alternative definition is equally
 valid:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span></code></pre></div>
 <p>Combining these two parameters enables the creation of sophisticated
 trait definitions. For instance, the proportion of sialylated glycans
 within the subset of core-fucosylated tetra-antennary glycans is defined
 as:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Having mastered the usage of <code><a href="../reference/prop.html">prop()</a></code>, examine the
 definitions of built-in proportion traits to reinforce your
@@ -297,10 +310,10 @@ GlcNAc within the bi-antennary glycan subset.</li>
 </ol>
 <p>Solutions are provided at the end of this vignette.</p>
 </div>
-<div class="section level3">
-<h3 id="ratio">
+<div class="section level4">
+<h4 id="ratio">
 <code>ratio()</code><a class="anchor" aria-label="anchor" href="#ratio"></a>
-</h3>
+</h4>
 <p><code><a href="../reference/ratio.html">ratio()</a></code> creates ratio traits that represent the quotient
 of total abundances between two glycan groups. Examples include the
 ratio of complex to hybrid glycans, or the ratio of bisecting to
@@ -309,7 +322,7 @@ non-bisecting glycans.</p>
 vectors, similar to <code><a href="../reference/prop.html">prop()</a></code>.</p>
 <p>For example, the ratio of complex to hybrid glycans is defined
 as:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="cn">T</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span></code></pre></div>
 <p>The first expression defines the numerator, while the second
 expression defines the denominator.</p>
@@ -317,10 +330,10 @@ expression defines the denominator.</p>
 restrictions to both numerator and denominator. For example, the ratio
 of bisecting to non-bisecting glycans within the bi-antennary subset is
 defined as:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span>, <span class="op">!</span><span class="va">B</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This represents syntactic sugar for the more verbose:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span>, <span class="op">(</span><span class="op">!</span><span class="va">B</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>within</code> parameter provides clearer semantics and
 reduces redundancy.</p>
@@ -329,7 +342,7 @@ reduces redundancy.</p>
 mathematically equivalent to
 <code>ratio(cond &amp; within, within)</code>. The following two
 definitions are functionally identical:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using prop()</span></span>
 <span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -350,10 +363,10 @@ tri-antennary glycans within the complex glycan subset.</li>
 <li>Redefine the <code>CA2</code> trait using <code><a href="../reference/ratio.html">ratio()</a></code>.</li>
 </ol>
 </div>
-<div class="section level3">
-<h3 id="wmean">
+<div class="section level4">
+<h4 id="wmean">
 <code>wmean()</code><a class="anchor" aria-label="anchor" href="#wmean"></a>
-</h3>
+</h4>
 <p><code><a href="../reference/wmean.html">wmean()</a></code> creates weighted-mean traits, which represent
 the most sophisticated yet powerful type of derived traits. These traits
 calculate the abundance-weighted average of quantitative properties
@@ -366,7 +379,7 @@ understand the weighted-mean concept.</p>
 <code>G3</code>. Their respective antennae counts are 1, 2, and 3, with
 relative abundances of 50%, 20%, and 30%. The weighted-mean number of
 antennae is calculated as:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="op">+</span> <span class="fl">2</span> <span class="op">*</span> <span class="fl">0.2</span> <span class="op">+</span> <span class="fl">3</span> <span class="op">*</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">+</span> <span class="fl">0.3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.8</span></span></code></pre></div>
 <p>This value represents the abundance-weighted average degree of
@@ -380,11 +393,11 @@ counts of 1, 2, and 3, sialic acid counts of 1, 1, and 3, respectively,
 and relative abundances of 50%, 20%, and 30%.</p>
 <p>First, calculate the sialylation degree per antenna for each glycan
 (sialic acid count divided by antenna count):</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">/</span><span class="fl">2</span>, <span class="fl">3</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1.0 0.5 1.0</span></span></code></pre></div>
 <p>Subsequently, incorporate the abundance weighting:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">1</span> <span class="op">*</span> <span class="fl">0.5</span> <span class="op">+</span> <span class="fl">1</span><span class="op">/</span><span class="fl">2</span> <span class="op">*</span> <span class="fl">0.2</span> <span class="op">+</span> <span class="fl">3</span><span class="op">/</span><span class="fl">3</span> <span class="op">*</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">+</span> <span class="fl">0.2</span> <span class="op">+</span> <span class="fl">0.3</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.9</span></span></code></pre></div>
 <p>This yields the abundance-weighted average degree of sialylation per
@@ -397,16 +410,16 @@ vectors, contrasting with the logical vectors required by
 <code><a href="../reference/prop.html">prop()</a></code> and <code><a href="../reference/ratio.html">ratio()</a></code>.</p>
 <p>For example, the average number of antennae across all glycans is
 defined as:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span><span class="op">)</span></span></code></pre></div>
 <p>The average degree of sialylation per antenna across all glycans is
 defined as:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>within</code> parameter can be utilized to restrict the
 weighted-mean calculation to specific glycan subsets. For example, the
 average number of antennae within complex glycans is defined as:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Practice exercises:</p>
 <ol style="list-style-type: decimal">
@@ -414,6 +427,7 @@ average number of antennae within complex glycans is defined as:</p>
 antenna.</li>
 <li>Define a trait calculating the average number of arm fucoses.</li>
 </ol>
+</div>
 </div>
 <div class="section level3">
 <h3 id="using-custom-traits">Using Custom Traits<a class="anchor" aria-label="anchor" href="#using-custom-traits"></a>
@@ -424,9 +438,9 @@ them.</p>
 parameter that accepts a named list of derived trait functions. Note
 that the three factory functions described above return functions as
 their output.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "function"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "glydet_prop"</span></span></code></pre></div>
 <p>R supports functional programming paradigms, treating functions as
 first-class objects. Functions can be passed as arguments to other
 functions and returned from function calls.</p>
@@ -435,7 +449,7 @@ prerequisite for usage—simply define traits as a named list and provide
 it to the <code>trait_fns</code> parameter.</p>
 <p>The following example examines sialylation degree within glycan
 subsets of varying antenna counts:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  A2SG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  A3SG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -447,6 +461,31 @@ trait names.</p>
 <p>When <code>trait_fns</code> is omitted, <code><a href="../reference/derive_traits.html">derive_traits()</a></code>
 internally invokes <code><a href="../reference/all_traits.html">all_traits()</a></code> to utilize built-in trait
 functions.</p>
+</div>
+<div class="section level3">
+<h3 id="validating-trait-definitions">Validating Trait Definitions<a class="anchor" aria-label="anchor" href="#validating-trait-definitions"></a>
+</h3>
+<p>How can you ensure your trait definitions are accurate and
+meaningful? The <code><a href="../reference/explain_trait.html">explain_trait()</a></code> function provides an
+intuitive way to validate your trait definitions by generating
+human-readable explanations.</p>
+<p>This function helps you:</p>
+<ul>
+<li>Verify that your trait logic matches your intended analysis</li>
+<li>Understand complex trait expressions at a glance<br>
+</li>
+<li>Debug and refine trait definitions before deployment</li>
+</ul>
+<p>Let’s examine the <code>A2SG</code> trait defined earlier as an
+example:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/explain_trait.html">explain_trait</a></span><span class="op">(</span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "Abundance-weighted mean of degree of sialylation per antenna within bi-antennary glycans."</span></span></code></pre></div>
+<p>The function interprets your trait expression and returns a clear,
+natural language description of what the trait calculates. This
+validation step is particularly valuable when working with complex trait
+definitions or when collaborating with team members who need to
+understand your analytical approach.</p>
 </div>
 </div>
 <div class="section level2">
@@ -461,7 +500,7 @@ meta-property functions to the <code>mp_fns</code> parameter of
 corresponding meta-property values.</p>
 <p>For example, the built-in meta-property <code>B</code> is defined as
 follows:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simplified version for illustration purposes</span></span>
 <span><span class="kw">function</span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">motif</span> <span class="op">&lt;-</span> <span class="st">"HexNAc(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"</span></span>
@@ -478,7 +517,7 @@ package for motif matching and counting operations. For detailed
 information, consult the <a href="https://glycoverse.github.io/glymotif/" class="external-link">glymotif
 documentation</a>.</p>
 <p>The following example demonstrates custom meta-property creation:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_mp_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Number of Lewis antigens</span></span>
 <span>  nLe <span class="op">=</span> <span class="op">~</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motif</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span><span class="op">)</span>,</span>
@@ -488,7 +527,7 @@ documentation</a>.</p>
 <p>Note that purrr-style lambda functions provide a concise syntax for
 meta-property function definitions.</p>
 <p>Traits can be defined using these new meta-properties:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Average number of Lewis antigens per antenna</span></span>
 <span>  LeA <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nLe</span> <span class="op">/</span> <span class="va">nA</span><span class="op">)</span>,</span>
@@ -500,7 +539,7 @@ meta-property function definitions.</p>
 <code>nA</code>.</p>
 <p>Implementation of these custom meta-properties and traits proceeds as
 follows:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span>, mp_fns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">my_mp_fns</span>, <span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>Ensure that custom meta-properties are combined with built-in
 meta-properties when the latter are required within trait

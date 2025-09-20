@@ -23,7 +23,7 @@ Use this function if you are not using the glyexp package.
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -78,7 +78,9 @@ you should preprocess the data using the <code>glyclean</code> package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using <code><a href="https://glycoverse.github.io/glyclean/reference/aggregate.html" class="external-link">glyclean::aggregate()</a></code>.
 Also, please make sure that the <code>glycan_structure</code> column is present in the <code>var_info</code> table,
-as not all glycoproteomics identification softwares provide this information.</p></dd>
+as not all glycoproteomics identification softwares provide this information.
+"glycan_structure" can be a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code> vector,
+or a character vector of glycan structure strings supported by <code><a href="https://glycoverse.github.io/glyparse/reference/auto_parse.html" class="external-link">glyparse::auto_parse()</a></code>.</p></dd>
 
 
 <dt id="arg-trait-fns">trait_fns<a class="anchor" aria-label="anchor" href="#arg-trait-fns"></a></dt>

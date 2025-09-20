@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,20 +109,20 @@ your results are as clean and reliable as your data!</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span>  <span class="co"># Preprocess the data</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[142ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[135ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[79ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[73ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[25ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aggregating data</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[928ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[860ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[18ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[17ms]</span></span></span>
 <span><span class="va">exp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
@@ -353,14 +353,14 @@ representations of glycan structures.</p>
 <p>Now watch the magic happen as we calculate their meta-properties:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/get_meta_properties.html">get_meta_properties</a></span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 9</span></span></span>
-<span><span class="co">#&gt;   T       B        nA   nFc   nFa    nG   nGt    nS    nM</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> complex FALSE     2     0     0     2     0     2     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> hybrid  FALSE     2     0     0     1     0     1     4</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> complex FALSE     2     0     0     2     2     0     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> complex FALSE     2     0     0     2     1     1     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> complex FALSE     2     0     0     2     1     0     4</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 5 × 10</span></span></span>
+<span><span class="co">#&gt;   T       B        nA    nF   nFc   nFa    nG   nGt    nS    nM</span></span>
+<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> complex FALSE     2     0     0     0     2     0     2     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> hybrid  FALSE     2     0     0     0     1     0     1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> complex FALSE     2     0     0     0     2     2     0     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> complex FALSE     2     0     0     0     2     1     1     3</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> complex FALSE     2     0     0     0     2     1     0     4</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="add_meta_properties">📈 add_meta_properties()<a class="anchor" aria-label="anchor" href="#add_meta_properties"></a>
@@ -371,7 +371,7 @@ directly:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp_with_mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_meta_properties.html">add_meta_properties</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">exp_with_mp</span><span class="op">)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,880 × 15</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,880 × 16</span></span></span>
 <span><span class="co">#&gt;    variable protein gene     glycan_composition     </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  SERPINA6 Hex(5)HexNAc(4)NeuAc(2)</span></span>
@@ -385,9 +385,9 @@ directly:</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  HRG      Hex(4)HexNAc(3)        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  HRG      Hex(4)HexNAc(4)NeuAc(1)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,870 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 11 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;, T &lt;fct&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   B &lt;lgl&gt;, nA &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;, nG &lt;int&gt;, nGt &lt;int&gt;, nS &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   nM &lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 12 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;, T &lt;fct&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   B &lt;lgl&gt;, nA &lt;int&gt;, nF &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;, nG &lt;int&gt;, nGt &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   nS &lt;int&gt;, nM &lt;int&gt;</span></span></span></code></pre></div>
 <p>✨ <strong>Look at that transformation!</strong> Your variable
 information is now enriched with multiple meta-property columns. This
 opens up powerful filtering possibilities based on structural
@@ -401,7 +401,7 @@ glycans:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">207</span> variables</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">T</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">T</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nF</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="meta-property-functions-your-structural-toolkit">🧰 Meta-Property Functions: Your Structural Toolkit<a class="anchor" aria-label="anchor" href="#meta-property-functions-your-structural-toolkit"></a>
@@ -412,7 +412,7 @@ corresponding property values. <code>glydet</code> comes packed with a
 comprehensive library of built-in meta-property functions:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "T"   "B"   "nA"  "nFc" "nFa" "nG"  "nGt" "nS"  "nM"</span></span></code></pre></div>
+<span><span class="co">#&gt;  [1] "T"   "B"   "nA"  "nF"  "nFc" "nFa" "nG"  "nGt" "nS"  "nM"</span></span></code></pre></div>
 <p>📚 <strong>Your complete toolkit:</strong> Here’s the full roster of
 built-in meta-property functions:</p>
 <table class="table">
@@ -444,31 +444,36 @@ built-in meta-property functions:</p>
 <td>Number of antennae</td>
 </tr>
 <tr class="even">
+<td><code>nF</code></td>
+<td><code><a href="../reference/n_glycan_type.html">n_fuc()</a></code></td>
+<td>Number of fucoses</td>
+</tr>
+<tr class="odd">
 <td><code>nFc</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_core_fuc()</a></code></td>
 <td>Number of core fucoses</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>nFa</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_arm_fuc()</a></code></td>
 <td>Number of arm fucoses</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>nG</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_gal()</a></code></td>
 <td>Number of galactoses</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>nGt</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_terminal_gal()</a></code></td>
 <td>Number of terminal galactoses</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>nS</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_sia()</a></code></td>
 <td>Number of sialic acids</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>nM</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_man()</a></code></td>
 <td>Number of mannoses</td>
@@ -523,6 +528,36 @@ specific monosaccharide identities or linkage patterns. This allows you
 to define custom derived traits that capture structural features beyond
 the generic framework provided by the built-in functions.</p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="working-with-glycomics-data">Working with Glycomics Data<a class="anchor" aria-label="anchor" href="#working-with-glycomics-data"></a>
+</h2>
+<p>Working with glycomics data has no difference from working with
+glycoproteomics data, even more straightforward as the resulting
+<code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> has a simpler structure. Here we briefly
+demonstrate how to work with glycomics data using
+<code><a href="https://glycoverse.github.io/glyexp/reference/real_experiment2.html" class="external-link">glyexp::real_experiment2</a></code>.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment2</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median Quotient)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median Quotient) <span style="color: #B2B2B2;">[16ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[116ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &gt; 100, using MissForest imputation</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[15.9s]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Total Area)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[14ms]</span></span></span>
+<span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
+<span><span class="va">trait_exp</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">14</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="whats-next">What’s Next?<a class="anchor" aria-label="anchor" href="#whats-next"></a>

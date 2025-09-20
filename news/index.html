@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -35,6 +35,25 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.3.0" id="glydet-030">glydet 0.3.0<a class="anchor" aria-label="anchor" href="#glydet-030"></a></h2>
+<div class="section level3">
+<h3 id="new-features-0-3-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-3-0"></a></h3>
+<ul><li>Trait functions created by <code><a href="../reference/prop.html">prop()</a></code>, <code><a href="../reference/ratio.html">ratio()</a></code>, and <code><a href="../reference/wmean.html">wmean()</a></code> can be printed nicely into the console.</li>
+<li>Add <code><a href="../reference/explain_trait.html">explain_trait()</a></code> to provide a human-readable explanation of trait definitions.</li>
+<li>Add a <code>nF</code> built-in meta-property to count the number of fucoses. The <code>TF</code> trait is redefined as <code>prop(nF &gt; 0)</code>.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-3-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-3-0"></a></h3>
+<ul><li>Emphasize in the documentation of <code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits.html">derive_traits_()</a></code> that the “glycan_structure” column can be either a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code> vector or a character vector of glycan structure strings supported by <code><a href="https://glycoverse.github.io/glyparse/reference/auto_parse.html" class="external-link">glyparse::auto_parse()</a></code>.</li>
+<li>
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits.html">derive_traits_()</a></code> now raise an error if the <code>trait_fns</code> parameter is not a named list.</li>
+<li>
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits.html">derive_traits_()</a></code> now raise an error if the <code>trait_fns</code> parameter is an empty list.</li>
+<li>A “Working with Glycomics Data” section is added to the “Get Started” vignette.</li>
+<li>A “Validating Trait Definitions” section is added to the “Defining Custom Traits” vignette.</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.2.0" id="glydet-020">glydet 0.2.0<a class="anchor" aria-label="anchor" href="#glydet-020"></a></h2>
 <div class="section level3">
