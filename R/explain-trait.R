@@ -177,6 +177,9 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       if (num_var == "nG" && denom_var == "nA") {
         return("degree of galactosylation per antenna")
       }
+      if (num_var == "nS" && denom_var == "nA") {
+        return("degree of sialylation per antenna")
+      }
       
       num_desc <- .translate_variable(num_var)
       denom_desc <- .translate_variable(denom_var)
@@ -234,6 +237,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
       var_name <- rlang::as_string(var)
       if (var_name == "nS") return("sialylated glycans")
+      if (var_name == "nF") return("fucosylated glycans")
       if (var_name == "nFc") return("core-fucosylated glycans")
       if (var_name == "nFa") return("arm-fucosylated glycans")
     }
@@ -245,6 +249,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
       var_name <- rlang::as_string(var)
+      if (var_name == "nF") return("non-fucosylated glycans")
       if (var_name == "nFc") return("non-core-fucosylated glycans")
       if (var_name == "nFa") return("non-arm-fucosylated glycans")
       if (var_name == "nS") return("non-sialylated glycans")
@@ -257,6 +262,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
       var_name <- rlang::as_string(var)
+      if (var_name == "nF") return("fucosylated glycans")
       if (var_name == "nFc") return("core-fucosylated glycans")
       if (var_name == "nFa") return("arm-fucosylated glycans")
       if (var_name == "nS") return("sialylated glycans")
@@ -275,6 +281,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   translations <- list(
     "nM" = "mannose count",
     "nA" = "antenna count",
+    "nF" = "fucose count",
     "nFc" = "core fucose count",
     "nFa" = "arm fucose count",
     "nG" = "galactose count",
@@ -349,6 +356,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
 .adjective_to_noun <- function(adj) {
   # Convert common adjective forms to noun forms for "with X" constructions
   conversions <- list(
+    "fucosylated" = "fucosylation",
     "core-fucosylated" = "core-fucosylation",
     "arm-fucosylated" = "arm-fucosylation", 
     "sialylated" = "sialylation",

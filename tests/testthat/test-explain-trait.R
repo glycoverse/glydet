@@ -16,6 +16,11 @@ test_that("explain_trait works for proportion traits", {
   )
   
   expect_equal(
+    explain_trait(all_traits()$TF),
+    "Proportion of fucosylated glycans among all glycans."
+  )
+  
+  expect_equal(
     explain_trait(all_traits()$TFc),
     "Proportion of core-fucosylated glycans among all glycans."
   )
@@ -153,6 +158,12 @@ test_that("explain_trait works for weighted-mean traits", {
   expect_equal(
     explain_trait(wmean(nG / nA)),
     "Abundance-weighted mean of degree of galactosylation per antenna among all glycans."
+  )
+  
+  # Test the fixed nS/nA ratio
+  expect_equal(
+    explain_trait(wmean(nS / nA, within = (nA == 2))),
+    "Abundance-weighted mean of degree of sialylation per antenna within bi-antennary glycans."
   )
 })
 
