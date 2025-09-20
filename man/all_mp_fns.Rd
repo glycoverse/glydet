@@ -15,6 +15,7 @@ This function returns a named list of all meta-property functions:
 \item "T": \code{n_glycan_type()}: type of the glycan
 \item "B": \code{has_bisecting()}: whether the glycan has a bisecting GlcNAc
 \item "nA": \code{n_antennae()}: number of antennae
+\item "nF": \code{n_fuc()}: number of fucoses
 \item "nFc": \code{n_core_fuc()}: number of core fucoses
 \item "nFa": \code{n_arm_fuc()}: number of arm fucoses
 \item "nG": \code{n_gal()}: number of galactoses

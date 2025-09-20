@@ -37,7 +37,7 @@ all_traits <- function() {
     # Proportion of tetra-antennary glycans within complex glycans
     CA4 = prop(nA == 4, within = (T == "complex")),
     # Proportion of fucosylated glycans
-    TF = prop((nFc + nFa) > 0),
+    TF = prop(nF > 0),
     # Proportion of core-fucosylated glycans
     TFc = prop(nFc > 0),
     # Proportion of arm-fucosylated glycans
@@ -54,4 +54,4 @@ all_traits <- function() {
 }
 
 # To avoid note about global variables in R CMD check
-T <- nM <- nA <- nFc <- nFa <- nG <- nS <- nGt <- nT <- B <- NULL
+T <- nM <- nA <- nF <- nFc <- nFa <- nG <- nS <- nGt <- nT <- B <- NULL

@@ -8,6 +8,7 @@
 #' - "T": `n_glycan_type()`: type of the glycan
 #' - "B": `has_bisecting()`: whether the glycan has a bisecting GlcNAc
 #' - "nA": `n_antennae()`: number of antennae
+#' - "nF": `n_fuc()`: number of fucoses
 #' - "nFc": `n_core_fuc()`: number of core fucoses
 #' - "nFa": `n_arm_fuc()`: number of arm fucoses
 #' - "nG": `n_gal()`: number of galactoses
@@ -24,6 +25,7 @@ all_mp_fns <- function() {
     "T" = n_glycan_type,
     "B" = has_bisecting,
     "nA" = n_antennae,
+    "nF" = n_fuc,
     "nFc" = n_core_fuc,
     "nFa" = n_arm_fuc,
     "nG" = n_gal,
@@ -40,6 +42,7 @@ all_mp_fns <- function() {
 #' - `n_glycan_type()`: Determine the N-glycan type.
 #' - `has_bisecting()`: Check if the glycan has a bisecting GlcNAc.
 #' - `n_antennae()`: Count the number of antennae.
+#' - `n_fuc()`: Count the number of fucoses.
 #' - `n_core_fuc()`: Count the number of core fucoses.
 #' - `n_arm_fuc()`: Count the number of arm fucoses.
 #' - `n_gal()`: Count the number of galactoses.
@@ -77,6 +80,11 @@ all_mp_fns <- function() {
 #' # `n_antennae()`: Number of Antennae
 #'
 #' The number of antennae is the number of branching GlcNAc to the core mannoses.
+#'
+#' # `n_fuc()`: Number of Fucoses
+#'
+#' Number of fucoses.
+#' This function assumes the fucose is a dHex.
 #'
 #' # `n_core_fuc()`: Number of Core Fucoses
 #'
@@ -145,6 +153,7 @@ all_mp_fns <- function() {
 #'   either "highmannose", "hybrid", "complex", or "paucimannose".
 #' - `has_bisecting()`: A logical vector indicating if the glycan has a bisecting GlcNAc.
 #' - `n_antennae()`: An integer vector indicating the number of antennae.
+#' - `n_fuc()`: An integer vector indicating the number of fucoses.
 #' - `n_core_fuc()`: An integer vector indicating the number of core fucoses.
 #' - `n_arm_fuc()`: An integer vector indicating the number of arm fucoses.
 #' - `n_gal()`: An integer vector indicating the number of galactoses.
@@ -183,6 +192,12 @@ has_bisecting <- function(glycans) {
 n_antennae <- function(glycans) {
   antenna_motif <- .get_n_glycan_motif("antenna")
   glymotif::count_motif(glycans, antenna_motif, alignment = "core", ignore_linkages = TRUE)
+}
+
+#' @rdname n_glycan_type
+#' @export
+n_fuc <- function(glycans) {
+  glyrepr::count_mono(glycans, "dHex")
 }
 
 #' @rdname n_glycan_type

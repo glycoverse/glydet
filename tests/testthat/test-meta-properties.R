@@ -12,6 +12,7 @@ test_that("get_meta_properties works with default meta-property functions", {
     ),
     B = c(FALSE, FALSE, FALSE),
     nA = c(0L, 2L, 1L),
+    nF = c(0L, 1L, 0L),
     nFc = c(0L, 0L, 0L),
     nFa = c(0L, 1L, 0L),
     nG = c(0L, 0L, 0L),

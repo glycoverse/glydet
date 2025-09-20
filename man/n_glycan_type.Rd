@@ -4,6 +4,7 @@
 \alias{n_glycan_type}
 \alias{has_bisecting}
 \alias{n_antennae}
+\alias{n_fuc}
 \alias{n_core_fuc}
 \alias{n_arm_fuc}
 \alias{n_gal}
@@ -17,6 +18,8 @@ n_glycan_type(glycans)
 has_bisecting(glycans)
 
 n_antennae(glycans)
+
+n_fuc(glycans)
 
 n_core_fuc(glycans)
 
@@ -39,6 +42,7 @@ n_man(glycans)
 either "highmannose", "hybrid", "complex", or "paucimannose".
 \item \code{has_bisecting()}: A logical vector indicating if the glycan has a bisecting GlcNAc.
 \item \code{n_antennae()}: An integer vector indicating the number of antennae.
+\item \code{n_fuc()}: An integer vector indicating the number of fucoses.
 \item \code{n_core_fuc()}: An integer vector indicating the number of core fucoses.
 \item \code{n_arm_fuc()}: An integer vector indicating the number of arm fucoses.
 \item \code{n_gal()}: An integer vector indicating the number of galactoses.
@@ -53,6 +57,7 @@ These functions check key properties of an N-glycan:
 \item \code{n_glycan_type()}: Determine the N-glycan type.
 \item \code{has_bisecting()}: Check if the glycan has a bisecting GlcNAc.
 \item \code{n_antennae()}: Count the number of antennae.
+\item \code{n_fuc()}: Count the number of fucoses.
 \item \code{n_core_fuc()}: Count the number of core fucoses.
 \item \code{n_arm_fuc()}: Count the number of arm fucoses.
 \item \code{n_gal()}: Count the number of galactoses.
@@ -89,6 +94,11 @@ GlcNAc - Man - GlcNAc - GlcNAc -
 
 \section{\code{n_antennae()}: Number of Antennae}{
 The number of antennae is the number of branching GlcNAc to the core mannoses.
+}
+
+\section{\code{n_fuc()}: Number of Fucoses}{
+Number of fucoses.
+This function assumes the fucose is a dHex.
 }
 
 \section{\code{n_core_fuc()}: Number of Core Fucoses}{
