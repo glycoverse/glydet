@@ -260,6 +260,18 @@ When working with highly detailed structural information,
 you may want to create specialized meta-property functions that leverage specific monosaccharide identities or linkage patterns.
 This allows you to define custom derived traits that capture structural features beyond the generic framework provided by the built-in functions.
 
+## Working with Glycomics Data
+
+Working with glycomics data has no difference from working with glycoproteomics data,
+even more straightforward as the resulting `experiment()` has a simpler structure.
+Here we briefly demonstrate how to work with glycomics data using `glyexp::real_experiment2`.
+
+```{r}
+exp <- auto_clean(real_experiment2)
+trait_exp <- derive_traits(exp)
+trait_exp
+```
+
 ## What's Next?
 
 Now you have a good understanding of `glydet` and how to use it.
