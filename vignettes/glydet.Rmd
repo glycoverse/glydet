@@ -276,6 +276,7 @@ trait_exp
 ## What's Next?
 
 Now you have a good understanding of `glydet` and how to use it.
-You can start to define your own meta-property functions and derived traits.
+You can try `all_traits()` to calculate more advanced and detailed derived traits.
+You can also start to define your own meta-property functions and derived traits.
 Check out the [Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette
 to learn how to define your own derived traits.
