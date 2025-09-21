@@ -1,3 +1,17 @@
+# glydet 0.4.0
+
+## Breaking changes
+
+* The old `all_traits()` is renamed to `basic_traits()`.
+* A new `all_traits()` is added, which includes more advanced derived traits with more detailed `within` conditions.
+* `derive_traits()` now uses `basic_traits()` by default.
+* `derive_traits()` now returns a `glyexp::experiment()` object with the "traitomics" type for glycomics data, and "traitproteomics" type for glycoproteomics data, instead of "traitomics" for all input.
+
+## Minor improvements and bug fixes
+
+* Introduce the new `all_traits()` in the Get Started vignette.
+* Add examples to some functions.
+
 # glydet 0.3.1
 
 ## Minor improvements and bug fixes
