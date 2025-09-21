@@ -323,7 +323,7 @@ derive_traits(exp, trait_fns = my_traits)
 
 The identifiers "A2SG", "A3SG", and "A4SG" represent the derived trait names.
 
-When `trait_fns` is omitted, `derive_traits()` internally invokes `all_traits()` to utilize built-in trait functions.
+When `trait_fns` is omitted, `derive_traits()` internally invokes `basic_traits()` to utilize built-in trait functions.
 
 ### Validating Trait Definitions
 

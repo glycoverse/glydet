@@ -40,7 +40,7 @@
 #' @param data_type Either "glycomics" or "glycoproteomics". Only needed for `derive_traits_()`.
 #' @param trait_fns A named list of derived trait functions created by trait factories.
 #'   Names of the list are the names of the derived traits.
-#'   Default is `NULL`, which means all derived traits in [all_traits()] are calculated.
+#'   Default is `NULL`, which means all derived traits in [basic_traits()] are calculated.
 #' @param mp_fns A named list of meta-property functions.
 #'   This parameter is useful if your trait functions use custom meta-properties
 #'   other than those in [all_mp_fns()].
@@ -87,7 +87,7 @@
 derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
-    trait_fns <- all_traits()
+    trait_fns <- basic_traits()
   } else {
     if (length(trait_fns) == 0) {
       cli::cli_abort(c(
@@ -101,7 +101,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
       "{.arg trait_fns} must be a non-empty named list or NULL.",
       "x" = "Got a list with no names.",
       "i" = "Please add names to the list as the names of the derived traits.",
-      "i" = "Call {.fn all_traits} to see an example."
+      "i" = "Call {.fn basic_traits} to see an example."
     ))
   }
 
@@ -120,7 +120,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
 #' @export
 derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   if (is.null(trait_fns)) {
-    trait_fns <- all_traits()
+    trait_fns <- basic_traits()
   } else {
     if (length(trait_fns) == 0) {
       cli::cli_abort(c(
@@ -134,7 +134,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
       "{.arg trait_fns} must be a non-empty named list or NULL.",
       "x" = "Got a list with no names.",
       "i" = "Please add names to the list as the names of the derived traits.",
-      "i" = "Call {.fn all_traits} to see an example."
+      "i" = "Call {.fn basic_traits} to see an example."
     ))
   }
 

@@ -11,8 +11,8 @@
 #'
 #' @examples
 #' # Explain built-in traits
-#' explain_trait(all_traits()$TM)
-#' explain_trait(all_traits()$SG)
+#' explain_trait(basic_traits()$TM)
+#' explain_trait(basic_traits()$SG)
 #'
 #' # Explain custom traits
 #' explain_trait(prop(nFc > 0))

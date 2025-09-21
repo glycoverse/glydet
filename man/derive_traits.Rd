@@ -21,7 +21,7 @@ or a character vector of glycan structure strings supported by \code{glyparse::a
 
 \item{trait_fns}{A named list of derived trait functions created by trait factories.
 Names of the list are the names of the derived traits.
-Default is \code{NULL}, which means all derived traits in \code{\link[=all_traits]{all_traits()}} are calculated.}
+Default is \code{NULL}, which means all derived traits in \code{\link[=basic_traits]{basic_traits()}} are calculated.}
 
 \item{mp_fns}{A named list of meta-property functions.
 This parameter is useful if your trait functions use custom meta-properties
@@ -55,7 +55,7 @@ That is the quantification of each glycan structure on each glycosite in each sa
 }
 \value{
 \itemize{
-\item For \code{derive_traits()}: a new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for derived traits with "traitomics" type.
+\item For \code{derive_traits()}: a new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for derived traits.
 Instead of "quantification of each glycan on each glycosite in each sample",
 the new \code{experiment()} contains "the value of each derived trait on each glycosite in each sample",
 with the following columns in the \code{var_info} table:
@@ -81,7 +81,8 @@ Don't worry if you cannot understand this logic,
 as long as you know that this function will try its best to preserve useful information.
 
 \code{sample_info} and \code{meta_data} are not modified,
-except that the \code{exp_type} field of \code{meta_data} is set to "traitomics".
+except that the \code{exp_type} field of \code{meta_data} is set to "traitomics" for glycomics data,
+and "traitproteomics" for glycoproteomics data.
 \item For \code{derive_traits_()}: a tidy tibble containing the following columns:
 \itemize{
 \item \code{sample}: sample ID

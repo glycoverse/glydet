@@ -1,26 +1,33 @@
-#' Get All Derived Traits
+#' Get Basic Derived Traits
 #'
-#' This function returns a named list of all derived traits:
-#' - "TM": `prop(T == "highmannose")`
-#' - "TH": `prop(T == "hybrid")`
-#' - "TC": `prop(T == "complex")`
-#' - "MM": `wmean(nM, within = (T == "highmannose"))`
-#' - "CA2": `prop(nA == 2, within = (T == "complex"))`
-#' - "CA3": `prop(nA == 3, within = (T == "complex"))`
-#' - "CA4": `prop(nA == 4, within = (T == "complex"))`
-#' - "TF": `prop((nFc + nFa) > 0)`
-#' - "TFc": `prop(nFc > 0)`
-#' - "TFa": `prop(nFa > 0)`
-#' - "TB": `prop(B)`
-#' - "SG": `wmean(nS / nG)`
-#' - "GA": `wmean(nG / nA)`
-#' - "TS": `prop(nS > 0)`
+#' These derived traits are the most basic and commonly used derived traits.
+#' They describe global properties of a glycome including the type of glycans,
+#' fucosylation level, sialylation level, galactosylation level,
+#' and branching level.
+#'
+#' @details
+#' The explanations of the derived traits are as follows:
+#'
+#' - `TM`: Proportion of highmannose glycans
+#' - `TH`: Proportion of hybrid glycans
+#' - `TC`: Proportion of complex glycans
+#' - `MM`: Average number of mannoses within highmannose glycans
+#' - `CA2`: Proportion of bi-antennary glycans within complex glycans
+#' - `CA3`: Proportion of tri-antennary glycans within complex glycans
+#' - `CA4`: Proportion of tetra-antennary glycans within complex glycans
+#' - `TF`: Proportion of fucosylated glycans
+#' - `TFc`: Proportion of core-fucosylated glycans
+#' - `TFa`: Proportion of arm-fucosylated glycans
+#' - `TB`: Proportion of glycans with bisecting GlcNAc
+#' - `SG`: Average degree of sialylation per galactose
+#' - `GA`: Average degree of galactosylation per antenna
+#' - `TS`: Proportion of sialylated glycans
 #'
 #' @returns
 #' A named list of derived traits.
 #'
 #' @export
-all_traits <- function() {
+basic_traits <- function() {
   list(
     # Proportion of highmannose glycans
     TM = prop(T == "highmannose"),
