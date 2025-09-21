@@ -110,3 +110,22 @@ and derived traits are calculated in a site-specific manner.
 Use this function if you are not using the \code{glyexp} package.
 }
 }
+\examples{
+library(glyexp)
+library(glyclean)
+
+exp <- auto_clean(real_experiment)  # a glycoproteomics experiment
+trait_exp <- derive_traits(exp)
+trait_exp
+
+# By default, only basic traits are calculated
+names(basic_traits())
+
+# You can calculate all traits in `all_traits()`
+more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
+more_trait_exp
+
+}
+\seealso{
+\code{\link[=basic_traits]{basic_traits()}}, \code{\link[=all_traits]{all_traits()}}
+}

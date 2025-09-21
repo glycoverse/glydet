@@ -83,6 +83,23 @@
 #'
 #'   Other columns in the original tibble are not included.
 #'
+#' @examples
+#' library(glyexp)
+#' library(glyclean)
+#'
+#' exp <- auto_clean(real_experiment)  # a glycoproteomics experiment
+#' trait_exp <- derive_traits(exp)
+#' trait_exp
+#'
+#' # By default, only basic traits are calculated
+#' names(basic_traits())
+#'
+#' # You can calculate all traits in `all_traits()`
+#' more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
+#' more_trait_exp
+#'
+#' @seealso [basic_traits()], [all_traits()]
+#'
 #' @export
 derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   checkmate::assert_class(exp, "glyexp_experiment")
