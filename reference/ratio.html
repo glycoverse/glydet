@@ -102,6 +102,18 @@ i.e., <code>prop(cond, within)</code> is equivalent to <code>ratio(cond &amp; wi
 We recommend using <code><a href="prop.html">prop()</a></code> instead of <code>ratio()</code> for clarity if possible.</p>
     </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Ratio of complex glycans and hybrid glycans</span></span></span>
+<span class="r-in"><span><span class="fu">ratio</span><span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="cn">T</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ratio(<span style="font-weight: bold;">T == "complex"</span>, <span style="font-weight: bold;">T == "hybrid"</span>, na_action = "keep")</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Ratio of bisecting and unbisecting glycans within bi-antennary glycans</span></span></span>
+<span class="r-in"><span><span class="fu">ratio</span><span class="op">(</span><span class="va">B</span>, <span class="op">!</span><span class="va">B</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ratio(<span style="font-weight: bold;">B</span>, <span style="font-weight: bold;">!B</span>, within = <span style="font-weight: bold;">(nA == 2)</span>, na_action = "keep")</span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 

@@ -86,7 +86,7 @@ or a character vector of glycan structure strings supported by <code><a href="ht
 <dt id="arg-trait-fns">trait_fns<a class="anchor" aria-label="anchor" href="#arg-trait-fns"></a></dt>
 <dd><p>A named list of derived trait functions created by trait factories.
 Names of the list are the names of the derived traits.
-Default is <code>NULL</code>, which means all derived traits in <code><a href="all_traits.html">all_traits()</a></code> are calculated.</p></dd>
+Default is <code>NULL</code>, which means all derived traits in <code><a href="basic_traits.html">basic_traits()</a></code> are calculated.</p></dd>
 
 
 <dt id="arg-mp-fns">mp_fns<a class="anchor" aria-label="anchor" href="#arg-mp-fns"></a></dt>
@@ -119,7 +119,7 @@ That is the quantification of each glycan structure on each glycosite in each sa
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
 
-<ul><li><p>For <code>derive_traits()</code>: a new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object for derived traits with "traitomics" type.
+<ul><li><p>For <code>derive_traits()</code>: a new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object for derived traits.
 Instead of "quantification of each glycan on each glycosite in each sample",
 the new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> contains "the value of each derived trait on each glycosite in each sample",
 with the following columns in the <code>var_info</code> table:</p><ul><li><p><code>variable</code>: variable ID</p></li>
@@ -136,7 +136,8 @@ Columns not having this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic,
 as long as you know that this function will try its best to preserve useful information.</p>
 <p><code>sample_info</code> and <code>meta_data</code> are not modified,
-except that the <code>exp_type</code> field of <code>meta_data</code> is set to "traitomics".</p></li>
+except that the <code>exp_type</code> field of <code>meta_data</code> is set to "traitomics" for glycomics data,
+and "traitproteomics" for glycoproteomics data.</p></li>
 <li><p>For <code>derive_traits_()</code>: a tidy tibble containing the following columns:</p><ul><li><p><code>sample</code>: sample ID</p></li>
 <li><p><code>trait</code>: derived trait name</p></li>
 <li><p><code>value</code>: the value of the derived trait</p></li>
@@ -144,7 +145,63 @@ except that the <code>exp_type</code> field of <code>meta_data</code> is set to 
 <li><p><code>protein_site</code>: the glycosite position on the protein</p></li>
 </ul><p>Other columns in the original tibble are not included.</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="basic_traits.html">basic_traits()</a></code>, <code><a href="all_traits.html">all_traits()</a></code></p></div>
+    </div>
 
+    <div class="section level2">
+    <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyexp/" class="external-link">glyexp</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyclean/" class="external-link">glyclean</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘glyclean’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following object is masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     aggregate</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span>  <span class="co"># a glycoproteomics experiment</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[192ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[22ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[25ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Aggregating data</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.2s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[16ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu">derive_traits</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">trait_exp</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3836</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># By default, only basic traits are calculated</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="basic_traits.html">basic_traits</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "TM"  "TH"  "TC"  "MM"  "CA2" "CA3" "CA4" "TF"  "TFc" "TFa" "TB"  "SG" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "GA"  "TS" </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># You can calculate all traits in `all_traits()`</span></span></span>
+<span class="r-in"><span><span class="va">more_trait_exp</span> <span class="op">&lt;-</span> <span class="fu">derive_traits</span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="fu"><a href="all_traits.html">all_traits</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">more_trait_exp</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">16988</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-in"><span></span></span>
+</code></pre></div>
+    </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
 
