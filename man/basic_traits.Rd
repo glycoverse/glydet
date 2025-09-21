@@ -34,3 +34,7 @@ The explanations of the derived traits are as follows:
 \item \code{TS}: Proportion of sialylated glycans
 }
 }
+\examples{
+basic_traits()
+
+}

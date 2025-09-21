@@ -198,7 +198,36 @@ test_that("derive_traits works with default traits", {
   trait_exp <- derive_traits(exp)
 
   # Test var_info
+  expect_setequal(trait_exp$var_info$trait, names(basic_traits()))
+})
+
+test_that("derive_traits works with all traits", {
+  # Construct a test experiment
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3"),
+    glycan_structure = glyparse::parse_iupac_condensed(c(
+      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    ))
+  )
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  expr_mat <- matrix(
+    c(1, 0, 1,
+      1, 1, 1,
+      1, 1, 0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+
+  # Calculate derived traits
+  trait_exp <- derive_traits(exp, trait_fns = all_traits())
+
+  # Test var_info
   expect_setequal(trait_exp$var_info$trait, names(all_traits()))
+  expect_true(all(names(basic_traits()) %in% names(all_traits())))
 })
 
 test_that("derive_traits keeps glycosite descriptive columns in var_info", {
@@ -371,7 +400,7 @@ test_that("derive_traits_ works with default traits", {
     value = c(1, 0, 1, 1, 1, 1, 1, 1, 0)
   )
   trait_tbl <- derive_traits_(tbl, "glycomics")
-  expect_setequal(trait_tbl$trait, names(all_traits()))
+  expect_setequal(trait_tbl$trait, names(basic_traits()))
 })
 
 test_that("derive_traits raises error for empty trait_fns", {
