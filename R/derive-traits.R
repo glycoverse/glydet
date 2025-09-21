@@ -47,7 +47,7 @@
 #'   Default is `NULL`, which means all meta-properties in [all_mp_fns()] are used.
 #'
 #' @returns
-#' - For `derive_traits()`: a new [glyexp::experiment()] object for derived traits with "traitomics" type.
+#' - For `derive_traits()`: a new [glyexp::experiment()] object for derived traits.
 #'   Instead of "quantification of each glycan on each glycosite in each sample",
 #'   the new `experiment()` contains "the value of each derived trait on each glycosite in each sample",
 #'   with the following columns in the `var_info` table:
@@ -69,7 +69,8 @@
 #'   as long as you know that this function will try its best to preserve useful information.
 #'
 #'   `sample_info` and `meta_data` are not modified,
-#'    except that the `exp_type` field of `meta_data` is set to "traitomics".
+#'    except that the `exp_type` field of `meta_data` is set to "traitomics" for glycomics data,
+#'    and "traitproteomics" for glycoproteomics data.
 #'
 #' - For `derive_traits_()`: a tidy tibble containing the following columns:
 #'   - `sample`: sample ID
@@ -196,7 +197,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 
   exp$expr_mat <- res_mat
   exp$var_info <- res_var_info
-  exp$meta_data$exp_type <- "traitomics"
+  exp$meta_data$exp_type <- "traitproteomics"
   exp
 }
 

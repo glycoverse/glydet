@@ -111,7 +111,7 @@ test_that("derive_traits works for glycoproteomics experiments", {
   expect_equal(trait_exp$sample_info, exp$sample_info)
 
   # Test meta_data
-  expect_equal(trait_exp$meta_data$exp_type, "traitomics")
+  expect_equal(trait_exp$meta_data$exp_type, "traitproteomics")
 })
 
 test_that("derive_traits works with custom meta-properties", {
