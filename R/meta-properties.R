@@ -63,6 +63,17 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 #'   Default is FALSE, raising an error if the existing columns are found.
 #'
 #' @return An [glyexp::experiment()] object with meta-properties added to the variable information.
+#'
+#' @examples
+#' library(glyexp)
+#'
+#' # Compare the columns in the variable information before and after adding meta-properties
+#' exp <- real_experiment  # a glycoproteomics experiment
+#' colnames(get_var_info(exp))
+#'
+#' exp2 <- add_meta_properties(exp)
+#' colnames(get_var_info(exp2))
+#'
 #' @seealso [get_meta_properties()], [glyexp::experiment()]
 #'
 #' @export

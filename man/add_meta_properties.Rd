@@ -35,6 +35,17 @@ Under the hood, it uses \code{\link[=get_meta_properties]{get_meta_properties()}
 on the "glycan_structure" column (or column specified by \code{struc_col}) of the variable information tibble,
 and then adds the result back as new columns.
 }
+\examples{
+library(glyexp)
+
+# Compare the columns in the variable information before and after adding meta-properties
+exp <- real_experiment  # a glycoproteomics experiment
+colnames(get_var_info(exp))
+
+exp2 <- add_meta_properties(exp)
+colnames(get_var_info(exp2))
+
+}
 \seealso{
 \code{\link[=get_meta_properties]{get_meta_properties()}}, \code{\link[glyexp:experiment]{glyexp::experiment()}}
 }
