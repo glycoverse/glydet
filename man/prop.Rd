@@ -64,3 +64,20 @@ prop(nFc > 0, within = (T == "complex" & nA == 4))
 The parentheses around the condition in \code{within} are optional,
 but it is recommended to use them for clarity.
 }
+\examples{
+# Proportion of core-fucosylated glycans within all glycans
+prop(nFc > 0)
+
+# Proportion of bisecting glycans within all glycans
+prop(B)
+
+# Proportion of sialylated and arm-fucosylated glycans within all glycans
+prop(nS > 0 & nFa > 0)
+
+# Proportion of bi-antennary glycans within complex glycans
+prop(nA == 2, within = (T == "complex"))
+
+# Proportion of sialylated glycans within core-fucosylated tetra-antennary glycans
+prop(nS > 0, within = (nFc > 0 & nA == 4))
+
+}

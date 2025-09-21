@@ -59,6 +59,23 @@
 #'   - "zero": set the missing values to 0.
 #'
 #' @returns A derived trait function.
+#'
+#' @examples
+#' # Proportion of core-fucosylated glycans within all glycans
+#' prop(nFc > 0)
+#'
+#' # Proportion of bisecting glycans within all glycans
+#' prop(B)
+#'
+#' # Proportion of sialylated and arm-fucosylated glycans within all glycans
+#' prop(nS > 0 & nFa > 0)
+#'
+#' # Proportion of bi-antennary glycans within complex glycans
+#' prop(nA == 2, within = (T == "complex"))
+#'
+#' # Proportion of sialylated glycans within core-fucosylated tetra-antennary glycans
+#' prop(nS > 0, within = (nFc > 0 & nA == 4))
+#'
 #' @export
 prop <- function(cond, within = NULL, na_action = "keep") {
   cond <- rlang::enquo(cond)
@@ -141,6 +158,14 @@ print.glydet_prop <- function(x, ...) {
 #'   - "zero": set the missing values to 0.
 #'
 #' @returns A derived trait function.
+#'
+#' @examples
+#' # Ratio of complex glycans and hybrid glycans
+#' ratio(T == "complex", T == "hybrid")
+#'
+#' # Ratio of bisecting and unbisecting glycans within bi-antennary glycans
+#' ratio(B, !B, within = (nA == 2))
+#'
 #' @export
 ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
   num_cond <- rlang::enquo(num_cond)
@@ -227,6 +252,17 @@ print.glydet_ratio <- function(x, ...) {
 #'   - "zero": set the missing values to 0.
 #'
 #' @returns A derived trait function.
+#'
+#' @examples
+#' # Weighted mean of the number of sialic acids within all glycans
+#' wmean(nS)
+#'
+#' # Average degree of sialylation per antenna within all glycans
+#' wmean(nS / nA)
+#'
+#' # Average number of antennae within complex glycans
+#' wmean(nA, within = (T == "complex"))
+#'
 #' @export
 wmean <- function(val_cond, within = NULL, na_action = "keep") {
   val_cond <- rlang::enquo(val_cond)

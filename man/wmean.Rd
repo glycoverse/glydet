@@ -52,3 +52,14 @@ you can use \code{within} to define the restriction.
 wmean(nA, within = (T == "complex"))
 }\if{html}{\out{</div>}}
 }
+\examples{
+# Weighted mean of the number of sialic acids within all glycans
+wmean(nS)
+
+# Average degree of sialylation per antenna within all glycans
+wmean(nS / nA)
+
+# Average number of antennae within complex glycans
+wmean(nA, within = (T == "complex"))
+
+}

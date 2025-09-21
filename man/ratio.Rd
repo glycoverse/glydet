@@ -55,3 +55,11 @@ Actually, you can use any logical operator in the expression in R (e.g., \code{|
 i.e., \code{prop(cond, within)} is equivalent to \code{ratio(cond & within, within)}.
 We recommend using \code{prop()} instead of \code{ratio()} for clarity if possible.
 }
+\examples{
+# Ratio of complex glycans and hybrid glycans
+ratio(T == "complex", T == "hybrid")
+
+# Ratio of bisecting and unbisecting glycans within bi-antennary glycans
+ratio(B, !B, within = (nA == 2))
+
+}
