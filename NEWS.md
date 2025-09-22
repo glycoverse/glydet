@@ -1,3 +1,10 @@
+# glydet 0.4.1
+
+## Minor improvements and bug fixes
+
+* Add another example to the "Defining Custom Traits" vignette.
+* Use smaller datasets in examples to reduce build time.
+
 # glydet 0.4.0
 
 ## Breaking changes
