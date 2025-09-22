@@ -442,6 +442,10 @@ And calculate the traits:
 derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
 ```
 
+This is an example of how you can violate the [ambiguity assumption](https://glycoverse.github.io/glydet/articles/glydet.html#working-with-structural-ambiguity)
+of built-in meta-properties and derived traits,
+by introducing more sophisticated and linkage-awared meta-properties.
+
 ## Exercise Solutions
 
 **`prop()`**
