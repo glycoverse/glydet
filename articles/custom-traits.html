@@ -70,7 +70,31 @@ ensure you have read the “Get Started with glydet” vignette and are
 familiar with the fundamental concepts of derived traits and
 meta-properties.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glydet/">glydet</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glydet/">glydet</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyexp/" class="external-link">glyexp</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyclean/" class="external-link">glyclean</a></span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Attaching package: 'glyclean'</span></span>
+<span><span class="co">#&gt; The following object is masked from 'package:stats':</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt;     aggregate</span></span>
+<span></span>
+<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[137ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[73ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[28ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aggregating data</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[903ms]</span></span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[18ms]</span></span></span></code></pre></div>
 <div class="section level2">
 <h2 id="custom-traits">Custom Traits<a class="anchor" aria-label="anchor" href="#custom-traits"></a>
 </h2>
@@ -540,10 +564,43 @@ meta-property function definitions.</p>
 <p>Implementation of these custom meta-properties and traits proceeds as
 follows:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span>, mp_fns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">my_mp_fns</span>, <span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span>, mp_fns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">my_mp_fns</span>, <span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">548</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p>Ensure that custom meta-properties are combined with built-in
 meta-properties when the latter are required within trait
 expressions.</p>
+<p>Let’s see another example about sialic acid linkage types. Neu5Ac can
+have two different linkage types: a2-3 and a2-6. We can define two
+custom meta-properties to count the number of sialic acids with each
+linkage type:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sia_mp_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="co"># Number of a2-3 sialic acids</span></span>
+<span>  nL <span class="op">=</span> <span class="op">~</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motif</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"NeuAc(a2-3)Hex(??-"</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Number of a2-6 sialic acids</span></span>
+<span>  nE <span class="op">=</span> <span class="op">~</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motif</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"NeuAc(a2-6)Hex(??-"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>And define two traits to calculate the degree of a2-3 and a2-6
+sialylation per galactose:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sia_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="co"># Average degree of a2-3 sialylation per galactose</span></span>
+<span>  LG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nL</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span>,</span>
+<span>  <span class="co"># Average degree of a2-6 sialylation per galactose</span></span>
+<span>  EG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nE</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>And calculate the traits:</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">sia_traits</span>, mp_fns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sia_mp_fns</span>, <span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">548</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="exercise-solutions">Exercise Solutions<a class="anchor" aria-label="anchor" href="#exercise-solutions"></a>
