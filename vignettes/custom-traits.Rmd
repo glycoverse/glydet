@@ -20,6 +20,10 @@ and are familiar with the fundamental concepts of derived traits and meta-proper
 
 ```{r setup}
 library(glydet)
+library(glyexp)
+library(glyclean)
+
+exp <- auto_clean(real_experiment)
 ```
 
 ## Custom Traits
@@ -375,7 +379,7 @@ For detailed information, consult the [glymotif documentation](https://glycovers
 
 The following example demonstrates custom meta-property creation:
 
-```r
+```{r}
 my_mp_fns <- list(
   # Number of Lewis antigens
   nLe = ~ glymotif::count_motif(.x, "Hex(??-?)[dHex(??-?)]HexNAc(??-"),
@@ -388,7 +392,7 @@ Note that purrr-style lambda functions provide a concise syntax for meta-propert
 
 Traits can be defined using these new meta-properties:
 
-```r
+```{r}
 my_traits <- list(
   # Average number of Lewis antigens per antenna
   LeA = wmean(nLe / nA),
@@ -401,12 +405,42 @@ These expressions incorporate both custom meta-properties (`nLe` and `nPl`) and 
 
 Implementation of these custom meta-properties and traits proceeds as follows:
 
-```r
+```{r}
 derive_traits(exp, trait_fns = my_traits, mp_fns = c(my_mp_fns, all_mp_fns()))
 ```
 
 Ensure that custom meta-properties are combined with built-in meta-properties
 when the latter are required within trait expressions.
+
+Let's see another example about sialic acid linkage types.
+Neu5Ac can have two different linkage types: a2-3 and a2-6.
+We can define two custom meta-properties to count the number of sialic acids with each linkage type:
+
+```{r}
+sia_mp_fns <- list(
+  # Number of a2-3 sialic acids
+  nL = ~ glymotif::count_motif(.x, "NeuAc(a2-3)Hex(??-"),
+  # Number of a2-6 sialic acids
+  nE = ~ glymotif::count_motif(.x, "NeuAc(a2-6)Hex(??-")
+)
+```
+
+And define two traits to calculate the degree of a2-3 and a2-6 sialylation per galactose:
+
+```{r}
+sia_traits <- list(
+  # Average degree of a2-3 sialylation per galactose
+  LG = wmean(nL / nG),
+  # Average degree of a2-6 sialylation per galactose
+  EG = wmean(nE / nG)
+)
+```
+
+And calculate the traits:
+
+```{r}
+derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
+```
 
 ## Exercise Solutions
 
