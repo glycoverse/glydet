@@ -39,7 +39,8 @@ and then adds the result back as new columns.
 library(glyexp)
 
 # Compare the columns in the variable information before and after adding meta-properties
-exp <- real_experiment  # a glycoproteomics experiment
+exp <- real_experiment |>
+  slice_sample_var(n = 10)
 colnames(get_var_info(exp))
 
 exp2 <- add_meta_properties(exp)

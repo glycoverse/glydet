@@ -114,7 +114,9 @@ Use this function if you are not using the \code{glyexp} package.
 library(glyexp)
 library(glyclean)
 
-exp <- auto_clean(real_experiment)  # a glycoproteomics experiment
+exp <- real_experiment |>
+  auto_clean() |>
+  slice_sample_var(n = 100)
 trait_exp <- derive_traits(exp)
 trait_exp
 
