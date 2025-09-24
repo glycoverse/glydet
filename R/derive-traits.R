@@ -95,6 +95,17 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
     ))
   }
   checkmate::assert_character(mp_cols, null.ok = TRUE)
+  if (!is.null(mp_cols)) {
+    invalid_cols <- setdiff(mp_cols, colnames(exp$var_info))
+    if (length(invalid_cols) > 0) {
+      cli::cli_abort(c(
+        "{.arg mp_cols} must be a character vector of column names in the `var_info` tibble.",
+        "x" = "The following columns are not found: {.field {invalid_cols}}.",
+        "i" = "Available columns: {.field {colnames(exp$var_info)}}."
+      ), call = NULL)
+    }
+  }
+
   if (is.null(trait_fns)) {
     trait_fns <- basic_traits()
   }
@@ -109,7 +120,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
     cli::cli_abort(c(
       "{.arg exp} must be of type {.val glycomics} or {.val glycoproteomics}.",
       "x" = "Got {.val {exp$meta_data$exp_type}}."
-    ))
+    ), call = NULL)
   )
 }
 

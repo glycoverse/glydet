@@ -515,3 +515,13 @@ test_that("derive_traits raises errors about unknown meta-properties", {
     "Trait functions must use defined meta-properties."
   )
 })
+
+test_that("derive_traits raises error for invalid mp_cols", {
+  exp <- glyexp::real_experiment2 |>
+    glyexp::slice_head_var(n = 10) |>
+    glyexp::slice_head_obs(n = 10)
+  expect_error(
+    derive_traits(exp, trait_fns = list(TFc = prop(nFc > 0)), mp_cols = "invalid"),
+    "must be a character vector of column names in the `var_info` tibble."
+  )
+})
