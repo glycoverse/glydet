@@ -67,11 +67,10 @@ and derived traits are calculated in a site-specific manner.
 \examples{
 # Create example tidy data
 library(dplyr)
-tidy_data <- tibble(
-  sample = rep(c("S1", "S2"), each = 3),
-  glycan_structure = rep(c("Man5", "Man6", "Man7"), 2),
-  value = c(0.2, 0.3, 0.5, 0.1, 0.4, 0.5)
-)
+library(glyexp)
+library(tibble)
+
+tidy_data <- as_tibble(real_experiment2)
 
 # Calculate traits
 traits <- derive_traits_(tidy_data, data_type = "glycomics")
