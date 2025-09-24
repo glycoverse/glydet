@@ -1,12 +1,10 @@
 #' Calculate Derived Traits
 #'
 #' @description
-#' This function calculates derived traits from glycomic or glycoproteomic profiles.
+#' This function calculates derived traits from a [glyexp::experiment()] object.
 #' For glycomics data, it calculates the derived traits directly.
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and derived traits are calculated in a site-specific manner.
-#'
-#' This function calculates derived traits from a [glyexp::experiment()] object.
 #'
 #' @param exp A [glyexp::experiment()] object. Before using this function,
 #'   you should preprocess the data using the `glyclean` package.
@@ -118,13 +116,11 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
 #' Calculate Derived Traits from Tidy Data
 #'
 #' @description
-#' This function calculates derived traits from glycomic or glycoproteomic profiles 
-#' in tidy format. For glycomics data, it calculates the derived traits directly.
-#' For glycoproteomics data, each glycosite is treated as a separate glycome,
-#' and derived traits are calculated in a site-specific manner.
-#'
 #' This function calculates derived traits from a tibble in tidy format.
 #' Use this function if you are not using the `glyexp` package.
+#' For glycomics data, it calculates the derived traits directly.
+#' For glycoproteomics data, each glycosite is treated as a separate glycome,
+#' and derived traits are calculated in a site-specific manner.
 #'
 #' @param tbl
 #'   A tibble in tidy format, with the following columns:

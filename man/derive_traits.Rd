@@ -63,12 +63,10 @@ except that the \code{exp_type} field of \code{meta_data} is set to "traitomics"
 and "traitproteomics" for glycoproteomics data.
 }
 \description{
-This function calculates derived traits from glycomic or glycoproteomic profiles.
+This function calculates derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}} object.
 For glycomics data, it calculates the derived traits directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and derived traits are calculated in a site-specific manner.
-
-This function calculates derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}} object.
 }
 \examples{
 library(glyexp)

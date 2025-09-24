@@ -58,13 +58,11 @@ For glycoproteomics data, with additional columns:
 Other columns in the original tibble are not included.
 }
 \description{
-This function calculates derived traits from glycomic or glycoproteomic profiles
-in tidy format. For glycomics data, it calculates the derived traits directly.
-For glycoproteomics data, each glycosite is treated as a separate glycome,
-and derived traits are calculated in a site-specific manner.
-
 This function calculates derived traits from a tibble in tidy format.
 Use this function if you are not using the \code{glyexp} package.
+For glycomics data, it calculates the derived traits directly.
+For glycoproteomics data, each glycosite is treated as a separate glycome,
+and derived traits are calculated in a site-specific manner.
 }
 \examples{
 # Create example tidy data
