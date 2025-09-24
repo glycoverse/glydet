@@ -30,7 +30,9 @@ A ratio trait is the ratio of total abundance of two groups of glycans.
 For example, the ratio of complex glycans and hybrid glycans,
 or the ratio of bisecting and unbisecting glycans.
 }
-\details{
+\section{How to use}{
+
+
 You can use \code{ratio()} to create ratio trait easily.
 
 For example:
@@ -55,6 +57,20 @@ Actually, you can use any logical operator in the expression in R (e.g., \code{|
 i.e., \code{prop(cond, within)} is equivalent to \code{ratio(cond & within, within)}.
 We recommend using \code{prop()} instead of \code{ratio()} for clarity if possible.
 }
+
+\section{Note about NA}{
+
+
+All the internal summation operations ignore NAs by default.
+Therefore, NAs in the expression matrix and meta-property values will not result in NAs in the derived traits.
+However, as all derived traits calculate a ratio of two values,
+NAs will be introduced when:
+\enumerate{
+\item The denominator is 0. This can happen when the \code{within} condition selects no glycans.
+\item Both the numerator and denominator are 0.
+}
+}
+
 \examples{
 # Ratio of complex glycans and hybrid glycans
 ratio(Tp == "complex", Tp == "hybrid")

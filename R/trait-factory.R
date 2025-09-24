@@ -13,7 +13,8 @@
 #' This type of traits is the most common type of glycan derived traits.
 #' It can be regarded as a special case of the ratio trait (see [ratio()]).
 #'
-#' @details
+#' @section How to use:
+#'
 #' You can use `prop()` to create proportion trait easily.
 #'
 #' For example:
@@ -46,6 +47,16 @@
 #'
 #' The parentheses around the condition in `within` are optional,
 #' but it is recommended to use them for clarity.
+#'
+#' @section Note about NA:
+#'
+#' All the internal summation operations ignore NAs by default.
+#' Therefore, NAs in the expression matrix and meta-property values will not result in NAs in the derived traits.
+#' However, as all derived traits calculate a ratio of two values,
+#' NAs will be introduced when:
+#'
+#' 1. The denominator is 0. This can happen when the `within` condition selects no glycans.
+#' 2. Both the numerator and denominator are 0.
 #'
 #' @param cond Condition to use for defining the smaller group.
 #'   An expression that evaluates to a logical vector.
@@ -121,7 +132,8 @@ print.glydet_prop <- function(x, ...) {
 #' For example, the ratio of complex glycans and hybrid glycans,
 #' or the ratio of bisecting and unbisecting glycans.
 #'
-#' @details
+#' @section How to use:
+#'
 #' You can use `ratio()` to create ratio trait easily.
 #'
 #' For example:
@@ -146,6 +158,8 @@ print.glydet_prop <- function(x, ...) {
 #' `prop()` is a special case of `ratio()`,
 #' i.e., `prop(cond, within)` is equivalent to `ratio(cond & within, within)`.
 #' We recommend using `prop()` instead of `ratio()` for clarity if possible.
+#'
+#' @inheritSection prop Note about NA
 #'
 #' @param num_cond Condition to use for defining the numerator.
 #'   An expression that evaluates to a logical vector.
@@ -217,7 +231,8 @@ print.glydet_ratio <- function(x, ...) {
 #' For example, the average number of antennae within all complex glycans,
 #' or the average number of sialic acids within all glycans.
 #'
-#' @details
+#' @section How to use:
+#'
 #' You can use `wmean()` to create weighted-mean trait easily.
 #'
 #' For example:
@@ -241,6 +256,8 @@ print.glydet_ratio <- function(x, ...) {
 #' # Average number of antennae within complex glycans
 #' wmean(nA, within = (Tp == "complex"))
 #' ```
+#'
+#' @inheritSection prop Note about NA
 #'
 #' @param val_cond Condition to use for defining the value.
 #'   An expression that evaluates to a numeric vector.

@@ -32,7 +32,9 @@ or the proportion of tetra-antennary glycans within all complex glycans.
 This type of traits is the most common type of glycan derived traits.
 It can be regarded as a special case of the ratio trait (see \code{\link[=ratio]{ratio()}}).
 }
-\details{
+\section{How to use}{
+
+
 You can use \code{prop()} to create proportion trait easily.
 
 For example:
@@ -64,6 +66,20 @@ prop(nFc > 0, within = (Tp == "complex" & nA == 4))
 The parentheses around the condition in \code{within} are optional,
 but it is recommended to use them for clarity.
 }
+
+\section{Note about NA}{
+
+
+All the internal summation operations ignore NAs by default.
+Therefore, NAs in the expression matrix and meta-property values will not result in NAs in the derived traits.
+However, as all derived traits calculate a ratio of two values,
+NAs will be introduced when:
+\enumerate{
+\item The denominator is 0. This can happen when the \code{within} condition selects no glycans.
+\item Both the numerator and denominator are 0.
+}
+}
+
 \examples{
 # Proportion of core-fucosylated glycans within all glycans
 prop(nFc > 0)

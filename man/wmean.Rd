@@ -29,7 +29,9 @@ weighted by the abundance of the glycans.
 For example, the average number of antennae within all complex glycans,
 or the average number of sialic acids within all glycans.
 }
-\details{
+\section{How to use}{
+
+
 You can use \code{wmean()} to create weighted-mean trait easily.
 
 For example:
@@ -52,6 +54,20 @@ you can use \code{within} to define the restriction.
 wmean(nA, within = (Tp == "complex"))
 }\if{html}{\out{</div>}}
 }
+
+\section{Note about NA}{
+
+
+All the internal summation operations ignore NAs by default.
+Therefore, NAs in the expression matrix and meta-property values will not result in NAs in the derived traits.
+However, as all derived traits calculate a ratio of two values,
+NAs will be introduced when:
+\enumerate{
+\item The denominator is 0. This can happen when the \code{within} condition selects no glycans.
+\item Both the numerator and denominator are 0.
+}
+}
+
 \examples{
 # Weighted mean of the number of sialic acids within all glycans
 wmean(nS)
