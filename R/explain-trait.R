@@ -211,7 +211,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     var <- args[[1]]
     val <- args[[2]]
     
-    if (rlang::is_symbol(var) && rlang::as_string(var) == "T") {
+    if (rlang::is_symbol(var) && rlang::as_string(var) == "Tp") {
       if (rlang::is_string(val)) {
         type_val <- rlang::eval_bare(val)
         if (type_val == "highmannose") return("high-mannose glycans")
@@ -289,7 +289,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     "nGt" = "galactose count",
     "nT" = "terminal count",
     "B" = "bisecting GlcNAc",
-    "T" = "type"
+    "Tp" = "type"
   )
   
   if (var_name %in% names(translations)) {

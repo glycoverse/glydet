@@ -37,13 +37,13 @@ exp <- auto_clean(real_experiment)
 All derived traits in `glydet` are constructed using these three factory functions.
 The definitions of all built-in traits demonstrate their usage:
 
-- `TM`: `prop(T == "highmannose")`
-- `TH`: `prop(T == "hybrid")`
-- `TC`: `prop(T == "complex")`
-- `MM`: `wmean(nM, within = (T == "highmannose"))`
-- `CA2`: `prop(nA == 2, within = (T == "complex"))`
-- `CA3`: `prop(nA == 3, within = (T == "complex"))`
-- `CA4`: `prop(nA == 4, within = (T == "complex"))`
+- `TM`: `prop(Tp == "highmannose")`
+- `TH`: `prop(Tp == "hybrid")`
+- `TC`: `prop(Tp == "complex")`
+- `MM`: `wmean(nM, within = (Tp == "highmannose"))`
+- `CA2`: `prop(nA == 2, within = (Tp == "complex"))`
+- `CA3`: `prop(nA == 3, within = (Tp == "complex"))`
+- `CA4`: `prop(nA == 4, within = (Tp == "complex"))`
 - `TF`: `prop(nF > 0)`
 - `TFc`: `prop(nFc > 0)`
 - `TFa`: `prop(nFa > 0)`
@@ -140,14 +140,14 @@ following the same syntax as the primary parameter.
 The `CA2` trait is defined as follows:
 
 ```r
-prop(nA == 2, within = (T == "complex"))
+prop(nA == 2, within = (Tp == "complex"))
 ```
 
-Note that parentheses around `T == "complex"` are optional.
+Note that parentheses around `Tp == "complex"` are optional.
 Consequently, this alternative definition is equally valid:
 
 ```r
-prop(nA == 2, within = T == "complex")
+prop(nA == 2, within = Tp == "complex")
 ```
 
 Combining these two parameters enables the creation of sophisticated trait definitions.
@@ -180,7 +180,7 @@ or the ratio of bisecting to non-bisecting glycans.
 For example, the ratio of complex to hybrid glycans is defined as:
 
 ```r
-ratio(T == "complex", T == "hybrid")
+ratio(Tp == "complex", Tp == "hybrid")
 ```
 
 The first expression defines the numerator, while the second expression defines the denominator.
@@ -206,10 +206,10 @@ The following two definitions are functionally identical:
 
 ```r
 # using prop()
-prop(nFc > 0, within = (T == "complex"))
+prop(nFc > 0, within = (Tp == "complex"))
 
 # using ratio()
-ratio(nFc > 0 & T == "complex", T == "complex")
+ratio(nFc > 0 & Tp == "complex", Tp == "complex")
 ```
 
 However, `prop()` is recommended when appropriate for enhanced readability,
@@ -289,7 +289,7 @@ The `within` parameter can be utilized to restrict the weighted-mean calculation
 For example, the average number of antennae within complex glycans is defined as:
 
 ```r
-wmean(nA, within = (T == "complex"))
+wmean(nA, within = (Tp == "complex"))
 ```
 
 Practice exercises:
@@ -458,8 +458,8 @@ by introducing more sophisticated and linkage-awared meta-properties.
 **`ratio()`**
 
 1. `ratio(nFc > 0, nFc == 0)`
-2. `ratio(nA == 4, nA == 3, within = (T == "complex"))`
-3. `ratio(nA == 2 & T == "complex", T == "complex")`
+2. `ratio(nA == 4, nA == 3, within = (Tp == "complex"))`
+3. `ratio(nA == 2 & Tp == "complex", Tp == "complex")`
 
 **`wmean()`**
 

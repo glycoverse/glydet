@@ -30,14 +30,14 @@ test_that("prop(nFc > 0 & nS > 0) works", {
   expect_equal(result, c(1/3, 0, 1/2))
 })
 
-test_that("prop(nFc > 0, within = (T == 'complex')) works", {
+test_that("prop(nFc > 0, within = (Tp == 'complex')) works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(
     nFc = c(1, 0, 1),
-    T = c("complex", "complex", "hybrid")
+    Tp = c("complex", "complex", "hybrid")
   )
 
-  trait_fn <- prop(nFc > 0, within = (T == "complex"))
+  trait_fn <- prop(nFc > 0, within = (Tp == "complex"))
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(1/2, 0, 1/2))
 })
@@ -49,7 +49,7 @@ test_that("prop() handles Inf", {
     T = c("hybrid", "hybrid", "hybrid")  # no complex here
   )
 
-  trait_fn <- prop(nFc > 0, within = (T == "complex"))
+  trait_fn <- prop(nFc > 0, within = (Tp == "complex"))
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, rep(NA_real_, 3))
 })
@@ -61,7 +61,7 @@ test_that("prop() handles NA through na_action = 'zero'", {
     T = c("hybrid", "hybrid", "hybrid")  # no complex here
   )
 
-  trait_fn <- prop(nFc > 0, within = (T == "complex"), na_action = "zero")
+  trait_fn <- prop(nFc > 0, within = (Tp == "complex"), na_action = "zero")
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, rep(0, 3))
 })
@@ -94,21 +94,21 @@ test_that("prop() handles NA in cond and within", {
   expect_equal(result, c(1/3, 1/2, 0))
 })
 
-test_that("ratio(T == 'complex, T == 'hybrid') works", {
+test_that("ratio(Tp == 'complex, Tp == 'hybrid') works", {
   expr_mat <- create_expr_mat()
-  mp_tbl <- tibble::tibble(T = c("complex", "complex", "hybrid"))
-  trait_fn <- ratio(T == "complex", T == "hybrid")
+  mp_tbl <- tibble::tibble(Tp = c("complex", "complex", "hybrid"))
+  trait_fn <- ratio(Tp == "complex", Tp == "hybrid")
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(2, 1, NA))
 })
 
-test_that("ratio(B, !B, within = (T == 'complex')) works", {
+test_that("ratio(B, !B, within = (Tp == 'complex')) works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(
     B = c(1, 0, 1),
-    T = c("complex", "complex", "hybrid")
+    Tp = c("complex", "complex", "hybrid")
   )
-  trait_fn <- ratio(B, !B, within = (T == "complex"))
+  trait_fn <- ratio(B, !B, within = (Tp == "complex"))
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(1, 0, 1))
 })
@@ -121,13 +121,13 @@ test_that("wmean(nA) works", {
   expect_equal(result, c(2, 2.5, 1.5))
 })
 
-test_that("wmean(nA, within = (T == 'complex')) works", {
+test_that("wmean(nA, within = (Tp == 'complex')) works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(
     nA = c(1, 2, 3),
-    T = c("complex", "complex", "hybrid")
+    Tp = c("complex", "complex", "hybrid")
   )
-  trait_fn <- wmean(nA, within = (T == "complex"))
+  trait_fn <- wmean(nA, within = (Tp == "complex"))
   result <- trait_fn(expr_mat, mp_tbl)
   expect_equal(result, c(1.5, 2, 1.5))
 })
@@ -145,24 +145,24 @@ test_that("wmean(nS / nA) works", {
 
 test_that("prop print", {
   expect_snapshot(print(prop(nFc > 0)))
-  expect_snapshot(print(prop(nFc > 0, within = T == "complex")))
-  expect_snapshot(print(prop(nFc > 0, within = (T == "complex"))))
+  expect_snapshot(print(prop(nFc > 0, within = Tp == "complex")))
+  expect_snapshot(print(prop(nFc > 0, within = (Tp == "complex"))))
   expect_snapshot(print(prop(nFc > 0, within = NULL)))
   expect_snapshot(print(prop(nFc > 0, na_action = "zero")))
 })
 
 test_that("ratio print", {
-  expect_snapshot(print(ratio(T == "complex", T == "hybrid")))
-  expect_snapshot(print(ratio(T == "complex", T == "hybrid", within = T == "complex")))
-  expect_snapshot(print(ratio(T == "complex", T == "hybrid", within = (T == "complex"))))
-  expect_snapshot(print(ratio(T == "complex", T == "hybrid", within = NULL)))
-  expect_snapshot(print(ratio(T == "complex", T == "hybrid", na_action = "zero")))
+  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid")))
+  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", within = Tp == "complex")))
+  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", within = (Tp == "complex"))))
+  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", within = NULL)))
+  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", na_action = "zero")))
 })
 
 test_that("wmean print", {
   expect_snapshot(print(wmean(nA)))
-  expect_snapshot(print(wmean(nA, within = T == "complex")))
-  expect_snapshot(print(wmean(nA, within = (T == "complex"))))
+  expect_snapshot(print(wmean(nA, within = Tp == "complex")))
+  expect_snapshot(print(wmean(nA, within = (Tp == "complex"))))
   expect_snapshot(print(wmean(nA, within = NULL)))
   expect_snapshot(print(wmean(nA, na_action = "zero")))
 })

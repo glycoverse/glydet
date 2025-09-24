@@ -22,7 +22,7 @@ test_that("derive_traits works for glycomics experiments", {
   # Calculate derived traits
   trait_fns <- list(
     TFc = prop(nFc > 0),
-    TC = prop(T == "complex")
+    TC = prop(Tp == "complex")
   )
   trait_exp <- derive_traits(exp, trait_fns)
 
@@ -81,7 +81,7 @@ test_that("derive_traits works for glycoproteomics experiments", {
   # Calculate derived traits
   trait_fns <- list(
     TFc = prop(nFc > 0),
-    TC = prop(T == "complex")
+    TC = prop(Tp == "complex")
   )
   trait_exp <- derive_traits(exp, trait_fns)
 
@@ -347,7 +347,7 @@ test_that("derive_traits keeps glycosite descriptive columns in var_info", {
   # Calculate derived traits
   trait_fns <- list(
     TFc = prop(nFc > 0),
-    TC = prop(T == "complex")
+    TC = prop(Tp == "complex")
   )
   trait_exp <- derive_traits(exp, trait_fns)
 
@@ -384,7 +384,7 @@ test_that("derive_traits_() works for glycomics experiments", {
 
   trait_fns <- list(
     TFc = prop(nFc > 0),
-    TC = prop(T == "complex")
+    TC = prop(Tp == "complex")
   )
   trait_tbl <- derive_traits_(tbl, "glycomics", trait_fns)
 
@@ -413,7 +413,7 @@ test_that("derive_traits_() works for glycoproteomics experiments", {
 
   trait_fns <- list(
     TFc = prop(nFc > 0),
-    TC = prop(T == "complex")
+    TC = prop(Tp == "complex")
   )
   trait_tbl <- derive_traits_(tbl, "glycoproteomics", trait_fns)
 

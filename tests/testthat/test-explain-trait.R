@@ -66,7 +66,7 @@ test_that("explain_trait works for custom proportion traits", {
   
   # Proportion with within condition
   expect_equal(
-    explain_trait(prop(nFc > 0, within = (T == "complex"))),
+    explain_trait(prop(nFc > 0, within = (Tp == "complex"))),
     "Proportion of core-fucosylated glycans within complex glycans."
   )
   
@@ -91,13 +91,13 @@ test_that("explain_trait works for custom proportion traits", {
 test_that("explain_trait works for ratio traits", {
   # Simple ratio
   expect_equal(
-    explain_trait(ratio(T == "complex", T == "hybrid")),
+    explain_trait(ratio(Tp == "complex", Tp == "hybrid")),
     "Ratio of complex glycans to hybrid glycans among all glycans."
   )
   
   # Ratio with within condition
   expect_equal(
-    explain_trait(ratio(nFc > 0, nFc == 0, within = (T == "complex"))),
+    explain_trait(ratio(nFc > 0, nFc == 0, within = (Tp == "complex"))),
     "Ratio of core-fucosylated glycans to non-core-fucosylated glycans within complex glycans."
   )
   
@@ -139,7 +139,7 @@ test_that("explain_trait works for weighted-mean traits", {
   
   # Weighted mean with within condition
   expect_equal(
-    explain_trait(wmean(nA, within = (T == "complex"))),
+    explain_trait(wmean(nA, within = (Tp == "complex"))),
     "Abundance-weighted mean of antenna count within complex glycans."
   )
   

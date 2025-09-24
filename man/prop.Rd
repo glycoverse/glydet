@@ -41,7 +41,7 @@ For example:
 prop(nFc > 0)
 
 # Proportion of complex glycans within all glycans
-prop(T == "complex")
+prop(Tp == "complex")
 
 # Proportion of sialylated and fucosylated glycans within all glycans
 prop(nS > 0 & nFc > 0)
@@ -55,10 +55,10 @@ for example, you want to calculate the proportion of core-fucosylated glycans wi
 you can use \code{within} to define the denominator.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Proportion of core-fucosylated glycans within complex glycans
-prop(nFc > 0, within = (T == "complex"))
+prop(nFc > 0, within = (Tp == "complex"))
 
 # Proportion of core-fucosylated glycans with tetra-antenary complex glycans
-prop(nFc > 0, within = (T == "complex" & nA == 4))
+prop(nFc > 0, within = (Tp == "complex" & nA == 4))
 }\if{html}{\out{</div>}}
 
 The parentheses around the condition in \code{within} are optional,
@@ -75,7 +75,7 @@ prop(B)
 prop(nS > 0 & nFa > 0)
 
 # Proportion of bi-antennary glycans within complex glycans
-prop(nA == 2, within = (T == "complex"))
+prop(nA == 2, within = (Tp == "complex"))
 
 # Proportion of sialylated glycans within core-fucosylated tetra-antennary glycans
 prop(nS > 0, within = (nFc > 0 & nA == 4))

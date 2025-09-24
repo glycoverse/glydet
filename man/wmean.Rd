@@ -49,7 +49,7 @@ for example, you want to calculate the average degree of sialylation per antenna
 you can use \code{within} to define the restriction.
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Average number of antennae within complex glycans
-wmean(nA, within = (T == "complex"))
+wmean(nA, within = (Tp == "complex"))
 }\if{html}{\out{</div>}}
 }
 \examples{
@@ -60,6 +60,6 @@ wmean(nS)
 wmean(nS / nA)
 
 # Average number of antennae within complex glycans
-wmean(nA, within = (T == "complex"))
+wmean(nA, within = (Tp == "complex"))
 
 }

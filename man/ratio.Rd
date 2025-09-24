@@ -36,16 +36,16 @@ You can use \code{ratio()} to create ratio trait easily.
 For example:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{# Ratio of complex glycans and hybrid glycans
-ratio(T == "complex", T == "hybrid")
+ratio(Tp == "complex", Tp == "hybrid")
 
 # Ratio of bisecting and unbisecting glycans
 ratio(B, !B)
 
 # Ratio of core-fucosylated and non-core-fucosylated glycans within complex glycans
-ratio(nFc > 0 & T == "complex", nFc == 0 & T == "complex")
+ratio(nFc > 0 & Tp == "complex", nFc == 0 & Tp == "complex")
 
 # The above example can be simplified as:
-ratio(nFc > 0, nFc == 0, within = (T == "complex"))  # more readable
+ratio(nFc > 0, nFc == 0, within = (Tp == "complex"))  # more readable
 }\if{html}{\out{</div>}}
 
 Note that the last example uses \code{&} for logical AND.
@@ -57,7 +57,7 @@ We recommend using \code{prop()} instead of \code{ratio()} for clarity if possib
 }
 \examples{
 # Ratio of complex glycans and hybrid glycans
-ratio(T == "complex", T == "hybrid")
+ratio(Tp == "complex", Tp == "hybrid")
 
 # Ratio of bisecting and unbisecting glycans within bi-antennary glycans
 ratio(B, !B, within = (nA == 2))

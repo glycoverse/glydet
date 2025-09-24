@@ -192,7 +192,7 @@ For instance, let's filter for all glycoforms containing high-mannose glycans:
 
 ```{r}
 exp_with_mp |>
-  filter_var(T == "highmannose")
+  filter_var(Tp == "highmannose")
 ```
 
 ### 🧰 Meta-Property Functions: Your Structural Toolkit
@@ -209,7 +209,7 @@ names(all_mp_fns())
 
 | Name | Function | Description |
 |------|----------|-------------|
-| `T` | `n_glycan_type()` | Type of the glycan, either "complex", "hybrid", "highmannose", or "pausimannose" |
+| `Tp` | `n_glycan_type()` | Type of the glycan, either "complex", "hybrid", "highmannose", or "pausimannose" |
 | `B` | `has_bisecting()` | Whether the glycan has a bisecting GlcNAc |
 | `nA` | `n_antennae()` | Number of antennae |
 | `nF` | `n_fuc()` | Number of fucoses |

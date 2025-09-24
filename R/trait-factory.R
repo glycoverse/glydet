@@ -23,7 +23,7 @@
 #' prop(nFc > 0)
 #'
 #' # Proportion of complex glycans within all glycans
-#' prop(T == "complex")
+#' prop(Tp == "complex")
 #'
 #' # Proportion of sialylated and fucosylated glycans within all glycans
 #' prop(nS > 0 & nFc > 0)
@@ -38,10 +38,10 @@
 #'
 #' ```r
 #' # Proportion of core-fucosylated glycans within complex glycans
-#' prop(nFc > 0, within = (T == "complex"))
+#' prop(nFc > 0, within = (Tp == "complex"))
 #'
 #' # Proportion of core-fucosylated glycans with tetra-antenary complex glycans
-#' prop(nFc > 0, within = (T == "complex" & nA == 4))
+#' prop(nFc > 0, within = (Tp == "complex" & nA == 4))
 #' ```
 #'
 #' The parentheses around the condition in `within` are optional,
@@ -71,7 +71,7 @@
 #' prop(nS > 0 & nFa > 0)
 #'
 #' # Proportion of bi-antennary glycans within complex glycans
-#' prop(nA == 2, within = (T == "complex"))
+#' prop(nA == 2, within = (Tp == "complex"))
 #'
 #' # Proportion of sialylated glycans within core-fucosylated tetra-antennary glycans
 #' prop(nS > 0, within = (nFc > 0 & nA == 4))
@@ -128,16 +128,16 @@ print.glydet_prop <- function(x, ...) {
 #'
 #' ```r
 #' # Ratio of complex glycans and hybrid glycans
-#' ratio(T == "complex", T == "hybrid")
+#' ratio(Tp == "complex", Tp == "hybrid")
 #'
 #' # Ratio of bisecting and unbisecting glycans
 #' ratio(B, !B)
 #'
 #' # Ratio of core-fucosylated and non-core-fucosylated glycans within complex glycans
-#' ratio(nFc > 0 & T == "complex", nFc == 0 & T == "complex")
+#' ratio(nFc > 0 & Tp == "complex", nFc == 0 & Tp == "complex")
 #'
 #' # The above example can be simplified as:
-#' ratio(nFc > 0, nFc == 0, within = (T == "complex"))  # more readable
+#' ratio(nFc > 0, nFc == 0, within = (Tp == "complex"))  # more readable
 #' ```
 #'
 #' Note that the last example uses `&` for logical AND.
@@ -161,7 +161,7 @@ print.glydet_prop <- function(x, ...) {
 #'
 #' @examples
 #' # Ratio of complex glycans and hybrid glycans
-#' ratio(T == "complex", T == "hybrid")
+#' ratio(Tp == "complex", Tp == "hybrid")
 #'
 #' # Ratio of bisecting and unbisecting glycans within bi-antennary glycans
 #' ratio(B, !B, within = (nA == 2))
@@ -239,7 +239,7 @@ print.glydet_ratio <- function(x, ...) {
 #'
 #' ```r
 #' # Average number of antennae within complex glycans
-#' wmean(nA, within = (T == "complex"))
+#' wmean(nA, within = (Tp == "complex"))
 #' ```
 #'
 #' @param val_cond Condition to use for defining the value.
@@ -261,7 +261,7 @@ print.glydet_ratio <- function(x, ...) {
 #' wmean(nS / nA)
 #'
 #' # Average number of antennae within complex glycans
-#' wmean(nA, within = (T == "complex"))
+#' wmean(nA, within = (Tp == "complex"))
 #'
 #' @export
 wmean <- function(val_cond, within = NULL, na_action = "keep") {

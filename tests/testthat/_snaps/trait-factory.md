@@ -8,16 +8,16 @@
 ---
 
     Code
-      print(prop(nFc > 0, within = T == "complex"))
+      print(prop(nFc > 0, within = Tp == "complex"))
     Message
-      prop(nFc > 0, within = (T == "complex"), na_action = "keep")
+      prop(nFc > 0, within = (Tp == "complex"), na_action = "keep")
 
 ---
 
     Code
-      print(prop(nFc > 0, within = (T == "complex")))
+      print(prop(nFc > 0, within = (Tp == "complex")))
     Message
-      prop(nFc > 0, within = (T == "complex"), na_action = "keep")
+      prop(nFc > 0, within = (Tp == "complex"), na_action = "keep")
 
 ---
 
@@ -36,39 +36,39 @@
 # ratio print
 
     Code
-      print(ratio(T == "complex", T == "hybrid"))
+      print(ratio(Tp == "complex", Tp == "hybrid"))
     Message
-      ratio(T == "complex", T == "hybrid", na_action = "keep")
+      ratio(Tp == "complex", Tp == "hybrid", na_action = "keep")
 
 ---
 
     Code
-      print(ratio(T == "complex", T == "hybrid", within = T == "complex"))
+      print(ratio(Tp == "complex", Tp == "hybrid", within = Tp == "complex"))
     Message
-      ratio(T == "complex", T == "hybrid", within = (T == "complex"), na_action =
+      ratio(Tp == "complex", Tp == "hybrid", within = (Tp == "complex"), na_action =
       "keep")
 
 ---
 
     Code
-      print(ratio(T == "complex", T == "hybrid", within = (T == "complex")))
+      print(ratio(Tp == "complex", Tp == "hybrid", within = (Tp == "complex")))
     Message
-      ratio(T == "complex", T == "hybrid", within = (T == "complex"), na_action =
+      ratio(Tp == "complex", Tp == "hybrid", within = (Tp == "complex"), na_action =
       "keep")
 
 ---
 
     Code
-      print(ratio(T == "complex", T == "hybrid", within = NULL))
+      print(ratio(Tp == "complex", Tp == "hybrid", within = NULL))
     Message
-      ratio(T == "complex", T == "hybrid", na_action = "keep")
+      ratio(Tp == "complex", Tp == "hybrid", na_action = "keep")
 
 ---
 
     Code
-      print(ratio(T == "complex", T == "hybrid", na_action = "zero"))
+      print(ratio(Tp == "complex", Tp == "hybrid", na_action = "zero"))
     Message
-      ratio(T == "complex", T == "hybrid", na_action = "zero")
+      ratio(Tp == "complex", Tp == "hybrid", na_action = "zero")
 
 # wmean print
 
@@ -80,16 +80,16 @@
 ---
 
     Code
-      print(wmean(nA, within = T == "complex"))
+      print(wmean(nA, within = Tp == "complex"))
     Message
-      wmean(nA, within = (T == "complex"), na_action = "keep")
+      wmean(nA, within = (Tp == "complex"), na_action = "keep")
 
 ---
 
     Code
-      print(wmean(nA, within = (T == "complex")))
+      print(wmean(nA, within = (Tp == "complex")))
     Message
-      wmean(nA, within = (T == "complex"), na_action = "keep")
+      wmean(nA, within = (Tp == "complex"), na_action = "keep")
 
 ---
 

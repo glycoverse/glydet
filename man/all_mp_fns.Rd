@@ -12,7 +12,7 @@ A named list of meta-property functions.
 \description{
 This function returns a named list of all meta-property functions:
 \itemize{
-\item "T": \code{n_glycan_type()}: type of the glycan
+\item "Tp": \code{n_glycan_type()}: type of the glycan
 \item "B": \code{has_bisecting()}: whether the glycan has a bisecting GlcNAc
 \item "nA": \code{n_antennae()}: number of antennae
 \item "nF": \code{n_fuc()}: number of fucoses

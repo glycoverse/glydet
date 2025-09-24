@@ -33,19 +33,19 @@
 basic_traits <- function() {
   list(
     # Proportion of highmannose glycans
-    TM = prop(T == "highmannose"),
+    TM = prop(Tp == "highmannose"),
     # Proportion of hybrid glycans
-    TH = prop(T == "hybrid"),
+    TH = prop(Tp == "hybrid"),
     # Proportion of complex glycans
-    TC = prop(T == "complex"),
+    TC = prop(Tp == "complex"),
     # Average number of mannoses within highmannose glycans
-    MM = wmean(nM, within = (T == "highmannose")),
+    MM = wmean(nM, within = (Tp == "highmannose")),
     # Proportion of bi-antennary glycans within complex glycans
-    CA2 = prop(nA == 2, within = (T == "complex")),
+    CA2 = prop(nA == 2, within = (Tp == "complex")),
     # Proportion of tri-antennary glycans within complex glycans
-    CA3 = prop(nA == 3, within = (T == "complex")),
+    CA3 = prop(nA == 3, within = (Tp == "complex")),
     # Proportion of tetra-antennary glycans within complex glycans
-    CA4 = prop(nA == 4, within = (T == "complex")),
+    CA4 = prop(nA == 4, within = (Tp == "complex")),
     # Proportion of fucosylated glycans
     TF = prop(nF > 0),
     # Proportion of core-fucosylated glycans
@@ -256,4 +256,4 @@ all_traits <- function() {
 }
 
 # To avoid note about global variables in R CMD check
-T <- nM <- nA <- nF <- nFc <- nFa <- nG <- nS <- nGt <- nT <- B <- NULL
+Tp <- nM <- nA <- nF <- nFc <- nFa <- nG <- nS <- nGt <- nT <- B <- NULL

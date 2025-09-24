@@ -5,7 +5,7 @@
 #' Get All Meta-Property Functions
 #'
 #' This function returns a named list of all meta-property functions:
-#' - "T": `n_glycan_type()`: type of the glycan
+#' - "Tp": `n_glycan_type()`: type of the glycan
 #' - "B": `has_bisecting()`: whether the glycan has a bisecting GlcNAc
 #' - "nA": `n_antennae()`: number of antennae
 #' - "nF": `n_fuc()`: number of fucoses
@@ -22,7 +22,7 @@
 #' @export
 all_mp_fns <- function() {
   list(
-    "T" = n_glycan_type,
+    "Tp" = n_glycan_type,
     "B" = has_bisecting,
     "nA" = n_antennae,
     "nF" = n_fuc,

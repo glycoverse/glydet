@@ -6,7 +6,7 @@ test_that("get_meta_properties works with default meta-property functions", {
   )
   result <- get_meta_properties(glycans)
   expected <- tibble::tibble(
-    T = factor(
+    Tp = factor(
       c("paucimannose", "complex", "complex"),
       levels = c("paucimannose", "hybrid", "highmannose", "complex")
     ),
@@ -44,7 +44,7 @@ test_that("add_meta_properties works with default meta-property functions", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10)
   exp <- add_meta_properties(exp)
-  expect_true(all(c("T", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+  expect_true(all(c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
 })
 
 test_that("add_meta_properties works with custom meta-property functions", {
@@ -62,7 +62,7 @@ test_that("add_meta_properties works with custom struc_col", {
     glyexp::slice_head_var(n = 10) |>
     glyexp::rename_var(struc = glycan_structure)
   exp <- add_meta_properties(exp, struc_col = "struc")
-  expect_true(all(c("T", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+  expect_true(all(c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
 })
 
 test_that("add_meta_properties throws error if struc_col not found", {
@@ -77,7 +77,7 @@ test_that("add_meta_properties throws error if struc_col not found", {
 test_that("add_meta_properties throws error if existing columns are the same as the new meta-property names", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10) |>
-    glyexp::mutate_var(T = "complex")
+    glyexp::mutate_var(Tp = "complex")
   expect_error(
     add_meta_properties(exp, overwrite = FALSE),
     "Variable information tibble must not contain columns with the same names as the meta-properties."
@@ -87,7 +87,7 @@ test_that("add_meta_properties throws error if existing columns are the same as 
 test_that("add_meta_properties works with overwrite = TRUE", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10) |>
-    glyexp::mutate_var(T = "complex")
+    glyexp::mutate_var(Tp = "complex")
   exp <- add_meta_properties(exp, overwrite = TRUE)
-  expect_true(all(c("T", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+  expect_true(all(c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
 })
