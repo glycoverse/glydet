@@ -28,6 +28,8 @@ Default is \code{NULL}, which means all meta-properties in \code{\link[=all_mp_f
 \item{mp_cols}{A character vector of column names in the \code{var_info} tibble to use as meta-properties.
 If names are provided, they will be used as names of the meta-properties,
 otherwise the column names will be used.
+Meta-properties specified in \code{mp_cols} will overwrite those introduced by \code{mp_fns} with the same names,
+including the built-in meta-properties.
 Default is \code{NULL}, which means no columns are used as meta-properties.}
 }
 \value{

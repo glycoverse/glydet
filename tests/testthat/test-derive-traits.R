@@ -223,6 +223,39 @@ test_that("derive_traits works with custom meta-property columns", {
   expect_equal(trait_exp$var_info, expected_var_info)
 })
 
+test_that("derive_traits works with custom meta-property columns that overwrite existing meta-properties", {
+  # Construct a test experiment
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3"),
+    glycan_structure = glyparse::parse_iupac_condensed(c(
+      "Neu5Ac(a2-?)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
+      "Neu5Ac(a2-?)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
+      "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+    )),
+    n_sia = c(0L, 0L, 0)
+  )
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  expr_mat <- matrix(
+    c(1, 0, 1,
+      1, 1, 1,
+      1, 1, 0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+
+  # Calculate derived traits
+  trait_fns <- list(TS = prop(nS > 0))
+  trait_exp <- derive_traits(exp, trait_fns, mp_cols = c(nS = "n_sia"))
+
+  # Test expr_mat
+  expected_expr_mat <- matrix(0, nrow = 1, ncol = 3)
+  rownames(expected_expr_mat) <- "V1"
+  colnames(expected_expr_mat) <- c("S1", "S2", "S3")
+  expect_equal(trait_exp$expr_mat, expected_expr_mat)
+})
+
 test_that("derive_traits works with default traits", {
   # Construct a test experiment
   var_info <- tibble::tibble(

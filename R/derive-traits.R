@@ -26,6 +26,8 @@
 #' @param mp_cols A character vector of column names in the `var_info` tibble to use as meta-properties.
 #'   If names are provided, they will be used as names of the meta-properties,
 #'   otherwise the column names will be used.
+#'   Meta-properties specified in `mp_cols` will overwrite those introduced by `mp_fns` with the same names,
+#'   including the built-in meta-properties.
 #'   Default is `NULL`, which means no columns are used as meta-properties.
 #'
 #' @returns
@@ -95,6 +97,12 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
     ))
   }
   checkmate::assert_character(mp_cols, null.ok = TRUE)
+  if (is.null(trait_fns)) {
+    trait_fns <- basic_traits()
+  }
+  if (is.null(mp_fns)) {
+    mp_fns <- all_mp_fns()
+  }
 
   switch(
     exp$meta_data$exp_type,
@@ -260,13 +268,14 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 #'
 #' @noRd
 .get_mps <- function(exp, mp_fns, mp_cols) {
-  glycans <- exp$var_info[["glycan_structure"]]
-  mp_tbl <- get_meta_properties(glycans, mp_fns)
-  if (!is.null(mp_cols)) {
-    mp_tbl2 <- exp$var_info |>
-      dplyr::select(dplyr::all_of(mp_cols))
-    mp_tbl <- dplyr::bind_cols(mp_tbl, mp_tbl2)
+  if (is.null(mp_cols)) {
+    mp_cols <- character()
   }
+  mp_tbl1 <- exp$var_info |>
+    dplyr::select(dplyr::all_of(mp_cols))
+  mp_fns <- mp_fns[setdiff(names(mp_fns), colnames(mp_tbl1))]
+  mp_tbl2 <- get_meta_properties(exp$var_info[["glycan_structure"]], mp_fns)
+  mp_tbl <- dplyr::bind_cols(mp_tbl1, mp_tbl2)
   mp_tbl
 }
 
