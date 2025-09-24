@@ -505,3 +505,13 @@ test_that("derive_traits_ raises error when trait_fns has no names", {
   tbl <- tibble::as_tibble(glyexp::toy_experiment)
   expect_error(derive_traits_(tbl, "glycomics", trait_fns = list(prop(nFc > 0))), "must be a non-empty named list or NULL.")
 })
+
+test_that("derive_traits raises errors about unknown meta-properties", {
+  exp <- glyexp::real_experiment2 |>
+    glyexp::slice_head_var(n = 10) |>
+    glyexp::slice_head_obs(n = 10)
+  expect_error(
+    derive_traits(exp, trait_fns = list(TFc = prop(X > 0))),
+    "Trait functions must use defined meta-properties."
+  )
+})

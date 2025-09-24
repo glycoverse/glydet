@@ -335,7 +335,33 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 #'
 #' @noRd
 .derive_traits_mat <- function(expr_mat, trait_fns, mp_tbl) {
-  res_list <- purrr::map(trait_fns, ~ .x(expr_mat, mp_tbl))
+  safe_trait_fns <- purrr::map(trait_fns, purrr::safely)
+  res_list <- purrr::map(safe_trait_fns, ~ .x(expr_mat, mp_tbl))
+
+  # Capture "object not found" errors
+  error_list <- purrr::map(res_list, ~ .x$error)
+  error_list <- purrr::discard(error_list, is.null)
+  error_msgs <- purrr::map_chr(error_list, rlang::cnd_message)
+  objs_not_found <- stringr::str_extract(error_msgs, "object '([^']+)' not found", group = 1)
+  objs_not_found <- purrr::discard(objs_not_found, is.na)
+  if (length(objs_not_found) > 0) {
+    cli::cli_abort(c(
+      "Trait functions must use defined meta-properties.",
+      "x" = "Unknown meta-properties: {.field {objs_not_found}}",
+      "i" = "Available meta-properties: {.field {colnames(mp_tbl)}}",
+      "i" = "Did you forget to define custom meta-properties in {.arg mp_fns} or {.arg mp_cols}?"
+    ), call = NULL)
+  }
+
+  # Raise other errors
+  other_errors <- error_list[!stringr::str_detect(error_msgs, "object '[^']+' not found")]
+  if (length(other_errors) > 0) {
+    # Re-raise the first other error encountered.
+    # This mimics the behavior of normally raising errors, where only the first error is raised.
+    rlang::cnd_signal(other_errors[[1]])
+  }
+
+  res_list <- purrr::map(res_list, ~ .x$result)
   res_mat <- do.call(rbind, res_list)
   rownames(res_mat) <- names(trait_fns)
   colnames(res_mat) <- colnames(expr_mat)
