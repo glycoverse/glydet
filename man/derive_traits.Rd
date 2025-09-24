@@ -4,7 +4,7 @@
 \alias{derive_traits}
 \title{Calculate Derived Traits}
 \usage{
-derive_traits(exp, trait_fns = NULL, mp_fns = NULL)
+derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
 }
 \arguments{
 \item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,
@@ -24,6 +24,11 @@ Default is \code{NULL}, which means all derived traits in \code{\link[=basic_tra
 This parameter is useful if your trait functions use custom meta-properties
 other than those in \code{\link[=all_mp_fns]{all_mp_fns()}}.
 Default is \code{NULL}, which means all meta-properties in \code{\link[=all_mp_fns]{all_mp_fns()}} are used.}
+
+\item{mp_cols}{A character vector of column names in the \code{var_info} tibble to use as meta-properties.
+If names are provided, they will be used as names of the meta-properties,
+otherwise the column names will be used.
+Default is \code{NULL}, which means no columns are used as meta-properties.}
 }
 \value{
 A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for derived traits.

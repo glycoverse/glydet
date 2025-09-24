@@ -173,6 +173,56 @@ test_that("derive_traits works with custom meta-properties", {
   expect_equal(trait_exp$meta_data$exp_type, "traitomics")
 })
 
+test_that("derive_traits works with custom meta-property columns", {
+  # Construct a test experiment
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3"),
+    glycan_structure = glyparse::parse_iupac_condensed(c(
+      "Neu5Ac(a2-?)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
+      "Neu5Ac(a2-?)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
+      "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+    )),
+    n_a26_sia = c(0L, 1L, 0L),
+    n_a23_sia = c(1L, 0L, 0L),
+  )
+  sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
+  expr_mat <- matrix(
+    c(1, 0, 1,
+      1, 1, 1,
+      1, 1, 0),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+
+  # Calculate derived traits
+  trait_fns <- list(
+    SG = wmean(nS / nG),
+    EG = wmean(nE / nG),
+    LG = wmean(nL / nG)
+  )
+  trait_exp <- derive_traits(exp, trait_fns, mp_cols = c(nE = "n_a26_sia", nL = "n_a23_sia"))
+
+  # Test expr_mat
+  expected_expr_mat <- matrix(
+    c(2/3, 0.5, 1,
+      1/3, 0.5, 0.5,
+      1/3, 0, 0.5),
+    nrow = 3, ncol = 3, byrow = TRUE
+  )
+  rownames(expected_expr_mat) <- c("V1", "V2", "V3")
+  colnames(expected_expr_mat) <- c("S1", "S2", "S3")
+  expect_equal(trait_exp$expr_mat, expected_expr_mat)
+
+  # Test var_info
+  expected_var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3"),
+    trait = c("SG", "EG", "LG")
+  )
+  expect_equal(trait_exp$var_info, expected_var_info)
+})
+
 test_that("derive_traits works with default traits", {
   # Construct a test experiment
   var_info <- tibble::tibble(

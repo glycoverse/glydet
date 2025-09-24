@@ -23,6 +23,10 @@
 #'   This parameter is useful if your trait functions use custom meta-properties
 #'   other than those in [all_mp_fns()].
 #'   Default is `NULL`, which means all meta-properties in [all_mp_fns()] are used.
+#' @param mp_cols A character vector of column names in the `var_info` tibble to use as meta-properties.
+#'   If names are provided, they will be used as names of the meta-properties,
+#'   otherwise the column names will be used.
+#'   Default is `NULL`, which means no columns are used as meta-properties.
 #'
 #' @returns
 #' A new [glyexp::experiment()] object for derived traits.
@@ -70,7 +74,7 @@
 #' @seealso [basic_traits()], [all_traits()]
 #'
 #' @export
-derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
+derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) {
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
     trait_fns <- basic_traits()
@@ -90,11 +94,12 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
       "i" = "Call {.fn basic_traits} to see an example."
     ))
   }
+  checkmate::assert_character(mp_cols, null.ok = TRUE)
 
   switch(
     exp$meta_data$exp_type,
-    glycomics = .derive_traits_glycomics(exp, trait_fns, mp_fns),
-    glycoproteomics = .derive_traits_glycoproteomics(exp, trait_fns, mp_fns),
+    glycomics = .derive_traits_glycomics(exp, trait_fns, mp_fns, mp_cols),
+    glycoproteomics = .derive_traits_glycoproteomics(exp, trait_fns, mp_fns, mp_cols),
     cli::cli_abort(c(
       "{.arg exp} must be of type {.val glycomics} or {.val glycoproteomics}.",
       "x" = "Got {.val {exp$meta_data$exp_type}}."
@@ -194,11 +199,10 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   )
 }
 
-.derive_traits_glycomics <- function(exp, trait_fns, mp_fns) {
+.derive_traits_glycomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, "glycan_structure")
   expr_mat <- exp$expr_mat
-  glycans <- exp$var_info[["glycan_structure"]]
-  mp_tbl <- get_meta_properties(glycans, mp_fns)
+  mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
   var_info <- tibble::tibble(
     variable = paste0("V", seq_len(nrow(res_mat))),
@@ -211,9 +215,9 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   exp
 }
 
-.derive_traits_glycoproteomics <- function(exp, trait_fns, mp_fns) {
+.derive_traits_glycoproteomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, c("glycan_structure", "protein", "protein_site"))
-  mp_tbl <- get_meta_properties(exp$var_info[["glycan_structure"]], mp_fns)
+  mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   glycosites <- stringr::str_c(exp$var_info[["protein"]], exp$var_info[["protein_site"]], sep = "@")
   splits <- split(seq_along(glycosites), glycosites)
 
@@ -244,6 +248,26 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   exp$var_info <- res_var_info
   exp$meta_data$exp_type <- "traitproteomics"
   exp
+}
+
+#' Get Meta-Properties from Experiment
+#'
+#' @param exp An [glyexp::experiment()] object.
+#' @param mp_fns A named list of meta-property functions.
+#' @param mp_cols A character vector of column names in the `var_info` tibble to use as meta-properties.
+#'
+#' @returns A tibble with the meta-properties.
+#'
+#' @noRd
+.get_mps <- function(exp, mp_fns, mp_cols) {
+  glycans <- exp$var_info[["glycan_structure"]]
+  mp_tbl <- get_meta_properties(glycans, mp_fns)
+  if (!is.null(mp_cols)) {
+    mp_tbl2 <- exp$var_info |>
+      dplyr::select(dplyr::all_of(mp_cols))
+    mp_tbl <- dplyr::bind_cols(mp_tbl, mp_tbl2)
+  }
+  mp_tbl
 }
 
 #' Get Glycosite Descriptive Columns
