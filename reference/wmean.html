@@ -94,7 +94,7 @@ Actually, you can use any arithmetic operator in the expression in R (e.g., <cod
 for example, you want to calculate the average degree of sialylation per antenna within only complex glycans,
 you can use <code>within</code> to define the restriction.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Average number of antennae within complex glycans</span></span>
-<span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
+<span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
     </div>
 
     <div class="section level2">
@@ -108,8 +108,8 @@ you can use <code>within</code> to define the restriction.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> wmean(<span style="font-weight: bold;">nS/nA</span>, na_action = "keep")</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Average number of antennae within complex glycans</span></span></span>
-<span class="r-in"><span><span class="fu">wmean</span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> wmean(<span style="font-weight: bold;">nA</span>, within = <span style="font-weight: bold;">(T == "complex")</span>, na_action = "keep")</span>
+<span class="r-in"><span><span class="fu">wmean</span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> wmean(<span style="font-weight: bold;">nA</span>, within = <span style="font-weight: bold;">(Tp == "complex")</span>, na_action = "keep")</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

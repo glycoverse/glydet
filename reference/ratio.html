@@ -85,16 +85,16 @@ can be used in the expression.</p></dd>
     <p>You can use <code>ratio()</code> to create ratio trait easily.</p>
 <p>For example:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Ratio of complex glycans and hybrid glycans</span></span>
-<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="cn">T</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Ratio of bisecting and unbisecting glycans</span></span>
 <span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span>, <span class="op">!</span><span class="va">B</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Ratio of core-fucosylated and non-core-fucosylated glycans within complex glycans</span></span>
-<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">nFc</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">nFc</span> <span class="op">==</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># The above example can be simplified as:</span></span>
-<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">nFc</span> <span class="op">==</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># more readable</span></span></code></pre><p></p></div>
+<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">nFc</span> <span class="op">==</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># more readable</span></span></code></pre><p></p></div>
 <p>Note that the last example uses <code>&amp;</code> for logical AND.
 Actually, you can use any logical operator in the expression in R (e.g., <code>|</code>, <code>!</code>, etc.).</p>
 <p><code><a href="prop.html">prop()</a></code> is a special case of <code>ratio()</code>,
@@ -105,8 +105,8 @@ We recommend using <code><a href="prop.html">prop()</a></code> instead of <code>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Ratio of complex glycans and hybrid glycans</span></span></span>
-<span class="r-in"><span><span class="fu">ratio</span><span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="cn">T</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> ratio(<span style="font-weight: bold;">T == "complex"</span>, <span style="font-weight: bold;">T == "hybrid"</span>, na_action = "keep")</span>
+<span class="r-in"><span><span class="fu">ratio</span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ratio(<span style="font-weight: bold;">Tp == "complex"</span>, <span style="font-weight: bold;">Tp == "hybrid"</span>, na_action = "keep")</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Ratio of bisecting and unbisecting glycans within bi-antennary glycans</span></span></span>
 <span class="r-in"><span><span class="fu">ratio</span><span class="op">(</span><span class="va">B</span>, <span class="op">!</span><span class="va">B</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>

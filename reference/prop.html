@@ -92,7 +92,7 @@ If <code>NULL</code> (default), all glycans are used as the larger group.</p></d
 <span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Proportion of complex glycans within all glycans</span></span>
-<span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Proportion of sialylated and fucosylated glycans within all glycans</span></span>
 <span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre><p></p></div>
@@ -102,10 +102,10 @@ Actually, you can use any logical operator in the expression in R (e.g., <code>|
 for example, you want to calculate the proportion of core-fucosylated glycans within only complex glycans,
 you can use <code>within</code> to define the denominator.</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Proportion of core-fucosylated glycans within complex glycans</span></span>
-<span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Proportion of core-fucosylated glycans with tetra-antenary complex glycans</span></span>
-<span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
+<span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre><p></p></div>
 <p>The parentheses around the condition in <code>within</code> are optional,
 but it is recommended to use them for clarity.</p>
     </div>
@@ -125,8 +125,8 @@ but it is recommended to use them for clarity.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> prop(<span style="font-weight: bold;">nS &gt; 0 &amp; nFa &gt; 0</span>, na_action = "keep")</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Proportion of bi-antennary glycans within complex glycans</span></span></span>
-<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="op">(</span><span class="cn">T</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> prop(<span style="font-weight: bold;">nA == 2</span>, within = <span style="font-weight: bold;">(T == "complex")</span>, na_action = "keep")</span>
+<span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> prop(<span style="font-weight: bold;">nA == 2</span>, within = <span style="font-weight: bold;">(Tp == "complex")</span>, na_action = "keep")</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Proportion of sialylated glycans within core-fucosylated tetra-antennary glycans</span></span></span>
 <span class="r-in"><span><span class="fu">prop</span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></span>
