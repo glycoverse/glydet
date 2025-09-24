@@ -1,3 +1,20 @@
+# glydet 0.5.0
+
+## Breaking changes
+
+* The meta-property `T` is renamed to `Tp`, to avoid confusion with the R alias `T` for `TRUE`.
+
+## New features
+
+* Add `mp_cols` parameter to `derive_traits()` as a new way to define custom meta-properties.
+
+## Minor improvements and bug fixes
+
+* `derive_traits()` and `derive_traits_()` now have separate documentations.
+* Update the "Defining Custom Traits" vignette to include the newly added `mp_cols` parameter.
+* Better error message when custom derived traits use undefined meta-properties.
+* Add a section about how NAs can appear in the documentations of `prop()`, `ratio()`, and `wmean()`.
+
 # glydet 0.4.1
 
 ## Minor improvements and bug fixes
