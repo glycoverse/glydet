@@ -2,12 +2,9 @@
 % Please edit documentation in R/derive-traits.R
 \name{derive_traits}
 \alias{derive_traits}
-\alias{derive_traits_}
 \title{Calculate Derived Traits}
 \usage{
 derive_traits(exp, trait_fns = NULL, mp_fns = NULL)
-
-derive_traits_(tbl, data_type, trait_fns = NULL, mp_fns = NULL)
 }
 \arguments{
 \item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,
@@ -27,35 +24,9 @@ Default is \code{NULL}, which means all derived traits in \code{\link[=basic_tra
 This parameter is useful if your trait functions use custom meta-properties
 other than those in \code{\link[=all_mp_fns]{all_mp_fns()}}.
 Default is \code{NULL}, which means all meta-properties in \code{\link[=all_mp_fns]{all_mp_fns()}} are used.}
-
-\item{tbl}{A tibble in tidy format, with the following columns:
-\itemize{
-\item \code{sample}: sample ID
-\item \code{glycan_structure}: glycan structures, either a \code{glyrepr::glycan_structure()} vector
-or a character vector of glycan structure strings supported by \code{glyparse::auto_parse()}.
-\item \code{value}: the quantification of the glycan in the sample.
-}
-
-For glycoproteomics data, additional columns are needed:
-\itemize{
-\item \code{protein}: protein ID
-\item \code{protein_site}: the glycosite position on the protein
-The unique combination of \code{protein} and \code{protein_site} determines a glycosite.
-}
-
-Other columns are ignored.
-
-Please make sure that the data has been properly preprocessed,
-including normalization, missing value handling, etc.
-Specifically, for glycoproteomics data, please make sure that the data has been aggregated to the
-"glycoforms with structures" level.
-That is the quantification of each glycan structure on each glycosite in each sample.}
-
-\item{data_type}{Either "glycomics" or "glycoproteomics". Only needed for \code{derive_traits_()}.}
 }
 \value{
-\itemize{
-\item For \code{derive_traits()}: a new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for derived traits.
+A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for derived traits.
 Instead of "quantification of each glycan on each glycosite in each sample",
 the new \code{experiment()} contains "the value of each derived trait on each glycosite in each sample",
 with the following columns in the \code{var_info} table:
@@ -83,32 +54,14 @@ as long as you know that this function will try its best to preserve useful info
 \code{sample_info} and \code{meta_data} are not modified,
 except that the \code{exp_type} field of \code{meta_data} is set to "traitomics" for glycomics data,
 and "traitproteomics" for glycoproteomics data.
-\item For \code{derive_traits_()}: a tidy tibble containing the following columns:
-\itemize{
-\item \code{sample}: sample ID
-\item \code{trait}: derived trait name
-\item \code{value}: the value of the derived trait
-}
-
-For glycoproteomics data, with additional columns:
-\itemize{
-\item \code{protein}: protein ID
-\item \code{protein_site}: the glycosite position on the protein
-}
-
-Other columns in the original tibble are not included.
-}
 }
 \description{
 This function calculates derived traits from glycomic or glycoproteomic profiles.
 For glycomics data, it calculates the derived traits directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and derived traits are calculated in a site-specific manner.
-\itemize{
-\item \code{derive_traits()}: Calculate derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}} object.
-\item \code{derive_traits_()}: Calculate derived traits from a tibble in tidy format.
-Use this function if you are not using the \code{glyexp} package.
-}
+
+This function calculates derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}} object.
 }
 \examples{
 library(glyexp)

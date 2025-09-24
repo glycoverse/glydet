@@ -6,9 +6,7 @@
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and derived traits are calculated in a site-specific manner.
 #'
-#' - `derive_traits()`: Calculate derived traits from a [glyexp::experiment()] object.
-#' - `derive_traits_()`: Calculate derived traits from a tibble in tidy format.
-#'   Use this function if you are not using the `glyexp` package.
+#' This function calculates derived traits from a [glyexp::experiment()] object.
 #'
 #' @param exp A [glyexp::experiment()] object. Before using this function,
 #'   you should preprocess the data using the `glyclean` package.
@@ -18,26 +16,6 @@
 #'   as not all glycoproteomics identification softwares provide this information.
 #'   "glycan_structure" can be a `glyrepr::glycan_structure()` vector,
 #'   or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
-#' @param tbl
-#'   A tibble in tidy format, with the following columns:
-#'   - `sample`: sample ID
-#'   - `glycan_structure`: glycan structures, either a `glyrepr::glycan_structure()` vector
-#'     or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
-#'   - `value`: the quantification of the glycan in the sample.
-#'
-#'   For glycoproteomics data, additional columns are needed:
-#'   - `protein`: protein ID
-#'   - `protein_site`: the glycosite position on the protein
-#'   The unique combination of `protein` and `protein_site` determines a glycosite.
-#'
-#'   Other columns are ignored.
-#'
-#'   Please make sure that the data has been properly preprocessed,
-#'   including normalization, missing value handling, etc.
-#'   Specifically, for glycoproteomics data, please make sure that the data has been aggregated to the
-#'   "glycoforms with structures" level.
-#'   That is the quantification of each glycan structure on each glycosite in each sample.
-#' @param data_type Either "glycomics" or "glycoproteomics". Only needed for `derive_traits_()`.
 #' @param trait_fns A named list of derived trait functions created by trait factories.
 #'   Names of the list are the names of the derived traits.
 #'   Default is `NULL`, which means all derived traits in [basic_traits()] are calculated.
@@ -47,41 +25,30 @@
 #'   Default is `NULL`, which means all meta-properties in [all_mp_fns()] are used.
 #'
 #' @returns
-#' - For `derive_traits()`: a new [glyexp::experiment()] object for derived traits.
-#'   Instead of "quantification of each glycan on each glycosite in each sample",
-#'   the new `experiment()` contains "the value of each derived trait on each glycosite in each sample",
-#'   with the following columns in the `var_info` table:
-#'   - `variable`: variable ID
-#'   - `trait`: derived trait name
+#' A new [glyexp::experiment()] object for derived traits.
+#' Instead of "quantification of each glycan on each glycosite in each sample",
+#' the new `experiment()` contains "the value of each derived trait on each glycosite in each sample",
+#' with the following columns in the `var_info` table:
+#' - `variable`: variable ID
+#' - `trait`: derived trait name
 #'
-#'   For glycoproteomics data, with additional columns:
-#'   - `protein`: protein ID
-#'   - `protein_site`: the glycosite position on the protein
+#' For glycoproteomics data, with additional columns:
+#' - `protein`: protein ID
+#' - `protein_site`: the glycosite position on the protein
 #'
-#'   Other columns in the `var_info` table (e.g. `gene`) are retained if they have "many-to-one"
-#'   relationship with glycosites (unique combinations of `protein`, `protein_site`).
-#'   That is, each glycosite cannot have multiple values for these columns.
-#'   `gene` is a common example, as a glycosite can only be associate with one gene.
-#'   Descriptions about glycans are not such a column, as a glycosite can have multiple glycans,
-#'   thus having multiple descriptions.
-#'   Columns not having this relationship with glycosites will be dropped.
-#'   Don't worry if you cannot understand this logic,
-#'   as long as you know that this function will try its best to preserve useful information.
+#' Other columns in the `var_info` table (e.g. `gene`) are retained if they have "many-to-one"
+#' relationship with glycosites (unique combinations of `protein`, `protein_site`).
+#' That is, each glycosite cannot have multiple values for these columns.
+#' `gene` is a common example, as a glycosite can only be associate with one gene.
+#' Descriptions about glycans are not such a column, as a glycosite can have multiple glycans,
+#' thus having multiple descriptions.
+#' Columns not having this relationship with glycosites will be dropped.
+#' Don't worry if you cannot understand this logic,
+#' as long as you know that this function will try its best to preserve useful information.
 #'
-#'   `sample_info` and `meta_data` are not modified,
-#'    except that the `exp_type` field of `meta_data` is set to "traitomics" for glycomics data,
-#'    and "traitproteomics" for glycoproteomics data.
-#'
-#' - For `derive_traits_()`: a tidy tibble containing the following columns:
-#'   - `sample`: sample ID
-#'   - `trait`: derived trait name
-#'   - `value`: the value of the derived trait
-#'
-#'   For glycoproteomics data, with additional columns:
-#'   - `protein`: protein ID
-#'   - `protein_site`: the glycosite position on the protein
-#'
-#'   Other columns in the original tibble are not included.
+#' `sample_info` and `meta_data` are not modified,
+#'  except that the `exp_type` field of `meta_data` is set to "traitomics" for glycomics data,
+#'  and "traitproteomics" for glycoproteomics data.
 #'
 #' @examples
 #' library(glyexp)
@@ -135,7 +102,66 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL) {
   )
 }
 
-#' @rdname derive_traits
+#' Calculate Derived Traits from Tidy Data
+#'
+#' @description
+#' This function calculates derived traits from glycomic or glycoproteomic profiles 
+#' in tidy format. For glycomics data, it calculates the derived traits directly.
+#' For glycoproteomics data, each glycosite is treated as a separate glycome,
+#' and derived traits are calculated in a site-specific manner.
+#'
+#' This function calculates derived traits from a tibble in tidy format.
+#' Use this function if you are not using the `glyexp` package.
+#'
+#' @param tbl
+#'   A tibble in tidy format, with the following columns:
+#'   - `sample`: sample ID
+#'   - `glycan_structure`: glycan structures, either a `glyrepr::glycan_structure()` vector
+#'     or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
+#'   - `value`: the quantification of the glycan in the sample.
+#'
+#'   For glycoproteomics data, additional columns are needed:
+#'   - `protein`: protein ID
+#'   - `protein_site`: the glycosite position on the protein
+#'   The unique combination of `protein` and `protein_site` determines a glycosite.
+#'
+#'   Other columns are ignored.
+#'
+#'   Please make sure that the data has been properly preprocessed,
+#'   including normalization, missing value handling, etc.
+#'   Specifically, for glycoproteomics data, please make sure that the data has been aggregated to the
+#'   "glycoforms with structures" level.
+#'   That is the quantification of each glycan structure on each glycosite in each sample.
+#' @param data_type Either "glycomics" or "glycoproteomics".
+#' @inheritParams derive_traits
+#'
+#' @returns
+#' A tidy tibble containing the following columns:
+#' - `sample`: sample ID
+#' - `trait`: derived trait name
+#' - `value`: the value of the derived trait
+#'
+#' For glycoproteomics data, with additional columns:
+#' - `protein`: protein ID
+#' - `protein_site`: the glycosite position on the protein
+#'
+#' Other columns in the original tibble are not included.
+#'
+#' @examples
+#' # Create example tidy data
+#' library(dplyr)
+#' tidy_data <- tibble(
+#'   sample = rep(c("S1", "S2"), each = 3),
+#'   glycan_structure = rep(c("Man5", "Man6", "Man7"), 2),
+#'   value = c(0.2, 0.3, 0.5, 0.1, 0.4, 0.5)
+#' )
+#'
+#' # Calculate traits
+#' traits <- derive_traits_(tidy_data, data_type = "glycomics")
+#' traits
+#'
+#' @seealso [derive_traits()], [basic_traits()], [all_traits()]
+#'
 #' @export
 derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   if (is.null(trait_fns)) {
