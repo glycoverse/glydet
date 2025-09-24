@@ -19,9 +19,11 @@ Before proceeding, please ensure you have read the "Get Started with glydet" vig
 and are familiar with the fundamental concepts of derived traits and meta-properties.
 
 ```{r setup}
+library(dplyr)
 library(glydet)
 library(glyexp)
 library(glyclean)
+library(glyrepr)
 
 exp <- auto_clean(real_experiment)
 ```
@@ -354,8 +356,15 @@ or when collaborating with team members who need to understand your analytical a
 ## Custom Meta-Properties
 
 The preceding examples utilized exclusively built-in meta-properties.
-Custom meta-properties can be defined by providing a named list of meta-property functions
-to the `mp_fns` parameter of `derive_traits()`.
+As the building blocks of derived traits,
+understanding how to define custom meta-properties will bring you more flexibility.
+
+`glydet` provides two means of defining custom meta-properties:
+
+- By providing meta-property functions to the `mp_fns` parameter of `derive_traits()`.
+- By using columns in the variable information tibble as meta-properties.
+
+### Defining Custom Meta-Properties with Functions
 
 Meta-property functions must accept a `glyrepr::glycan_structure()` vector
 and return a vector of corresponding meta-property values.
@@ -445,6 +454,54 @@ derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
 This is an example of how you can violate the [ambiguity assumption](https://glycoverse.github.io/glydet/articles/glydet.html#working-with-structural-ambiguity)
 of built-in meta-properties and derived traits,
 by introducing more sophisticated and linkage-awared meta-properties.
+
+### Defining Custom Meta-Properties with Columns
+
+The first method is handy if all information you need is already encoded in glycan structures.
+However, there are situations that you need to rely on other meta-data.
+In this case, you can use columns in the variable information tibble as meta-properties directly,
+by specifying the `mp_cols` parameter.
+
+For example, let's use the sialic acid linkage type example above.
+You might have used special derivatization methods to differentiate the two linkage types.
+This information might end up in a column in the variable information tibble,
+not directly in the glycan structures.
+
+```{r}
+# Here we assume all sialic acids are a2-6
+exp2 <- exp |>
+  mutate_var(
+    n_a26_sia = count_mono(glycan_structure, "NeuAc"),
+    n_a23_sia = 0L
+  )
+```
+
+```{r}
+exp2 |>
+  get_var_info() |>
+  filter(n_a26_sia > 0) |>
+  pull(glycan_structure)
+```
+
+See? No linkage information about sialic acids is in the glycan structures.
+But we have two columns: `n_a26_sia` and `n_a23_sia` storing this information.
+
+Now we can define two traits to calculate the degree of a2-3 and a2-6 sialylation per galactose:
+
+```{r}
+sia_traits <- list(
+  # Average degree of a2-3 sialylation per galactose
+  LG = wmean(nL / nG),
+  # Average degree of a2-6 sialylation per galactose
+  EG = wmean(nE / nG)
+)
+```
+
+And use `mp_cols` to tell `derive_traits()` to use these columns as meta-properties:
+
+```{r}
+derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
+```
 
 ## Exercise Solutions
 
