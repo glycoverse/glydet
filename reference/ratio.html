@@ -11,7 +11,7 @@ or the ratio of bisecting and unbisecting glycans."><meta property="og:image" co
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -81,8 +81,11 @@ can be used in the expression.</p></dd>
     <p>A derived trait function.</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>You can use <code>ratio()</code> to create ratio trait easily.</p>
+    <h2 id="how-to-use">How to use<a class="anchor" aria-label="anchor" href="#how-to-use"></a></h2>
+
+
+
+<p>You can use <code>ratio()</code> to create ratio trait easily.</p>
 <p>For example:</p>
 <p></p><div class="sourceCode r"><pre><code><span><span class="co"># Ratio of complex glycans and hybrid glycans</span></span>
 <span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span>
@@ -101,6 +104,17 @@ Actually, you can use any logical operator in the expression in R (e.g., <code>|
 i.e., <code>prop(cond, within)</code> is equivalent to <code>ratio(cond &amp; within, within)</code>.
 We recommend using <code><a href="prop.html">prop()</a></code> instead of <code>ratio()</code> for clarity if possible.</p>
     </div>
+    <div class="section level2">
+    <h2 id="note-about-na">Note about NA<a class="anchor" aria-label="anchor" href="#note-about-na"></a></h2>
+
+
+
+<p>All the internal summation operations ignore NAs by default.
+Therefore, NAs in the expression matrix and meta-property values will not result in NAs in the derived traits.
+However, as all derived traits calculate a ratio of two values,
+NAs will be introduced when:</p><ol><li><p>The denominator is 0. This can happen when the <code>within</code> condition selects no glycans.</p></li>
+<li><p>Both the numerator and denominator are 0.</p></li>
+</ol></div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
