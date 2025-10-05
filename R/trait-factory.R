@@ -399,3 +399,91 @@ print.glydet_total <- function(x, ...) {
   cli::cli_text("total({.strong {cond_expr}})")
   invisible(x)
 }
+
+#' Create a Weighted Sum Trait
+#'
+#' A weighted sum trait is the sum of a quantitative property within a group of glycans,
+#' weighted by the abundance of the glycans.
+#' For example, the sum of the number of sialic acids within all glycans,
+#' or the sum of the number of Lewis x antigens within all glycans.
+#'
+#' @section How to use:
+#'
+#' You can use `wsum()` to create weighted sum trait easily.
+#'
+#' For example:
+#'
+#' ```r
+#' # Weighted sum of the number of sialic acids within all glycans
+#' wsum(nS)
+#' ```
+#'
+#' This can be regarded as the quantification of sialic acids.
+#' If some glycan has only one sialic acid,
+#' its abundance is added to the results.
+#' If another glycan has two sialic acids,
+#' its abundance is doubled before being added to the results.
+#'
+#' You can also use `within` to restrict the weighted sum calculation to specific glycan subsets.
+#' For example, you can calculate the weighted sum of the number of sialic acids within complex glycans:
+#'
+#' ```r
+#' wsum(nS, within = (Tp == "complex"))
+#' ```
+#'
+#' @param val_cond Condition to use for defining the value.
+#'   An expression that evaluates to a logical vector.
+#'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
+#'   can be used in the expression.
+#' @param within Condition to set a restriction for the glycans. Same format as `val_cond`.
+#'
+#' @returns A derived trait function.
+#'
+#' @examples
+#' # Weighted sum of the number of sialic acids within all glycans
+#' wsum(nS)
+#'
+#' # Weighted sum of the number of sialic acids within complex glycans
+#' wsum(nS, within = (Tp == "complex"))
+#' ```
+#'
+#' @export
+wsum <- function(val_cond, within = NULL) {
+  val_cond <- rlang::enquo(val_cond)
+  within <- rlang::enquo(within)
+
+  # Create calculation function for weighted sum
+  f <- function(expr_mat, mp_tbl) {
+    val_eval <- rlang::eval_tidy(val_cond, data = mp_tbl)
+    val_mat <- expr_mat * val_eval
+    within_eval <- rlang::eval_tidy(within, data = mp_tbl)
+    if (is.null(within_eval)) {
+      within_eval <- rep(TRUE, nrow(expr_mat))
+    }
+    within_eval[is.na(within_eval)] <- FALSE
+    res <- colSums(val_mat[within_eval, , drop = FALSE], na.rm = TRUE)
+    unname(res)
+  }
+
+  structure(
+    f,
+    val_cond = rlang::quo_get_expr(val_cond),
+    within = rlang::quo_get_expr(within),
+    class = "glydet_wsum"
+  )
+}
+
+#' @export
+print.glydet_wsum <- function(x, ...) {
+  val_cond_expr <- rlang::expr_text(attr(x, "val_cond"))
+  within_expr <- rlang::expr_text(attr(x, "within"))
+  if (within_expr == "NULL") {
+    cli::cli_text("wsum({.strong {val_cond_expr}})")
+  } else {
+    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
+      within_expr <- stringr::str_sub(within_expr, 2, -2)
+    }
+    cli::cli_text("wsum({.strong {val_cond_expr}}, within = {.strong ({within_expr})})")
+  }
+  invisible(x)
+}

@@ -10,6 +10,9 @@ create_expr_mat <- function() {
   expr_mat
 }
 
+# ===== Test Calculation =====
+
+# ----- prop -----
 test_that("prop(nFc > 0) works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(nFc = c(1, 0, 1))
@@ -94,6 +97,7 @@ test_that("prop() handles NA in cond and within", {
   expect_equal(result, c(1/3, 1/2, 0))
 })
 
+# ----- ratio -----
 test_that("ratio(Tp == 'complex, Tp == 'hybrid') works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(Tp = c("complex", "complex", "hybrid"))
@@ -113,6 +117,7 @@ test_that("ratio(B, !B, within = (Tp == 'complex')) works", {
   expect_equal(result, c(1, 0, 1))
 })
 
+# ----- wmean -----
 test_that("wmean(nA) works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(nA = c(1, 2, 3))
@@ -143,6 +148,7 @@ test_that("wmean(nS / nA) works", {
   expect_equal(result, c(0.5, 0.75, 0.25))
 })
 
+# ----- total -----
 test_that("total(Tp == 'complex') works", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(Tp = c("complex", "complex", "hybrid"))
@@ -151,6 +157,27 @@ test_that("total(Tp == 'complex') works", {
   expect_equal(result, c(2, 1, 2))
 })
 
+# ----- wsum -----
+test_that("wsum(nS) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(nS = c(1, 2, 3))
+  trait_fn <- wsum(nS)
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(6, 5, 3))
+})
+
+test_that("wsum(nS, within = (Tp == 'complex')) works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(
+    nS = c(1, 2, 3),
+    Tp = c("complex", "complex", "hybrid")
+  )
+  trait_fn <- wsum(nS, within = (Tp == "complex"))
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(3, 2, 3))
+})
+
+# ===== Test Printing =====
 test_that("prop print", {
   expect_snapshot(print(prop(nFc > 0)))
   expect_snapshot(print(prop(nFc > 0, within = Tp == "complex")))
@@ -177,4 +204,11 @@ test_that("wmean print", {
 
 test_that("total print", {
   expect_snapshot(print(total(Tp == "complex")))
+})
+
+test_that("wsum print", {
+  expect_snapshot(print(wsum(nS)))
+  expect_snapshot(print(wsum(nS, within = Tp == "complex")))
+  expect_snapshot(print(wsum(nS, within = (Tp == "complex"))))
+  expect_snapshot(print(wsum(nS, within = NULL)))
 })

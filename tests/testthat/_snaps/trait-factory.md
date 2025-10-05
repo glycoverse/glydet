@@ -112,3 +112,31 @@
     Message
       total(Tp == "complex")
 
+# wsum print
+
+    Code
+      print(wsum(nS))
+    Message
+      wsum(nS)
+
+---
+
+    Code
+      print(wsum(nS, within = Tp == "complex"))
+    Message
+      wsum(nS, within = (Tp == "complex"))
+
+---
+
+    Code
+      print(wsum(nS, within = (Tp == "complex")))
+    Message
+      wsum(nS, within = (Tp == "complex"))
+
+---
+
+    Code
+      print(wsum(nS, within = NULL))
+    Message
+      wsum(nS)
+
