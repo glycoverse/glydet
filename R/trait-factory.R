@@ -118,9 +118,7 @@ print.glydet_prop <- function(x, ...) {
   if (within_expr == "NULL") {
     cli::cli_text("prop({.strong {cond_expr}}, na_action = \"{na_action}\")")
   } else {
-    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
-      within_expr <- stringr::str_sub(within_expr, 2, -2)
-    }
+    within_expr <- .format_within_expr(within_expr)
     cli::cli_text("prop({.strong {cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
@@ -216,9 +214,7 @@ print.glydet_ratio <- function(x, ...) {
   if (within_expr == "NULL") {
     cli::cli_text("ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, na_action = \"{na_action}\")")
   } else {
-    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
-      within_expr <- stringr::str_sub(within_expr, 2, -2)
-    }
+    within_expr <- .format_within_expr(within_expr)
     cli::cli_text("ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
@@ -311,9 +307,7 @@ print.glydet_wmean <- function(x, ...) {
   if (within_expr == "NULL") {
     cli::cli_text("wmean({.strong {val_cond_expr}}, na_action = \"{na_action}\")")
   } else {
-    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
-      within_expr <- stringr::str_sub(within_expr, 2, -2)
-    }
+    within_expr <- .format_within_expr(within_expr)
     cli::cli_text("wmean({.strong {val_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
@@ -480,10 +474,20 @@ print.glydet_wsum <- function(x, ...) {
   if (within_expr == "NULL") {
     cli::cli_text("wsum({.strong {val_cond_expr}})")
   } else {
-    if (stringr::str_starts(within_expr, stringr::fixed("("))) {
-      within_expr <- stringr::str_sub(within_expr, 2, -2)
-    }
+    within_expr <- .format_within_expr(within_expr)
     cli::cli_text("wsum({.strong {val_cond_expr}}, within = {.strong ({within_expr})})")
   }
   invisible(x)
+}
+
+#' Remove outer parentheses from within expression
+#'
+#' @param within The `within` character string.
+#' @returns The formatted within character string.
+#' @noRd
+.format_within_expr <- function(within) {
+  if (stringr::str_starts(within, stringr::fixed("("))) {
+    within <- stringr::str_sub(within, 2, -2)
+  }
+  within
 }
