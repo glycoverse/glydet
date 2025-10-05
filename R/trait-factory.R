@@ -343,3 +343,59 @@ print.glydet_wmean <- function(x, ...) {
     unname(res)
   }
 }
+
+#' Create a Total Abundance Trait
+#'
+#' A total abundance trait is the total abundance of a group of glycans.
+#' For example, the total abundance of all complex glycans,
+#' or the total abundance of all tetra-antennary glycans.
+#'
+#' @section How to use:
+#'
+#' You can use `total()` to create total abundance trait easily.
+#'
+#' For example:
+#'
+#' ```r
+#' # Total abundance of all complex glycans
+#' total(Tp == "complex")
+#'
+#' # Total abundance of all tetra-antennary glycans
+#' total(nA == 4)
+#' ```
+#'
+#' @param cond Condition to use for defining the group of glycans.
+#'   An expression that evaluates to a logical vector.
+#'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
+#'   can be used in the expression.
+#'
+#' @returns A derived trait function.
+#'
+#' @examples
+#' # Total abundance of all complex glycans
+#' total(Tp == "complex")
+#'
+#' # Total abundance of all tetra-antennary glycans
+#' total(nA == 4)
+#'
+#' @export
+total <- function(cond) {
+  cond <- rlang::enquo(cond)
+
+  # Create calculation function for total abundance
+  f <- function(expr_mat, mp_tbl) {
+    cond_eval <- rlang::eval_tidy(cond, data = mp_tbl)
+    cond_eval[is.na(cond_eval)] <- FALSE
+    res <- colSums(expr_mat[cond_eval, , drop = FALSE], na.rm = TRUE)
+    unname(res)
+  }
+
+  structure(f, cond = rlang::quo_get_expr(cond), class = "glydet_total")
+}
+
+#' @export
+print.glydet_total <- function(x, ...) {
+  cond_expr <- rlang::expr_text(attr(x, "cond"))
+  cli::cli_text("total({.strong {cond_expr}})")
+  invisible(x)
+}

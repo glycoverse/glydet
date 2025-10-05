@@ -105,3 +105,10 @@
     Message
       wmean(nA, na_action = "zero")
 
+# total print
+
+    Code
+      print(total(Tp == "complex"))
+    Message
+      total(Tp == "complex")
+

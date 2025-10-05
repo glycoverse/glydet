@@ -143,6 +143,14 @@ test_that("wmean(nS / nA) works", {
   expect_equal(result, c(0.5, 0.75, 0.25))
 })
 
+test_that("total(Tp == 'complex') works", {
+  expr_mat <- create_expr_mat()
+  mp_tbl <- tibble::tibble(Tp = c("complex", "complex", "hybrid"))
+  trait_fn <- total(Tp == "complex")
+  result <- trait_fn(expr_mat, mp_tbl)
+  expect_equal(result, c(2, 1, 2))
+})
+
 test_that("prop print", {
   expect_snapshot(print(prop(nFc > 0)))
   expect_snapshot(print(prop(nFc > 0, within = Tp == "complex")))
@@ -165,4 +173,8 @@ test_that("wmean print", {
   expect_snapshot(print(wmean(nA, within = (Tp == "complex"))))
   expect_snapshot(print(wmean(nA, within = NULL)))
   expect_snapshot(print(wmean(nA, na_action = "zero")))
+})
+
+test_that("total print", {
+  expect_snapshot(print(total(Tp == "complex")))
 })
