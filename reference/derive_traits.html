@@ -26,6 +26,7 @@ and derived traits are calculated in a site-specific manner."><meta property="og
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/custom-traits.html">Defining Custom Traits</a></li>
+    <li><a class="dropdown-item" href="../articles/quantify-motifs.html">Quantifying Glycan Motifs</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -132,7 +133,7 @@ and "traitproteomics" for glycoproteomics data.</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/slice_obs.html" class="external-link">slice_sample_var</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[218ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[205ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[19ms]</span></span>
@@ -140,10 +141,10 @@ and "traitproteomics" for glycoproteomics data.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[25ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[24ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Aggregating data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.2s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.1s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[16ms]</span></span>
@@ -158,8 +159,8 @@ and "traitproteomics" for glycoproteomics data.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># By default, only basic traits are calculated</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="basic_traits.html">basic_traits</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "TM"  "TH"  "TC"  "MM"  "CA2" "CA3" "CA4" "TF"  "TFc" "TFa" "TB"  "SG" </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "GA"  "TS" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] "TM"  "TH"  "TC"  "MM"  "CA2" "CA3" "CA4" "TF"  "TFc" "TFa" "TB"  "GS" </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] "AG"  "TS" </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># You can calculate all traits in `all_traits()`</span></span></span>
 <span class="r-in"><span><span class="va">more_trait_exp</span> <span class="op">&lt;-</span> <span class="fu">derive_traits</span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="fu"><a href="all_traits.html">all_traits</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>

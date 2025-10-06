@@ -26,6 +26,7 @@ and branching level."><meta property="og:image" content="https://glycoverse.gith
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/custom-traits.html">Defining Custom Traits</a></li>
+    <li><a class="dropdown-item" href="../articles/quantify-motifs.html">Quantifying Glycan Motifs</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
@@ -71,8 +72,8 @@ and branching level.</p>
 <li><p><code>TFc</code>: Proportion of core-fucosylated glycans</p></li>
 <li><p><code>TFa</code>: Proportion of arm-fucosylated glycans</p></li>
 <li><p><code>TB</code>: Proportion of glycans with bisecting GlcNAc</p></li>
-<li><p><code>SG</code>: Average degree of sialylation per galactose</p></li>
-<li><p><code>GA</code>: Average degree of galactosylation per antenna</p></li>
+<li><p><code>GS</code>: Average degree of sialylation per galactose</p></li>
+<li><p><code>AG</code>: Average degree of galactosylation per antenna</p></li>
 <li><p><code>TS</code>: Proportion of sialylated glycans</p></li>
 </ul></div>
 
@@ -112,10 +113,10 @@ and branching level.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $TB</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> prop(<span style="font-weight: bold;">B</span>, na_action = "keep")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $SG</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $GS</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> wmean(<span style="font-weight: bold;">nS/nG</span>, na_action = "keep")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $GA</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $AG</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> wmean(<span style="font-weight: bold;">nG/nA</span>, na_action = "keep")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $TS</span>

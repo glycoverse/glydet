@@ -4,7 +4,8 @@ pkgdown_sha: ~
 articles:
   custom-traits: custom-traits.html
   glydet: glydet.html
-last_built: 2025-10-02T03:03Z
+  quantify-motifs: quantify-motifs.html
+last_built: 2025-10-06T07:47Z
 urls:
   reference: https://glycoverse.github.io/glydet/reference
   article: https://glycoverse.github.io/glydet/articles

@@ -35,6 +35,7 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/custom-traits.html">Defining Custom Traits</a></li>
+    <li><a class="dropdown-item" href="../articles/quantify-motifs.html">Quantifying Glycan Motifs</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -96,17 +97,17 @@ meta-properties.</p>
 <span></span>
 <span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[153ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[139ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[23ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[24ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[28ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[24ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aggregating data</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[948ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[901ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[18ms]</span></span></span></code></pre></div>
@@ -168,10 +169,10 @@ demonstrate their usage:</p>
 <code>TB</code>: <code>prop(B)</code>
 </li>
 <li>
-<code>SG</code>: <code>wmean(nS / nG)</code>
+<code>GS</code>: <code>wmean(nS / nG)</code>
 </li>
 <li>
-<code>GA</code>: <code>wmean(nG / nA)</code>
+<code>AG</code>: <code>wmean(nG / nA)</code>
 </li>
 <li>
 <code>TS</code>: <code>prop(nS &gt; 0)</code>
@@ -307,7 +308,7 @@ For example, the <code>CF</code> trait is defined as:</p>
 <p>We know that <code>nFc + nFa</code> is equivalent to <code>nF</code>,
 so the above definition is equivalent to:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">+</span> <span class="va">nFa</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="op">(</span><span class="va">nFc</span> <span class="op">+</span> <span class="va">nFa</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p>As a general principle, any R expression that evaluates to a logical
 vector is valid for use with <code><a href="../reference/prop.html">prop()</a></code>.</p>
 <p>The traits described above calculate proportions relative to the
@@ -467,6 +468,65 @@ antenna.</li>
 <li>Define a trait calculating the average number of arm fucoses.</li>
 </ol>
 </div>
+<div class="section level4">
+<h4 id="total">
+<code>total()</code><a class="anchor" aria-label="anchor" href="#total"></a>
+</h4>
+<p><code><a href="../reference/total.html">total()</a></code> creates total abundance traits, which is the sum
+of the abundances of a group of glycans. This is the simplest type of
+derived traits in <code>glydet</code>.</p>
+<p>For example, the total abundance of all complex glycans is defined
+as:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/total.html">total</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span></code></pre></div>
+<p>There is no <code>within</code> parameter for <code><a href="../reference/total.html">total()</a></code>,
+as you can always add a restriction to the expression by using
+<code>&amp;</code>.</p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/total.html">total</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="wsum">
+<code>wsum()</code><a class="anchor" aria-label="anchor" href="#wsum"></a>
+</h4>
+<p><code><a href="../reference/wsum.html">wsum()</a></code> is the cousin of <code><a href="../reference/wmean.html">wmean()</a></code>, but
+instead of calculating the average value, it calculates the sum of the
+values.</p>
+<p>Let’s see an example to understand the difference between
+<code><a href="../reference/wmean.html">wmean()</a></code> and <code><a href="../reference/wsum.html">wsum()</a></code>. Say we have three glycans:
+<code>G1</code>, <code>G2</code>, and <code>G3</code> in two samples:
+<code>S1</code> and <code>S2</code>.</p>
+<ul>
+<li>Sample S1: <code>G1</code> (10), <code>G2</code> (20),
+<code>G3</code> (30) (intensity values)</li>
+<li>Sample S2: <code>G1</code> (20), <code>G2</code> (40),
+<code>G3</code> (60) (intensity values)</li>
+</ul>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">expr_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">20</span>, <span class="fl">30</span>, <span class="fl">20</span>, <span class="fl">40</span>, <span class="fl">60</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"G1"</span>, <span class="st">"G2"</span>, <span class="st">"G3"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">expr_mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span><span class="op">)</span></span>
+<span><span class="va">expr_mat</span></span>
+<span><span class="co">#&gt;    S1 S2</span></span>
+<span><span class="co">#&gt; G1 10 20</span></span>
+<span><span class="co">#&gt; G2 20 40</span></span>
+<span><span class="co">#&gt; G3 30 60</span></span></code></pre></div>
+<p>For simplicity, we don’t use any meta-properties here, just the
+number 1.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trait1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">trait1</span><span class="op">(</span><span class="va">expr_mat</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 1 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">trait2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu">trait2</span><span class="op">(</span><span class="va">expr_mat</span>, <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]  60 120</span></span></code></pre></div>
+<p>See the difference? <code><a href="../reference/wmean.html">wmean()</a></code> calculates the average value
+of some numeric property, so as long as the ratio of each glycan’s
+abundance is the same, the result is always the same. But
+<code><a href="../reference/wsum.html">wsum()</a></code> is sensitive to the abundance of each glycan, so the
+result is different.</p>
+</div>
 </div>
 <div class="section level3">
 <h3 id="using-custom-traits">Using Custom Traits<a class="anchor" aria-label="anchor" href="#using-custom-traits"></a>
@@ -477,9 +537,9 @@ them.</p>
 parameter that accepts a named list of derived trait functions. Note
 that the three factory functions described above return functions as
 their output.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] "glydet_prop"</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] "glydet_prop"  "glydet_trait"</span></span></code></pre></div>
 <p>R supports functional programming paradigms, treating functions as
 first-class objects. Functions can be passed as arguments to other
 functions and returned from function calls.</p>
@@ -488,15 +548,15 @@ prerequisite for usage—simply define traits as a named list and provide
 it to the <code>trait_fns</code> parameter.</p>
 <p>The following example examines sialylation degree within glycan
 subsets of varying antenna counts:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  A2SG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  A3SG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  A4SG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span>  A2S <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  A3S <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>  A4S <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span><span class="op">)</span></span></code></pre></div>
-<p>The identifiers “A2SG”, “A3SG”, and “A4SG” represent the derived
-trait names.</p>
+<p>The identifiers “A2S”, “A3S”, and “A4S” represent the derived trait
+names.</p>
 <p>When <code>trait_fns</code> is omitted, <code><a href="../reference/derive_traits.html">derive_traits()</a></code>
 internally invokes <code><a href="../reference/basic_traits.html">basic_traits()</a></code> to utilize built-in trait
 functions.</p>
@@ -515,9 +575,9 @@ human-readable explanations.</p>
 </li>
 <li>Debug and refine trait definitions before deployment</li>
 </ul>
-<p>Let’s examine the <code>A2SG</code> trait defined earlier as an
+<p>Let’s examine the <code>A2S</code> trait defined earlier as an
 example:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/explain_trait.html">explain_trait</a></span><span class="op">(</span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "Abundance-weighted mean of degree of sialylation per antenna within bi-antennary glycans."</span></span></code></pre></div>
 <p>The function interprets your trait expression and returns a clear,
@@ -549,7 +609,7 @@ meta-properties.</li>
 corresponding meta-property values.</p>
 <p>For example, the built-in meta-property <code>B</code> is defined as
 follows:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simplified version for illustration purposes</span></span>
 <span><span class="kw">function</span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">motif</span> <span class="op">&lt;-</span> <span class="st">"HexNAc(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"</span></span>
@@ -566,7 +626,7 @@ package for motif matching and counting operations. For detailed
 information, consult the <a href="https://glycoverse.github.io/glymotif/" class="external-link">glymotif
 documentation</a>.</p>
 <p>The following example demonstrates custom meta-property creation:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_mp_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Number of Lewis antigens</span></span>
 <span>  nLe <span class="op">=</span> <span class="op">~</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motif</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span><span class="op">)</span>,</span>
@@ -576,7 +636,7 @@ documentation</a>.</p>
 <p>Note that purrr-style lambda functions provide a concise syntax for
 meta-property function definitions.</p>
 <p>Traits can be defined using these new meta-properties:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Average number of Lewis antigens per antenna</span></span>
 <span>  LeA <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nLe</span> <span class="op">/</span> <span class="va">nA</span><span class="op">)</span>,</span>
@@ -588,7 +648,7 @@ meta-property function definitions.</p>
 <code>nA</code>.</p>
 <p>Implementation of these custom meta-properties and traits proceeds as
 follows:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span>, mp_fns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">my_mp_fns</span>, <span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
@@ -602,7 +662,7 @@ expressions.</p>
 have two different linkage types: a2-3 and a2-6. We can define two
 custom meta-properties to count the number of sialic acids with each
 linkage type:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sia_mp_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Number of a2-3 sialic acids</span></span>
 <span>  nL <span class="op">=</span> <span class="op">~</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motif</a></span><span class="op">(</span><span class="va">.x</span>, <span class="st">"NeuAc(a2-3)Hex(??-"</span><span class="op">)</span>,</span>
@@ -611,15 +671,15 @@ linkage type:</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p>And define two traits to calculate the degree of a2-3 and a2-6
 sialylation per galactose:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sia_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Average degree of a2-3 sialylation per galactose</span></span>
-<span>  LG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nL</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span>,</span>
+<span>  GL <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nL</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Average degree of a2-6 sialylation per galactose</span></span>
-<span>  EG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nE</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span></span>
+<span>  GE <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nE</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>And calculate the traits:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">sia_traits</span>, mp_fns <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">sia_mp_fns</span>, <span class="fu"><a href="../reference/all_mp_fns.html">all_mp_fns</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
@@ -642,14 +702,14 @@ specifying the <code>mp_cols</code> parameter.</p>
 You might have used special derivatization methods to differentiate the
 two linkage types. This information might end up in a column in the
 variable information tibble, not directly in the glycan structures.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Here we assume all sialic acids are a2-6</span></span>
 <span><span class="va">exp2</span> <span class="op">&lt;-</span> <span class="va">exp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/mutate_obs.html" class="external-link">mutate_var</a></span><span class="op">(</span></span>
 <span>    n_a26_sia <span class="op">=</span> <span class="fu"><a href="https://glycoverse.github.io/glyrepr/reference/count_mono.html" class="external-link">count_mono</a></span><span class="op">(</span><span class="va">glycan_structure</span>, <span class="st">"NeuAc"</span><span class="op">)</span>,</span>
 <span>    n_a23_sia <span class="op">=</span> <span class="fl">0L</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp2</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">n_a26_sia</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -672,16 +732,16 @@ structures. But we have two columns: <code>n_a26_sia</code> and
 <code>n_a23_sia</code> storing this information.</p>
 <p>Now we can define two traits to calculate the degree of a2-3 and a2-6
 sialylation per galactose:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sia_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  <span class="co"># Average degree of a2-3 sialylation per galactose</span></span>
-<span>  LG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nL</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span>,</span>
+<span>  GL <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nL</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span>,</span>
 <span>  <span class="co"># Average degree of a2-6 sialylation per galactose</span></span>
-<span>  EG <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nE</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span></span>
+<span>  GE <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nE</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>And use <code>mp_cols</code> to tell <code><a href="../reference/derive_traits.html">derive_traits()</a></code> to
 use these columns as meta-properties:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp2</span>, trait_fns <span class="op">=</span> <span class="va">sia_traits</span>, mp_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>nL <span class="op">=</span> <span class="st">"n_a23_sia"</span>, nE <span class="op">=</span> <span class="st">"n_a26_sia"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
