@@ -19,8 +19,8 @@
 #' - `TFc`: Proportion of core-fucosylated glycans
 #' - `TFa`: Proportion of arm-fucosylated glycans
 #' - `TB`: Proportion of glycans with bisecting GlcNAc
-#' - `SG`: Average degree of sialylation per galactose
-#' - `GA`: Average degree of galactosylation per antenna
+#' - `GS`: Average degree of sialylation per galactose
+#' - `AG`: Average degree of galactosylation per antenna
 #' - `TS`: Proportion of sialylated glycans
 #'
 #' @returns
@@ -55,9 +55,9 @@ basic_traits <- function() {
     # Proportion of glycans with bisecting GlcNAc
     TB = prop(B),
     # Average degree of sialylation per galactose
-    SG = wmean(nS / nG),
+    GS = wmean(nS / nG),
     # Average degree of galactosylation per antenna
-    GA = wmean(nG / nA),
+    AG = wmean(nG / nA),
     # Proportion of sialylated glycans
     TS = prop(nS > 0)
   )

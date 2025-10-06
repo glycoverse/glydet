@@ -29,8 +29,8 @@ The explanations of the derived traits are as follows:
 \item \code{TFc}: Proportion of core-fucosylated glycans
 \item \code{TFa}: Proportion of arm-fucosylated glycans
 \item \code{TB}: Proportion of glycans with bisecting GlcNAc
-\item \code{SG}: Average degree of sialylation per galactose
-\item \code{GA}: Average degree of galactosylation per antenna
+\item \code{GS}: Average degree of sialylation per galactose
+\item \code{AG}: Average degree of galactosylation per antenna
 \item \code{TS}: Proportion of sialylated glycans
 }
 }

@@ -122,12 +122,12 @@ test_that("explain_trait works for weighted-mean traits", {
   )
   
   expect_equal(
-    explain_trait(all_traits()$SG),
+    explain_trait(all_traits()$GS),
     "Abundance-weighted mean of degree of sialylation per galactose among all glycans."
   )
   
   expect_equal(
-    explain_trait(all_traits()$GA),
+    explain_trait(all_traits()$AG),
     "Abundance-weighted mean of degree of galactosylation per antenna among all glycans."
   )
   
