@@ -50,8 +50,8 @@ The definitions of all built-in traits demonstrate their usage:
 - `TFc`: `prop(nFc > 0)`
 - `TFa`: `prop(nFa > 0)`
 - `TB`: `prop(B)`
-- `SG`: `wmean(nS / nG)`
-- `GA`: `wmean(nG / nA)`
+- `GS`: `wmean(nS / nG)`
+- `AG`: `wmean(nG / nA)`
 - `TS`: `prop(nS > 0)`
 
 These definitions utilize meta-properties as building blocks.
@@ -320,14 +320,14 @@ The following example examines sialylation degree within glycan subsets of varyi
 
 ```r
 my_traits <- list(
-  A2SG = wmean(nS / nA, within = (nA == 2)),
-  A3SG = wmean(nS / nA, within = (nA == 3)),
-  A4SG = wmean(nS / nA, within = (nA == 4))
+  A2S = wmean(nS / nA, within = (nA == 2)),
+  A3S = wmean(nS / nA, within = (nA == 3)),
+  A4S = wmean(nS / nA, within = (nA == 4))
 )
 derive_traits(exp, trait_fns = my_traits)
 ```
 
-The identifiers "A2SG", "A3SG", and "A4SG" represent the derived trait names.
+The identifiers "A2S", "A3S", and "A4S" represent the derived trait names.
 
 When `trait_fns` is omitted, `derive_traits()` internally invokes `basic_traits()` to utilize built-in trait functions.
 
@@ -342,7 +342,7 @@ This function helps you:
 - Understand complex trait expressions at a glance  
 - Debug and refine trait definitions before deployment
 
-Let's examine the `A2SG` trait defined earlier as an example:
+Let's examine the `A2S` trait defined earlier as an example:
 
 ```{r}
 explain_trait(wmean(nS / nA, within = (nA == 2)))
@@ -439,9 +439,9 @@ And define two traits to calculate the degree of a2-3 and a2-6 sialylation per g
 ```{r}
 sia_traits <- list(
   # Average degree of a2-3 sialylation per galactose
-  LG = wmean(nL / nG),
+  GL = wmean(nL / nG),
   # Average degree of a2-6 sialylation per galactose
-  EG = wmean(nE / nG)
+  GE = wmean(nE / nG)
 )
 ```
 
@@ -491,9 +491,9 @@ Now we can define two traits to calculate the degree of a2-3 and a2-6 sialylatio
 ```{r}
 sia_traits <- list(
   # Average degree of a2-3 sialylation per galactose
-  LG = wmean(nL / nG),
+  GL = wmean(nL / nG),
   # Average degree of a2-6 sialylation per galactose
-  EG = wmean(nE / nG)
+  GE = wmean(nE / nG)
 )
 ```
 

@@ -109,8 +109,8 @@ get_expr_mat(trait_exp)[1:5, 1:5]
 - **`TFc`**: Proportion of core-fucosylated glycans
 - **`TFa`**: Proportion of arm-fucosylated glycans
 - **`TB`**: Proportion of glycans with bisecting GlcNAc
-- **`SG`**: Average degree of sialylation per galactose
-- **`GA`**: Average degree of galactosylation per antenna
+- **`GS`**: Average degree of sialylation per galactose
+- **`AG`**: Average degree of galactosylation per antenna
 - **`TS`**: Proportion of sialylated glycans
 
 💡 **The key insight:** We treat the glycans on each glycosite as a separate mini-glycome,
