@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.5.0.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,18 +38,21 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glydet-development-version">glydet (development version)<a class="anchor" aria-label="anchor" href="#glydet-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.6.0" id="glydet-060">glydet 0.6.0<a class="anchor" aria-label="anchor" href="#glydet-060"></a></h2>
 <div class="section level3">
-<h3 id="breaking-changes-development-version">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-development-version"></a></h3>
+<h3 id="breaking-changes-0-6-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-6-0"></a></h3>
 <ul><li>The first parameter of <code><a href="../reference/wmean.html">wmean()</a></code> is renamed from <code>val_cond</code> to <code>val</code>.</li>
 <li>The built-in trait <code>SG</code> is renamed to <code>GS</code>, and <code>GA</code> to <code>AG</code>, to match the convention that the last element of a trait name should be the focused property.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-6-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-6-0"></a></h3>
 <ul><li>Add two new trait factories: <code><a href="../reference/total.html">total()</a></code> and <code><a href="../reference/wsum.html">wsum()</a></code>.</li>
 <li>Add <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code>. This function was once in the <code>glymotif</code> package, but we realized that motif quantification is essentially a special case of derived traits, so we reimplemented it in <code>glydet</code> with a more consistent and powerful interface.</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
+<h3 id="minor-improvements-and-bug-fixes-0-6-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-6-0"></a></h3>
 <ul><li>Fix some improperly named traits in the “Defining Custom Traits” vignette.</li>
 <li>Fix an error in a code snippet in the “Defining Custom Traits” vignette: <code>prop(nFc + nFa &gt; 0)</code> -&gt; <code>prop((nFc + nFa) &gt; 0)</code>.</li>
 <li>Add a vignette about quantifying glycan motifs.</li>
