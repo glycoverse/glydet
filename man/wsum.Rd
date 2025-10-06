@@ -4,15 +4,15 @@
 \alias{wsum}
 \title{Create a Weighted Sum Trait}
 \usage{
-wsum(val_cond, within = NULL)
+wsum(val, within = NULL)
 }
 \arguments{
-\item{val_cond}{Condition to use for defining the value.
+\item{val}{Expression to use for defining the value.
 An expression that evaluates to a logical vector.
 The names of all built-in meta-properties (see \code{\link[=all_mp_fns]{all_mp_fns()}}) and custom meta-properties
 can be used in the expression.}
 
-\item{within}{Condition to set a restriction for the glycans. Same format as \code{val_cond}.}
+\item{within}{Condition to set a restriction for the glycans. Same format as \code{val}.}
 }
 \value{
 A derived trait function.

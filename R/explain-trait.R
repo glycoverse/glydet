@@ -61,10 +61,10 @@ explain_trait.glydet_ratio <- function(trait_fn) {
 
 #' @export
 explain_trait.glydet_wmean <- function(trait_fn) {
-  val_cond_expr <- attr(trait_fn, "val_cond")
+  val_expr <- attr(trait_fn, "val")
   within_expr <- attr(trait_fn, "within")
   
-  val_desc <- .expr_to_value_description(val_cond_expr)
+  val_desc <- .expr_to_value_description(val_expr)
   scope_desc <- .within_to_scope(within_expr)
   
   paste0("Abundance-weighted mean of ", val_desc, " ", scope_desc, ".")

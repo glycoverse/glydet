@@ -255,11 +255,11 @@ print.glydet_ratio <- function(x, ...) {
 #'
 #' @inheritSection prop Note about NA
 #'
-#' @param val_cond Condition to use for defining the value.
+#' @param val Expression to use for defining the value.
 #'   An expression that evaluates to a numeric vector.
 #'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
 #'   can be used in the expression.
-#' @param within Condition to set a restriction for the glycans. Same format as `val_cond`.
+#' @param within Condition to set a restriction for the glycans. Same format as `val`.
 #' @param na_action How to handle missing values.
 #'   - "keep" (default): keep the missing values as NA.
 #'   - "zero": set the missing values to 0.
@@ -277,13 +277,13 @@ print.glydet_ratio <- function(x, ...) {
 #' wmean(nA, within = (Tp == "complex"))
 #'
 #' @export
-wmean <- function(val_cond, within = NULL, na_action = "keep") {
-  val_cond <- rlang::enquo(val_cond)
+wmean <- function(val, within = NULL, na_action = "keep") {
+  val <- rlang::enquo(val)
   within <- rlang::enquo(within)
 
   # Create calculation function for weighted mean
   calc_fn <- function(expr_mat, mp_tbl, within_cond) {
-    val <- rlang::eval_tidy(val_cond, data = mp_tbl)
+    val <- rlang::eval_tidy(val, data = mp_tbl)
     val_mat <- expr_mat * val
     num <- colSums(val_mat[within_cond, , drop = FALSE], na.rm = TRUE)
     denom <- colSums(expr_mat[within_cond, , drop = FALSE], na.rm = TRUE)
@@ -292,7 +292,7 @@ wmean <- function(val_cond, within = NULL, na_action = "keep") {
 
   structure(
     .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
-    val_cond = rlang::quo_get_expr(val_cond),
+    val = rlang::quo_get_expr(val),
     within = rlang::quo_get_expr(within),
     na_action = na_action,
     class = "glydet_wmean"
@@ -301,14 +301,14 @@ wmean <- function(val_cond, within = NULL, na_action = "keep") {
 
 #' @export
 print.glydet_wmean <- function(x, ...) {
-  val_cond_expr <- rlang::expr_text(attr(x, "val_cond"))
+  val_expr <- rlang::expr_text(attr(x, "val"))
   within_expr <- rlang::expr_text(attr(x, "within"))
   na_action <- attr(x, "na_action")
   if (within_expr == "NULL") {
-    cli::cli_text("wmean({.strong {val_cond_expr}}, na_action = \"{na_action}\")")
+    cli::cli_text("wmean({.strong {val_expr}}, na_action = \"{na_action}\")")
   } else {
     within_expr <- .format_within_expr(within_expr)
-    cli::cli_text("wmean({.strong {val_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
+    cli::cli_text("wmean({.strong {val_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
   }
   invisible(x)
 }
@@ -425,11 +425,11 @@ print.glydet_total <- function(x, ...) {
 #' wsum(nS, within = (Tp == "complex"))
 #' ```
 #'
-#' @param val_cond Condition to use for defining the value.
+#' @param val Expression to use for defining the value.
 #'   An expression that evaluates to a logical vector.
 #'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
 #'   can be used in the expression.
-#' @param within Condition to set a restriction for the glycans. Same format as `val_cond`.
+#' @param within Condition to set a restriction for the glycans. Same format as `val`.
 #'
 #' @returns A derived trait function.
 #'
@@ -442,13 +442,13 @@ print.glydet_total <- function(x, ...) {
 #' ```
 #'
 #' @export
-wsum <- function(val_cond, within = NULL) {
-  val_cond <- rlang::enquo(val_cond)
+wsum <- function(val, within = NULL) {
+  val <- rlang::enquo(val)
   within <- rlang::enquo(within)
 
   # Create calculation function for weighted sum
   f <- function(expr_mat, mp_tbl) {
-    val_eval <- rlang::eval_tidy(val_cond, data = mp_tbl)
+    val_eval <- rlang::eval_tidy(val, data = mp_tbl)
     val_mat <- expr_mat * val_eval
     within_eval <- rlang::eval_tidy(within, data = mp_tbl)
     if (is.null(within_eval)) {
@@ -461,7 +461,7 @@ wsum <- function(val_cond, within = NULL) {
 
   structure(
     f,
-    val_cond = rlang::quo_get_expr(val_cond),
+    val = rlang::quo_get_expr(val),
     within = rlang::quo_get_expr(within),
     class = "glydet_wsum"
   )
@@ -469,13 +469,13 @@ wsum <- function(val_cond, within = NULL) {
 
 #' @export
 print.glydet_wsum <- function(x, ...) {
-  val_cond_expr <- rlang::expr_text(attr(x, "val_cond"))
+  val_expr <- rlang::expr_text(attr(x, "val"))
   within_expr <- rlang::expr_text(attr(x, "within"))
   if (within_expr == "NULL") {
-    cli::cli_text("wsum({.strong {val_cond_expr}})")
+    cli::cli_text("wsum({.strong {val_expr}})")
   } else {
     within_expr <- .format_within_expr(within_expr)
-    cli::cli_text("wsum({.strong {val_cond_expr}}, within = {.strong ({within_expr})})")
+    cli::cli_text("wsum({.strong {val_expr}}, within = {.strong ({within_expr})})")
   }
   invisible(x)
 }
