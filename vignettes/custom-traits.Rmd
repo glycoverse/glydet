@@ -299,6 +299,61 @@ Practice exercises:
 1. Define a trait calculating the average degree of sialylation per antenna.
 2. Define a trait calculating the average number of arm fucoses.
 
+#### `total()`
+
+`total()` creates total abundance traits, which is the sum of the abundances of a group of glycans.
+This is the simplest type of derived traits in `glydet`.
+
+For example, the total abundance of all complex glycans is defined as:
+
+```r
+total(Tp == "complex")
+```
+
+There is no `within` parameter for `total()`,
+as you can always add a restriction to the expression by using `&`.
+
+```r
+total(Tp == "complex" & nA == 4)
+```
+
+#### `wsum()`
+
+`wsum()` is the cousin of `wmean()`,
+but instead of calculating the average value, it calculates the sum of the values.
+
+Let's see an example to understand the difference between `wmean()` and `wsum()`.
+Say we have three glycans: `G1`, `G2`, and `G3` in two samples: `S1` and `S2`.
+
+- Sample S1: `G1` (10), `G2` (20), `G3` (30) (intensity values)
+- Sample S2: `G1` (20), `G2` (40), `G3` (60) (intensity values)
+
+```{r}
+expr_mat <- matrix(c(10, 20, 30, 20, 40, 60), nrow = 3)
+rownames(expr_mat) <- c("G1", "G2", "G3")
+colnames(expr_mat) <- c("S1", "S2")
+expr_mat
+```
+
+For simplicity, we don't use any meta-properties here, just the number 1.
+
+```{r}
+trait1 <- wmean(1)
+trait1(expr_mat, tibble::tibble())
+```
+
+```{r}
+trait2 <- wsum(1)
+trait2(expr_mat, tibble::tibble())
+```
+
+See the difference?
+`wmean()` calculates the average value of some numeric property,
+so as long as the ratio of each glycan's abundance is the same,
+the result is always the same.
+But `wsum()` is sensitive to the abundance of each glycan,
+so the result is different.
+
 ### Using Custom Traits
 
 Having learned how to define custom traits, we can now implement them.
