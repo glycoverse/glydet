@@ -1,5 +1,23 @@
 # glydet (development version)
 
+## Breaking changes
+
+* The first parameter of `wmean()` is renamed from `val_cond` to `val`.
+* The built-in trait `SG` is renamed to `GS`, and `GA` to `AG`, to match the convention that the last element of a trait name should be the focused property.
+
+## New features
+
+* Add two new trait factories: `total()` and `wsum()`.
+* Add `quantify_motifs()`. This function was once in the `glymotif` package, but we realized that motif quantification is essentially a special case of derived traits, so we reimplemented it in `glydet` with a more consistent and powerful interface.
+
+## Minor improvements and bug fixes
+
+* Fix some improperly named traits in the "Defining Custom Traits" vignette.
+* Fix an error in a code snippet in the "Defining Custom Traits" vignette: `prop(nFc + nFa > 0)` -> `prop((nFc + nFa) > 0)`.
+* Add a vignette about quantifying glycan motifs.
+* Update the introduction part in the "Get Started with glydet" vignette.
+* All trait factories now have a `glydet_trait` super class.
+
 # glydet 0.5.0
 
 ## Breaking changes
