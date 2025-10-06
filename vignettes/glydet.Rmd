@@ -14,18 +14,19 @@ knitr::opts_chunk$set(
 )
 ```
 
-🧬 N-glycans are among nature's most fascinating molecular structures—ubiquitous
-yet highly constrained by strict biosynthesis rules.
-This structural discipline creates a unique opportunity:
-we can describe entire N-glycomes using carefully designed variables,
-such as the proportion of core-fucosylated glycans,
-the fraction of sialylated structures,
-or the average degree of sialylation per galactose.
+Glycan derived traits are summary features calculated from individual glycan abundances.
+Instead of analyzing every single glycan structure,
+we combine related glycans into biologically meaningful groups.
+For example, traits describing the overall level of galactosylation, sialylation, fucosylation, or branching.
+These derived traits capture broader patterns in glycosylation and reduce noise from individual measurements.
 
-In the N-glycomics world,
-these descriptive variables are known as **"derived traits"** —
-powerful summaries that capture biological meaning far beyond simple glycan abundances 
-(the so-called "direct traits").
+Compared with analyzing raw glycan abundances (the "direct traits"),
+using derived traits has several advantages.
+It simplifies the data while keeping key biological information,
+making it easier to interpret and compare across samples.
+Derived traits also tend to be more robust and less affected by technical variation,
+and they can better highlight biological trends or associations with phenotypes.
+In short, derived traits help us see the forest rather than just the trees 🌲🌲🌲.
 
 Enter `glydet` 🚀—your toolkit for calculating derived traits with unprecedented precision.
 But here's where it gets exciting:
@@ -117,6 +118,13 @@ get_expr_mat(trait_exp)[1:5, 1:5]
 then calculate derived traits for each one across all samples.
 For instance, if a particular glycosite hosts 10 different glycans,
 the `TFc` value represents the proportion of core-fucosylated glycans within those 10 structures in each sample.
+
+**Important Note:** All built-in derived traits only work for N-glycans.
+For other types of glycans, you need to define your own derived traits.
+Check out the [Defining Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette
+to learn how to define your own derived traits.
+In fact, for other types of glycans not so complex as N-glycans, e.g. O-glycans,
+we recommend using [motif quantification](https://glycoverse.github.io/glydet/articles/quantify-motifs.html) instead.
 
 Now comes the fun part!
 📊 You can leverage all the powerful functions in the `glystats` package to analyze your derived traits.
@@ -280,3 +288,5 @@ You can try `all_traits()` to calculate more advanced and detailed derived trait
 You can also start to define your own meta-property functions and derived traits.
 Check out the [Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette
 to learn how to define your own derived traits.
+Or you can check out a special type of derived traits:
+[motif quantification](https://glycoverse.github.io/glydet/articles/quantify-motifs.html).
