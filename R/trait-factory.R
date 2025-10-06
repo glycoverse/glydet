@@ -106,7 +106,7 @@ prop <- function(cond, within = NULL, na_action = "keep") {
     cond = rlang::quo_get_expr(cond),
     within = rlang::quo_get_expr(within),
     na_action = na_action,
-    class = "glydet_prop"
+    class = c("glydet_prop", "glydet_trait")
   )
 }
 
@@ -201,7 +201,7 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
     denom_cond = rlang::quo_get_expr(denom_cond),
     within = rlang::quo_get_expr(within),
     na_action = na_action,
-    class = "glydet_ratio"
+    class = c("glydet_ratio", "glydet_trait")
   )
 }
 
@@ -295,7 +295,7 @@ wmean <- function(val, within = NULL, na_action = "keep") {
     val = rlang::quo_get_expr(val),
     within = rlang::quo_get_expr(within),
     na_action = na_action,
-    class = "glydet_wmean"
+    class = c("glydet_wmean", "glydet_trait")
   )
 }
 
@@ -384,7 +384,7 @@ total <- function(cond) {
     unname(res)
   }
 
-  structure(f, cond = rlang::quo_get_expr(cond), class = "glydet_total")
+  structure(f, cond = rlang::quo_get_expr(cond), class = c("glydet_total", "glydet_trait"))
 }
 
 #' @export
@@ -462,7 +462,7 @@ wsum <- function(val, within = NULL) {
     f,
     val = rlang::quo_get_expr(val),
     within = rlang::quo_get_expr(within),
-    class = "glydet_wsum"
+    class = c("glydet_wsum", "glydet_trait")
   )
 }
 
