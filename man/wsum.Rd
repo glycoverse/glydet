@@ -53,6 +53,5 @@ wsum(nS)
 
 # Weighted sum of the number of sialic acids within complex glycans
 wsum(nS, within = (Tp == "complex"))
-```
 
 }

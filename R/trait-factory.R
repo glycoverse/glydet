@@ -439,7 +439,6 @@ print.glydet_total <- function(x, ...) {
 #'
 #' # Weighted sum of the number of sialic acids within complex glycans
 #' wsum(nS, within = (Tp == "complex"))
-#' ```
 #'
 #' @export
 wsum <- function(val, within = NULL) {
