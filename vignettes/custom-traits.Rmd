@@ -127,7 +127,7 @@ prop(nF > 0)
 We know that `nFc + nFa` is equivalent to `nF`, so the above definition is equivalent to:
 
 ```r
-prop(nFc + nFa > 0)
+prop((nFc + nFa) > 0)
 ```
 
 As a general principle, any R expression that evaluates to a logical vector is valid for use with `prop()`.
