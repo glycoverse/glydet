@@ -12,7 +12,7 @@
 #' @examples
 #' # Explain built-in traits
 #' explain_trait(basic_traits()$TM)
-#' explain_trait(basic_traits()$SG)
+#' explain_trait(basic_traits()$GS)
 #'
 #' # Explain custom traits
 #' explain_trait(prop(nFc > 0))

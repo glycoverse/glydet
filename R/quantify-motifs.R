@@ -83,8 +83,8 @@
 #' ```r
 #' # Add the meta-properties to the variable information tibble
 #' motifs <- c(
-#'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-)",  # Lewis x antigen
-#'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-)"  # Sialyl Lewis x antigen
+#'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
+#'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 #' )
 #' exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
 #'
@@ -149,11 +149,11 @@
 #'
 #' exp <- real_experiment |>
 #'   auto_clean() |>
-#'   slice_sample_var(n = 10)
+#'   slice_head_var(n = 10)
 #'
 #' motifs <- c(
-#'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-)",  # Lewis x antigen
-#'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-)"  # Sialyl Lewis x antigen
+#'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
+#'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 #' )
 #'
 #' quantify_motifs(exp, motifs)
