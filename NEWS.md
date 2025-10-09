@@ -1,4 +1,8 @@
-# glydet (development version)
+# glydet 0.6.1
+
+## Minor improvements and bug fixes
+
+* Fix bugs introduced by the breaking changes in `glyexp` 0.10.0.
 
 # glydet 0.6.0
 

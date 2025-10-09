@@ -1,6 +1,6 @@
 Package: glydet
 Title: Describe Glycosylation Structural Properties in a Site Specific Manner
-Version: 0.6.0.9000
+Version: 0.6.1
 Authors@R: 
     person("Bin", "Fu", , "23110220018@m.fudan.edu.cn", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8567-2997"))
@@ -13,9 +13,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    glyexp (>= 0.9.2.9000),
-    glyclean (>= 0.7.0.9000),
-    glystats (>= 0.5.0.9000),
+    glyexp (>= 0.10.0),
+    glyclean (>= 0.7.1),
+    glystats (>= 0.5.1),
     missForest
 Config/testthat/edition: 3
 Encoding: UTF-8
@@ -26,7 +26,7 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.9.0.9000),
+    glymotif (>= 0.9.1),
     glyparse (>= 0.4.3),
     glyrepr (>= 0.7.1),
     memoise,
@@ -36,10 +36,10 @@ Imports:
     tibble,
     tidyr
 Remotes: 
-    glycoverse/glymotif,
+    glycoverse/glymotif@*release,
     glycoverse/glyparse@*release,
     glycoverse/glyrepr@*release,
-    glycoverse/glyexp,
-    glycoverse/glyclean,
-    glycoverse/glystats
+    glycoverse/glyexp@*release,
+    glycoverse/glyclean@*release,
+    glycoverse/glystats@*release
 VignetteBuilder: knitr
