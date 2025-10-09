@@ -14,7 +14,8 @@ glycomics_exp <- function() {
       "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # No Sia
       "Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # One Sia
       "Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # Two Sia
-    ))
+    )),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 }
@@ -34,14 +35,15 @@ glycoproteomics_exp <- function() {
   var_info <- tibble::tibble(
     variable = c("V1", "V2", "V3", "V4", "V5"),
     protein = c("P1", "P1", "P1", "P1", "P1"),
-    protein_site = c(1, 1, 1, 2, 2),
+    protein_site = c(1L, 1L, 1L, 2L, 2L),
     glycan_structure = glyparse::parse_iupac_condensed(c(
       "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Glycan 1: No Sia
       "Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Glycan 2: One Sia
       "Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Glycan 3: Two Sia
       "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Glycan 1: No Sia
       "Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # Glycan 2: One Sia
-    ))
+    )),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
 }

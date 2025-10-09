@@ -6,7 +6,8 @@ test_that("derive_traits works for glycomics experiments", {
       "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
-    ))
+    )),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
@@ -60,7 +61,8 @@ test_that("derive_traits works for glycoproteomics experiments", {
       "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
-    )), 2)
+    )), 2),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = paste0("S", 1:3))
   expr_mat <- matrix(
@@ -122,7 +124,8 @@ test_that("derive_traits works with custom meta-properties", {
       "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
-    ))
+    )),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
@@ -184,6 +187,7 @@ test_that("derive_traits works with custom meta-property columns", {
     )),
     n_a26_sia = c(0L, 1L, 0L),
     n_a23_sia = c(1L, 0L, 0L),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
@@ -232,7 +236,8 @@ test_that("derive_traits works with custom meta-property columns that overwrite 
       "Neu5Ac(a2-?)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
       "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
     )),
-    n_sia = c(0L, 0L, 0)
+    n_sia = c(0L, 0L, 0),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
@@ -264,7 +269,8 @@ test_that("derive_traits works with default traits", {
       "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
-    ))
+    )),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
@@ -292,7 +298,8 @@ test_that("derive_traits works with all traits", {
       "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
       "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
-    ))
+    )),
+    glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
@@ -360,7 +367,8 @@ test_that("derive_traits keeps glycosite descriptive columns in var_info", {
 
 test_that("derive_traits raises error for missing columns", {
   var_info <- tibble::tibble(
-    variable = c("V1", "V2", "V3")
+    variable = c("V1", "V2", "V3"),
+    glycan_composition = glyrepr::glycan_composition(c(Hex = 1))
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(c(1, 0, 1, 1, 1, 1, 1, 1, 0), nrow = 3, ncol = 3, byrow = TRUE)
