@@ -4,7 +4,13 @@
 \alias{quantify_motifs}
 \title{Quantify Motifs in an Experiment}
 \usage{
-quantify_motifs(exp, motifs, method = "relative")
+quantify_motifs(
+  exp,
+  motifs,
+  method = "relative",
+  alignments = NULL,
+  ignore_linkages = FALSE
+)
 }
 \arguments{
 \item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,
@@ -26,6 +32,13 @@ Otherwise, IUPAC-condensed structure strings will be used as motif names.}
 \item{method}{A character string specifying the quantification method.
 Must be either "absolute" or "relative". Default is "relative".
 See "Relative and Absolute Motif Quantification" section for details.}
+
+\item{alignments}{A character vector specifying the alignment method for each motif.
+Can be "terminal", "substructure", "core", or "whole". Default is "substructure".
+See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
+
+\item{ignore_linkages}{A logical value. If \code{TRUE}, linkages will be ignored in the comparison.
+See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 }
 \value{
 A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object containing motif quantifications.
@@ -179,5 +192,5 @@ quantify_motifs(exp, motifs)
 
 }
 \seealso{
-\code{\link[=derive_traits]{derive_traits()}}
+\code{\link[=derive_traits]{derive_traits()}}, \code{\link[glymotif:have_motif]{glymotif::have_motifs()}}
 }

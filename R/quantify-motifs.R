@@ -118,6 +118,11 @@
 #' @param method A character string specifying the quantification method.
 #'   Must be either "absolute" or "relative". Default is "relative".
 #'   See "Relative and Absolute Motif Quantification" section for details.
+#' @param alignments A character vector specifying the alignment method for each motif.
+#'   Can be "terminal", "substructure", "core", or "whole". Default is "substructure".
+#'   See [glymotif::have_motifs()] for details.
+#' @param ignore_linkages A logical value. If `TRUE`, linkages will be ignored in the comparison.
+#'   See [glymotif::have_motifs()] for details.
 #'
 #' @returns
 #' A new [glyexp::experiment()] object containing motif quantifications.
@@ -158,15 +163,15 @@
 #'
 #' quantify_motifs(exp, motifs)
 #'
-#' @seealso [derive_traits()]
+#' @seealso [derive_traits()], [glymotif::have_motifs()]
 #' @export
-quantify_motifs <- function(exp, motifs, method = "relative") {
+quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL, ignore_linkages = FALSE) {
   checkmate::assert_class(exp, "glyexp_experiment")
   # `motifs` is validated in `glymotif::add_motifs_int()`
   checkmate::assert_choice(method, c("absolute", "relative"))
 
   # Add meta-properties columns to the variable information tibble
-  exp2 <- glymotif::add_motifs_int(exp, motifs)
+  exp2 <- glymotif::add_motifs_int(exp, motifs, alignments = alignments, ignore_linkages = ignore_linkages)
   # `add_motifs_int()` has a complex logic of determining the column names,
   # so we use a simpler approach to get the column names.
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
