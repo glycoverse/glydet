@@ -37,7 +37,7 @@ Imports:
     tidyr
 Remotes: 
     glycoverse/glymotif,
-    glycoverse/glyparse,
+    glycoverse/glyparse@*release,
     glycoverse/glyrepr@*release,
     glycoverse/glyexp,
     glycoverse/glyclean,
