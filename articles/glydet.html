@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,50 +114,50 @@ your results are as clean and reliable as your data!</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span>  <span class="co"># Preprocess the data</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[145ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[138ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[75ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[71ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[30ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[28ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aggregating data</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[963ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.1s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[19ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[17ms]</span></span></span>
 <span><span class="va">exp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycoproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3880</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p>Let’s take a quick peek at our dataset to understand what we’re
 working with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,880 × 6</span></span></span>
-<span><span class="co">#&gt;    variable protein gene     glycan_composition     </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  SERPINA6 Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  HRG      Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  HRG      Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  HRG      Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  CLU      Hex(6)HexNAc(5)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  HRG      Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  HRG      Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  HRG      Hex(5)HexNAc(4)dHex(2) </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  HRG      Hex(4)HexNAc(3)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  HRG      Hex(4)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt;    variable protein glycan_composition     </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  Hex(5)HexNAc(4)NeuAc(2)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  Hex(5)HexNAc(4)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  Hex(6)HexNAc(5)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  Hex(5)HexNAc(4)NeuAc(2)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  Hex(5)HexNAc(4)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  Hex(5)HexNAc(4)dHex(2) </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  Hex(4)HexNAc(3)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  Hex(4)HexNAc(4)NeuAc(1)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,870 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 2 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;, gene &lt;chr&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_sample_info.html" class="external-link">get_sample_info</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 2</span></span></span>
 <span><span class="co">#&gt;    sample group</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> C1     C    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> C2     C    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> C3     C    </span></span>
@@ -185,7 +185,7 @@ working with:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3836</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p>Voilà! What you see is a brand new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> object
 with “traitomics” type. Think of it as your original dataset’s
@@ -283,7 +283,7 @@ conditions:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">anova_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glystats/reference/gly_anova.html" class="external-link">gly_anova</a></span><span class="op">(</span><span class="va">trait_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Number of groups: <span style="color: #0000BB;">4</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"C"</span>, <span style="color: #0000BB;">"H"</span>, <span style="color: #0000BB;">"M"</span>, and <span style="color: #0000BB;">"Y"</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"H"</span>, <span style="color: #0000BB;">"M"</span>, <span style="color: #0000BB;">"Y"</span>, and <span style="color: #0000BB;">"C"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Pairwise comparisons will be performed, with levels coming first as reference groups.</span></span>
 <span><span class="co">#&gt; Warning: <span style="color: #0000BB;">267</span> variables failed to fit the model</span></span>
 <span><span class="va">anova_res</span><span class="op">$</span><span class="va">tidy_result</span><span class="op">$</span><span class="va">main_test</span> <span class="op">|&gt;</span></span>
@@ -291,18 +291,18 @@ conditions:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 13</span></span></span>
 <span><span class="co">#&gt;    variable term     df     sumsq    meansq statistic     p_val   p_adj post_hoc</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1115    group     3 0.000<span style="text-decoration: underline;">094</span>1 0.000<span style="text-decoration: underline;">031</span>4      26.2   1.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V1227    group     3 0.062<span style="text-decoration: underline;">9</span>    0.021<span style="text-decoration: underline;">0</span>         14.0   1.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V1353    group     3 0.002<span style="text-decoration: underline;">31</span>   0.000<span style="text-decoration: underline;">770</span>       19.3   5.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V1381    group     3 0.006<span style="text-decoration: underline;">40</span>   0.002<span style="text-decoration: underline;">13</span>        14.9   1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> C_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V1661    group     3 0.029<span style="text-decoration: underline;">9</span>    0.009<span style="text-decoration: underline;">98</span>        14.3   1.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.92<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V1675    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>        43.1   2.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> C_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V2165    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>       172.    1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 1.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V2487    group     3 0.064<span style="text-decoration: underline;">4</span>    0.021<span style="text-decoration: underline;">5</span>         74.1   3.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V2837    group     3 0.005<span style="text-decoration: underline;">47</span>   0.001<span style="text-decoration: underline;">82</span>        27.5   1.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V457     group     3 0.000<span style="text-decoration: underline;">548</span>  0.000<span style="text-decoration: underline;">183</span>       52.2   1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.55<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> V709     group     3 0.077<span style="text-decoration: underline;">1</span>    0.025<span style="text-decoration: underline;">7</span>         22.4   3.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> C_vs_H;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> V919     group     3 0.003<span style="text-decoration: underline;">65</span>   0.001<span style="text-decoration: underline;">22</span>        31.9   8.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 4.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> C_vs_H;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1115    group     3 0.000<span style="text-decoration: underline;">094</span>1 0.000<span style="text-decoration: underline;">031</span>4      26.2   1.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V1227    group     3 0.062<span style="text-decoration: underline;">9</span>    0.021<span style="text-decoration: underline;">0</span>         14.0   1.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_Y;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V1353    group     3 0.002<span style="text-decoration: underline;">31</span>   0.000<span style="text-decoration: underline;">770</span>       19.3   5.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_C;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V1381    group     3 0.006<span style="text-decoration: underline;">40</span>   0.002<span style="text-decoration: underline;">13</span>        14.9   1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_Y;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V1661    group     3 0.029<span style="text-decoration: underline;">9</span>    0.009<span style="text-decoration: underline;">98</span>        14.3   1.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.92<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V1675    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>        43.1   2.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V2165    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>       172.    1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 1.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V2487    group     3 0.064<span style="text-decoration: underline;">4</span>    0.021<span style="text-decoration: underline;">5</span>         74.1   3.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V2837    group     3 0.005<span style="text-decoration: underline;">47</span>   0.001<span style="text-decoration: underline;">82</span>        27.5   1.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V457     group     3 0.000<span style="text-decoration: underline;">548</span>  0.000<span style="text-decoration: underline;">183</span>       52.2   1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.55<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_C;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> V709     group     3 0.077<span style="text-decoration: underline;">1</span>    0.025<span style="text-decoration: underline;">7</span>         22.4   3.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> V919     group     3 0.003<span style="text-decoration: underline;">65</span>   0.001<span style="text-decoration: underline;">22</span>        31.9   8.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 4.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_C;…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: protein &lt;chr&gt;, protein_site &lt;int&gt;, trait &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;</span></span></span></code></pre></div>
 <p>🔍 <strong>Discovery time!</strong> We’ve identified several
@@ -385,22 +385,22 @@ directly:</p>
 <code class="sourceCode R"><span><span class="va">exp_with_mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_meta_properties.html">add_meta_properties</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">exp_with_mp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,880 × 16</span></span></span>
-<span><span class="co">#&gt;    variable protein gene     glycan_composition     </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  SERPINA6 Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  HRG      Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  HRG      Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  HRG      Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  CLU      Hex(6)HexNAc(5)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  HRG      Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  HRG      Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  HRG      Hex(5)HexNAc(4)dHex(2) </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  HRG      Hex(4)HexNAc(3)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  HRG      Hex(4)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt;    variable protein glycan_composition     </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  Hex(5)HexNAc(4)NeuAc(2)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  Hex(5)HexNAc(4)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  Hex(6)HexNAc(5)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  Hex(5)HexNAc(4)NeuAc(2)</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  Hex(5)HexNAc(4)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  Hex(5)HexNAc(4)dHex(2) </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  Hex(4)HexNAc(3)        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  Hex(4)HexNAc(4)NeuAc(1)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,870 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 12 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;, Tp &lt;fct&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   B &lt;lgl&gt;, nA &lt;int&gt;, nF &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;, nG &lt;int&gt;, nGt &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   nS &lt;int&gt;, nM &lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 13 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;, Tp &lt;fct&gt;, B &lt;lgl&gt;, nA &lt;int&gt;, nF &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   nG &lt;int&gt;, nGt &lt;int&gt;, nS &lt;int&gt;, nM &lt;int&gt;</span></span></span></code></pre></div>
 <p>✨ <strong>Look at that transformation!</strong> Your variable
 information is now enriched with multiple meta-property columns. This
 opens up powerful filtering possibilities based on structural
@@ -413,8 +413,8 @@ glycans:</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycoproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">207</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">Tp</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nF</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">Tp</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nF</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="meta-property-functions-your-structural-toolkit">🧰 Meta-Property Functions: Your Structural Toolkit<a class="anchor" aria-label="anchor" href="#meta-property-functions-your-structural-toolkit"></a>
@@ -560,16 +560,16 @@ demonstrate how to work with glycomics data using
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &gt; 100, using MissForest imputation</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[16.8s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[16.3s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Total Area)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[14ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[13ms]</span></span></span>
 <span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="va">trait_exp</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitomics Experiment</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">14</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level2">
