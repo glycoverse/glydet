@@ -23,7 +23,7 @@ motif quantifications in each sample (for glycomics data)."><meta property="og:i
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,7 +67,13 @@ motif quantifications in each sample (for glycomics data).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">exp</span>, <span class="va">motifs</span>, method <span class="op">=</span> <span class="st">"relative"</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">quantify_motifs</span><span class="op">(</span></span>
+<span>  <span class="va">exp</span>,</span>
+<span>  <span class="va">motifs</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"relative"</span>,</span>
+<span>  alignments <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ignore_linkages <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -98,6 +104,17 @@ Otherwise, IUPAC-condensed structure strings will be used as motif names.</p></d
 <dd><p>A character string specifying the quantification method.
 Must be either "absolute" or "relative". Default is "relative".
 See "Relative and Absolute Motif Quantification" section for details.</p></dd>
+
+
+<dt id="arg-alignments">alignments<a class="anchor" aria-label="anchor" href="#arg-alignments"></a></dt>
+<dd><p>A character vector specifying the alignment method for each motif.
+Can be "terminal", "substructure", "core", or "whole". Default is "substructure".
+See <code><a href="https://glycoverse.github.io/glymotif/reference/have_motif.html" class="external-link">glymotif::have_motifs()</a></code> for details.</p></dd>
+
+
+<dt id="arg-ignore-linkages">ignore_linkages<a class="anchor" aria-label="anchor" href="#arg-ignore-linkages"></a></dt>
+<dd><p>A logical value. If <code>TRUE</code>, linkages will be ignored in the comparison.
+See <code><a href="https://glycoverse.github.io/glymotif/reference/have_motif.html" class="external-link">glymotif::have_motifs()</a></code> for details.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -190,7 +207,7 @@ and everything else remains the same.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="derive_traits.html">derive_traits()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="derive_traits.html">derive_traits()</a></code>, <code><a href="https://glycoverse.github.io/glymotif/reference/have_motif.html" class="external-link">glymotif::have_motifs()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -216,7 +233,7 @@ and everything else remains the same.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.5s]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[79ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[77ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">motifs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span></span>
