@@ -1,4 +1,8 @@
-# glydet (development version)
+# glydet 0.6.2
+
+## Minor improvements and bug fixes
+
+* Add `alignments` and `ignore_linkages` parameters to `quantify_motifs()`. These two parameters were left behind when we migrated `quantify_motifs()` from `glymotif` to `glydet` in glydet 0.6.0.
 
 # glydet 0.6.1
 
