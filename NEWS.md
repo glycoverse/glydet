@@ -1,4 +1,8 @@
-# glydet (development version)
+# glydet 0.6.3
+
+## Minor improvements and bug fixes
+
+* Updated dependency on `glymotif (>= 0.10.0)` to ensure compatibility with recent changes in package `igraph v2.2.0`.
 
 # glydet 0.6.2
 
