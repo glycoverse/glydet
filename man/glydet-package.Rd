@@ -8,7 +8,7 @@
 \description{
 \if{html}{\figure{logo.png}{options: style='float: right' alt='logo' width='120'}}
 
-Describe glycosylation structural properties in a site specific manner. In the field of glycomics, this analytical approach is known as derived traits. glydet provides functions to calculate derived traits well-defined in literature, and implements a domain-specific language to define custom derived traits.
+Calculate and analyze glycosylation derived traits for site-specific glycoproteomics data. Derived traits are summary features that aggregate individual glycan abundances into biologically meaningful groups (e.g., galactosylation, sialylation, fucosylation, branching). This package provides functions to compute well-established derived traits from the literature, and features a domain-specific language for defining custom derived traits tailored to specific research needs.
 }
 \seealso{
 Useful links:
