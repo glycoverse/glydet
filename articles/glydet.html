@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.3.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -114,10 +114,10 @@ your results are as clean and reliable as your data!</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span>  <span class="co"># Preprocess the data</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[132ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[137ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[71ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[73ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span></span>
@@ -139,20 +139,19 @@ working with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,880 × 6</span></span></span>
-<span><span class="co">#&gt;    variable protein glycan_composition     </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  Hex(6)HexNAc(5)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  Hex(5)HexNAc(4)dHex(2) </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  Hex(4)HexNAc(3)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  Hex(4)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,870 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;, gene &lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt;    variable protein glycan_composition      glycan_structure  protein_site gene </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                 <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">NeuAc</span>(2) <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(?…          176 SERP…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">NeuAc</span>(1) <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(?…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)         <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>(…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">NeuAc</span>(1) <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(?…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  <span style="color: #000000;">Hex</span>(6)<span style="color: #000000;">HexNAc</span>(5)         <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>(…          291 CLU  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">NeuAc</span>(2) <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(?…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)         <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>(…          345 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">dHex</span>(2)  <span style="color: #000000;">dHex</span>(??-?)<span style="color: #000000;">Hex</span>(??…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(3)         <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>(…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">NeuAc</span>(1) <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(?…          344 HRG  </span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,870 more rows</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_sample_info.html" class="external-link">get_sample_info</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 2</span></span></span>
@@ -385,21 +384,20 @@ directly:</p>
 <code class="sourceCode R"><span><span class="va">exp_with_mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_meta_properties.html">add_meta_properties</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">exp_with_mp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 3,880 × 16</span></span></span>
-<span><span class="co">#&gt;    variable protein glycan_composition     </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                 </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  Hex(5)HexNAc(4)NeuAc(1)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  Hex(6)HexNAc(5)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  Hex(5)HexNAc(4)NeuAc(2)</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  Hex(5)HexNAc(4)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  Hex(5)HexNAc(4)dHex(2) </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  Hex(4)HexNAc(3)        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  Hex(4)HexNAc(4)NeuAc(1)</span></span>
+<span><span class="co">#&gt;    variable protein glycan_composition glycan_structure protein_site gene  Tp   </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       P08185  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          176 SERP… comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   hybr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          344 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       P10909  <span style="color: #000000;">Hex</span>(6)<span style="color: #000000;">HexNAc</span>(5)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          291 CLU   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          345 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">dH</span>… <span style="color: #000000;">dHex</span>(??-?)<span style="color: #000000;">Hex</span>(?…          344 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(3)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          344 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,870 more rows</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 13 more variables: glycan_structure &lt;struct&gt;, protein_site &lt;int&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;, Tp &lt;fct&gt;, B &lt;lgl&gt;, nA &lt;int&gt;, nF &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: B &lt;lgl&gt;, nA &lt;int&gt;, nF &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   nG &lt;int&gt;, nGt &lt;int&gt;, nS &lt;int&gt;, nM &lt;int&gt;</span></span></span></code></pre></div>
 <p>✨ <strong>Look at that transformation!</strong> Your variable
 information is now enriched with multiple meta-property columns. This
@@ -556,14 +554,14 @@ demonstrate how to work with glycomics data using
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median Quotient) <span style="color: #B2B2B2;">[15ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[146ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[14ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &gt; 100, using MissForest imputation</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[16.8s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[6.3s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Total Area)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[13ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[14ms]</span></span></span>
 <span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="va">trait_exp</span></span>
 <span><span class="co">#&gt; </span></span>
