@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.4.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,10 +86,41 @@ glycoproteomics community for the first time, enabling
 <strong>site-specific trait analysis</strong>. Plus, it features an
 intuitive domain-specific language that lets you define custom traits
 tailored to your research needs.</p>
-<p><strong>Important Note:</strong> This package is built on the <a href="https://github.com/glycoverse/glyrepr" class="external-link">glyrepr</a> package, and
+<div class="section level2">
+<h2 id="important-notes-before-you-start">Important Notes Before You Start<a class="anchor" aria-label="anchor" href="#important-notes-before-you-start"></a>
+</h2>
+<div class="section level3">
+<h3 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+</h3>
+<p>This package is built on the <a href="https://github.com/glycoverse/glyrepr" class="external-link">glyrepr</a> package, and
 heavily relies on the <a href="https://github.com/glycoverse/glyexp" class="external-link">glyexp</a> package. If you
 are not familiar with these two packages, we highly recommend checking
-out their introductions first.</p>
+out their introductions first. Also, to fully understand the concepts
+and functions in this package, it is recommended to have a basic
+understanding of the <a href="https://github.com/glycoverse/glymotif" class="external-link">glymotif</a> package.</p>
+</div>
+<div class="section level3">
+<h3 id="data-types">Data Types<a class="anchor" aria-label="anchor" href="#data-types"></a>
+</h3>
+<p><code>glydet</code> is designed to work with untargeted glycomics and
+glycoproteomics data. Label-free quantification data is readily
+supported by <code>glyread</code> and <code>glyclean</code>. For
+labeling quantification like TMT, ratios between the target and
+reference channels (TMT ratios) must be converted to abundance matrix
+following this procedure:</p>
+<ol style="list-style-type: decimal">
+<li>Calculate the median of all reference channel MS2 summed intensities
+from the unnormalized intensity matrix for each glycopeptide</li>
+<li>Multiply the TMT ratios by the median MS2 summed intensities for
+each glycopeptide</li>
+</ol>
+<p>This enables the quantification of different glycopeptides in the
+same sample to be comparable.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="dive-right-in-your-first-analysis">🎯 Dive Right In: Your First Analysis<a class="anchor" aria-label="anchor" href="#dive-right-in-your-first-analysis"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glydet/">glydet</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyrepr/" class="external-link">glyrepr</a></span><span class="op">)</span></span>
@@ -101,9 +132,6 @@ out their introductions first.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     aggregate</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glystats/" class="external-link">glystats</a></span><span class="op">)</span></span></code></pre></div>
-<div class="section level2">
-<h2 id="dive-right-in-your-first-analysis">🎯 Dive Right In: Your First Analysis<a class="anchor" aria-label="anchor" href="#dive-right-in-your-first-analysis"></a>
-</h2>
 <p>Ready to see <code>glydet</code> in action? Let’s jump straight into
 a real-world example that demonstrates its power! We’ll work with
 <code><a href="https://glycoverse.github.io/glyexp/reference/real_experiment.html" class="external-link">glyexp::real_experiment</a></code> — an authentic N-glycoproteomics
@@ -114,14 +142,14 @@ your results are as clean and reliable as your data!</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span>  <span class="co"># Preprocess the data</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[134ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[135ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[70ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[73ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[29ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[24ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aggregating data</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.1s]</span></span></span>
@@ -290,18 +318,18 @@ conditions:</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 13</span></span></span>
 <span><span class="co">#&gt;    variable term     df     sumsq    meansq statistic     p_val   p_adj post_hoc</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1115    group     3 0.000<span style="text-decoration: underline;">094</span>1 0.000<span style="text-decoration: underline;">031</span>4      26.2   1.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.86<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V1227    group     3 0.062<span style="text-decoration: underline;">9</span>    0.021<span style="text-decoration: underline;">0</span>         14.0   1.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.08<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_Y;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V1353    group     3 0.002<span style="text-decoration: underline;">31</span>   0.000<span style="text-decoration: underline;">770</span>       19.3   5.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.63<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_C;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V1381    group     3 0.006<span style="text-decoration: underline;">40</span>   0.002<span style="text-decoration: underline;">13</span>        14.9   1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.71<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_Y;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V1661    group     3 0.029<span style="text-decoration: underline;">9</span>    0.009<span style="text-decoration: underline;">98</span>        14.3   1.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.94<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V1675    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>        43.1   2.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.92<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V2165    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>       172.    1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 1.02<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V2487    group     3 0.064<span style="text-decoration: underline;">4</span>    0.021<span style="text-decoration: underline;">5</span>         74.1   3.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 8.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V2837    group     3 0.005<span style="text-decoration: underline;">47</span>   0.001<span style="text-decoration: underline;">82</span>        27.5   1.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V457     group     3 0.000<span style="text-decoration: underline;">548</span>  0.000<span style="text-decoration: underline;">183</span>       52.2   1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.57<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_C;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> V709     group     3 0.077<span style="text-decoration: underline;">1</span>    0.025<span style="text-decoration: underline;">7</span>         22.4   3.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_M;…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> V919     group     3 0.003<span style="text-decoration: underline;">65</span>   0.001<span style="text-decoration: underline;">22</span>        31.9   8.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 5.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_C;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1115    group     3 0.000<span style="text-decoration: underline;">094</span>1 0.000<span style="text-decoration: underline;">031</span>4      26.2   1.72<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.80<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V1227    group     3 0.062<span style="text-decoration: underline;">9</span>    0.021<span style="text-decoration: underline;">0</span>         14.0   1.50<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 3.06<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_Y;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V1353    group     3 0.002<span style="text-decoration: underline;">31</span>   0.000<span style="text-decoration: underline;">770</span>       19.3   5.05<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.61<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_C;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V1381    group     3 0.006<span style="text-decoration: underline;">40</span>   0.002<span style="text-decoration: underline;">13</span>        14.9   1.23<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.69<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_Y;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V1661    group     3 0.029<span style="text-decoration: underline;">9</span>    0.009<span style="text-decoration: underline;">98</span>        14.3   1.40<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> 2.92<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V1675    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>        43.1   2.78<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.90<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V2165    group     3 0.017<span style="text-decoration: underline;">4</span>    0.005<span style="text-decoration: underline;">81</span>       172.    1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-7</span> 1.01<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V2487    group     3 0.064<span style="text-decoration: underline;">4</span>    0.021<span style="text-decoration: underline;">5</span>         74.1   3.53<span style="color: #949494;">e</span><span style="color: #BB0000;">-6</span> 8.91<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V2837    group     3 0.005<span style="text-decoration: underline;">47</span>   0.001<span style="text-decoration: underline;">82</span>        27.5   1.45<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 7.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V457     group     3 0.000<span style="text-decoration: underline;">548</span>  0.000<span style="text-decoration: underline;">183</span>       52.2   1.34<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 2.55<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_C;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> V709     group     3 0.077<span style="text-decoration: underline;">1</span>    0.025<span style="text-decoration: underline;">7</span>         22.4   3.00<span style="color: #949494;">e</span><span style="color: #BB0000;">-4</span> 1.22<span style="color: #949494;">e</span><span style="color: #BB0000;">-2</span> H_vs_M;…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> V919     group     3 0.003<span style="text-decoration: underline;">65</span>   0.001<span style="text-decoration: underline;">22</span>        31.9   8.46<span style="color: #949494;">e</span><span style="color: #BB0000;">-5</span> 4.97<span style="color: #949494;">e</span><span style="color: #BB0000;">-3</span> H_vs_C;…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 4 more variables: protein &lt;chr&gt;, protein_site &lt;int&gt;, trait &lt;chr&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   gene &lt;chr&gt;</span></span></span></code></pre></div>
 <p>🔍 <strong>Discovery time!</strong> We’ve identified several
@@ -551,17 +579,17 @@ demonstrate how to work with glycomics data using
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median Quotient)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median Quotient) <span style="color: #B2B2B2;">[14ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Median Quotient) <span style="color: #B2B2B2;">[15ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[14ms]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &gt; 100, using MissForest imputation</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[6.4s]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputing missing values<span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[5.9s]</span></span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalizing data (Total Area)</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[13ms]</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalizing data (Total Area) <span style="color: #B2B2B2;">[14ms]</span></span></span>
 <span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
 <span><span class="va">trait_exp</span></span>
 <span><span class="co">#&gt; </span></span>
