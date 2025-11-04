@@ -34,10 +34,30 @@ But here's where it gets exciting:
 enabling **site-specific trait analysis**.
 Plus, it features an intuitive domain-specific language that lets you define custom traits tailored to your research needs.
 
-**Important Note:** This package is built on the [glyrepr](https://github.com/glycoverse/glyrepr) package,
+## Important Notes Before You Start
+
+### Prerequisites
+
+This package is built on the [glyrepr](https://github.com/glycoverse/glyrepr) package,
 and heavily relies on the [glyexp](https://github.com/glycoverse/glyexp) package.
 If you are not familiar with these two packages,
 we highly recommend checking out their introductions first.
+Also, to fully understand the concepts and functions in this package,
+it is recommended to have a basic understanding of the [glymotif](https://github.com/glycoverse/glymotif) package.
+
+### Data Types
+
+`glydet` is designed to work with untargeted glycomics and glycoproteomics data.
+Label-free quantification data is readily supported by `glyread` and `glyclean`.
+For labeling quantification like TMT, ratios between the target and reference channels (TMT ratios)
+must be converted to abundance matrix following this procedure:
+
+1. Calculate the median of all reference channel MS2 summed intensities from the unnormalized intensity matrix for each glycopeptide
+2. Multiply the TMT ratios by the median MS2 summed intensities for each glycopeptide
+
+This enables the quantification of different glycopeptides in the same sample to be comparable.
+
+## 🎯 Dive Right In: Your First Analysis
 
 ```{r setup}
 library(glydet)
@@ -46,8 +66,6 @@ library(glyexp)
 library(glyclean)
 library(glystats)
 ```
-
-## 🎯 Dive Right In: Your First Analysis
 
 Ready to see `glydet` in action?
 Let's jump straight into a real-world example that demonstrates its power!
