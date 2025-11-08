@@ -30,8 +30,8 @@ Imports:
     cli,
     dplyr,
     glymotif (>= 0.10.0),
-    glyparse (>= 0.4.3),
-    glyrepr (>= 0.7.1),
+    glyparse (>= 0.5.3),
+    glyrepr (>= 0.7.4),
     memoise,
     purrr,
     rlang,
@@ -40,7 +40,6 @@ Imports:
     tidyr
 Remotes: 
     glycoverse/glymotif@*release,
-    glycoverse/glyparse@*release,
     glycoverse/glyexp@*release,
     glycoverse/glyclean@*release,
     glycoverse/glystats@*release
