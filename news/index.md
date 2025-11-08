@@ -2,6 +2,12 @@
 
 ## glydet (development version)
 
+## glydet 0.6.5
+
+### Minor improvements and fixes
+
+- glydet now depends on the CRAN version of glyparse.
+
 ## glydet 0.6.4
 
 ### Minor improvements and fixes

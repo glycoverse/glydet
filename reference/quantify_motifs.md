@@ -237,18 +237,18 @@ exp <- real_experiment |>
 #> ✔ Normalizing data (Median) [8ms]
 #> 
 #> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [17ms]
+#> ✔ Removing variables with >50% missing values [15ms]
 #> 
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
 #> ℹ Imputing missing values
-#> ✔ Imputing missing values [17ms]
+#> ✔ Imputing missing values [16ms]
 #> 
 #> ℹ Aggregating data
 #> ✔ Aggregating data [1.7s]
 #> 
 #> ℹ Normalizing data again
-#> ✔ Normalizing data again [18ms]
+#> ✔ Normalizing data again [16ms]
 #> 
 
 motifs <- c(

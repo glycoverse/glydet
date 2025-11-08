@@ -16,20 +16,20 @@ library(glyclean)
 
 exp <- auto_clean(real_experiment)
 #> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [149ms]
+#> ✔ Normalizing data (Median) [142ms]
 #> 
 #> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [79ms]
+#> ✔ Removing variables with >50% missing values [73ms]
 #> 
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [30ms]
+#> ℹ Imputing missing values✔ Imputing missing values [28ms]
 #> 
 #> ℹ Aggregating data
-#> ✔ Aggregating data [1.2s]
+#> ✔ Aggregating data [1.1s]
 #> 
 #> ℹ Normalizing data again
-#> ✔ Normalizing data again [19ms]
+#> ✔ Normalizing data again [17ms]
 ```
 
 ## What is motif quantification?

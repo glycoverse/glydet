@@ -80,20 +80,20 @@ reliable as your data!
 ``` r
 exp <- auto_clean(real_experiment)  # Preprocess the data
 #> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [144ms]
+#> ✔ Normalizing data (Median) [139ms]
 #> 
 #> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [82ms]
+#> ✔ Removing variables with >50% missing values [76ms]
 #> 
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [27ms]
+#> ℹ Imputing missing values✔ Imputing missing values [25ms]
 #> 
 #> ℹ Aggregating data
 #> ✔ Aggregating data [1.1s]
 #> 
 #> ℹ Normalizing data again
-#> ✔ Normalizing data again [21ms]
+#> ✔ Normalizing data again [20ms]
 exp
 #> 
 #> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
@@ -475,17 +475,17 @@ glycomics data using
 ``` r
 exp <- auto_clean(real_experiment2)
 #> ℹ Normalizing data (Median Quotient)
-#> ✔ Normalizing data (Median Quotient) [223ms]
+#> ✔ Normalizing data (Median Quotient) [15ms]
 #> 
 #> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [16ms]
+#> ✔ Removing variables with >50% missing values [14ms]
 #> 
 #> ℹ Imputing missing values
 #> ℹ Sample size > 100, using MissForest imputation
-#> ℹ Imputing missing values✔ Imputing missing values [6.9s]
+#> ℹ Imputing missing values✔ Imputing missing values [6.3s]
 #> 
 #> ℹ Normalizing data (Total Area)
-#> ✔ Normalizing data (Total Area) [15ms]
+#> ✔ Normalizing data (Total Area) [13ms]
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 
