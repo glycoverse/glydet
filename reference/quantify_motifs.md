@@ -234,7 +234,7 @@ exp <- real_experiment |>
   auto_clean() |>
   slice_head_var(n = 10)
 #> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [8ms]
+#> ✔ Normalizing data (Median) [7ms]
 #> 
 #> ℹ Removing variables with >50% missing values
 #> ✔ Removing variables with >50% missing values [15ms]
@@ -242,13 +242,13 @@ exp <- real_experiment |>
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
 #> ℹ Imputing missing values
-#> ✔ Imputing missing values [16ms]
+#> ✔ Imputing missing values [15ms]
 #> 
 #> ℹ Aggregating data
-#> ✔ Aggregating data [1.7s]
+#> ✔ Aggregating data [1.6s]
 #> 
 #> ℹ Normalizing data again
-#> ✔ Normalizing data again [16ms]
+#> ✔ Normalizing data again [14ms]
 #> 
 
 motifs <- c(

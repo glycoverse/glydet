@@ -112,7 +112,7 @@ exp <- real_experiment |>
   auto_clean() |>
   slice_sample_var(n = 100)
 #> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [191ms]
+#> ✔ Normalizing data (Median) [201ms]
 #> 
 #> ℹ Removing variables with >50% missing values
 #> ✔ Removing variables with >50% missing values [19ms]
@@ -120,13 +120,13 @@ exp <- real_experiment |>
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
 #> ℹ Imputing missing values
-#> ✔ Imputing missing values [68ms]
+#> ✔ Imputing missing values [63ms]
 #> 
 #> ℹ Aggregating data
-#> ✔ Aggregating data [1.6s]
+#> ✔ Aggregating data [1.5s]
 #> 
 #> ℹ Normalizing data again
-#> ✔ Normalizing data again [16ms]
+#> ✔ Normalizing data again [14ms]
 #> 
 trait_exp <- derive_traits(exp)
 trait_exp

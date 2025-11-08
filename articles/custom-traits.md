@@ -32,20 +32,20 @@ library(glyrepr)
 
 exp <- auto_clean(real_experiment)
 #> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [139ms]
+#> ✔ Normalizing data (Median) [131ms]
 #> 
 #> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [26ms]
+#> ✔ Removing variables with >50% missing values [24ms]
 #> 
 #> ℹ Imputing missing values
 #> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [24ms]
+#> ℹ Imputing missing values✔ Imputing missing values [22ms]
 #> 
 #> ℹ Aggregating data
-#> ✔ Aggregating data [1.1s]
+#> ✔ Aggregating data [997ms]
 #> 
 #> ℹ Normalizing data again
-#> ✔ Normalizing data again [18ms]
+#> ✔ Normalizing data again [17ms]
 ```
 
 ## Custom Traits

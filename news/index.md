@@ -1,7 +1,5 @@
 # Changelog
 
-## glydet (development version)
-
 ## glydet 0.6.5
 
 ### Minor improvements and fixes
