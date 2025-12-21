@@ -39,10 +39,10 @@ explain_trait.default <- function(trait_fn) {
 explain_trait.glydet_prop <- function(trait_fn) {
   cond_expr <- attr(trait_fn, "cond")
   within_expr <- attr(trait_fn, "within")
-  
+
   cond_desc <- .expr_to_description(cond_expr)
   scope_desc <- .within_to_scope(within_expr)
-  
+
   paste0("Proportion of ", cond_desc, " ", scope_desc, ".")
 }
 
@@ -51,11 +51,11 @@ explain_trait.glydet_ratio <- function(trait_fn) {
   num_cond_expr <- attr(trait_fn, "num_cond")
   denom_cond_expr <- attr(trait_fn, "denom_cond")
   within_expr <- attr(trait_fn, "within")
-  
+
   num_desc <- .expr_to_description(num_cond_expr)
   denom_desc <- .expr_to_description(denom_cond_expr)
   scope_desc <- .within_to_scope(within_expr)
-  
+
   paste0("Ratio of ", num_desc, " to ", denom_desc, " ", scope_desc, ".")
 }
 
@@ -63,10 +63,10 @@ explain_trait.glydet_ratio <- function(trait_fn) {
 explain_trait.glydet_wmean <- function(trait_fn) {
   val_expr <- attr(trait_fn, "val")
   within_expr <- attr(trait_fn, "within")
-  
+
   val_desc <- .expr_to_value_description(val_expr)
   scope_desc <- .within_to_scope(within_expr)
-  
+
   paste0("Abundance-weighted mean of ", val_desc, " ", scope_desc, ".")
 }
 
@@ -76,14 +76,14 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   if (is.null(within_expr)) {
     return("among all glycans")
   }
-  
+
   # Remove outer parentheses if present (consistent with print methods)
   within_text <- rlang::expr_text(within_expr)
   if (stringr::str_starts(within_text, stringr::fixed("(")) && 
       stringr::str_ends(within_text, stringr::fixed(")"))) {
     within_expr <- rlang::parse_expr(stringr::str_sub(within_text, 2, -2))
   }
-  
+
   within_desc <- .expr_to_description(within_expr)
   paste0("within ", within_desc)
 }
@@ -92,18 +92,18 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   if (is.null(expr)) {
     return("all glycans")
   }
-  
+
   # Handle special cases for common patterns
   desc <- .try_special_patterns(expr)
   if (!is.null(desc)) {
     return(desc)
   }
-  
+
   # Handle logical operators recursively
   if (rlang::is_call(expr)) {
     op <- rlang::call_name(expr)
     args <- rlang::call_args(expr)
-    
+
     if (op == "&" && length(args) == 2) {
       left_desc <- .expr_to_description(args[[1]])
       right_desc <- .expr_to_description(args[[2]])
@@ -114,7 +114,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       }
       return(paste(left_desc, "and", right_desc))
     }
-    
+
     if (op == "|" && length(args) == 2) {
       left_desc <- .expr_to_description(args[[1]])
       right_desc <- .expr_to_description(args[[2]])
@@ -125,7 +125,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       }
       return(paste(left_desc, "or", right_desc))
     }
-    
+
     if (op == "!" && length(args) == 1) {
       arg_desc <- .expr_to_description(args[[1]])
       # Handle special negation cases
@@ -138,7 +138,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       return(paste("not", arg_desc))
     }
   }
-  
+
   # Fallback to generic description for complex expressions
   expr_text <- rlang::expr_text(expr)
   paste0("glycans satisfying '", expr_text, "'")
@@ -148,28 +148,28 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   if (is.null(expr)) {
     return("value")
   }
-  
+
   # Handle special arithmetic patterns
   desc <- .try_special_value_patterns(expr)
   if (!is.null(desc)) {
     return(desc)
   }
-  
+
   # Handle simple variable names
   if (rlang::is_symbol(expr)) {
     var_name <- rlang::as_string(expr)
     return(.translate_variable(var_name))
   }
-  
+
   # Handle arithmetic expressions
   if (rlang::is_call(expr)) {
     op <- rlang::call_name(expr)
     args <- rlang::call_args(expr)
-    
+
     if (op == "/" && length(args) == 2) {
       num_var <- rlang::as_string(args[[1]])
       denom_var <- rlang::as_string(args[[2]])
-      
+
       # Special cases for ratios
       if (num_var == "nS" && denom_var == "nG") {
         return("degree of sialylation per galactose")
@@ -180,13 +180,13 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       if (num_var == "nS" && denom_var == "nA") {
         return("degree of sialylation per antenna")
       }
-      
+
       num_desc <- .translate_variable(num_var)
       denom_desc <- .translate_variable(denom_var)
       return(paste(num_desc, "per", denom_desc))
     }
   }
-  
+
   # Fallback to generic description
   expr_text <- rlang::expr_text(expr)
   paste0("value of '", expr_text, "'")
@@ -202,15 +202,15 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     }
     return(NULL)
   }
-  
+
   op <- rlang::call_name(expr)
   args <- rlang::call_args(expr)
-  
+
   # Handle comparisons
   if (op == "==" && length(args) == 2) {
     var <- args[[1]]
     val <- args[[2]]
-    
+
     if (rlang::is_symbol(var) && rlang::as_string(var) == "Tp") {
       if (rlang::is_string(val)) {
         type_val <- rlang::eval_bare(val)
@@ -219,7 +219,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
         if (type_val == "complex") return("complex glycans")
       }
     }
-    
+
     if (rlang::is_symbol(var) && rlang::as_string(var) == "nA") {
       if (rlang::is_syntactic_literal(val)) {
         antenna_count <- rlang::eval_bare(val)
@@ -229,11 +229,11 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       }
     }
   }
-  
+
   if (op == ">" && length(args) == 2) {
     var <- args[[1]]
     val <- args[[2]]
-    
+
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
       var_name <- rlang::as_string(var)
       if (var_name == "nS") return("sialylated glycans")
@@ -242,11 +242,11 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       if (var_name == "nFa") return("arm-fucosylated glycans")
     }
   }
-  
+
   if (op == "==" && length(args) == 2) {
     var <- args[[1]]
     val <- args[[2]]
-    
+
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
       var_name <- rlang::as_string(var)
       if (var_name == "nF") return("non-fucosylated glycans")
@@ -255,11 +255,11 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       if (var_name == "nS") return("non-sialylated glycans")
     }
   }
-  
+
   if (op == "!=" && length(args) == 2) {
     var <- args[[1]]
     val <- args[[2]]
-    
+
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
       var_name <- rlang::as_string(var)
       if (var_name == "nF") return("fucosylated glycans")
@@ -268,7 +268,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       if (var_name == "nS") return("sialylated glycans")
     }
   }
-  
+
   return(NULL)
 }
 
@@ -291,11 +291,11 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     "B" = "bisecting GlcNAc",
     "Tp" = "type"
   )
-  
+
   if (var_name %in% names(translations)) {
     return(translations[[var_name]])
   }
-  
+
   # Fallback to the original variable name
   return(var_name)
 }
@@ -304,35 +304,31 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   # Handle special patterns first
   if (connector == "and") {
     # Special handling for "glycans with X" patterns
-    if (stringr::str_starts(right_desc, "glycans with ") && 
-        stringr::str_ends(left_desc, " glycans")) {
+    if (stringr::str_starts(right_desc, "glycans with ") && stringr::str_ends(left_desc, " glycans")) {
       left_adj <- stringr::str_replace(left_desc, " glycans$", "")
       right_feature <- stringr::str_replace(right_desc, "^glycans with ", "")
       return(paste0(left_adj, " glycans with ", right_feature))
-    } else if (stringr::str_starts(left_desc, "glycans with ") && 
-               stringr::str_ends(right_desc, " glycans")) {
+    } else if (stringr::str_starts(left_desc, "glycans with ") && stringr::str_ends(right_desc, " glycans")) {
       right_adj <- stringr::str_replace(right_desc, " glycans$", "")
       left_feature <- stringr::str_replace(left_desc, "^glycans with ", "")
       return(paste0(right_adj, " glycans with ", left_feature))
     }
   }
-  
+
   # Extract adjectives from glycan descriptions for merging
   left_pattern <- "^(.*?) glycans$"
   right_pattern <- "^(.*?) glycans$"
-  
-  if (stringr::str_detect(left_desc, left_pattern) && 
-      stringr::str_detect(right_desc, right_pattern)) {
-    
+
+  if (stringr::str_detect(left_desc, left_pattern) && stringr::str_detect(right_desc, right_pattern)) {
+
     left_adj <- stringr::str_extract(left_desc, left_pattern) |>
       stringr::str_replace(left_pattern, "\\1")
     right_adj <- stringr::str_extract(right_desc, right_pattern) |>
       stringr::str_replace(right_pattern, "\\1")
-    
+
     # Handle merging differently for "and" vs "or"
-    if (!stringr::str_detect(left_adj, " and | or ") && 
-        !stringr::str_detect(right_adj, " and | or ")) {
-      
+    if (!stringr::str_detect(left_adj, " and | or ") && !stringr::str_detect(right_adj, " and | or ")) {
+
       if (connector == "and") {
         # For "and": compound characteristics of the same glycans
         # Convert adjective endings to noun forms when using "with"
@@ -349,7 +345,7 @@ explain_trait.glydet_wmean <- function(trait_fn) {
       }
     }
   }
-  
+
   return(NULL)
 }
 
@@ -364,16 +360,16 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     "fucosylated" = "fucosylation",
     "mannosylated" = "mannosylation"
   )
-  
+
   if (adj %in% names(conversions)) {
     return(conversions[[adj]])
   }
-  
+
   # For other adjectives ending in -ylated, try removing -ylated and adding -ylation
   if (stringr::str_ends(adj, "ylated")) {
     base <- stringr::str_replace(adj, "ylated$", "ylation")
     return(base)
   }
-  
+
   return(NULL)
 }
