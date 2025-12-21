@@ -6,6 +6,11 @@
 #' [total()], and [wsum()], and works best with traits defined by built-in meta-properties.
 #'
 #' @param trait_fn A derived trait function created by one of the trait factories.
+#' @param use_ai Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
+#'   To use this feature, you need to install the `ellmer` package.
+#'   You also need to provide an API key for the DeepSeek chat model.
+#'   Please set the environment variable `DEEPSEEK_API_KEY` to your API key.
+#'   You can obtain an API key from https://platform.deepseek.com.
 #'
 #' @returns A character string containing a concise English explanation of the trait.
 #'
@@ -27,12 +32,12 @@
 #' explain_trait(wsum(nS, within = (Tp == "complex")))
 #'
 #' @export
-explain_trait <- function(trait_fn) {
+explain_trait <- function(trait_fn, use_ai = FALSE) {
   UseMethod("explain_trait")
 }
 
 #' @export
-explain_trait.default <- function(trait_fn) {
+explain_trait.default <- function(trait_fn, use_ai = FALSE) {
   cli::cli_abort(c(
     "Object must be a glydet trait function.",
     "x" = "Got an object of class {.cls {class(trait_fn)}}.",
@@ -41,7 +46,53 @@ explain_trait.default <- function(trait_fn) {
 }
 
 #' @export
-explain_trait.glydet_prop <- function(trait_fn) {
+explain_trait.glydet_prop <- function(trait_fn, use_ai = FALSE) {
+  if (use_ai) {
+    .explain_prop_with_ai(trait_fn)
+  } else {
+    .explain_prop(trait_fn)
+  }
+}
+
+#' @export
+explain_trait.glydet_ratio <- function(trait_fn, use_ai = FALSE) {
+  if (use_ai) {
+    .explain_ratio_with_ai(trait_fn)
+  } else {
+    .explain_ratio(trait_fn)
+  }
+}
+
+#' @export
+explain_trait.glydet_wmean <- function(trait_fn, use_ai = FALSE) {
+  if (use_ai) {
+    .explain_wmean_with_ai(trait_fn)
+  } else {
+    .explain_wmean(trait_fn)
+  }
+}
+
+#' @export
+explain_trait.glydet_total <- function(trait_fn, use_ai = FALSE) {
+  if (use_ai) {
+    .explain_total_with_ai(trait_fn)
+  } else {
+    .explain_total(trait_fn)
+  }
+}
+
+#' @export
+explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
+  if (use_ai) {
+    .explain_wsum_with_ai(trait_fn)
+  } else {
+    .explain_wsum(trait_fn)
+  }
+}
+
+# ----- Hard-coded explanations for built-in traits --------------------
+
+.explain_prop <- function(trait_fn) {
   cond_expr <- attr(trait_fn, "cond")
   within_expr <- attr(trait_fn, "within")
 
@@ -51,8 +102,7 @@ explain_trait.glydet_prop <- function(trait_fn) {
   paste0("Proportion of ", cond_desc, " ", scope_desc, ".")
 }
 
-#' @export
-explain_trait.glydet_ratio <- function(trait_fn) {
+.explain_ratio <- function(trait_fn) {
   num_cond_expr <- attr(trait_fn, "num_cond")
   denom_cond_expr <- attr(trait_fn, "denom_cond")
   within_expr <- attr(trait_fn, "within")
@@ -64,8 +114,7 @@ explain_trait.glydet_ratio <- function(trait_fn) {
   paste0("Ratio of ", num_desc, " to ", denom_desc, " ", scope_desc, ".")
 }
 
-#' @export
-explain_trait.glydet_wmean <- function(trait_fn) {
+.explain_wmean <- function(trait_fn) {
   val_expr <- attr(trait_fn, "val")
   within_expr <- attr(trait_fn, "within")
 
@@ -75,17 +124,13 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   paste0("Abundance-weighted mean of ", val_desc, " ", scope_desc, ".")
 }
 
-#' @export
-explain_trait.glydet_total <- function(trait_fn) {
+.explain_total <- function(trait_fn) {
   cond_expr <- attr(trait_fn, "cond")
-
   cond_desc <- .expr_to_description(cond_expr)
-
   paste0("Total abundance of ", cond_desc, ".")
 }
 
-#' @export
-explain_trait.glydet_wsum <- function(trait_fn) {
+.explain_wsum <- function(trait_fn) {
   val_expr <- attr(trait_fn, "val")
   within_expr <- attr(trait_fn, "within")
 
@@ -95,7 +140,7 @@ explain_trait.glydet_wsum <- function(trait_fn) {
   paste0("Abundance-weighted sum of ", val_desc, " ", scope_desc, ".")
 }
 
-# Internal helper functions
+# ----- Internal helper functions --------------------------------------
 
 .within_to_scope <- function(within_expr) {
   if (is.null(within_expr)) {
@@ -407,4 +452,31 @@ explain_trait.glydet_wsum <- function(trait_fn) {
   }
 
   return(NULL)
+}
+
+# ----- AI-assisted explanations --------------------------------------
+
+.explain_prop_with_ai <- function(trait_fn) {
+  rlang::check_installed("ellmer")
+  stop("Not implemented yet.")
+}
+
+.explain_ratio_with_ai <- function(trait_fn) {
+  rlang::check_installed("ellmer")
+  stop("Not implemented yet.")
+}
+
+.explain_wmean_with_ai <- function(trait_fn) {
+  rlang::check_installed("ellmer")
+  stop("Not implemented yet.")
+}
+
+.explain_total_with_ai <- function(trait_fn) {
+  rlang::check_installed("ellmer")
+  stop("Not implemented yet.")
+}
+
+.explain_wsum_with_ai <- function(trait_fn) {
+  rlang::check_installed("ellmer")
+  stop("Not implemented yet.")
 }

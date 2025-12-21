@@ -19,7 +19,8 @@ Suggests:
     glyexp (>= 0.10.0),
     glyclean (>= 0.7.1),
     glystats (>= 0.5.1),
-    missForest
+    missForest,
+    ellmer
 Config/testthat/edition: 3
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)

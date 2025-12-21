@@ -4,10 +4,16 @@
 \alias{explain_trait}
 \title{Explain a Derived Trait}
 \usage{
-explain_trait(trait_fn)
+explain_trait(trait_fn, use_ai = FALSE)
 }
 \arguments{
 \item{trait_fn}{A derived trait function created by one of the trait factories.}
+
+\item{use_ai}{Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
+To use this feature, you need to install the \code{ellmer} package.
+You also need to provide an API key for the DeepSeek chat model.
+Please set the environment variable \code{DEEPSEEK_API_KEY} to your API key.
+You can obtain an API key from https://platform.deepseek.com.}
 }
 \value{
 A character string containing a concise English explanation of the trait.
