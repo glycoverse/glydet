@@ -37,7 +37,8 @@ Imports:
     rlang,
     stringr,
     tibble,
-    tidyr
+    tidyr,
+    tidyselect
 Remotes: 
     glycoverse/glymotif@*release,
     glycoverse/glyexp@*release,

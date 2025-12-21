@@ -193,5 +193,6 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
     # that have "many-to-one" relationship with glycosites.
     # This behavior might result in some meta-property columns being left over.
     # We remove them here.
-    glyexp::select_var(-dplyr::any_of(mp_cols))
+    glyexp::select_var(-dplyr::any_of(mp_cols)) |>
+    glyexp::select_var(-all_of("explanation"))
 }

@@ -40,6 +40,7 @@ with the following columns in the \code{var_info} table:
 \itemize{
 \item \code{variable}: variable ID
 \item \code{trait}: derived trait name
+\item \code{explanation}: a concise English explanation of the trait
 }
 
 For glycoproteomics data, with additional columns:

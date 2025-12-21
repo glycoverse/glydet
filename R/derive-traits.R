@@ -35,6 +35,7 @@
 #' with the following columns in the `var_info` table:
 #' - `variable`: variable ID
 #' - `trait`: derived trait name
+#' - `explanation`: a concise English explanation of the trait
 #'
 #' For glycoproteomics data, with additional columns:
 #' - `protein`: protein ID
@@ -113,7 +114,12 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
     mp_fns <- all_mp_fns()
   }
 
-  switch(
+  explanations <- tibble::tibble(
+    trait = names(trait_fns),
+    explanation = purrr::map_chr(trait_fns, explain_trait)
+  )
+
+  res_exp <- switch(
     exp$meta_data$exp_type,
     glycomics = .derive_traits_glycomics(exp, trait_fns, mp_fns, mp_cols),
     glycoproteomics = .derive_traits_glycoproteomics(exp, trait_fns, mp_fns, mp_cols),
@@ -122,6 +128,9 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
       "x" = "Got {.val {exp$meta_data$exp_type}}."
     ), call = NULL)
   )
+
+  res_exp |>
+    glyexp::left_join_var(explanations, by = "trait")
 }
 
 #' Calculate Derived Traits from Tidy Data
@@ -160,6 +169,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
 #' - `sample`: sample ID
 #' - `trait`: derived trait name
 #' - `value`: the value of the derived trait
+#' - `explanation`: a concise English explanation of the trait
 #'
 #' For glycoproteomics data, with additional columns:
 #' - `protein`: protein ID
@@ -202,7 +212,12 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
     ))
   }
 
-  switch(
+  explanations <- tibble::tibble(
+    trait = names(trait_fns),
+    explanation = purrr::map_chr(trait_fns, explain_trait)
+  )
+
+  res_tbl <- switch(
     data_type,
     glycomics = .derive_traits_glycomics_(tbl, trait_fns, mp_fns),
     glycoproteomics = .derive_traits_glycoproteomics_(tbl, trait_fns, mp_fns),
@@ -211,6 +226,10 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
       "x" = "Got {.val {data_type}}."
     ))
   )
+
+  res_tbl |>
+    dplyr::left_join(explanations, by = "trait") |>
+    dplyr::relocate(all_of("explanation"), .after = "trait")
 }
 
 .derive_traits_glycomics <- function(exp, trait_fns, mp_fns, mp_cols) {

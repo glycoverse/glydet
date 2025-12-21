@@ -42,7 +42,8 @@ test_that("derive_traits works for glycomics experiments", {
     variable = c("V1", "V2"),
     trait = c("TFc", "TC")
   )
-  expect_equal(trait_exp$var_info, expected_var_info)
+  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_true("explanation" %in% colnames(trait_exp$var_info))
 
   # Test sample_info
   expect_equal(trait_exp$sample_info, exp$sample_info)
@@ -107,7 +108,8 @@ test_that("derive_traits works for glycoproteomics experiments", {
     protein_site = c(10L, 10L, 20L, 20L),
     trait = c("TFc", "TC", "TFc", "TC")
   )
-  expect_equal(trait_exp$var_info, expected_var_info)
+  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_true("explanation" %in% colnames(trait_exp$var_info))
 
   # Test sample_info
   expect_equal(trait_exp$sample_info, exp$sample_info)
@@ -167,7 +169,8 @@ test_that("derive_traits works with custom meta-properties", {
     variable = c("V1", "V2"),
     trait = c("many_N", "many_H")
   )
-  expect_equal(trait_exp$var_info, expected_var_info)
+  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_true("explanation" %in% colnames(trait_exp$var_info))
 
   # Test sample_info
   expect_equal(trait_exp$sample_info, exp$sample_info)
@@ -224,7 +227,8 @@ test_that("derive_traits works with custom meta-property columns", {
     variable = c("V1", "V2", "V3"),
     trait = c("SG", "EG", "LG")
   )
-  expect_equal(trait_exp$var_info, expected_var_info)
+  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_true("explanation" %in% colnames(trait_exp$var_info))
 })
 
 test_that("derive_traits works with custom meta-property columns that overwrite existing meta-properties", {
@@ -361,7 +365,7 @@ test_that("derive_traits keeps glycosite descriptive columns in var_info", {
   # Test var_info
   expect_setequal(
     colnames(trait_exp$var_info),
-    c("variable", "protein", "protein_site", "gene", "trait")
+    c("variable", "protein", "protein_site", "gene", "trait", "explanation")
   )
 })
 
@@ -402,7 +406,8 @@ test_that("derive_traits_() works for glycomics experiments", {
     sample = rep(c("S1", "S2", "S3"), 2),
     value = c(1/3, 0.5, 0.5, 2/3, 1, 0.5)
   )
-  expect_equal(trait_tbl, expected)
+  expect_equal(trait_tbl[c("trait", "sample", "value")], expected)
+  expect_true("explanation" %in% colnames(trait_tbl))
 })
 
 test_that("derive_traits_() works for glycoproteomics experiments", {
@@ -433,7 +438,8 @@ test_that("derive_traits_() works for glycoproteomics experiments", {
     sample = rep(c("S1", "S2", "S3"), 4),
     value = c(1/3, 0.5, 0.5, 2/3, 1, 0.5, 1/3, 1/3, 1/3, 2/3, 2/3, 2/3)
   )
-  expect_equal(trait_tbl, expected)
+  expect_equal(trait_tbl |> dplyr::select(-all_of("explanation")), expected)
+  expect_true("explanation" %in% colnames(trait_tbl))
 })
 
 test_that("derive_traits_() raises error for invalid data type", {
@@ -458,7 +464,7 @@ test_that("derive_traits_ ignores other columns for glycomics experiments", {
     other = c("A", "B", "C")
   )
   trait_tbl <- derive_traits_(tbl, "glycomics", trait_fns = list(TFc = prop(nFc > 0)))
-  expect_equal(colnames(trait_tbl), c("trait", "sample", "value"))
+  expect_setequal(colnames(trait_tbl), c("trait", "sample", "value", "explanation"))
 })
 
 test_that("derive_traits_ ignores other columns for glycoproteomics experiments", {
@@ -476,7 +482,7 @@ test_that("derive_traits_ ignores other columns for glycoproteomics experiments"
     other = c("A", "B", "C")
   )
   trait_tbl <- derive_traits_(tbl, "glycoproteomics", trait_fns = list(TFc = prop(nFc > 0)))
-  expect_equal(colnames(trait_tbl), c("protein", "protein_site", "trait", "sample", "value"))
+  expect_setequal(colnames(trait_tbl), c("protein", "protein_site", "trait", "sample", "value", "explanation"))
 })
 
 test_that("derive_traits_ works with default traits", {

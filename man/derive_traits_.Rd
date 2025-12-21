@@ -47,6 +47,7 @@ A tidy tibble containing the following columns:
 \item \code{sample}: sample ID
 \item \code{trait}: derived trait name
 \item \code{value}: the value of the derived trait
+\item \code{explanation}: a concise English explanation of the trait
 }
 
 For glycoproteomics data, with additional columns:

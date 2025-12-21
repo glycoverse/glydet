@@ -3,6 +3,7 @@
 
 ## usethis namespace: start
 #' @importFrom rlang .data
+#' @importFrom tidyselect all_of
 ## usethis namespace: end
 NULL
 
