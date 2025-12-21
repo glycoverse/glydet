@@ -14,8 +14,8 @@ A character string containing a concise English explanation of the trait.
 }
 \description{
 This function provides a human-readable English explanation of what a derived trait represents.
-It works with trait functions created by the trait factories \code{\link[=prop]{prop()}}, \code{\link[=ratio]{ratio()}}, and \code{\link[=wmean]{wmean()}},
-and works best with traits defined by built-in meta-properties.
+It works with trait functions created by the trait factories \code{\link[=prop]{prop()}}, \code{\link[=ratio]{ratio()}}, \code{\link[=wmean]{wmean()}},
+\code{\link[=total]{total()}}, and \code{\link[=wsum]{wsum()}}, and works best with traits defined by built-in meta-properties.
 }
 \examples{
 # Explain built-in traits
@@ -24,9 +24,14 @@ explain_trait(basic_traits()$GS)
 
 # Explain custom traits
 explain_trait(prop(nFc > 0))
-explain_trait(prop(nFc > 0, within = (T == "complex")))
-explain_trait(ratio(T == "complex", T == "hybrid"))
-explain_trait(wmean(nA, within = (T == "complex")))
+explain_trait(prop(nFc > 0, within = (Tp == "complex")))
+explain_trait(ratio(Tp == "complex", Tp == "hybrid"))
+explain_trait(wmean(nA, within = (Tp == "complex")))
 explain_trait(wmean(nS / nG, within = nA == 4 & nFc > 0))
+
+# Explain total and wsum traits
+explain_trait(total(Tp == "complex"))
+explain_trait(wsum(nS))
+explain_trait(wsum(nS, within = (Tp == "complex")))
 
 }

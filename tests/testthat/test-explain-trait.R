@@ -204,3 +204,62 @@ test_that("explain_trait handles different na_action values", {
     "Proportion of core-fucosylated glycans among all glycans."
   )
 })
+
+test_that("explain_trait works for total traits", {
+  # Simple total abundance
+  expect_equal(
+    explain_trait(total(Tp == "complex")),
+    "Total abundance of complex glycans."
+  )
+  
+  expect_equal(
+    explain_trait(total(nA == 4)),
+    "Total abundance of tetra-antennary glycans."
+  )
+
+  expect_equal(
+    explain_trait(total(nA > 2)),
+    "Total abundance of glycans with more than 2 antennae."
+  )
+  
+  expect_equal(
+    explain_trait(total(nFc > 0)),
+    "Total abundance of core-fucosylated glycans."
+  )
+  
+  # Combined conditions
+  expect_equal(
+    explain_trait(total(nS > 0 & nFc > 0)),
+    "Total abundance of sialylated glycans with core-fucosylation."
+  )
+})
+
+test_that("explain_trait works for wsum traits", {
+  # Simple weighted sum
+  expect_equal(
+    explain_trait(wsum(nS)),
+    "Abundance-weighted sum of sialic acid count among all glycans."
+  )
+  
+  expect_equal(
+    explain_trait(wsum(nF)),
+    "Abundance-weighted sum of fucose count among all glycans."
+  )
+  
+  # Weighted sum with within condition
+  expect_equal(
+    explain_trait(wsum(nS, within = (Tp == "complex"))),
+    "Abundance-weighted sum of sialic acid count within complex glycans."
+  )
+  
+  # Arithmetic expressions
+  expect_equal(
+    explain_trait(wsum(nS / nG)),
+    "Abundance-weighted sum of degree of sialylation per galactose among all glycans."
+  )
+  
+  expect_equal(
+    explain_trait(wsum(nA, within = nA == 4 & nFc > 0)),
+    "Abundance-weighted sum of antenna count within tetra-antennary glycans with core-fucosylation."
+  )
+})

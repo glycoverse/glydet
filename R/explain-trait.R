@@ -2,8 +2,8 @@
 #'
 #' @description
 #' This function provides a human-readable English explanation of what a derived trait represents.
-#' It works with trait functions created by the trait factories [prop()], [ratio()], and [wmean()],
-#' and works best with traits defined by built-in meta-properties.
+#' It works with trait functions created by the trait factories [prop()], [ratio()], [wmean()],
+#' [total()], and [wsum()], and works best with traits defined by built-in meta-properties.
 #'
 #' @param trait_fn A derived trait function created by one of the trait factories.
 #'
@@ -16,10 +16,15 @@
 #'
 #' # Explain custom traits
 #' explain_trait(prop(nFc > 0))
-#' explain_trait(prop(nFc > 0, within = (T == "complex")))
-#' explain_trait(ratio(T == "complex", T == "hybrid"))
-#' explain_trait(wmean(nA, within = (T == "complex")))
+#' explain_trait(prop(nFc > 0, within = (Tp == "complex")))
+#' explain_trait(ratio(Tp == "complex", Tp == "hybrid"))
+#' explain_trait(wmean(nA, within = (Tp == "complex")))
 #' explain_trait(wmean(nS / nG, within = nA == 4 & nFc > 0))
+#'
+#' # Explain total and wsum traits
+#' explain_trait(total(Tp == "complex"))
+#' explain_trait(wsum(nS))
+#' explain_trait(wsum(nS, within = (Tp == "complex")))
 #'
 #' @export
 explain_trait <- function(trait_fn) {
@@ -68,6 +73,26 @@ explain_trait.glydet_wmean <- function(trait_fn) {
   scope_desc <- .within_to_scope(within_expr)
 
   paste0("Abundance-weighted mean of ", val_desc, " ", scope_desc, ".")
+}
+
+#' @export
+explain_trait.glydet_total <- function(trait_fn) {
+  cond_expr <- attr(trait_fn, "cond")
+
+  cond_desc <- .expr_to_description(cond_expr)
+
+  paste0("Total abundance of ", cond_desc, ".")
+}
+
+#' @export
+explain_trait.glydet_wsum <- function(trait_fn) {
+  val_expr <- attr(trait_fn, "val")
+  within_expr <- attr(trait_fn, "within")
+
+  val_desc <- .expr_to_value_description(val_expr)
+  scope_desc <- .within_to_scope(within_expr)
+
+  paste0("Abundance-weighted sum of ", val_desc, " ", scope_desc, ".")
 }
 
 # Internal helper functions
@@ -234,12 +259,22 @@ explain_trait.glydet_wmean <- function(trait_fn) {
     var <- args[[1]]
     val <- args[[2]]
 
-    if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
+    if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val)) {
+      val_num <- rlang::eval_bare(val)
       var_name <- rlang::as_string(var)
-      if (var_name == "nS") return("sialylated glycans")
-      if (var_name == "nF") return("fucosylated glycans")
-      if (var_name == "nFc") return("core-fucosylated glycans")
-      if (var_name == "nFa") return("arm-fucosylated glycans")
+      
+      # Handle nX > 0 patterns (presence/absence)
+      if (val_num == 0) {
+        if (var_name == "nS") return("sialylated glycans")
+        if (var_name == "nF") return("fucosylated glycans")
+        if (var_name == "nFc") return("core-fucosylated glycans")
+        if (var_name == "nFa") return("arm-fucosylated glycans")
+      }
+      
+      # Handle nA > n patterns (antenna count comparison)
+      if (var_name == "nA") {
+        return(paste0("glycans with more than ", val_num, " antennae"))
+      }
     }
   }
 
