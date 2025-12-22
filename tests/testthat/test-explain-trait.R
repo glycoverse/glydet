@@ -263,3 +263,11 @@ test_that("explain_trait works for wsum traits", {
     "Abundance-weighted sum of antenna count within tetra-antennary glycans with core-fucosylation."
   )
 })
+
+test_that("explain_trait works with use_ai = TURE", {
+  local_mocked_bindings(.ask_ai = function(system_prompt, user_prompt) "AI response")
+  expect_equal(
+    explain_trait(prop(nFc > 0), use_ai = TRUE),
+    "AI response"
+  )
+})
