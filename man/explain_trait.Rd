@@ -9,7 +9,8 @@ explain_trait(trait_fn, use_ai = FALSE)
 \arguments{
 \item{trait_fn}{A derived trait function created by one of the trait factories.}
 
-\item{use_ai}{Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
+\item{use_ai}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
+Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 To use this feature, you need to install the \code{ellmer} package.
 You also need to provide an API key for the DeepSeek chat model.
 Please set the environment variable \code{DEEPSEEK_API_KEY} to your API key.

@@ -6,7 +6,8 @@
 #' [total()], and [wsum()], and works best with traits defined by built-in meta-properties.
 #'
 #' @param trait_fn A derived trait function created by one of the trait factories.
-#' @param use_ai Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
+#' @param use_ai `r lifecycle::badge("experimental")`
+#'   Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 #'   To use this feature, you need to install the `ellmer` package.
 #'   You also need to provide an API key for the DeepSeek chat model.
 #'   Please set the environment variable `DEEPSEEK_API_KEY` to your API key.

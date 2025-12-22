@@ -13,6 +13,7 @@ make_trait(description)
 A derived trait function.
 }
 \description{
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 This function allows you to create a derived trait function using natural language.
 Note that LLMs can be unreliable, so the result should be verified manually.
 If the description is not clear, an error will be raised.

@@ -1,5 +1,7 @@
 #' Use a Large Language Model (LLM) to create a derived trait function
 #'
+#' @description
+#' `r lifecycle::badge("experimental")`
 #' This function allows you to create a derived trait function using natural language.
 #' Note that LLMs can be unreliable, so the result should be verified manually.
 #' If the description is not clear, an error will be raised.
