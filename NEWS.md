@@ -1,3 +1,5 @@
+# glydet (development version)
+
 # glydet 0.7.0
 
 We introduce exciting new features to `glydet`, including explaining and creating derived traits using a Large Language Model (LLM). We hope these features will help you work with custom derived traits more efficiently with less effort.
