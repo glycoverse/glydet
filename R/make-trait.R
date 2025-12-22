@@ -49,12 +49,19 @@ make_trait <- function(description) {
   if (!stringr::str_detect(output, "^(prop|ratio|wmean)\\((.*)\\)$")) {
     .raise_ai_error(output)
   }
-  explain <- try(explain_trait(eval(rlang::parse_expr(output))))
+  expr <- rlang::parse_expr(output)
+
+  # Evaluate in a clean environment to avoid capturing temporary objects
+  # (e.g. prompts) into the quosure environments created by trait factories.
+  clean_env <- rlang::new_environment(parent = asNamespace("glydet"))
+  res <- eval(expr, envir = clean_env)
+
+  explain <- try(explain_trait(res))
   if (inherits(explain, "try-error")) {
     .raise_ai_error(output)
   }
 
-  eval(rlang::parse_expr(output))
+  res
 }
 
 .make_trait_sys_prompt <- function(description) {
