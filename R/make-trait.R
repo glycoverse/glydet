@@ -29,7 +29,7 @@ make_trait <- function(description) {
   system_prompt <- .make_trait_sys_prompt(description)
   chat <- ellmer::chat_deepseek(
     system_prompt = system_prompt,
-    model = "deepseek-coder",
+    model = "deepseek-chat",
     echo = "none",
     credentials = function() api_key
   )
