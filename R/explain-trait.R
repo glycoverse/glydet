@@ -48,7 +48,7 @@ explain_trait.default <- function(trait_fn, use_ai = FALSE) {
 #' @export
 explain_trait.glydet_prop <- function(trait_fn, use_ai = FALSE) {
   if (use_ai) {
-    .explain_prop_with_ai(trait_fn)
+    .explain_with_ai(trait_fn)
   } else {
     .explain_prop(trait_fn)
   }
@@ -57,7 +57,7 @@ explain_trait.glydet_prop <- function(trait_fn, use_ai = FALSE) {
 #' @export
 explain_trait.glydet_ratio <- function(trait_fn, use_ai = FALSE) {
   if (use_ai) {
-    .explain_ratio_with_ai(trait_fn)
+    .explain_with_ai(trait_fn)
   } else {
     .explain_ratio(trait_fn)
   }
@@ -66,7 +66,7 @@ explain_trait.glydet_ratio <- function(trait_fn, use_ai = FALSE) {
 #' @export
 explain_trait.glydet_wmean <- function(trait_fn, use_ai = FALSE) {
   if (use_ai) {
-    .explain_wmean_with_ai(trait_fn)
+    .explain_with_ai(trait_fn)
   } else {
     .explain_wmean(trait_fn)
   }
@@ -75,7 +75,7 @@ explain_trait.glydet_wmean <- function(trait_fn, use_ai = FALSE) {
 #' @export
 explain_trait.glydet_total <- function(trait_fn, use_ai = FALSE) {
   if (use_ai) {
-    .explain_total_with_ai(trait_fn)
+    .explain_with_ai(trait_fn)
   } else {
     .explain_total(trait_fn)
   }
@@ -84,7 +84,7 @@ explain_trait.glydet_total <- function(trait_fn, use_ai = FALSE) {
 #' @export
 explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
   if (use_ai) {
-    .explain_wsum_with_ai(trait_fn)
+    .explain_with_ai(trait_fn)
   } else {
     .explain_wsum(trait_fn)
   }
@@ -456,27 +456,135 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
 
 # ----- AI-assisted explanations --------------------------------------
 
-.explain_prop_with_ai <- function(trait_fn) {
-  rlang::check_installed("ellmer")
-  stop("Not implemented yet.")
+.get_api_key <- function() {
+  api_key <- Sys.getenv("DEEPSEEK_API_KEY")
+  if (api_key == "") {
+    cli::cli_abort(c(
+      "API key for DeepSeek chat model is not set.",
+      "i" = "Please set the environment variable `DEEPSEEK_API_KEY` to your API key.",
+      "i" = "You can obtain an API key from https://platform.deepseek.com."
+    ))
+  }
+  api_key
 }
 
-.explain_ratio_with_ai <- function(trait_fn) {
-  rlang::check_installed("ellmer")
-  stop("Not implemented yet.")
+.explain_sys_prompt <- function(trait_type) {
+  checkmate::assert_choice(trait_type, c("prop", "ratio", "wmean", "total", "wsum"))
+  prompt <- paste(
+    "You are a professional glycobiologist.",
+    "Your task is to explain derived traits expressions in one sentence.",
+    "Derived traits are defined by expressions using meta-properties.",
+    "Here are the definitions of all built-in meta-properties:",
+    "- Tp: glycan type (complex, hybrid, highmannose, pausimannose)",
+    "- B: glycans with bisecting GlcNAc",
+    "- nA: number of antennae",
+    "- nF: number of fucoses",
+    "- nFc: number of core fucoses",
+    "- nFa: number of arm fucoses",
+    "- nG: number of galactoses",
+    "- nS: number of sialic acids",
+    "- nM: number of mannoses",
+    "When encountering a meta-property that is not listed here, use it as is.",
+    "A special case is custom meta-properties with prefix 'n' should be interpreted as the number of the corresponding unit, e.g. 'nE' -> 'number of E'",
+    "For `MP > 0` patterns, use words like 'fucosylated', 'sialylated', etc.",
+    "For nA related patterns, use words like 'bi-antennary', 'tri-antennary', 'tetra-antennary', etc.",
+    "For multiple adjectives, the order should be: fucosylation/sialylation/galactosylation/mannosylation/bisection -> antennae count -> glycan type.",
+    sep = "\n"
+  )
+
+  prop_examples <- paste(
+    "Here are some examples:",
+    'INPUT: prop(Tp == "highmannose")',
+    "OUTPUT: Proportion of highmannose glycans among all glycans.",
+    'INPUT: CA2 = prop(nA == 2, within = (Tp == "complex"))',
+    "OUTPUT: Proportion of bi-antennary glycans within complex glycans.",
+    "INPUT: TF = prop(nF > 0)",
+    "OUTPUT: Proportion of fucosylated glycans among all glycans.",
+    "INPUT: TFc = prop(nFc > 0)",
+    "OUTPUT: Proportion of core-fucosylated glycans among all glycans.",
+    "INPUT: TB = prop(B)",
+    "OUTPUT: Proportion of glycans with bisecting GlcNAc among all glycans.",
+    "INPUT: prop(nS > 0, within = (nFc > 0 & nA == 4))",
+    "OUTPUT: Proportion of sialylated glycans within core-fucosylated tetra-antennary glycans.",
+    "INPUT: TE = prop(E > 0)",
+    "OUTPUT: Proportion of glycans with at least one E among all glycans.",
+    sep = "\n"
+  )
+
+  ratio_examples <- paste(
+    "Here are some examples:",
+    'INPUT: ratio(Tp == "complex", Tp == "hybrid")',
+    "OUTPUT: Ratio of complex glycans to hybrid glycans.",
+    "INPUT: ratio(B, !B)",
+    "OUTPUT: Ratio of glycans with bisecting GlcNAc to glycans without bisecting GlcNAc.",
+    'INPUT: ratio(nFc > 0, nFc == 0, within = (Tp == "complex"))',
+    "OUTPUT: Ratio of core-fucosylated glycans to non-core-fucosylated glycans within complex glycans.",
+    "INPUT: EL = ratio(nE / nL)",
+    "OUTPUT: Ratio of number of E to number of L.",
+    sep = "\n"
+  )
+
+  wmean_examples <- paste(
+    "Here are some examples:",
+    "INPUT: wmean(nA)",
+    "OUTPUT: Average number of antennae among all glycans.",
+    "INPUT: wmean(nS / nA)",
+    "OUTPUT: Average degree of sialylation per antenna among all glycans.",
+    'INPUT: wmean(nS / nA, within = (Tp == "complex"))',
+    "OUTPUT: Average degree of sialylation per antenna within complex glycans.",
+    "INPUT: wmean(nS / nG, within = (nA == 4))",
+    "OUTPUT: Average degree of sialylation per galactose within tetra-antennary glycans.",
+    "INPUT: wmean(nE / nG)",
+    "OUTPUT: Average number of E per galactose among all glycans.",
+    sep = "\n"
+  )
+
+  total_examples <- paste(
+    "Here are some examples:",
+    'INPUT: total(Tp == "complex")',
+    "OUTPUT: Total abundance of complex glycans.",
+    'INPUT: total(Tp == "complex" & nA == 2)',
+    "OUTPUT: Total abundance of bi-antennary complex glycans.",
+    "INPUT: total(nE > 0)",
+    "OUTPUT: Total abundance of glycans with at least one E.",
+    sep = "\n"
+  )
+
+  wsum_examples <- paste(
+    "Here are some examples:",
+    "INPUT: wsum(nS)",
+    "OUTPUT: Abundance-weighted sum of number of sialic acids among all glycans.",
+    'INPUT: wsum(nA, within = (Tp == "complex"))',
+    "OUTPUT: Abundance-weighted sum of number of antennae within complex glycans.",
+    'INPUT: wsum(nS, within = (Tp == "complex"))',
+    "OUTPUT: Abundance-weighted sum of number of sialic acids within complex glycans.",
+    "INPUT: wsum(nE / nG)",
+    "OUTPUT: Abundance-weighted sum of number of E per galactose among all glycans.",
+    sep = "\n"
+  )
+
+  example_prompt <- switch(trait_type,
+    "prop" = prop_examples,
+    "ratio" = ratio_examples,
+    "wmean" = wmean_examples,
+    "total" = total_examples,
+    "wsum" = wsum_examples
+  )
+  paste(prompt, example_prompt, sep = "\n")
 }
 
-.explain_wmean_with_ai <- function(trait_fn) {
+.explain_with_ai <- function(trait_fn) {
   rlang::check_installed("ellmer")
-  stop("Not implemented yet.")
-}
-
-.explain_total_with_ai <- function(trait_fn) {
-  rlang::check_installed("ellmer")
-  stop("Not implemented yet.")
-}
-
-.explain_wsum_with_ai <- function(trait_fn) {
-  rlang::check_installed("ellmer")
-  stop("Not implemented yet.")
+  api_key <- .get_api_key()
+  trait_str <- rlang::expr_text(trait_fn)
+  str_type <- stringr::str_extract(trait_str, "prop|ratio|wmean|total|wsum")
+  system_prompt <- .explain_sys_prompt(str_type)
+  chat <- ellmer::chat_deepseek(
+    system_prompt = system_prompt,
+    model = "deepseek-chat",
+    echo = "none",
+    credentials = function() api_key
+  )
+  propmt <- paste0("INPUT: ", trait_str, "\nOUTPUT: ")
+  as.character(chat$chat(propmt))
 }
