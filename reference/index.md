@@ -18,6 +18,9 @@
   : Explain a Derived Trait
 - [`get_meta_properties()`](https://glycoverse.github.io/glydet/reference/get_meta_properties.md)
   : Get Meta-Properties of Glycans
+- [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+  **\[experimental\]** : Use a Large Language Model (LLM) to create a
+  derived trait function
 - [`n_glycan_type()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)
   [`has_bisecting()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)
   [`n_antennae()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)

@@ -75,6 +75,8 @@ A tidy tibble containing the following columns:
 
 - `value`: the value of the derived trait
 
+- `explanation`: a concise English explanation of the trait
+
 For glycoproteomics data, with additional columns:
 
 - `protein`: protein ID
@@ -113,18 +115,18 @@ tidy_data <- as_tibble(real_experiment2)
 # Calculate traits
 traits <- derive_traits_(tidy_data, data_type = "glycomics")
 traits
-#> # A tibble: 2,016 × 3
-#>    trait sample  value
-#>    <chr> <chr>   <dbl>
-#>  1 TM    S1     0.0322
-#>  2 TM    S2     0.0274
-#>  3 TM    S3     0.0215
-#>  4 TM    S4     0.0178
-#>  5 TM    S5     0.0238
-#>  6 TM    S6     0.0254
-#>  7 TM    S7     0.0234
-#>  8 TM    S8     0.0200
-#>  9 TM    S9     0.0170
-#> 10 TM    S10    0.0207
+#> # A tibble: 2,016 × 4
+#>    trait explanation                                           sample  value
+#>    <chr> <chr>                                                 <chr>   <dbl>
+#>  1 TM    Proportion of high-mannose glycans among all glycans. S1     0.0322
+#>  2 TM    Proportion of high-mannose glycans among all glycans. S2     0.0274
+#>  3 TM    Proportion of high-mannose glycans among all glycans. S3     0.0215
+#>  4 TM    Proportion of high-mannose glycans among all glycans. S4     0.0178
+#>  5 TM    Proportion of high-mannose glycans among all glycans. S5     0.0238
+#>  6 TM    Proportion of high-mannose glycans among all glycans. S6     0.0254
+#>  7 TM    Proportion of high-mannose glycans among all glycans. S7     0.0234
+#>  8 TM    Proportion of high-mannose glycans among all glycans. S8     0.0200
+#>  9 TM    Proportion of high-mannose glycans among all glycans. S9     0.0170
+#> 10 TM    Proportion of high-mannose glycans among all glycans. S10    0.0207
 #> # ℹ 2,006 more rows
 ```

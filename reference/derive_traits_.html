@@ -15,7 +15,7 @@ and derived traits are calculated in a site-specific manner."><meta property="og
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.5.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,6 +100,7 @@ Default is <code>NULL</code>, which means all meta-properties in <code><a href="
     <p>A tidy tibble containing the following columns:</p><ul><li><p><code>sample</code>: sample ID</p></li>
 <li><p><code>trait</code>: derived trait name</p></li>
 <li><p><code>value</code>: the value of the derived trait</p></li>
+<li><p><code>explanation</code>: a concise English explanation of the trait</p></li>
 </ul><p>For glycoproteomics data, with additional columns:</p><ul><li><p><code>protein</code>: protein ID</p></li>
 <li><p><code>protein_site</code>: the glycosite position on the protein</p></li>
 </ul><p>Other columns in the original tibble are not included.</p>
@@ -132,19 +133,19 @@ Default is <code>NULL</code>, which means all meta-properties in <code><a href="
 <span class="r-in"><span><span class="co"># Calculate traits</span></span></span>
 <span class="r-in"><span><span class="va">traits</span> <span class="op">&lt;-</span> <span class="fu">derive_traits_</span><span class="op">(</span><span class="va">tidy_data</span>, data_type <span class="op">=</span> <span class="st">"glycomics"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">traits</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,016 × 3</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    trait sample  value</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> TM    S1     0.032<span style="text-decoration: underline;">2</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> TM    S2     0.027<span style="text-decoration: underline;">4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> TM    S3     0.021<span style="text-decoration: underline;">5</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> TM    S4     0.017<span style="text-decoration: underline;">8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> TM    S5     0.023<span style="text-decoration: underline;">8</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> TM    S6     0.025<span style="text-decoration: underline;">4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> TM    S7     0.023<span style="text-decoration: underline;">4</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> TM    S8     0.020<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> TM    S9     0.017<span style="text-decoration: underline;">0</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> TM    S10    0.020<span style="text-decoration: underline;">7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 2,016 × 4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    trait explanation                                           sample  value</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                 <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> TM    Proportion of high-mannose glycans among all glycans. S1     0.032<span style="text-decoration: underline;">2</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> TM    Proportion of high-mannose glycans among all glycans. S2     0.027<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> TM    Proportion of high-mannose glycans among all glycans. S3     0.021<span style="text-decoration: underline;">5</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> TM    Proportion of high-mannose glycans among all glycans. S4     0.017<span style="text-decoration: underline;">8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> TM    Proportion of high-mannose glycans among all glycans. S5     0.023<span style="text-decoration: underline;">8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> TM    Proportion of high-mannose glycans among all glycans. S6     0.025<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> TM    Proportion of high-mannose glycans among all glycans. S7     0.023<span style="text-decoration: underline;">4</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> TM    Proportion of high-mannose glycans among all glycans. S8     0.020<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> TM    Proportion of high-mannose glycans among all glycans. S9     0.017<span style="text-decoration: underline;">0</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> TM    Proportion of high-mannose glycans among all glycans. S10    0.020<span style="text-decoration: underline;">7</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 2,006 more rows</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

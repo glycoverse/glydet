@@ -71,6 +71,8 @@ sample", with the following columns in the `var_info` table:
 
 - `trait`: derived trait name
 
+- `explanation`: a concise English explanation of the trait
+
 For glycoproteomics data, with additional columns:
 
 - `protein`: protein ID
@@ -111,30 +113,48 @@ library(glyclean)
 exp <- real_experiment |>
   auto_clean() |>
   slice_sample_var(n = 100)
-#> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [201ms]
 #> 
-#> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [19ms]
+#> ── Normalizing data ──
 #> 
-#> ℹ Imputing missing values
-#> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values
-#> ✔ Imputing missing values [63ms]
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
 #> 
-#> ℹ Aggregating data
-#> ✔ Aggregating data [1.5s]
+#> ── Removing variables with too many missing values ──
 #> 
-#> ℹ Normalizing data again
-#> ✔ Normalizing data again [14ms]
+#> ℹ No QC samples found. Using all samples.
+#> ℹ Applying preset "discovery"...
+#> ℹ Total removed: 24 (0.56%) variables.
+#> ✔ Variable removal completed.
 #> 
+#> ── Imputing missing values ──
+#> 
+#> ℹ No QC samples found. Using default imputation method based on sample size.
+#> ℹ Sample size <= 30, using `impute_sample_min()`.
+#> ✔ Imputation completed.
+#> 
+#> ── Aggregating data ──
+#> 
+#> ℹ Aggregating to "gfs" level
+#> ✔ Aggregation completed.
+#> 
+#> ── Normalizing data again ──
+#> 
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
+#> 
+#> ── Correcting batch effects ──
+#> 
+#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ✔ Batch correction completed.
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 896 variables
+#> ℹ Expression matrix: 12 samples, 812 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 
 # By default, only basic traits are calculated
 names(basic_traits())
@@ -146,7 +166,7 @@ more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
 more_trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3968 variables
+#> ℹ Expression matrix: 12 samples, 3596 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```

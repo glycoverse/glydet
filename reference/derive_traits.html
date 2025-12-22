@@ -13,7 +13,7 @@ and derived traits are calculated in a site-specific manner."><meta property="og
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.5</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.5.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -99,6 +99,7 @@ Instead of "quantification of each glycan on each glycosite in each sample",
 the new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> contains "the value of each derived trait on each glycosite in each sample",
 with the following columns in the <code>var_info</code> table:</p><ul><li><p><code>variable</code>: variable ID</p></li>
 <li><p><code>trait</code>: derived trait name</p></li>
+<li><p><code>explanation</code>: a concise English explanation of the trait</p></li>
 </ul><p>For glycoproteomics data, with additional columns:</p><ul><li><p><code>protein</code>: protein ID</p></li>
 <li><p><code>protein_site</code>: the glycosite position on the protein</p></li>
 </ul><p>Other columns in the <code>var_info</code> table (e.g. <code>gene</code>) are retained if they have "many-to-one"
@@ -132,30 +133,48 @@ and "traitproteomics" for glycoproteomics data.</p>
 <span class="r-in"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="va">real_experiment</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/slice_obs.html" class="external-link">slice_sample_var</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data (Median)</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data (Median) <span style="color: #B2B2B2;">[201ms]</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Removing variables with &gt;50% missing values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Removing variables with &gt;50% missing values <span style="color: #B2B2B2;">[19ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Normalizing data</span> ──</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using sample minimum imputation</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Imputing missing values</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Imputing missing values <span style="color: #B2B2B2;">[63ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using default normalization method based on experiment type.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Experiment type is <span style="color: #0000BB;">"glycoproteomics"</span>. Using `normalize_median()`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalization completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Aggregating data</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregating data <span style="color: #B2B2B2;">[1.5s]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Removing variables with too many missing values</span> ──</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Normalizing data again</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalizing data again <span style="color: #B2B2B2;">[14ms]</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using all samples.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Applying preset <span style="color: #0000BB;">"discovery"</span>...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Total removed: <span style="color: #0000BB;">24</span> (<span style="color: #0000BB;">0.56</span>%) variables.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Variable removal completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Imputing missing values</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using default imputation method based on sample size.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using `impute_sample_min()`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Imputation completed.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Aggregating data</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Aggregating to <span style="color: #0000BB;">"gfs"</span> level</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregation completed.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Normalizing data again</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using default normalization method based on experiment type.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Experiment type is <span style="color: #0000BB;">"glycoproteomics"</span>. Using `normalize_median()`.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Normalization completed.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Correcting batch effects</span> ──</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Batch column  not found in sample_info. Skipping batch correction.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Batch correction completed.</span>
 <span class="r-in"><span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu">derive_traits</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">trait_exp</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">896</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">812</span> variables</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># By default, only basic traits are calculated</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="basic_traits.html">basic_traits</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -167,9 +186,9 @@ and "traitproteomics" for glycoproteomics data.</p>
 <span class="r-in"><span><span class="va">more_trait_exp</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3968</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3596</span> variables</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

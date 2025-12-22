@@ -15,21 +15,41 @@ library(glyclean)
 #>     aggregate
 
 exp <- auto_clean(real_experiment)
-#> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [132ms]
 #> 
-#> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [68ms]
+#> ── Normalizing data ──
 #> 
-#> ℹ Imputing missing values
-#> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [25ms]
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
 #> 
-#> ℹ Aggregating data
-#> ✔ Aggregating data [1s]
+#> ── Removing variables with too many missing values ──
 #> 
-#> ℹ Normalizing data again
-#> ✔ Normalizing data again [17ms]
+#> ℹ No QC samples found. Using all samples.
+#> ℹ Applying preset "discovery"...
+#> ℹ Total removed: 24 (0.56%) variables.
+#> ✔ Variable removal completed.
+#> 
+#> ── Imputing missing values ──
+#> 
+#> ℹ No QC samples found. Using default imputation method based on sample size.
+#> ℹ Sample size <= 30, using `impute_sample_min()`.
+#> ✔ Imputation completed.
+#> 
+#> ── Aggregating data ──
+#> 
+#> ℹ Aggregating to "gfs" level
+#> ✔ Aggregation completed.
+#> 
+#> ── Normalizing data again ──
+#> 
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
+#> 
+#> ── Correcting batch effects ──
+#> 
+#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ✔ Batch correction completed.
 ```
 
 ## What is motif quantification?
@@ -74,14 +94,14 @@ motif_exp <- quantify_motifs(exp, motifs)
 motif_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 548 variables
+#> ℹ Expression matrix: 12 samples, 552 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>
 ```
 
 ``` r
 get_var_info(motif_exp)
-#> # A tibble: 548 × 5
+#> # A tibble: 552 × 5
 #>    variable protein protein_site motif gene  
 #>    <chr>    <chr>          <int> <chr> <chr> 
 #>  1 V1       A6NJW9            49 Lx    CD8B2 
@@ -94,7 +114,7 @@ get_var_info(motif_exp)
 #>  8 V8       O75437           244 SLx   ZNF254
 #>  9 V9       O75581           281 Lx    LRP6  
 #> 10 V10      O75581           281 SLx   LRP6  
-#> # ℹ 538 more rows
+#> # ℹ 542 more rows
 ```
 
 Notice how the variable information now includes a `motif` column

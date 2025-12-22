@@ -79,25 +79,45 @@ reliable as your data!
 
 ``` r
 exp <- auto_clean(real_experiment)  # Preprocess the data
-#> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [130ms]
 #> 
-#> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [71ms]
+#> ── Normalizing data ──
 #> 
-#> ℹ Imputing missing values
-#> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [23ms]
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
 #> 
-#> ℹ Aggregating data
-#> ✔ Aggregating data [997ms]
+#> ── Removing variables with too many missing values ──
 #> 
-#> ℹ Normalizing data again
-#> ✔ Normalizing data again [19ms]
+#> ℹ No QC samples found. Using all samples.
+#> ℹ Applying preset "discovery"...
+#> ℹ Total removed: 24 (0.56%) variables.
+#> ✔ Variable removal completed.
+#> 
+#> ── Imputing missing values ──
+#> 
+#> ℹ No QC samples found. Using default imputation method based on sample size.
+#> ℹ Sample size <= 30, using `impute_sample_min()`.
+#> ✔ Imputation completed.
+#> 
+#> ── Aggregating data ──
+#> 
+#> ℹ Aggregating to "gfs" level
+#> ✔ Aggregation completed.
+#> 
+#> ── Normalizing data again ──
+#> 
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
+#> 
+#> ── Correcting batch effects ──
+#> 
+#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ✔ Batch correction completed.
 exp
 #> 
 #> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3880 variables
+#> ℹ Expression matrix: 12 samples, 3979 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>
 ```
@@ -107,7 +127,7 @@ with:
 
 ``` r
 get_var_info(exp)
-#> # A tibble: 3,880 × 6
+#> # A tibble: 3,979 × 6
 #>    variable protein glycan_composition      glycan_structure  protein_site gene 
 #>    <chr>    <chr>   <comp>                  <struct>                 <int> <chr>
 #>  1 V1       P08185  Hex(5)HexNAc(4)NeuAc(2) NeuAc(??-?)Hex(?…          176 SERP…
@@ -120,7 +140,7 @@ get_var_info(exp)
 #>  8 V8       P04196  Hex(5)HexNAc(4)dHex(2)  dHex(??-?)Hex(??…          344 HRG  
 #>  9 V9       P04196  Hex(4)HexNAc(3)         Hex(??-?)HexNAc(…          344 HRG  
 #> 10 V10      P04196  Hex(4)HexNAc(4)NeuAc(1) NeuAc(??-?)Hex(?…          344 HRG  
-#> # ℹ 3,870 more rows
+#> # ℹ 3,969 more rows
 ```
 
 ``` r
@@ -144,12 +164,12 @@ get_sample_info(exp)
 
 ``` r
 get_expr_mat(exp)[1:5, 1:5]
-#>              C1           C2           C3           H1           H2
-#> V1 6.626760e+03 2.019159e+04      13432.7 4.072473e+04 1.771879e+04
-#> V2 3.744595e+08 5.691652e+08   99531624.5 2.372164e+04 1.422307e+07
-#> V3 5.260619e+08 5.644547e+08  211645556.7 9.149818e+08 8.534716e+08
-#> V4 2.983928e+09 2.665752e+09 1207235166.5 3.410355e+09 3.918161e+09
-#> V5 2.751569e+07 3.200443e+07    8055532.6 6.765746e+07 4.546455e+07
+#>              C1           C2         C3           H1           H2
+#> V1 6.676837e+03 2.007225e+04      13368 4.105520e+04 1.754469e+04
+#> V2 3.772892e+08 5.658012e+08   99052192 2.391413e+04 1.408332e+07
+#> V3 5.300372e+08 5.611186e+08  210626085 9.224067e+08 8.450856e+08
+#> V4 3.006477e+09 2.649997e+09 1201420056 3.438030e+09 3.879662e+09
+#> V5 2.772362e+07 3.181527e+07    8016730 6.820649e+07 4.501783e+07
 ```
 
 Now for the magic moment ✨—let’s calculate some derived traits!
@@ -159,9 +179,9 @@ trait_exp <- derive_traits(exp)
 trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3836 variables
+#> ℹ Expression matrix: 12 samples, 3864 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```
 
 Voilà! What you see is a brand new
@@ -173,20 +193,20 @@ each derived trait on each glycosite in each sample.”
 
 ``` r
 get_var_info(trait_exp)
-#> # A tibble: 3,836 × 5
-#>    variable protein protein_site trait gene 
-#>    <chr>    <chr>          <int> <chr> <chr>
-#>  1 V1       A6NJW9            49 TM    CD8B2
-#>  2 V2       A6NJW9            49 TH    CD8B2
-#>  3 V3       A6NJW9            49 TC    CD8B2
-#>  4 V4       A6NJW9            49 MM    CD8B2
-#>  5 V5       A6NJW9            49 CA2   CD8B2
-#>  6 V6       A6NJW9            49 CA3   CD8B2
-#>  7 V7       A6NJW9            49 CA4   CD8B2
-#>  8 V8       A6NJW9            49 TF    CD8B2
-#>  9 V9       A6NJW9            49 TFc   CD8B2
-#> 10 V10      A6NJW9            49 TFa   CD8B2
-#> # ℹ 3,826 more rows
+#> # A tibble: 3,864 × 6
+#>    variable protein protein_site trait gene  explanation                        
+#>    <chr>    <chr>          <int> <chr> <chr> <chr>                              
+#>  1 V1       A6NJW9            49 TM    CD8B2 Proportion of high-mannose glycans…
+#>  2 V2       A6NJW9            49 TH    CD8B2 Proportion of hybrid glycans among…
+#>  3 V3       A6NJW9            49 TC    CD8B2 Proportion of complex glycans amon…
+#>  4 V4       A6NJW9            49 MM    CD8B2 Abundance-weighted mean of mannose…
+#>  5 V5       A6NJW9            49 CA2   CD8B2 Proportion of bi-antennary glycans…
+#>  6 V6       A6NJW9            49 CA3   CD8B2 Proportion of tri-antennary glycan…
+#>  7 V7       A6NJW9            49 CA4   CD8B2 Proportion of tetra-antennary glyc…
+#>  8 V8       A6NJW9            49 TF    CD8B2 Proportion of fucosylated glycans …
+#>  9 V9       A6NJW9            49 TFc   CD8B2 Proportion of core-fucosylated gly…
+#> 10 V10      A6NJW9            49 TFa   CD8B2 Proportion of arm-fucosylated glyc…
+#> # ℹ 3,854 more rows
 ```
 
 ``` r
@@ -245,26 +265,26 @@ anova_res <- gly_anova(trait_exp)
 #> ℹ Number of groups: 4
 #> ℹ Groups: "H", "M", "Y", and "C"
 #> ℹ Pairwise comparisons will be performed, with levels coming first as reference groups.
-#> Warning: 267 variables failed to fit the model
+#> Warning: 269 variables failed to fit the model
 anova_res$tidy_result$main_test |>
   dplyr::filter(trait == "TFc", p_adj < 0.05)
-#> # A tibble: 12 × 13
-#>    variable term     df     sumsq    meansq statistic     p_val   p_adj post_hoc
-#>    <chr>    <chr> <dbl>     <dbl>     <dbl>     <dbl>     <dbl>   <dbl> <chr>   
-#>  1 V1115    group     3 0.0000941 0.0000314      26.2   1.72e-4 7.86e-3 H_vs_M;…
-#>  2 V1227    group     3 0.0629    0.0210         14.0   1.50e-3 3.08e-2 H_vs_Y;…
-#>  3 V1353    group     3 0.00231   0.000770       19.3   5.05e-4 1.63e-2 H_vs_C;…
-#>  4 V1381    group     3 0.00640   0.00213        14.9   1.23e-3 2.71e-2 H_vs_Y;…
-#>  5 V1661    group     3 0.0299    0.00998        14.3   1.40e-3 2.94e-2 H_vs_M;…
-#>  6 V1675    group     3 0.0174    0.00581        43.1   2.78e-5 2.92e-3 H_vs_M;…
-#>  7 V2165    group     3 0.0174    0.00581       172.    1.34e-7 1.02e-4 H_vs_M;…
-#>  8 V2487    group     3 0.0644    0.0215         74.1   3.53e-6 8.98e-4 H_vs_M;…
-#>  9 V2837    group     3 0.00547   0.00182        27.5   1.45e-4 7.05e-3 H_vs_M;…
-#> 10 V457     group     3 0.000548  0.000183       52.2   1.34e-5 2.57e-3 H_vs_C;…
-#> 11 V709     group     3 0.0771    0.0257         22.4   3.00e-4 1.23e-2 H_vs_M;…
-#> 12 V919     group     3 0.00365   0.00122        31.9   8.46e-5 5.01e-3 H_vs_C;…
-#> # ℹ 4 more variables: protein <chr>, protein_site <int>, trait <chr>,
-#> #   gene <chr>
+#> # A tibble: 12 × 14
+#>    variable protein protein_site trait gene   explanation    term     df   sumsq
+#>    <chr>    <chr>          <int> <chr> <chr>  <chr>          <chr> <dbl>   <dbl>
+#>  1 V457     P00748           249 TFc   F12    Proportion of… group     3 5.48e-4
+#>  2 V709     P01591            71 TFc   JCHAIN Proportion of… group     3 7.71e-2
+#>  3 V919     P02679            78 TFc   FGG    Proportion of… group     3 3.65e-3
+#>  4 V1115    P02765           176 TFc   AHSG   Proportion of… group     3 9.41e-5
+#>  5 V1227    P02790           240 TFc   HPX    Proportion of… group     3 6.29e-2
+#>  6 V1353    P03952           494 TFc   KLKB1  Proportion of… group     3 2.31e-3
+#>  7 V1381    P04004            86 TFc   VTN    Proportion of… group     3 6.50e-3
+#>  8 V1661    P04278           396 TFc   SHBG   Proportion of… group     3 2.99e-2
+#>  9 V1675    P05090            98 TFc   APOD   Proportion of… group     3 1.70e-2
+#> 10 V2165    P0C0L4          1328 TFc   C4A    Proportion of… group     3 1.74e-2
+#> 11 V2515    P19652           103 TFc   ORM2   Proportion of… group     3 6.44e-2
+#> 12 V2865    P43652            33 TFc   AFM    Proportion of… group     3 5.47e-3
+#> # ℹ 5 more variables: meansq <dbl>, statistic <dbl>, p_val <dbl>, p_adj <dbl>,
+#> #   post_hoc <chr>
 ```
 
 🔍 **Discovery time!** We’ve identified several glycosites with
@@ -350,7 +370,7 @@ adding meta-properties directly:
 ``` r
 exp_with_mp <- add_meta_properties(exp)
 get_var_info(exp_with_mp)
-#> # A tibble: 3,880 × 16
+#> # A tibble: 3,979 × 16
 #>    variable protein glycan_composition glycan_structure protein_site gene  Tp   
 #>    <chr>    <chr>   <comp>             <struct>                <int> <chr> <fct>
 #>  1 V1       P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP… comp…
@@ -363,7 +383,7 @@ get_var_info(exp_with_mp)
 #>  8 V8       P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG   comp…
 #>  9 V9       P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG   comp…
 #> 10 V10      P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
-#> # ℹ 3,870 more rows
+#> # ℹ 3,969 more rows
 #> # ℹ 9 more variables: B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>,
 #> #   nG <int>, nGt <int>, nS <int>, nM <int>
 ```
@@ -380,7 +400,7 @@ exp_with_mp |>
   filter_var(Tp == "highmannose")
 #> 
 #> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 207 variables
+#> ℹ Expression matrix: 12 samples, 213 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
 ```
@@ -474,25 +494,41 @@ glycomics data using
 
 ``` r
 exp <- auto_clean(real_experiment2)
-#> ℹ Normalizing data (Median Quotient)
-#> ✔ Normalizing data (Median Quotient) [14ms]
 #> 
-#> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [14ms]
+#> ── Removing variables with too many missing values ──
 #> 
-#> ℹ Imputing missing values
-#> ℹ Sample size > 100, using MissForest imputation
-#> ℹ Imputing missing values✔ Imputing missing values [6s]
+#> ℹ No QC samples found. Using all samples.
+#> ℹ Applying preset "discovery"...
+#> ℹ Total removed: 10 (14.93%) variables.
+#> ✔ Variable removal completed.
 #> 
-#> ℹ Normalizing data (Total Area)
-#> ✔ Normalizing data (Total Area) [13ms]
+#> ── Normalizing data ──
+#> 
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycomics". Using `normalize_median_quotient()` + `normalize_total_area()`.
+#> ✔ Normalization completed.
+#> 
+#> ── Normalizing data (Total Area) ──
+#> 
+#> ✔ Total area normalization completed.
+#> 
+#> ── Imputing missing values ──
+#> 
+#> ℹ No QC samples found. Using default imputation method based on sample size.
+#> ℹ Sample size > 100, using `impute_miss_forest()`.
+#> ✔ Imputation completed.
+#> 
+#> ── Correcting batch effects ──
+#> 
+#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ✔ Batch correction completed.
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 
 #> ── Traitomics Experiment ───────────────────────────────────────────────────────
 #> ℹ Expression matrix: 144 samples, 14 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: trait <chr>
+#> ℹ Variable information fields: trait <chr>, explanation <chr>
 ```
 
 ## What’s Next?

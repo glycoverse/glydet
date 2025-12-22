@@ -5,6 +5,14 @@ traits using `glydet`. Before proceeding, please ensure you have read
 the “Get Started with glydet” vignette and are familiar with the
 fundamental concepts of derived traits and meta-properties.
 
+**Note about new features:**
+
+We introduced an experimental function
+[`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+since glydet 0.7.0. This function allows you to create a trait from
+natural language. Check out the last section of this vignette for
+details.
+
 ``` r
 library(dplyr)
 #> 
@@ -31,21 +39,41 @@ library(glyclean)
 library(glyrepr)
 
 exp <- auto_clean(real_experiment)
-#> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [131ms]
 #> 
-#> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [24ms]
+#> ── Normalizing data ──
 #> 
-#> ℹ Imputing missing values
-#> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [22ms]
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
 #> 
-#> ℹ Aggregating data
-#> ✔ Aggregating data [997ms]
+#> ── Removing variables with too many missing values ──
 #> 
-#> ℹ Normalizing data again
-#> ✔ Normalizing data again [17ms]
+#> ℹ No QC samples found. Using all samples.
+#> ℹ Applying preset "discovery"...
+#> ℹ Total removed: 24 (0.56%) variables.
+#> ✔ Variable removal completed.
+#> 
+#> ── Imputing missing values ──
+#> 
+#> ℹ No QC samples found. Using default imputation method based on sample size.
+#> ℹ Sample size <= 30, using `impute_sample_min()`.
+#> ✔ Imputation completed.
+#> 
+#> ── Aggregating data ──
+#> 
+#> ℹ Aggregating to "gfs" level
+#> ✔ Aggregation completed.
+#> 
+#> ── Normalizing data again ──
+#> 
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ✔ Normalization completed.
+#> 
+#> ── Correcting batch effects ──
+#> 
+#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ✔ Batch correction completed.
 ```
 
 ## Custom Traits
@@ -526,6 +554,14 @@ validation step is particularly valuable when working with complex trait
 definitions or when collaborating with team members who need to
 understand your analytical approach.
 
+We have introduced a new argument `use_ai` to
+[`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+since glydet 0.7.0. If `use_ai` is TRUE, the function will use a Large
+Language Model (LLM) to explain the trait, which covers more complex
+cases and edge cases. Check out the documentation of
+[`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+for details.
+
 ## Custom Meta-Properties
 
 The preceding examples utilized exclusively built-in meta-properties. As
@@ -602,9 +638,9 @@ follows:
 derive_traits(exp, trait_fns = my_traits, mp_fns = c(my_mp_fns, all_mp_fns()))
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 548 variables
+#> ℹ Expression matrix: 12 samples, 552 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```
 
 Ensure that custom meta-properties are combined with built-in
@@ -642,9 +678,9 @@ And calculate the traits:
 derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 548 variables
+#> ℹ Expression matrix: 12 samples, 552 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```
 
 This is an example of how you can violate the [ambiguity
@@ -679,7 +715,7 @@ exp2 |>
   get_var_info() |>
   filter(n_a26_sia > 0) |>
   pull(glycan_structure)
-#> <glycan_structure[2526]>
+#> <glycan_structure[2575]>
 #> [1] NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)[NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-
 #> [2] NeuAc(??-?)Hex(??-?)HexNAc(??-?)[HexNAc(??-?)]Hex(??-?)[Hex(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-
 #> [3] NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)[Hex(??-?)HexNAc(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-
@@ -690,8 +726,8 @@ exp2 |>
 #> [8] NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)[Hex(??-?)]Hex(??-?)HexNAc(??-?)[dHex(??-?)]HexNAc(??-
 #> [9] NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)[Hex(??-?)HexNAc(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)[dHex(??-?)]HexNAc(??-
 #> [10] NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)[NeuAc(??-?)Hex(??-?)HexNAc(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-
-#> ... (2516 more not shown)
-#> # Unique structures: 526
+#> ... (2565 more not shown)
+#> # Unique structures: 535
 ```
 
 See? No linkage information about sialic acids is in the glycan
@@ -718,10 +754,40 @@ to use these columns as meta-properties:
 derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 548 variables
+#> ℹ Expression matrix: 12 samples, 552 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, n_a23_sia <int>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, n_a23_sia <int>, explanation <chr>
 ```
+
+## Using `make_trait()`
+
+[`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+allows you to create a trait from natural language. To use this feature,
+you need to install the `ellmer` package (not a forced dependency of
+`glydet`). You also need to provide an API key for the DeepSeek chat
+model. You can obtain an API key from <https://platform.deepseek.com>.
+Please set the environment variable `DEEPSEEK_API_KEY` to your API key
+using [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html):
+
+``` r
+# Works for a single session
+Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
+```
+
+Then you can transform your ideas into trait functions by calling
+[`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md):
+
+``` r
+my_traits <- list(
+  nS = make_trait("the average number of sialic acids"),
+  nG = make_trait("the average number of galactoses")
+)
+derive_traits(exp, trait_fns = my_traits)
+```
+
+This function is experimental, so the result should be verified
+manually. If the description is not clear, an error will be raised. Try
+to read the descriptions of built-in traits to get ideas.
 
 ## Exercise Solutions
 
