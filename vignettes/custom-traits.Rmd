@@ -25,6 +25,8 @@ This function allows you to create a trait from natural language.
 Check out the last section of this vignette for details.
 
 ```{r setup}
+#| message: false
+
 library(dplyr)
 library(glydet)
 library(glyexp)
