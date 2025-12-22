@@ -15,65 +15,12 @@ details.
 
 ``` r
 library(dplyr)
-#> 
-#> Attaching package: 'dplyr'
-#> The following objects are masked from 'package:stats':
-#> 
-#>     filter, lag
-#> The following objects are masked from 'package:base':
-#> 
-#>     intersect, setdiff, setequal, union
 library(glydet)
 library(glyexp)
-#> 
-#> Attaching package: 'glyexp'
-#> The following object is masked from 'package:dplyr':
-#> 
-#>     select_var
 library(glyclean)
-#> 
-#> Attaching package: 'glyclean'
-#> The following object is masked from 'package:stats':
-#> 
-#>     aggregate
 library(glyrepr)
 
 exp <- auto_clean(real_experiment)
-#> 
-#> ── Normalizing data ──
-#> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
-#> ✔ Normalization completed.
-#> 
-#> ── Removing variables with too many missing values ──
-#> 
-#> ℹ No QC samples found. Using all samples.
-#> ℹ Applying preset "discovery"...
-#> ℹ Total removed: 24 (0.56%) variables.
-#> ✔ Variable removal completed.
-#> 
-#> ── Imputing missing values ──
-#> 
-#> ℹ No QC samples found. Using default imputation method based on sample size.
-#> ℹ Sample size <= 30, using `impute_sample_min()`.
-#> ✔ Imputation completed.
-#> 
-#> ── Aggregating data ──
-#> 
-#> ℹ Aggregating to "gfs" level
-#> ✔ Aggregation completed.
-#> 
-#> ── Normalizing data again ──
-#> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
-#> ✔ Normalization completed.
-#> 
-#> ── Correcting batch effects ──
-#> 
-#> ℹ Batch column  not found in sample_info. Skipping batch correction.
-#> ✔ Batch correction completed.
 ```
 
 ## Custom Traits

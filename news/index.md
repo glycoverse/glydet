@@ -1,5 +1,7 @@
 # Changelog
 
+## glydet (development version)
+
 ## glydet 0.7.0
 
 We introduce exciting new features to `glydet`, including explaining and
