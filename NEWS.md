@@ -1,4 +1,16 @@
-# glydet (development version)
+# glydet 0.7.0
+
+We introduce exciting new features to `glydet`, including explaining and creating derived traits using a Large Language Model (LLM). We hope these features will help you work with custom derived traits more efficiently with less effort.
+
+## New features
+
+* `explain_trait()` now supports `total()` and `wsum()` traits.
+* `explain_trait()` now supports a new argument `use_ai` to use a Large Language Model (LLM) to explain the trait.
+* Add `make_trait()` to create a derived trait function using natural language with a Large Language Model (LLM).
+
+## Minor improvements and bug fixes
+
+* The result of `derive_traits()` and `derive_traits_()` now have an `explanation` column in the output tibble, explaining the derived traits.
 
 # glydet 0.6.5
 
