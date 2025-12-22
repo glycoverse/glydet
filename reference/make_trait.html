@@ -89,7 +89,13 @@ You can obtain an API key from https://platform.deepseek.com.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")</span></span></span>
-<span class="r-in"><span><span class="co"># make_trait("the average number of sialic acids")</span></span></span>
+<span class="r-in"><span><span class="co"># my_traits &lt;- list(</span></span></span>
+<span class="r-in"><span><span class="co">#   nS = make_trait("the average number of sialic acids"),</span></span></span>
+<span class="r-in"><span><span class="co">#   nG = make_trait("the average number of galactoses")</span></span></span>
+<span class="r-in"><span><span class="co"># )</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># The trait function can then be used in `derive_traits()`:</span></span></span>
+<span class="r-in"><span><span class="co"># derive_traits(exp, trait_fns = my_traits)</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
