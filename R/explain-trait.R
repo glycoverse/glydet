@@ -456,18 +456,6 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
 
 # ----- AI-assisted explanations --------------------------------------
 
-.get_api_key <- function() {
-  api_key <- Sys.getenv("DEEPSEEK_API_KEY")
-  if (api_key == "") {
-    cli::cli_abort(c(
-      "API key for DeepSeek chat model is not set.",
-      "i" = "Please set the environment variable `DEEPSEEK_API_KEY` to your API key.",
-      "i" = "You can obtain an API key from https://platform.deepseek.com."
-    ))
-  }
-  api_key
-}
-
 .explain_sys_prompt <- function(trait_type) {
   checkmate::assert_choice(trait_type, c("prop", "ratio", "wmean", "total", "wsum"))
   prompt <- paste(

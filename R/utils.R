@@ -20,3 +20,15 @@
     ))
   }
 }
+
+.get_api_key <- function() {
+  api_key <- Sys.getenv("DEEPSEEK_API_KEY")
+  if (api_key == "") {
+    cli::cli_abort(c(
+      "API key for DeepSeek chat model is not set.",
+      "i" = "Please set the environment variable `DEEPSEEK_API_KEY` to your API key.",
+      "i" = "You can obtain an API key from https://platform.deepseek.com."
+    ))
+  }
+  api_key
+}
