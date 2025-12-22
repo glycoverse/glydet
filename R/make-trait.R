@@ -41,7 +41,7 @@ make_trait <- function(description) {
     ))
   }
   tryCatch(
-    rlang::parse_expr(output),
+    expr <- rlang::parse_expr(output),
     error = function(e) {
       cli::cli_abort(c(
         "Failed to create a derived trait function using AI.",
@@ -51,6 +51,7 @@ make_trait <- function(description) {
       ))
     }
   )
+  eval(expr)
 }
 
 .make_trait_sys_prompt <- function(description) {
