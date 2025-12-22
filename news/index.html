@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.6.5.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.7.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,22 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glydet-development-version">glydet (development version)<a class="anchor" aria-label="anchor" href="#glydet-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.7.0" id="glydet-070">glydet 0.7.0<a class="anchor" aria-label="anchor" href="#glydet-070"></a></h2>
+<p>We introduce exciting new features to <code>glydet</code>, including explaining and creating derived traits using a Large Language Model (LLM). We hope these features will help you work with custom derived traits more efficiently with less effort.</p>
+<div class="section level3">
+<h3 id="new-features-0-7-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-7-0"></a></h3>
+<ul><li>
+<code><a href="../reference/explain_trait.html">explain_trait()</a></code> now supports <code><a href="../reference/total.html">total()</a></code> and <code><a href="../reference/wsum.html">wsum()</a></code> traits.</li>
+<li>
+<code><a href="../reference/explain_trait.html">explain_trait()</a></code> now supports a new argument <code>use_ai</code> to use a Large Language Model (LLM) to explain the trait.</li>
+<li>Add <code><a href="../reference/make_trait.html">make_trait()</a></code> to create a derived trait function using natural language with a Large Language Model (LLM).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-7-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-7-0"></a></h3>
+<ul><li>The result of <code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits_.html">derive_traits_()</a></code> now have an <code>explanation</code> column in the output tibble, explaining the derived traits.</li>
+</ul></div>
 </div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.6.5" id="glydet-065">glydet 0.6.5<a class="anchor" aria-label="anchor" href="#glydet-065"></a></h2>

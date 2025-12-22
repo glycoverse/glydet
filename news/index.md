@@ -2,6 +2,37 @@
 
 ## glydet (development version)
 
+## glydet 0.7.0
+
+We introduce exciting new features to `glydet`, including explaining and
+creating derived traits using a Large Language Model (LLM). We hope
+these features will help you work with custom derived traits more
+efficiently with less effort.
+
+### New features
+
+- [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+  now supports
+  [`total()`](https://glycoverse.github.io/glydet/reference/total.md)
+  and [`wsum()`](https://glycoverse.github.io/glydet/reference/wsum.md)
+  traits.
+- [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+  now supports a new argument `use_ai` to use a Large Language Model
+  (LLM) to explain the trait.
+- Add
+  [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+  to create a derived trait function using natural language with a Large
+  Language Model (LLM).
+
+### Minor improvements and bug fixes
+
+- The result of
+  [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
+  and
+  [`derive_traits_()`](https://glycoverse.github.io/glydet/reference/derive_traits_.md)
+  now have an `explanation` column in the output tibble, explaining the
+  derived traits.
+
 ## glydet 0.6.5
 
 ### Minor improvements and fixes
