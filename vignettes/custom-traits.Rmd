@@ -18,6 +18,12 @@ This vignette provides a comprehensive guide for defining custom derived traits 
 Before proceeding, please ensure you have read the "Get Started with glydet" vignette
 and are familiar with the fundamental concepts of derived traits and meta-properties.
 
+**Note about new features:**
+
+We introduced an experimental function `make_trait()` since glydet 0.7.0.
+This function allows you to create a trait from natural language.
+Check out the last section of this vignette for details.
+
 ```{r setup}
 library(dplyr)
 library(glydet)
@@ -408,6 +414,11 @@ natural language description of what the trait calculates.
 This validation step is particularly valuable when working with complex trait definitions
 or when collaborating with team members who need to understand your analytical approach.
 
+We have introduced a new argument `use_ai` to `explain_trait()` since glydet 0.7.0.
+If `use_ai` is TRUE, the function will use a Large Language Model (LLM) to explain the trait,
+which covers more complex cases and edge cases.
+Check out the documentation of `explain_trait()` for details.
+
 ## Custom Meta-Properties
 
 The preceding examples utilized exclusively built-in meta-properties.
@@ -557,6 +568,33 @@ And use `mp_cols` to tell `derive_traits()` to use these columns as meta-propert
 ```{r}
 derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
 ```
+
+## Using `make_trait()`
+
+`make_trait()` allows you to create a trait from natural language.
+To use this feature, you need to install the `ellmer` package (not a forced dependency of `glydet`).
+You also need to provide an API key for the DeepSeek chat model.
+You can obtain an API key from https://platform.deepseek.com.
+Please set the environment variable `DEEPSEEK_API_KEY` to your API key using `Sys.setenv()`:
+
+```r
+# Works for a single session
+Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
+```
+
+Then you can transform your ideas into trait functions by calling `make_trait()`:
+
+```r
+my_traits <- list(
+  nS = make_trait("the average number of sialic acids"),
+  nG = make_trait("the average number of galactoses")
+)
+derive_traits(exp, trait_fns = my_traits)
+```
+
+This function is experimental, so the result should be verified manually.
+If the description is not clear, an error will be raised.
+Try to read the descriptions of built-in traits to get ideas.
 
 ## Exercise Solutions
 
