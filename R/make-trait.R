@@ -33,25 +33,28 @@ make_trait <- function(description) {
   system_prompt <- .make_trait_sys_prompt(description)
   user_prompt <- paste0("INPUT: ", description, "\nOUTPUT: ")
   output <- .ask_ai(system_prompt, user_prompt)
-  if (stringr::str_detect(output, "<INVALID>")) {
+
+  .raise_ai_error <- function(output) {
     cli::cli_abort(c(
       "Failed to create a derived trait function using AI.",
       "x" = "The output from AI is: {.val {output}}",
       "i" = "Please try again with a different description."
     ))
   }
-  tryCatch(
-    expr <- rlang::parse_expr(output),
-    error = function(e) {
-      cli::cli_abort(c(
-        "Failed to create a derived trait function using AI.",
-        "x" = "The output from AI is: {.val {output}}",
-        "i" = "Error: {conditionMessage(e)}",
-        "i" = "Please try again with a different description."
-      ))
-    }
-  )
-  eval(expr)
+
+
+  if (stringr::str_detect(output, "<INVALID>")) {
+    .raise_ai_error(output)
+  }
+  if (!stringr::str_detect(output, "^(prop|ratio|wmean)\\((.*)\\)$")) {
+    .raise_ai_error(output)
+  }
+  explain <- try(explain_trait(eval(rlang::parse_expr(output))))
+  if (inherits(explain, "try-error")) {
+    .raise_ai_error(output)
+  }
+
+  eval(rlang::parse_expr(output))
 }
 
 .make_trait_sys_prompt <- function(description) {
