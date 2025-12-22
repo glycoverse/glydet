@@ -32,3 +32,15 @@
   }
   api_key
 }
+
+.ask_ai <- function(system_prompt, user_prompt, model = "deepseek-chat") {
+  rlang::check_installed("ellmer")
+  api_key <- .get_api_key()
+  chat <- ellmer::chat_deepseek(
+    system_prompt = system_prompt,
+    model = model,
+    echo = "none",
+    credentials = function() api_key
+  )
+  as.character(chat$chat(user_prompt))
+}

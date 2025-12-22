@@ -563,17 +563,9 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
 }
 
 .explain_with_ai <- function(trait_fn) {
-  rlang::check_installed("ellmer")
-  api_key <- .get_api_key()
   trait_str <- rlang::expr_text(trait_fn)
   str_type <- stringr::str_extract(trait_str, "prop|ratio|wmean|total|wsum")
   system_prompt <- .explain_sys_prompt(str_type)
-  chat <- ellmer::chat_deepseek(
-    system_prompt = system_prompt,
-    model = "deepseek-chat",
-    echo = "none",
-    credentials = function() api_key
-  )
-  propmt <- paste0("INPUT: ", trait_str, "\nOUTPUT: ")
-  as.character(chat$chat(propmt))
+  user_prompt <- paste0("INPUT: ", trait_str, "\nOUTPUT: ")
+  .ask_ai(system_prompt, user_prompt)
 }

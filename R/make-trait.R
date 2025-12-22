@@ -18,23 +18,21 @@
 #'
 #' @examples
 #' # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
-#' # make_trait("the average number of sialic acids")
+#' # my_traits <- list(
+#' #   nS = make_trait("the average number of sialic acids"),
+#' #   nG = make_trait("the average number of galactoses")
+#' # )
+#'
+#' # The trait function can then be used in `derive_traits()`:
+#' # derive_traits(exp, trait_fns = my_traits)
 #'
 #' @export
 make_trait <- function(description) {
-  rlang::check_installed("ellmer")
   checkmate::assert_string(description)
   description <- stringr::str_trim(description)
-  api_key <- .get_api_key()
   system_prompt <- .make_trait_sys_prompt(description)
-  chat <- ellmer::chat_deepseek(
-    system_prompt = system_prompt,
-    model = "deepseek-chat",
-    echo = "none",
-    credentials = function() api_key
-  )
-  prompt <- paste0("INPUT: ", description, "\nOUTPUT: ")
-  output <- as.character(chat$chat(prompt))
+  user_prompt <- paste0("INPUT: ", description, "\nOUTPUT: ")
+  output <- .ask_ai(system_prompt, user_prompt)
   if (stringr::str_detect(output, "<INVALID>")) {
     cli::cli_abort(c(
       "Failed to create a derived trait function using AI.",

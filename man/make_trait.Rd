@@ -26,6 +26,12 @@ You can obtain an API key from https://platform.deepseek.com.
 }
 \examples{
 # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
-# make_trait("the average number of sialic acids")
+# my_traits <- list(
+#   nS = make_trait("the average number of sialic acids"),
+#   nG = make_trait("the average number of galactoses")
+# )
+
+# The trait function can then be used in `derive_traits()`:
+# derive_traits(exp, trait_fns = my_traits)
 
 }
