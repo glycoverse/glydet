@@ -119,7 +119,7 @@
 #'   Must be either "absolute" or "relative". Default is "relative".
 #'   See "Relative and Absolute Motif Quantification" section for details.
 #' @param alignments A character vector specifying the alignment method for each motif.
-#'   Can be "terminal", "substructure", "core", or "whole". Default is "substructure".
+#'   Can be "terminal", "substructure", "core", "whole" or "exact". Default is "substructure".
 #'   See [glymotif::have_motifs()] for details.
 #' @param ignore_linkages A logical value. If `TRUE`, linkages will be ignored in the comparison.
 #'   See [glymotif::have_motifs()] for details.
