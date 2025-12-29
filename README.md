@@ -57,38 +57,54 @@ in the `glycoverse` ecosystem, including `glyexp`, `glyrepr`,
 
 First, let’s load necessary packages and get the data ready.
 
-``` r
-library(glyexp)
-library(glyclean)
-#> 
-#> Attaching package: 'glyclean'
-#> The following object is masked from 'package:stats':
-#> 
-#>     aggregate
-library(glydet)
+    #> 
+    #> Attaching package: 'glyclean'
+    #> The following object is masked from 'package:stats':
+    #> 
+    #>     aggregate
+    #> 
+    #> ── Normalizing data ──
+    #> 
+    #> ℹ No QC samples found. Using default normalization method based on experiment type.
+    #> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+    #> ✔ Normalization completed.
+    #> 
+    #> ── Removing variables with too many missing values ──
+    #> 
+    #> ℹ No QC samples found. Using all samples.
+    #> ℹ Applying preset "discovery"...
+    #> ℹ Total removed: 24 (0.56%) variables.
+    #> ✔ Variable removal completed.
+    #> 
+    #> ── Imputing missing values ──
+    #> 
+    #> ℹ No QC samples found. Using default imputation method based on sample size.
+    #> ℹ Sample size <= 30, using `impute_sample_min()`.
+    #> ✔ Imputation completed.
+    #> 
+    #> ── Aggregating data ──
+    #> 
+    #> ℹ Aggregating to "gfs" level
+    #> ✔ Aggregation completed.
+    #> 
+    #> ── Normalizing data again ──
+    #> 
+    #> ℹ No QC samples found. Using default normalization method based on experiment type.
+    #> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+    #> ✔ Normalization completed.
+    #> 
+    #> ── Correcting batch effects ──
+    #> 
+    #> ℹ Batch column  not found in sample_info. Skipping batch correction.
+    #> ✔ Batch correction completed.
 
-exp <- auto_clean(real_experiment)
-#> ℹ Normalizing data (Median)
-#> ✔ Normalizing data (Median) [71ms]
-#> 
-#> ℹ Removing variables with >50% missing values
-#> ✔ Removing variables with >50% missing values [38ms]
-#> 
-#> ℹ Imputing missing values
-#> ℹ Sample size <= 30, using sample minimum imputation
-#> ℹ Imputing missing values✔ Imputing missing values [10ms]
-#> 
-#> ℹ Aggregating data
-#> ✔ Aggregating data [349ms]
-#> 
-#> ℹ Normalizing data again
-#> ✔ Normalizing data again [7ms]
+``` r
 exp
 #> 
-#> ── Experiment ──────────────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3880 variables
-#> ℹ Sample information fields: group <chr>
-#> ℹ Variable information fields: protein <chr>, gene <chr>, glycan_composition <glyrpr_c>, glycan_structure <glyrpr_s>, protein_site <int>
+#> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 12 samples, 3979 variables
+#> ℹ Sample information fields: group <fct>
+#> ℹ Variable information fields: protein <chr>, glycan_composition <glyrpr_c>, glycan_structure <glyrpr_s>, protein_site <int>, gene <chr>
 ```
 
 Now, let’s calculate some derived traits!
@@ -97,10 +113,10 @@ Now, let’s calculate some derived traits!
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 
-#> ── Experiment ──────────────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3836 variables
-#> ℹ Sample information fields: group <chr>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>
+#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 12 samples, 3864 variables
+#> ℹ Sample information fields: group <fct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```
 
 Voilà! What you see is a brand new `experiment()` object with
@@ -111,20 +127,20 @@ trait on each glycosite in each sample.”
 
 ``` r
 get_var_info(trait_exp)
-#> # A tibble: 3,836 × 5
-#>    variable protein protein_site trait gene 
-#>    <chr>    <chr>          <int> <chr> <chr>
-#>  1 V1       A6NJW9            49 TM    CD8B2
-#>  2 V2       A6NJW9            49 TH    CD8B2
-#>  3 V3       A6NJW9            49 TC    CD8B2
-#>  4 V4       A6NJW9            49 MM    CD8B2
-#>  5 V5       A6NJW9            49 CA2   CD8B2
-#>  6 V6       A6NJW9            49 CA3   CD8B2
-#>  7 V7       A6NJW9            49 CA4   CD8B2
-#>  8 V8       A6NJW9            49 TF    CD8B2
-#>  9 V9       A6NJW9            49 TFc   CD8B2
-#> 10 V10      A6NJW9            49 TFa   CD8B2
-#> # ℹ 3,826 more rows
+#> # A tibble: 3,864 × 6
+#>    variable protein protein_site trait gene  explanation                        
+#>    <chr>    <chr>          <int> <chr> <chr> <chr>                              
+#>  1 V1       A6NJW9            49 TM    CD8B2 Proportion of high-mannose glycans…
+#>  2 V2       A6NJW9            49 TH    CD8B2 Proportion of hybrid glycans among…
+#>  3 V3       A6NJW9            49 TC    CD8B2 Proportion of complex glycans amon…
+#>  4 V4       A6NJW9            49 MM    CD8B2 Abundance-weighted mean of mannose…
+#>  5 V5       A6NJW9            49 CA2   CD8B2 Proportion of bi-antennary glycans…
+#>  6 V6       A6NJW9            49 CA3   CD8B2 Proportion of tri-antennary glycan…
+#>  7 V7       A6NJW9            49 CA4   CD8B2 Proportion of tetra-antennary glyc…
+#>  8 V8       A6NJW9            49 TF    CD8B2 Proportion of fucosylated glycans …
+#>  9 V9       A6NJW9            49 TFc   CD8B2 Proportion of core-fucosylated gly…
+#> 10 V10      A6NJW9            49 TFa   CD8B2 Proportion of arm-fucosylated glyc…
+#> # ℹ 3,854 more rows
 ```
 
 ``` r

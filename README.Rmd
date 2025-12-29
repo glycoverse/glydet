@@ -59,12 +59,15 @@ including `glyexp`, `glyrepr`, `glyparse`, and `glymotif`.
 
 First, let's load necessary packages and get the data ready.
 
-```{r}
+```{r setup, echo = FALSE}
 library(glyexp)
 library(glyclean)
 library(glydet)
 
 exp <- auto_clean(real_experiment)
+```
+
+```{r}
 exp
 ```
 
