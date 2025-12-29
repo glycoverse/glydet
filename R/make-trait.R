@@ -13,6 +13,8 @@
 #' You can obtain an API key from https://platform.deepseek.com.
 #'
 #' @param description A description of the trait in natural language.
+#' @param max_retries Maximum number of reflection retries when the AI-generated
+#'   formula's explanation doesn't match the original description. Default is 2.
 #'
 #' @returns A derived trait function.
 #'
@@ -27,41 +29,146 @@
 #' # derive_traits(exp, trait_fns = my_traits)
 #'
 #' @export
-make_trait <- function(description) {
+make_trait <- function(description, max_retries = 2) {
   checkmate::assert_string(description)
+  checkmate::assert_count(max_retries)
   description <- stringr::str_trim(description)
+  rlang::check_installed("ellmer")
+
+  api_key <- .get_api_key()
   system_prompt <- .make_trait_sys_prompt(description)
-  user_prompt <- paste0("INPUT: ", description, "\nOUTPUT: ")
-  output <- .ask_ai(system_prompt, user_prompt)
 
-  .raise_ai_error <- function(output) {
-    cli::cli_abort(c(
-      "Failed to create a derived trait function using AI.",
-      "x" = "The output from AI is: {.val {output}}",
-      "i" = "Please try again with a different description."
-    ))
+  chat <- ellmer::chat_deepseek(
+    system_prompt = system_prompt,
+    model = "deepseek-chat",
+    echo = "none",
+    credentials = function() api_key
+  )
+
+  # Initial prompt
+  current_prompt <- paste0("INPUT: ", description, "\nOUTPUT: ")
+
+  for (i in 0:max_retries) {
+    if (i > 0) {
+      cli::cli_alert_info("Attempt {i}/{max_retries}: Retrying with feedback...")
+    }
+
+    # Call AI to generate trait formula
+    output <- as.character(chat$chat(current_prompt))
+    result <- .process_trait_response(output)
+
+    if (!result$valid) {
+      # Format error, retry
+      if (i < max_retries) {
+        current_prompt <- paste0(
+          "The previous formula was invalid:\n",
+          result$error, "\n",
+          "Please fix the formula and return only the corrected expression."
+        )
+        next
+      } else {
+        cli::cli_abort(c(
+          "Failed to create a derived trait function after {max_retries} retries.",
+          "x" = "Last error: {result$error}",
+          "i" = "Please try again with a different description."
+        ))
+      }
+    }
+
+    # Valid formula, now do reflection check
+    trait_fn <- result$trait_fn
+    reflection_result <- .check_trait_consistency(description, trait_fn)
+
+    if (reflection_result$consistent) {
+      return(trait_fn)
+    }
+
+    # Explanation doesn't match, retry with feedback
+    if (i < max_retries) {
+      current_prompt <- paste0(
+        "The formula you generated was: ", result$formula, "\n",
+        "The AI explanation of this formula is: ", reflection_result$explanation, "\n",
+        "This does not match the original intent: ", description, "\n",
+        "Please generate a corrected formula. Return only the expression."
+      )
+    } else {
+      cli::cli_abort(c(
+        "Failed to create a consistent derived trait function after {max_retries} retries.",
+        "x" = "Generated formula: {result$formula}",
+        "x" = "AI explanation: {reflection_result$explanation}",
+        "x" = "Original description: {description}",
+        "i" = "Please try again with a different description."
+      ))
+    }
   }
+}
 
+.process_trait_response <- function(output) {
+  # Clean up output
+  output <- stringr::str_trim(output)
+  output <- stringr::str_remove_all(output, "`")
 
   if (stringr::str_detect(output, "<INVALID>")) {
-    .raise_ai_error(output)
+    return(list(valid = FALSE, error = "AI returned <INVALID> tag."))
   }
+
   if (!stringr::str_detect(output, "^(prop|ratio|wmean)\\((.*)\\)$")) {
-    .raise_ai_error(output)
-  }
-  expr <- rlang::parse_expr(output)
-
-  # Evaluate in a clean environment to avoid capturing temporary objects
-  # (e.g. prompts) into the quosure environments created by trait factories.
-  clean_env <- rlang::new_environment(parent = asNamespace("glydet"))
-  res <- eval(expr, envir = clean_env)
-
-  explain <- try(explain_trait(res))
-  if (inherits(explain, "try-error")) {
-    .raise_ai_error(output)
+    return(list(valid = FALSE, error = paste0("Invalid format: ", output)))
   }
 
-  res
+  tryCatch(
+    {
+      expr <- rlang::parse_expr(output)
+
+      # Evaluate in a clean environment to avoid capturing temporary objects
+      clean_env <- rlang::new_environment(parent = asNamespace("glydet"))
+      trait_fn <- eval(expr, envir = clean_env)
+
+      # Basic validation: try explain without AI
+      explain <- explain_trait(trait_fn)
+
+      list(valid = TRUE, trait_fn = trait_fn, formula = output)
+    },
+    error = function(e) {
+      list(valid = FALSE, error = paste0("Parse/eval error: ", e$message))
+    }
+  )
+}
+
+.check_trait_consistency <- function(description, trait_fn) {
+  # Get AI explanation of the generated trait
+  explanation <- tryCatch(
+    explain_trait(trait_fn, use_ai = TRUE),
+    error = function(e) NULL
+  )
+
+  if (is.null(explanation)) {
+    # If explanation fails, assume inconsistent
+    return(list(consistent = FALSE, explanation = "Failed to get explanation."))
+  }
+
+  # Ask AI to judge if the explanation matches the description
+  is_consistent <- .ask_ai_consistency(description, explanation)
+
+  list(consistent = is_consistent, explanation = explanation)
+}
+
+.ask_ai_consistency <- function(description, explanation) {
+  system_prompt <- paste(
+    "You are a professional glycobiologist.",
+    "Your task is to judge if two statements about glycan traits are semantically equivalent.",
+    "Answer only 'YES' if they mean the same thing, or 'NO' if they are different.",
+    "Be lenient: minor wording differences are acceptable if the meaning is the same.",
+    sep = "\n"
+  )
+  user_prompt <- paste0(
+    "Original description: ", description, "\n",
+    "Generated explanation: ", explanation, "\n",
+    "Are these two statements semantically equivalent? Answer YES or NO only."
+  )
+
+  response <- .ask_ai(system_prompt, user_prompt)
+  stringr::str_detect(toupper(response), "YES")
 }
 
 .make_trait_sys_prompt <- function(description) {
