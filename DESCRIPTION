@@ -30,7 +30,7 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.10.0),
+    glymotif (>= 0.12.0),
     glyparse (>= 0.5.3),
     glyrepr (>= 0.7.4),
     memoise,
