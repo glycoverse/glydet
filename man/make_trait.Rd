@@ -4,10 +4,16 @@
 \alias{make_trait}
 \title{Use a Large Language Model (LLM) to create a derived trait function}
 \usage{
-make_trait(description, max_retries = 2, verbose = FALSE)
+make_trait(description, custom_mp = NULL, max_retries = 2, verbose = FALSE)
 }
 \arguments{
 \item{description}{A description of the trait in natural language.}
+
+\item{custom_mp}{A named character vector of custom meta-properties.
+The names are the meta-property names, and the values are in the format
+"(type) description". For example:
+\code{c(nE = "(integer) number of a2,6-linked sialic acids")}.
+These custom meta-properties will be available for the LLM to use.}
 
 \item{max_retries}{Maximum number of reflection retries when the AI-generated
 formula's explanation doesn't match the original description. Default is 2.}

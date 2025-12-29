@@ -4,7 +4,7 @@
 \alias{explain_trait}
 \title{Explain a Derived Trait}
 \usage{
-explain_trait(trait_fn, use_ai = FALSE)
+explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
 }
 \arguments{
 \item{trait_fn}{A derived trait function created by one of the trait factories.}
@@ -15,6 +15,10 @@ To use this feature, you need to install the \code{ellmer} package.
 You also need to provide an API key for the DeepSeek chat model.
 Please set the environment variable \code{DEEPSEEK_API_KEY} to your API key.
 You can obtain an API key from https://platform.deepseek.com.}
+
+\item{custom_mp}{A named character vector of custom meta-properties.
+The names are the meta-property names, and the values are in the format
+"(type) description". Only used when \code{use_ai = TRUE}.}
 }
 \value{
 A character string containing a concise English explanation of the trait.

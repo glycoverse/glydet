@@ -13,6 +13,11 @@
 #' You can obtain an API key from https://platform.deepseek.com.
 #'
 #' @param description A description of the trait in natural language.
+#' @param custom_mp A named character vector of custom meta-properties.
+#'   The names are the meta-property names, and the values are in the format
+#'   "(type) description". For example:
+#'   `c(nE = "(integer) number of a2,6-linked sialic acids")`.
+#'   These custom meta-properties will be available for the LLM to use.
 #' @param max_retries Maximum number of reflection retries when the AI-generated
 #'   formula's explanation doesn't match the original description. Default is 2.
 #' @param verbose Whether to print verbose output. Default is FALSE.
@@ -31,14 +36,15 @@
 #' # derive_traits(exp, trait_fns = my_traits)
 #'
 #' @export
-make_trait <- function(description, max_retries = 2, verbose = FALSE) {
+make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose = FALSE) {
   checkmate::assert_string(description)
+  checkmate::assert_character(custom_mp, names = "named", null.ok = TRUE)
   checkmate::assert_count(max_retries)
   description <- stringr::str_trim(description)
   rlang::check_installed("ellmer")
 
   api_key <- .get_api_key()
-  system_prompt <- .make_trait_sys_prompt(description)
+  system_prompt <- .make_trait_sys_prompt(description, custom_mp)
 
   chat <- ellmer::chat_deepseek(
     system_prompt = system_prompt,
@@ -82,7 +88,7 @@ make_trait <- function(description, max_retries = 2, verbose = FALSE) {
 
     # Valid formula, now do reflection check
     trait_fn <- result$trait_fn
-    reflection_result <- .check_trait_consistency(description, trait_fn)
+    reflection_result <- .check_trait_consistency(description, trait_fn, custom_mp)
 
     if (reflection_result$consistent) {
       return(trait_fn)
@@ -140,10 +146,10 @@ make_trait <- function(description, max_retries = 2, verbose = FALSE) {
   )
 }
 
-.check_trait_consistency <- function(description, trait_fn) {
+.check_trait_consistency <- function(description, trait_fn, custom_mp = NULL) {
   # Get AI explanation of the generated trait
   explanation <- tryCatch(
-    explain_trait(trait_fn, use_ai = TRUE),
+    explain_trait(trait_fn, use_ai = TRUE, custom_mp = custom_mp),
     error = function(e) NULL
   )
 
@@ -176,61 +182,71 @@ make_trait <- function(description, max_retries = 2, verbose = FALSE) {
   stringr::str_detect(toupper(response), "YES")
 }
 
-.make_trait_sys_prompt <- function(description) {
-  paste(
-    "You are a professional glycobiologist.",
-    "Your task is to create a derived trait function using natural language.",
-    "Derived traits are defined by expressions using meta-properties.",
-    "Here are the definitions of all built-in meta-properties:",
-    "- Tp: (string) glycan type (complex, hybrid, highmannose, pausimannose)",
-    "- B: (logical) glycans with bisecting GlcNAc",
-    "- nA: (numeric) number of antennae",
-    "- nF: (numeric) number of fucoses",
-    "- nFc: (numeric) number of core fucoses",
-    "- nFa: (numeric) number of arm fucoses",
-    "- nG: (numeric) number of galactoses",
-    "- nS: (numeric) number of sialic acids",
-    "- nM: (numeric) number of mannoses",
-    "When encountering a meta-property that is not listed here, output an <INVALID> tag.",
-    "To create a derived trait function, you need to choose one of the following factories:",
-    "- prop(): for calculating the abundance proportion of a specific glycan subset",
-    "- ratio(): for calculating the abundance ratio between two glycan subsets",
-    "- wmean(): for calculating the weighted mean of a quantitative property, weighted by glycan abundances",
-    "prop() accepts a logical expression as the first argument.",
-    "ratio() accepts two logical expressions as the first two arguments.",
-    "wmean() accepts a numeric expression as the first argument.",
-    "Each function has a `within` parameter to restrict the calculation to a specific glycan subset, which is a logical expression.",
-    "Here are some examples:",
-    "INPUT: proportion of fucosylated glycans within mono-antennary glycans",
-    "OUTPUT: prop(nF > 0, within = (nA == 1))",
-    "INPUT: proportion of fucosylated glycans within mono-antennary glycans",
-    "OUTPUT: prop(nF > 0, within = (nA == 1))",
-    "INPUT: Proportion of core-fucosylated glycans within bi-antennary glycans",
-    "OUTPUT: prop(nFc > 0, within = (nA == 2))",
-    "INPUT: Proportion of arm-fucosylated glycans within asialylated tri-antennary glycans",
-    "OUTPUT: prop(nFa > 0, within = (nA == 3 & nS == 0))",
-    "INPUT: Propotion of bisecting glycans within a-core-fucosylated tetra-antennary glycans",
-    "OUTPUT: prop(B, within = (nA == 4 & nFc == 0))",
-    "INPUT: Ratio of complex glycans to hybrid glycans",
-    'OUTPUT: ratio(Tp == "complex", Tp == "hybrid")',
-    "INPUT: Ratio of bisecting glycans to unbisecting glycans within bi-antennary glycans",
-    "OUTPUT: ratio(B, !B, within = (nA == 2))",
-    "INPUT: Ratio of core-fucosylated glycans to non-core-fucosylated glycans within complex glycans",
-    'OUTPUT: ratio(nFc > 0, nFc == 0, within = (Tp == "complex"))',
-    "INPUT: Average degree of sialylation per antenna within bi-antennary glycans",
-    "OUTPUT: wmean(nS / nA, within = (nA == 2))",
-    "INPUT: Average degree of galactosylation per antenna within tri-antennary glycans",
-    "OUTPUT: wmean(nG / nA, within = (nA == 3))",
-    "INPUT: Average numbers of antennae within complex glycans",
-    'OUTPUT: wmean(nA, within = (Tp == "complex"))',
-    "INPUT: Average number of mannoses within highmannose glycans",
-    'OUTPUT: wmean(nM, within = (Tp == "highmannose"))',
-    "You need to decide:",
-    "- Which factory to use",
-    "- The logical expression to use as the first (and second) argument(s) of the factory",
-    "- The logical expression to use as the `within` parameter of the factory",
-    "- The complete derived trait function",
-    "If you cannot make a trait function, output an <INVALID> tag.",
-    sep = "\n"
+.make_trait_sys_prompt <- function(description, custom_mp = NULL) {
+  # Build custom meta-properties section
+  custom_mp_lines <- ""
+  if (!is.null(custom_mp) && length(custom_mp) > 0) {
+    custom_mp_lines <- paste0(
+      "Here are the definitions of user-defined custom meta-properties:\n",
+      paste0("- ", names(custom_mp), ": ", custom_mp, collapse = "\n"),
+      "\n"
+    )
+  }
+
+  paste0(
+    "You are a professional glycobiologist.\n",
+    "Your task is to create a derived trait function using natural language.\n",
+    "Derived traits are defined by expressions using meta-properties.\n",
+    "Here are the definitions of all built-in meta-properties:\n",
+    "- Tp: (string) glycan type (complex, hybrid, highmannose, pausimannose)\n",
+    "- B: (logical) glycans with bisecting GlcNAc\n",
+    "- nA: (numeric) number of antennae\n",
+    "- nF: (numeric) number of fucoses\n",
+    "- nFc: (numeric) number of core fucoses\n",
+    "- nFa: (numeric) number of arm fucoses\n",
+    "- nG: (numeric) number of galactoses\n",
+    "- nS: (numeric) number of sialic acids\n",
+    "- nM: (numeric) number of mannoses\n",
+    custom_mp_lines,
+    "When encountering a meta-property that is not listed here (and not in the custom list), output an <INVALID> tag.\n",
+    "To create a derived trait function, you need to choose one of the following factories:\n",
+    "- prop(): for calculating the abundance proportion of a specific glycan subset\n",
+    "- ratio(): for calculating the abundance ratio between two glycan subsets\n",
+    "- wmean(): for calculating the weighted mean of a quantitative property, weighted by glycan abundances\n",
+    "prop() accepts a logical expression as the first argument.\n",
+    "ratio() accepts two logical expressions as the first two arguments.\n",
+    "wmean() accepts a numeric expression as the first argument.\n",
+    "Each function has a `within` parameter to restrict the calculation to a specific glycan subset, which is a logical expression.\n",
+    "Here are some examples:\n",
+    "INPUT: proportion of fucosylated glycans within mono-antennary glycans\n",
+    "OUTPUT: prop(nF > 0, within = (nA == 1))\n",
+    "INPUT: proportion of fucosylated glycans within mono-antennary glycans\n",
+    "OUTPUT: prop(nF > 0, within = (nA == 1))\n",
+    "INPUT: Proportion of core-fucosylated glycans within bi-antennary glycans\n",
+    "OUTPUT: prop(nFc > 0, within = (nA == 2))\n",
+    "INPUT: Proportion of arm-fucosylated glycans within asialylated tri-antennary glycans\n",
+    "OUTPUT: prop(nFa > 0, within = (nA == 3 & nS == 0))\n",
+    "INPUT: Propotion of bisecting glycans within a-core-fucosylated tetra-antennary glycans\n",
+    "OUTPUT: prop(B, within = (nA == 4 & nFc == 0))\n",
+    "INPUT: Ratio of complex glycans to hybrid glycans\n",
+    'OUTPUT: ratio(Tp == "complex", Tp == "hybrid")\n',
+    "INPUT: Ratio of bisecting glycans to unbisecting glycans within bi-antennary glycans\n",
+    "OUTPUT: ratio(B, !B, within = (nA == 2))\n",
+    "INPUT: Ratio of core-fucosylated glycans to non-core-fucosylated glycans within complex glycans\n",
+    'OUTPUT: ratio(nFc > 0, nFc == 0, within = (Tp == "complex"))\n',
+    "INPUT: Average degree of sialylation per antenna within bi-antennary glycans\n",
+    "OUTPUT: wmean(nS / nA, within = (nA == 2))\n",
+    "INPUT: Average degree of galactosylation per antenna within tri-antennary glycans\n",
+    "OUTPUT: wmean(nG / nA, within = (nA == 3))\n",
+    "INPUT: Average numbers of antennae within complex glycans\n",
+    'OUTPUT: wmean(nA, within = (Tp == "complex"))\n',
+    "INPUT: Average number of mannoses within highmannose glycans\n",
+    'OUTPUT: wmean(nM, within = (Tp == "highmannose"))\n',
+    "You need to decide:\n",
+    "- Which factory to use\n",
+    "- The logical expression to use as the first (and second) argument(s) of the factory\n",
+    "- The logical expression to use as the `within` parameter of the factory\n",
+    "- The complete derived trait function\n",
+    "If you cannot make a trait function, output an <INVALID> tag."
   )
 }

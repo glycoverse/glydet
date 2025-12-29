@@ -12,6 +12,9 @@
 #'   You also need to provide an API key for the DeepSeek chat model.
 #'   Please set the environment variable `DEEPSEEK_API_KEY` to your API key.
 #'   You can obtain an API key from https://platform.deepseek.com.
+#' @param custom_mp A named character vector of custom meta-properties.
+#'   The names are the meta-property names, and the values are in the format
+#'   "(type) description". Only used when `use_ai = TRUE`.
 #'
 #' @returns A character string containing a concise English explanation of the trait.
 #'
@@ -33,12 +36,12 @@
 #' explain_trait(wsum(nS, within = (Tp == "complex")))
 #'
 #' @export
-explain_trait <- function(trait_fn, use_ai = FALSE) {
+explain_trait <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   UseMethod("explain_trait")
 }
 
 #' @export
-explain_trait.default <- function(trait_fn, use_ai = FALSE) {
+explain_trait.default <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   cli::cli_abort(c(
     "Object must be a glydet trait function.",
     "x" = "Got an object of class {.cls {class(trait_fn)}}.",
@@ -47,45 +50,45 @@ explain_trait.default <- function(trait_fn, use_ai = FALSE) {
 }
 
 #' @export
-explain_trait.glydet_prop <- function(trait_fn, use_ai = FALSE) {
+explain_trait.glydet_prop <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   if (use_ai) {
-    .explain_with_ai(trait_fn)
+    .explain_with_ai(trait_fn, custom_mp)
   } else {
     .explain_prop(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_ratio <- function(trait_fn, use_ai = FALSE) {
+explain_trait.glydet_ratio <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   if (use_ai) {
-    .explain_with_ai(trait_fn)
+    .explain_with_ai(trait_fn, custom_mp)
   } else {
     .explain_ratio(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_wmean <- function(trait_fn, use_ai = FALSE) {
+explain_trait.glydet_wmean <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   if (use_ai) {
-    .explain_with_ai(trait_fn)
+    .explain_with_ai(trait_fn, custom_mp)
   } else {
     .explain_wmean(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_total <- function(trait_fn, use_ai = FALSE) {
+explain_trait.glydet_total <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   if (use_ai) {
-    .explain_with_ai(trait_fn)
+    .explain_with_ai(trait_fn, custom_mp)
   } else {
     .explain_total(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
+explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
   if (use_ai) {
-    .explain_with_ai(trait_fn)
+    .explain_with_ai(trait_fn, custom_mp)
   } else {
     .explain_wsum(trait_fn)
   }
@@ -457,28 +460,39 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
 
 # ----- AI-assisted explanations --------------------------------------
 
-.explain_sys_prompt <- function(trait_type) {
+.explain_sys_prompt <- function(trait_type, custom_mp = NULL) {
   checkmate::assert_choice(trait_type, c("prop", "ratio", "wmean", "total", "wsum"))
-  prompt <- paste(
-    "You are a professional glycobiologist.",
-    "Your task is to explain derived traits expressions in one sentence.",
-    "Derived traits are defined by expressions using meta-properties.",
-    "Here are the definitions of all built-in meta-properties:",
-    "- Tp: glycan type (complex, hybrid, highmannose, pausimannose)",
-    "- B: glycans with bisecting GlcNAc",
-    "- nA: number of antennae",
-    "- nF: number of fucoses",
-    "- nFc: number of core fucoses",
-    "- nFa: number of arm fucoses",
-    "- nG: number of galactoses",
-    "- nS: number of sialic acids",
-    "- nM: number of mannoses",
-    "When encountering a meta-property that is not listed here, use it as is.",
-    "A special case is custom meta-properties with prefix 'n' should be interpreted as the number of the corresponding unit, e.g. 'nE' -> 'number of E'",
-    "For `MP > 0` patterns, use words like 'fucosylated', 'sialylated', etc.",
-    "For nA related patterns, use words like 'bi-antennary', 'tri-antennary', 'tetra-antennary', etc.",
-    "For multiple adjectives, the order should be: fucosylation/sialylation/galactosylation/mannosylation/bisection -> antennae count -> glycan type.",
-    sep = "\n"
+
+  # Build custom meta-properties section
+  custom_mp_lines <- ""
+  if (!is.null(custom_mp) && length(custom_mp) > 0) {
+    custom_mp_lines <- paste0(
+      "\nHere are the definitions of user-defined custom meta-properties:\n",
+      paste0("- ", names(custom_mp), ": ", custom_mp, collapse = "\n"),
+      "\n"
+    )
+  }
+
+  prompt <- paste0(
+    "You are a professional glycobiologist.\n",
+    "Your task is to explain derived traits expressions in one sentence.\n",
+    "Derived traits are defined by expressions using meta-properties.\n",
+    "Here are the definitions of all built-in meta-properties:\n",
+    "- Tp: glycan type (complex, hybrid, highmannose, pausimannose)\n",
+    "- B: glycans with bisecting GlcNAc\n",
+    "- nA: number of antennae\n",
+    "- nF: number of fucoses\n",
+    "- nFc: number of core fucoses\n",
+    "- nFa: number of arm fucoses\n",
+    "- nG: number of galactoses\n",
+    "- nS: number of sialic acids\n",
+    "- nM: number of mannoses\n",
+    custom_mp_lines,
+    "When encountering a meta-property that is not listed here (and not in the custom list), use it as is.\n",
+    "A special case is custom meta-properties with prefix 'n' should be interpreted as the number of the corresponding unit, e.g. 'nE' -> 'number of E'\n",
+    "For `MP > 0` patterns, use words like 'fucosylated', 'sialylated', etc.\n",
+    "For nA related patterns, use words like 'bi-antennary', 'tri-antennary', 'tetra-antennary', etc.\n",
+    "For multiple adjectives, the order should be: fucosylation/sialylation/galactosylation/mannosylation/bisection -> antennae count -> glycan type."
   )
 
   prop_examples <- paste(
@@ -562,10 +576,10 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE) {
   paste(prompt, example_prompt, sep = "\n")
 }
 
-.explain_with_ai <- function(trait_fn) {
+.explain_with_ai <- function(trait_fn, custom_mp = NULL) {
   trait_str <- rlang::expr_text(trait_fn)
   str_type <- stringr::str_extract(trait_str, "prop|ratio|wmean|total|wsum")
-  system_prompt <- .explain_sys_prompt(str_type)
+  system_prompt <- .explain_sys_prompt(str_type, custom_mp)
   user_prompt <- paste0("INPUT: ", trait_str, "\nOUTPUT: ")
   .ask_ai(system_prompt, user_prompt)
 }
