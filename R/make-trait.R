@@ -15,6 +15,8 @@
 #' @param description A description of the trait in natural language.
 #' @param max_retries Maximum number of reflection retries when the AI-generated
 #'   formula's explanation doesn't match the original description. Default is 2.
+#' @param verbose Whether to print verbose output. Default is FALSE.
+#'   This is useful for inspecting how LLMs generate trait functions.
 #'
 #' @returns A derived trait function.
 #'
@@ -29,7 +31,7 @@
 #' # derive_traits(exp, trait_fns = my_traits)
 #'
 #' @export
-make_trait <- function(description, max_retries = 2) {
+make_trait <- function(description, max_retries = 2, verbose = FALSE) {
   checkmate::assert_string(description)
   checkmate::assert_count(max_retries)
   description <- stringr::str_trim(description)
@@ -49,12 +51,15 @@ make_trait <- function(description, max_retries = 2) {
   current_prompt <- paste0("INPUT: ", description, "\nOUTPUT: ")
 
   for (i in 0:max_retries) {
-    if (i > 0) {
+    if (i > 0 && verbose) {
       cli::cli_alert_info("Attempt {i}/{max_retries}: Retrying with feedback...")
     }
 
     # Call AI to generate trait formula
     output <- as.character(chat$chat(current_prompt))
+    if (verbose) {
+      cli::cli_alert_info("AI generated formula: {cli::col_grey(output)}")
+    }
     result <- .process_trait_response(output)
 
     if (!result$valid) {

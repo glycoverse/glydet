@@ -4,13 +4,16 @@
 \alias{make_trait}
 \title{Use a Large Language Model (LLM) to create a derived trait function}
 \usage{
-make_trait(description, max_retries = 2)
+make_trait(description, max_retries = 2, verbose = FALSE)
 }
 \arguments{
 \item{description}{A description of the trait in natural language.}
 
 \item{max_retries}{Maximum number of reflection retries when the AI-generated
 formula's explanation doesn't match the original description. Default is 2.}
+
+\item{verbose}{Whether to print verbose output. Default is FALSE.
+This is useful for inspecting how LLMs generate trait functions.}
 }
 \value{
 A derived trait function.
