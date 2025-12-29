@@ -17,7 +17,7 @@ You can obtain an API key from https://platform.deepseek.com.
 ## Usage
 
 ``` r
-make_trait(description)
+make_trait(description, custom_mp = NULL, max_retries = 2, verbose = FALSE)
 ```
 
 ## Arguments
@@ -25,6 +25,29 @@ make_trait(description)
 - description:
 
   A description of the trait in natural language.
+
+- custom_mp:
+
+  A named character vector of custom meta-properties. The names are the
+  meta-property names, and the values are in the format "(type)
+  description". For example:
+  `c(nE = "(integer) number of a2,6-linked sialic acids")`. These custom
+  meta-properties will be available for the LLM to use. Note that
+  defining the meta-properties here is not enough for you to use them.
+  You need to define corresponding meta-property functions or specifying
+  meta-property columns. For more information about custom
+  meta-properties, see the vignette [Custom
+  Meta-Properties](https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait).
+
+- max_retries:
+
+  Maximum number of reflection retries when the AI-generated formula's
+  explanation doesn't match the original description. Default is 2.
+
+- verbose:
+
+  Whether to print verbose output. Default is FALSE. This is useful for
+  inspecting how LLMs generate trait functions.
 
 ## Value
 

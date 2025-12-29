@@ -49,7 +49,7 @@ It works with trait functions created by the trait factories <code><a href="prop
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">explain_trait</span><span class="op">(</span><span class="va">trait_fn</span>, use_ai <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">explain_trait</span><span class="op">(</span><span class="va">trait_fn</span>, use_ai <span class="op">=</span> <span class="cn">FALSE</span>, custom_mp <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,6 +67,12 @@ To use this feature, you need to install the <code>ellmer</code> package.
 You also need to provide an API key for the DeepSeek chat model.
 Please set the environment variable <code>DEEPSEEK_API_KEY</code> to your API key.
 You can obtain an API key from https://platform.deepseek.com.</p></dd>
+
+
+<dt id="arg-custom-mp">custom_mp<a class="anchor" aria-label="anchor" href="#arg-custom-mp"></a></dt>
+<dd><p>A named character vector of custom meta-properties.
+The names are the meta-property names, and the values are in the format
+"(type) description". Only used when <code>use_ai = TRUE</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

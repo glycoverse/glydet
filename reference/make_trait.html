@@ -70,7 +70,7 @@ You can obtain an API key from https://platform.deepseek.com.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_trait</span><span class="op">(</span><span class="va">description</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">make_trait</span><span class="op">(</span><span class="va">description</span>, custom_mp <span class="op">=</span> <span class="cn">NULL</span>, max_retries <span class="op">=</span> <span class="fl">2</span>, verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -79,6 +79,28 @@ You can obtain an API key from https://platform.deepseek.com.</p>
 
 <dl><dt id="arg-description">description<a class="anchor" aria-label="anchor" href="#arg-description"></a></dt>
 <dd><p>A description of the trait in natural language.</p></dd>
+
+
+<dt id="arg-custom-mp">custom_mp<a class="anchor" aria-label="anchor" href="#arg-custom-mp"></a></dt>
+<dd><p>A named character vector of custom meta-properties.
+The names are the meta-property names, and the values are in the format
+"(type) description". For example:
+<code>c(nE = "(integer) number of a2,6-linked sialic acids")</code>.
+These custom meta-properties will be available for the LLM to use.
+Note that defining the meta-properties here is not enough for you to use them.
+You need to define corresponding meta-property functions or specifying meta-property columns.
+For more information about custom meta-properties, see the vignette
+<a href="https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait">Custom Meta-Properties</a>.</p></dd>
+
+
+<dt id="arg-max-retries">max_retries<a class="anchor" aria-label="anchor" href="#arg-max-retries"></a></dt>
+<dd><p>Maximum number of reflection retries when the AI-generated
+formula's explanation doesn't match the original description. Default is 2.</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Whether to print verbose output. Default is FALSE.
+This is useful for inspecting how LLMs generate trait functions.</p></dd>
 
 </dl></div>
     <div class="section level2">

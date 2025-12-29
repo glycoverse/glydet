@@ -66,7 +66,7 @@ quantify_motifs(
 - alignments:
 
   A character vector specifying the alignment method for each motif. Can
-  be "terminal", "substructure", "core", or "whole". Default is
+  be "terminal", "substructure", "core", "whole" or "exact". Default is
   "substructure". See
   [`glymotif::have_motifs()`](https://glycoverse.github.io/glymotif/reference/have_motif.html)
   for details.

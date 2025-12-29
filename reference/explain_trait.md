@@ -13,7 +13,7 @@ works best with traits defined by built-in meta-properties.
 ## Usage
 
 ``` r
-explain_trait(trait_fn, use_ai = FALSE)
+explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
 ```
 
 ## Arguments
@@ -30,6 +30,12 @@ explain_trait(trait_fn, use_ai = FALSE)
   the DeepSeek chat model. Please set the environment variable
   `DEEPSEEK_API_KEY` to your API key. You can obtain an API key from
   https://platform.deepseek.com.
+
+- custom_mp:
+
+  A named character vector of custom meta-properties. The names are the
+  meta-property names, and the values are in the format "(type)
+  description". Only used when `use_ai = TRUE`.
 
 ## Value
 
