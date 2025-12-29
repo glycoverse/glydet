@@ -1,4 +1,14 @@
-# glydet (development version)
+# glydet 0.8.0
+
+## New features
+
+* `make_trait()` and `explain_trait()` now have a `custom_mp` argument to allow users to define custom meta-properties.
+
+## Minor improvements and bug fixes
+
+* Update documentation of `quantify_motifs()` to add a new type of `alignment`: "exact", to be consistent with glymotif 0.12.0.
+* Add reflection mechanism to `make_trait()` to make it more accurate.
+* Add a `verbose` argument to `make_trait()` to control the amount of information printed to the console.
 
 # glydet 0.7.0
 
