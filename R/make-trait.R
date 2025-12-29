@@ -18,6 +18,10 @@
 #'   "(type) description". For example:
 #'   `c(nE = "(integer) number of a2,6-linked sialic acids")`.
 #'   These custom meta-properties will be available for the LLM to use.
+#'   Note that defining the meta-properties here is not enough for you to use them.
+#'   You need to define corresponding meta-property functions or specifying meta-property columns.
+#'   For more information about custom meta-properties, see the vignette
+#'   [Custom Meta-Properties](https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait).
 #' @param max_retries Maximum number of reflection retries when the AI-generated
 #'   formula's explanation doesn't match the original description. Default is 2.
 #' @param verbose Whether to print verbose output. Default is FALSE.

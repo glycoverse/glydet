@@ -13,7 +13,11 @@ make_trait(description, custom_mp = NULL, max_retries = 2, verbose = FALSE)
 The names are the meta-property names, and the values are in the format
 "(type) description". For example:
 \code{c(nE = "(integer) number of a2,6-linked sialic acids")}.
-These custom meta-properties will be available for the LLM to use.}
+These custom meta-properties will be available for the LLM to use.
+Note that defining the meta-properties here is not enough for you to use them.
+You need to define corresponding meta-property functions or specifying meta-property columns.
+For more information about custom meta-properties, see the vignette
+\href{https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait}{Custom Meta-Properties}.}
 
 \item{max_retries}{Maximum number of reflection retries when the AI-generated
 formula's explanation doesn't match the original description. Default is 2.}
