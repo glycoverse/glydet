@@ -1,4 +1,8 @@
-# glydet (development version)
+# glydet 0.8.1
+
+## Minor improvements and bug fixes
+
+* Fix bugs in `explain_trait()` and `make_trait()` that "nGt" was not intepretaed correctly.
 
 # glydet 0.8.0
 
