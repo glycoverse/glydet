@@ -209,6 +209,7 @@ make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose =
     "- nFc: (numeric) number of core fucoses\n",
     "- nFa: (numeric) number of arm fucoses\n",
     "- nG: (numeric) number of galactoses\n",
+    "- nGt: (numeric) number of terminal galactoses (galactoses without further modifications)",
     "- nS: (numeric) number of sialic acids\n",
     "- nM: (numeric) number of mannoses\n",
     custom_mp_lines,

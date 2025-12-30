@@ -370,8 +370,7 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE, custom_mp = NULL
     "nFa" = "arm fucose count",
     "nG" = "galactose count",
     "nS" = "sialic acid count",
-    "nGt" = "galactose count",
-    "nT" = "terminal count",
+    "nGt" = "terminal galactose count",
     "B" = "bisecting GlcNAc",
     "Tp" = "type"
   )
@@ -485,6 +484,7 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE, custom_mp = NULL
     "- nFc: number of core fucoses\n",
     "- nFa: number of arm fucoses\n",
     "- nG: number of galactoses\n",
+    "- nGt: number of terminal galactoses\n",
     "- nS: number of sialic acids\n",
     "- nM: number of mannoses\n",
     custom_mp_lines,
