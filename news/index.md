@@ -2,6 +2,16 @@
 
 ## glydet (development version)
 
+## glydet 0.8.1
+
+### Minor improvements and bug fixes
+
+- Fix bugs in
+  [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+  and
+  [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+  that “nGt” was not intepretaed correctly.
+
 ## glydet 0.8.0
 
 ### New features
