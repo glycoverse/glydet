@@ -7,14 +7,14 @@
 
 ## Citation
 
-Fu B (2025). *glydet: Describe Glycosylation Structural Properties in a
-Site Specific Manner*. R package version 0.8.1,
+Fu B (2026). *glydet: Describe Glycosylation Structural Properties in a
+Site Specific Manner*. R package version 0.8.1.9000,
 <https://glycoverse.github.io/glydet/>.
 
     @Manual{,
       title = {glydet: Describe Glycosylation Structural Properties in a Site Specific Manner},
       author = {Bin Fu},
-      year = {2025},
-      note = {R package version 0.8.1},
+      year = {2026},
+      note = {R package version 0.8.1.9000},
       url = {https://glycoverse.github.io/glydet/},
     }

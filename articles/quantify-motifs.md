@@ -96,24 +96,24 @@ motif_exp
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 552 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
 ```
 
 ``` r
 get_var_info(motif_exp)
-#> # A tibble: 552 × 5
-#>    variable protein protein_site motif gene  
-#>    <chr>    <chr>          <int> <chr> <chr> 
-#>  1 V1       A6NJW9            49 Lx    CD8B2 
-#>  2 V2       A6NJW9            49 SLx   CD8B2 
-#>  3 V3       O14786           150 Lx    NRP1  
-#>  4 V4       O14786           150 SLx   NRP1  
-#>  5 V5       O43866           226 Lx    CD5L  
-#>  6 V6       O43866           226 SLx   CD5L  
-#>  7 V7       O75437           244 Lx    ZNF254
-#>  8 V8       O75437           244 SLx   ZNF254
-#>  9 V9       O75581           281 Lx    LRP6  
-#> 10 V10      O75581           281 SLx   LRP6  
+#> # A tibble: 552 × 6
+#>    variable protein protein_site motif gene   motif_structure                   
+#>    <chr>    <chr>          <int> <chr> <chr>  <struct>                          
+#>  1 V1       A6NJW9            49 Lx    CD8B2  Hex(??-?)[dHex(??-?)]HexNAc(??-   
+#>  2 V2       A6NJW9            49 SLx   CD8B2  NeuAc(??-?)Hex(??-?)[dHex(??-?)]H…
+#>  3 V3       O14786           150 Lx    NRP1   Hex(??-?)[dHex(??-?)]HexNAc(??-   
+#>  4 V4       O14786           150 SLx   NRP1   NeuAc(??-?)Hex(??-?)[dHex(??-?)]H…
+#>  5 V5       O43866           226 Lx    CD5L   Hex(??-?)[dHex(??-?)]HexNAc(??-   
+#>  6 V6       O43866           226 SLx   CD5L   NeuAc(??-?)Hex(??-?)[dHex(??-?)]H…
+#>  7 V7       O75437           244 Lx    ZNF254 Hex(??-?)[dHex(??-?)]HexNAc(??-   
+#>  8 V8       O75437           244 SLx   ZNF254 NeuAc(??-?)Hex(??-?)[dHex(??-?)]H…
+#>  9 V9       O75581           281 Lx    LRP6   Hex(??-?)[dHex(??-?)]HexNAc(??-   
+#> 10 V10      O75581           281 SLx   LRP6   NeuAc(??-?)Hex(??-?)[dHex(??-?)]H…
 #> # ℹ 542 more rows
 ```
 

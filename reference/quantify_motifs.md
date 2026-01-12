@@ -88,6 +88,10 @@ the new experiment contains quantifications of each motif on each
 glycosite in each sample (for glycoproteomics data) or motif
 quantifications in each sample (for glycomics data).
 
+The `var_info` table includes a `motif_structure` column containing the
+parsed glycan structure for each motif, allowing traceability of motif
+definitions.
+
 For glycoproteomics data, with additional columns:
 
 - `protein`: protein ID
@@ -279,5 +283,5 @@ quantify_motifs(exp, motifs)
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 8 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
 ```
