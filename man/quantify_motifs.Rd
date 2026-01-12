@@ -46,6 +46,9 @@ Instead of containing quantifications of individual glycans on each glycosite in
 the new experiment contains quantifications of each motif on each glycosite in each sample
 (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
 
+The \code{var_info} table includes a \code{motif_structure} column containing the parsed glycan structure
+for each motif, allowing traceability of motif definitions.
+
 For glycoproteomics data, with additional columns:
 \itemize{
 \item \code{protein}: protein ID

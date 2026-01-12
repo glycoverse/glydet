@@ -130,6 +130,9 @@
 #' the new experiment contains quantifications of each motif on each glycosite in each sample
 #' (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
 #'
+#' The `var_info` table includes a `motif_structure` column containing the parsed glycan structure
+#' for each motif, allowing traceability of motif definitions.
+#'
 #' For glycoproteomics data, with additional columns:
 #' - `protein`: protein ID
 #' - `protein_site`: the glycosite position on the protein
@@ -170,11 +173,34 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
   # `motifs` is validated in `glymotif::add_motifs_int()`
   checkmate::assert_choice(method, c("absolute", "relative"))
 
+  # ----- Create motif lookup tibble -----
+  # Handle three cases: glycan_structure vector, known motif names, or IUPAC strings
+  if (glyrepr::is_glycan_structure(motifs)) {
+    # Case: glycan_structure vector (no names possible)
+    motif_structures <- motifs
+  } else if (is.character(motifs)) {
+    if (all(glymotif::is_known_motif(motifs))) {
+      # Case: Known motif names from database
+      motif_structures <- glymotif::get_motif_structure(motifs)
+    } else {
+      # Case: IUPAC structure strings
+      motif_structures <- glyparse::auto_parse(motifs)
+    }
+  } else {
+    rlang::abort("`motifs` must be a character vector or a 'glyrepr_structure' object.")
+  }
+
   # Add meta-properties columns to the variable information tibble
   exp2 <- glymotif::add_motifs_int(exp, motifs, alignments = alignments, ignore_linkages = ignore_linkages)
   # `add_motifs_int()` has a complex logic of determining the column names,
   # so we use a simpler approach to get the column names.
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
+
+  # Create lookup tibble: motif names -> motif structures
+  motif_lookup <- tibble::tibble(
+    motif = mp_cols,
+    motif_structure = unname(motif_structures)
+  )
 
   # Define the trait functions
   factory <- switch(method, absolute = wsum, relative = wmean)
@@ -186,7 +212,7 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
 
   # Calculate the traits
   trait_exp <- derive_traits(exp2, trait_fns = trait_fns, mp_cols = mp_cols)
-  trait_exp |>
+  result <- trait_exp |>
     glyexp::rename_var(dplyr::all_of(c("motif" = "trait"))) |>
     # Remove meta-property columns (if any)
     # `derive_traits()` has a special logic of rescuing columns
@@ -195,4 +221,13 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
     # We remove them here.
     glyexp::select_var(-dplyr::any_of(mp_cols)) |>
     glyexp::select_var(-all_of("explanation"))
+
+  # Add motif_structure column via left_join
+  result$var_info <- dplyr::left_join(
+    tibble::as_tibble(result$var_info),
+    motif_lookup,
+    by = "motif"
+  )
+
+  result
 }

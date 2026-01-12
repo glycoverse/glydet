@@ -107,13 +107,22 @@ test_that("quantify_motifs works for glycoproteomics data absolutely", {
   rownames(expected_expr_mat) <- c("V1", "V2", "V3", "V4")
   expect_equal(result$expr_mat, expected_expr_mat)
 
-  expected_var_info <- tibble::tibble(
-    variable = c("V1", "V2", "V3", "V4"),
-    protein = c("P1", "P1", "P1", "P1"),
-    protein_site = c(1, 1, 2, 2),
-    motif = c("sia", "core", "sia", "core")
-  )
-  expect_equal(result$var_info, expected_var_info)
+  # Check non-structure columns match
+  expect_equal(result$var_info$variable, c("V1", "V2", "V3", "V4"))
+  expect_equal(result$var_info$protein, c("P1", "P1", "P1", "P1"))
+  expect_equal(result$var_info$protein_site, c(1, 1, 2, 2))
+  expect_equal(result$var_info$motif, c("sia", "core", "sia", "core"))
+
+  # Check motif_structure column exists and has correct type
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(glyrepr::is_glycan_structure(result$var_info$motif_structure))
+  expect_equal(as.character(result$var_info$motif_structure),
+               as.character(glyparse::parse_iupac_condensed(c(
+                 "Neu5Ac(a2-3)Gal(b1-",
+                 "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
+                 "Neu5Ac(a2-3)Gal(b1-",
+                 "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+               ))))
 })
 
 test_that("quantify_motifs works for glycoproteomics data relatively", {
@@ -139,13 +148,22 @@ test_that("quantify_motifs works for glycoproteomics data relatively", {
   rownames(expected_expr_mat) <- c("V1", "V2", "V3", "V4")
   expect_equal(result$expr_mat, expected_expr_mat)
 
-  expected_var_info <- tibble::tibble(
-    variable = c("V1", "V2", "V3", "V4"),
-    protein = c("P1", "P1", "P1", "P1"),
-    protein_site = c(1, 1, 2, 2),
-    motif = c("sia", "core", "sia", "core")
-  )
-  expect_equal(result$var_info, expected_var_info)
+  # Check non-structure columns match
+  expect_equal(result$var_info$variable, c("V1", "V2", "V3", "V4"))
+  expect_equal(result$var_info$protein, c("P1", "P1", "P1", "P1"))
+  expect_equal(result$var_info$protein_site, c(1, 1, 2, 2))
+  expect_equal(result$var_info$motif, c("sia", "core", "sia", "core"))
+
+  # Check motif_structure column exists and has correct type
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(glyrepr::is_glycan_structure(result$var_info$motif_structure))
+  expect_equal(as.character(result$var_info$motif_structure),
+               as.character(glyparse::parse_iupac_condensed(c(
+                 "Neu5Ac(a2-3)Gal(b1-",
+                 "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",
+                 "Neu5Ac(a2-3)Gal(b1-",
+                 "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+               ))))
 })
 
 test_that("quantify_motifs keeps additional columns for glycoproteomics data", {
@@ -158,5 +176,75 @@ test_that("quantify_motifs keeps additional columns for glycoproteomics data", {
   result <- quantify_motifs(exp, motifs)
 
   # Test
-  expect_setequal(colnames(result$var_info), c("variable", "protein", "protein_site", "motif", "gene"))
+  expect_setequal(colnames(result$var_info), c("variable", "protein", "protein_site", "motif", "motif_structure", "gene"))
+})
+
+test_that("quantify_motifs adds motif_structure column for glycomics data", {
+  exp <- glycomics_exp()
+  motifs <- c(
+    sia = "Neu5Ac(a2-3)Gal(b1-",  # 0, 1, 2
+    core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # 1, 1, 1
+  )
+  result <- quantify_motifs(exp, motifs, method = "absolute")
+
+  # Test motif_structure column exists and has correct type
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(glyrepr::is_glycan_structure(result$var_info$motif_structure))
+
+  # Test motif_structure values match the input motifs (compare string representations)
+  expect_equal(as.character(result$var_info$motif_structure[1]), "Neu5Ac(a2-3)Gal(b1-")
+  expect_equal(as.character(result$var_info$motif_structure[2]), "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-")
+})
+
+test_that("quantify_motifs adds motif_structure column for glycoproteomics data", {
+  exp <- glycoproteomics_exp()
+  motifs <- c(
+    sia = "Neu5Ac(a2-3)Gal(b1-",  # 0, 1, 2
+    core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # 1, 1, 1
+  )
+  result <- quantify_motifs(exp, motifs, method = "absolute")
+
+  # Test motif_structure column exists and has correct type
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(glyrepr::is_glycan_structure(result$var_info$motif_structure))
+
+  # Check structures are in correct order (sia, core, sia, core)
+  expect_equal(as.character(result$var_info$motif_structure[1]), "Neu5Ac(a2-3)Gal(b1-")
+  expect_equal(as.character(result$var_info$motif_structure[2]), "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-")
+  expect_equal(as.character(result$var_info$motif_structure[3]), "Neu5Ac(a2-3)Gal(b1-")
+  expect_equal(as.character(result$var_info$motif_structure[4]), "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-")
+})
+
+test_that("quantify_motifs works with known motif names", {
+  exp <- glycomics_exp()
+  motifs <- c("N-Glycan core basic", "N-Glycan high mannose")
+
+  result <- quantify_motifs(exp, motifs, method = "absolute")
+
+  # Test motif_structure column exists
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(glyrepr::is_glycan_structure(result$var_info$motif_structure))
+
+  # Test motifs are correctly named
+  expect_equal(result$var_info$motif, c("N-Glycan core basic", "N-Glycan high mannose"))
+})
+
+test_that("quantify_motifs works with glycan_structure vector", {
+  exp <- glycomics_exp()
+  motifs <- glyparse::parse_iupac_condensed(c(
+    "Neu5Ac(a2-3)Gal(b1-",
+    "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+  ))
+
+  result <- quantify_motifs(exp, motifs, method = "absolute")
+
+  # Test motif_structure column exists
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(glyrepr::is_glycan_structure(result$var_info$motif_structure))
+
+  # Test motifs are correctly named (using structure strings as names)
+  expect_equal(result$var_info$motif, c(
+    "Neu5Ac(a2-3)Gal(b1-",
+    "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+  ))
 })
