@@ -1,6 +1,13 @@
 # Changelog
 
-## glydet (development version)
+## glydet 0.9.0
+
+### New features
+
+- [`quantify_motifs()`](https://glycoverse.github.io/glydet/reference/quantify_motifs.md)
+  now includes a `motif_structure` column in the `var_info` tibble of
+  the returned experiment, containing the parsed glycan structure for
+  each motif.
 
 ## glydet 0.8.1
 
