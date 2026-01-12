@@ -8,13 +8,13 @@
 ## Citation
 
 Fu B (2026). *glydet: Describe Glycosylation Structural Properties in a
-Site Specific Manner*. R package version 0.9.0.9000,
+Site Specific Manner*. R package version 0.9.0,
 <https://glycoverse.github.io/glydet/>.
 
     @Manual{,
       title = {glydet: Describe Glycosylation Structural Properties in a Site Specific Manner},
       author = {Bin Fu},
       year = {2026},
-      note = {R package version 0.9.0.9000},
+      note = {R package version 0.9.0},
       url = {https://glycoverse.github.io/glydet/},
     }
