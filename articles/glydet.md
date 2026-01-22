@@ -128,18 +128,18 @@ with:
 ``` r
 get_var_info(exp)
 #> # A tibble: 3,979 × 6
-#>    variable protein glycan_composition      glycan_structure  protein_site gene 
-#>    <chr>    <chr>   <comp>                  <struct>                 <int> <chr>
-#>  1 V1       P08185  Hex(5)HexNAc(4)NeuAc(2) NeuAc(??-?)Hex(?…          176 SERP…
-#>  2 V2       P04196  Hex(5)HexNAc(4)NeuAc(1) NeuAc(??-?)Hex(?…          344 HRG  
-#>  3 V3       P04196  Hex(5)HexNAc(4)         Hex(??-?)HexNAc(…          344 HRG  
-#>  4 V4       P04196  Hex(5)HexNAc(4)NeuAc(1) NeuAc(??-?)Hex(?…          344 HRG  
-#>  5 V5       P10909  Hex(6)HexNAc(5)         Hex(??-?)HexNAc(…          291 CLU  
-#>  6 V6       P04196  Hex(5)HexNAc(4)NeuAc(2) NeuAc(??-?)Hex(?…          344 HRG  
-#>  7 V7       P04196  Hex(5)HexNAc(4)         Hex(??-?)HexNAc(…          345 HRG  
-#>  8 V8       P04196  Hex(5)HexNAc(4)dHex(2)  dHex(??-?)Hex(??…          344 HRG  
-#>  9 V9       P04196  Hex(4)HexNAc(3)         Hex(??-?)HexNAc(…          344 HRG  
-#> 10 V10      P04196  Hex(4)HexNAc(4)NeuAc(1) NeuAc(??-?)Hex(?…          344 HRG  
+#>    variable       protein glycan_composition glycan_structure protein_site gene 
+#>    <chr>          <chr>   <comp>             <struct>                <int> <chr>
+#>  1 P08185-N176-H… P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP…
+#>  2 P04196-N344-H… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  3 P04196-N344-H… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          344 HRG  
+#>  4 P04196-N344-H… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  5 P10909-N291-H… P10909  Hex(6)HexNAc(5)    Hex(??-?)HexNAc…          291 CLU  
+#>  6 P04196-N344-H… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  7 P04196-N345-H… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          345 HRG  
+#>  8 P04196-N344-H… P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG  
+#>  9 P04196-N344-H… P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG  
+#> 10 P04196-N344-H… P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
 #> # ℹ 3,969 more rows
 ```
 
@@ -164,12 +164,18 @@ get_sample_info(exp)
 
 ``` r
 get_expr_mat(exp)[1:5, 1:5]
-#>              C1           C2         C3           H1           H2
-#> V1 6.676837e+03 2.007225e+04      13368 4.105520e+04 1.754469e+04
-#> V2 3.772892e+08 5.658012e+08   99052192 2.391413e+04 1.408332e+07
-#> V3 5.300372e+08 5.611186e+08  210626085 9.224067e+08 8.450856e+08
-#> V4 3.006477e+09 2.649997e+09 1201420056 3.438030e+09 3.879662e+09
-#> V5 2.772362e+07 3.181527e+07    8016730 6.820649e+07 4.501783e+07
+#>                                                 C1           C2         C3
+#> P08185-N176-Hex(5)HexNAc(4)NeuAc(2)   6.676837e+03 2.007225e+04      13368
+#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-1 3.772892e+08 5.658012e+08   99052192
+#> P04196-N344-Hex(5)HexNAc(4)           5.300372e+08 5.611186e+08  210626085
+#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-2 3.006477e+09 2.649997e+09 1201420056
+#> P10909-N291-Hex(6)HexNAc(5)-1         2.772362e+07 3.181527e+07    8016730
+#>                                                 H1           H2
+#> P08185-N176-Hex(5)HexNAc(4)NeuAc(2)   4.105520e+04 1.754469e+04
+#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-1 2.391413e+04 1.408332e+07
+#> P04196-N344-Hex(5)HexNAc(4)           9.224067e+08 8.450856e+08
+#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-2 3.438030e+09 3.879662e+09
+#> P10909-N291-Hex(6)HexNAc(5)-1         6.820649e+07 4.501783e+07
 ```
 
 Now for the magic moment ✨—let’s calculate some derived traits!
@@ -373,16 +379,16 @@ get_var_info(exp_with_mp)
 #> # A tibble: 3,979 × 16
 #>    variable protein glycan_composition glycan_structure protein_site gene  Tp   
 #>    <chr>    <chr>   <comp>             <struct>                <int> <chr> <fct>
-#>  1 V1       P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP… comp…
-#>  2 V2       P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   hybr…
-#>  3 V3       P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          344 HRG   comp…
-#>  4 V4       P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
-#>  5 V5       P10909  Hex(6)HexNAc(5)    Hex(??-?)HexNAc…          291 CLU   comp…
-#>  6 V6       P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
-#>  7 V7       P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          345 HRG   comp…
-#>  8 V8       P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG   comp…
-#>  9 V9       P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG   comp…
-#> 10 V10      P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
+#>  1 P08185-… P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP… comp…
+#>  2 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   hybr…
+#>  3 P04196-… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          344 HRG   comp…
+#>  4 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
+#>  5 P10909-… P10909  Hex(6)HexNAc(5)    Hex(??-?)HexNAc…          291 CLU   comp…
+#>  6 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
+#>  7 P04196-… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          345 HRG   comp…
+#>  8 P04196-… P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG   comp…
+#>  9 P04196-… P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG   comp…
+#> 10 P04196-… P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
 #> # ℹ 3,969 more rows
 #> # ℹ 9 more variables: B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>,
 #> #   nG <int>, nGt <int>, nS <int>, nM <int>

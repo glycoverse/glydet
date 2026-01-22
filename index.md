@@ -9,7 +9,13 @@ domain-specific language to define custom derived traits.
 ## Installation
 
 You can install the latest release of glydet from
-[GitHub](https://github.com/) with:
+[r-universe](https://glycoverse.r-universe.dev/glydet):
+
+``` r
+install.packages('glydet', repos = c('https://glycoverse.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+Or from [GitHub](https://github.com/glycoverse/glydet):
 
 ``` r
 # install.packages("remotes")
@@ -57,7 +63,7 @@ exp
 #> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 3979 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, glycan_composition <glyrpr_c>, glycan_structure <glyrpr_s>, protein_site <int>, gene <chr>
+#> ℹ Variable information fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>
 ```
 
 Now, let’s calculate some derived traits!
