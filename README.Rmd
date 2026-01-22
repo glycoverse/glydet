@@ -29,7 +29,13 @@ and implements a domain-specific language to define custom derived traits.
 
 ## Installation
 
-You can install the latest release of glydet from [GitHub](https://github.com/) with:
+You can install the latest release of glydet from [r-universe](https://glycoverse.r-universe.dev/glydet):
+
+```r
+install.packages('glydet', repos = c('https://glycoverse.r-universe.dev', 'https://cloud.r-project.org'))
+```
+
+Or from [GitHub](https://github.com/glycoverse/glydet):
 
 ``` r
 # install.packages("remotes")
