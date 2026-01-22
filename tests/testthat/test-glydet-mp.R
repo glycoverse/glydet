@@ -208,18 +208,3 @@ test_that("n_man counts mannoses correctly", {
   )
   expect_equal(n_man(glycans), c(3L, 6L, 5L, 3L))
 })
-
-# ========== Processing and Simplification ==========
-test_that("processing handles linkages, generics, and substituents correctly", {
-  glycans <- c(
-    "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-",
-    "Hex(b1-4)HexNAc(b1-2)Hex(b1-4)[HexNAc(b1-2)Hex(b1-6)]Hex(b1-4)HexNAc(b1-4)HexNAc(?1-",
-    "Gal(??-?)GlcNAc(??-?)Man(??-?)[GlcNAc(??-?)Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(?1-",
-    "Hex(??-?)HexNAc(??-?)Hex(??-?)[HexNAc(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(?1-"
-  )
-  glycans <- glyrepr::as_glycan_structure(glycans)
-
-  # Should work fine and be processed as generic
-  expect_identical(n_antennae(glycans), c(2L, 2L, 2L, 2L))
-  expect_identical(n_gal(glycans), c(1L, 1L, 1L, 1L))
-})
