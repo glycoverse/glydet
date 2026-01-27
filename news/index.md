@@ -2,6 +2,8 @@
 
 ## glydet (development version)
 
+## glydet 0.9.1
+
 ### Minor improvements and bug fixes
 
 - Adapt to glyrepr 0.10.0.
