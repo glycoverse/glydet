@@ -16,9 +16,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    glyexp (>= 0.12.3.9000),
-    glyclean (>= 0.12.0.9000),
-    glystats (>= 0.6.3.9000),
+    glyexp (>= 0.12.3),
+    glyclean (>= 0.12.0),
+    glystats (>= 0.6.3),
     missForest,
     ellmer
 Config/testthat/edition: 3
@@ -30,9 +30,9 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.12.0.9000),
-    glyparse (>= 0.5.3.9000),
-    glyrepr (>= 0.9.0.9000),
+    glymotif (>= 0.12.1),
+    glyparse (>= 0.5.3),
+    glyrepr (>= 0.10.0),
     memoise,
     purrr,
     rlang,
@@ -41,12 +41,10 @@ Imports:
     tidyr,
     tidyselect
 Remotes: 
-    glycoverse/glymotif,
-    glycoverse/glyexp,
-    glycoverse/glyclean,
-    glycoverse/glystats,
-    glycoverse/glyparse,
-    glycoverse/glyrepr
+    glycoverse/glymotif@*release,
+    glycoverse/glyexp@*release,
+    glycoverse/glyclean@*release,
+    glycoverse/glystats@*release
 Depends: 
     R (>= 4.1)
 VignetteBuilder: knitr
