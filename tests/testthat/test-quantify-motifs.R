@@ -248,7 +248,6 @@ test_that("quantify_motifs works with glycan_structure vector", {
     "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
   ))
 })
-
 test_that("quantify_motifs works with dynamic_motifs() for glycomics data", {
   exp <- glycomics_exp()
   result <- quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 2), method = "absolute")
