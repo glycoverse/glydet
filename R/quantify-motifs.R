@@ -190,7 +190,7 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
     # Case: Motif spec objects - will be resolved by add_motifs_int
     motif_structures <- NULL  # Will be set after add_motifs_int returns
   } else {
-    rlang::abort("`motifs` must be a character vector or a 'glyrepr_structure' object.")
+    rlang::abort("`motifs` must be a character vector, a 'glyrepr_structure' object, or a motif specification from `dynamic_motifs()` or `branch_motifs()`.")
   }
 
   # Add meta-properties columns to the variable information tibble
@@ -200,7 +200,8 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
 
   # For motif specs, extract structures from column names (IUPAC strings)
-  if (inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")) {
+  is_motif_spec <- inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")
+  if (is_motif_spec) {
     motif_structures <- glyparse::parse_iupac_condensed(mp_cols)
   }
 
