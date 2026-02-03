@@ -93,11 +93,14 @@ or a character vector of glycan structure strings supported by <code><a href="ht
 
 <dt id="arg-motifs">motifs<a class="anchor" aria-label="anchor" href="#arg-motifs"></a></dt>
 <dd><p>A character vector of motif names, glycan structure strings,
-or a 'glyrepr_structure' object.
+a 'glyrepr_structure' object, or a motif specification from <code><a href="https://glycoverse.github.io/glymotif/reference/dynamic_motifs.html" class="external-link">glymotif::dynamic_motifs()</a></code>
+or <code><a href="https://glycoverse.github.io/glymotif/reference/branch_motifs.html" class="external-link">glymotif::branch_motifs()</a></code>.
 For glycan structure strings, all formats supported by <code><a href="https://glycoverse.github.io/glyparse/reference/auto_parse.html" class="external-link">glyparse::auto_parse()</a></code> are accepted,
 including IUPAC-condensed, WURCS, GlycoCT, and others.
 If the vector is named, the names will be used as motif names.
-Otherwise, IUPAC-condensed structure strings will be used as motif names.</p></dd>
+Otherwise, IUPAC-condensed structure strings will be used as motif names.
+For motif specifications, motifs are extracted automatically from the glycan structures
+in the experiment, and their IUPAC-condensed strings are used as motif names.</p></dd>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
@@ -265,6 +268,22 @@ and everything else remains the same.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">8</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using dynamic motifs (auto-extracted from data)</span></span></span>
+<span class="r-in"><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">exp</span>, <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/dynamic_motifs.html" class="external-link">dynamic_motifs</a></span><span class="op">(</span>max_size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">80</span> variables</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Using branch motifs (auto-extracted from data)</span></span></span>
+<span class="r-in"><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">exp</span>, <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/branch_motifs.html" class="external-link">branch_motifs</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">20</span> variables</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
 <span class="r-in"><span></span></span>

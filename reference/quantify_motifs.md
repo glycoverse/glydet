@@ -48,14 +48,19 @@ quantify_motifs(
 
 - motifs:
 
-  A character vector of motif names, glycan structure strings, or a
-  'glyrepr_structure' object. For glycan structure strings, all formats
-  supported by
+  A character vector of motif names, glycan structure strings, a
+  'glyrepr_structure' object, or a motif specification from
+  [`glymotif::dynamic_motifs()`](https://glycoverse.github.io/glymotif/reference/dynamic_motifs.html)
+  or
+  [`glymotif::branch_motifs()`](https://glycoverse.github.io/glymotif/reference/branch_motifs.html).
+  For glycan structure strings, all formats supported by
   [`glyparse::auto_parse()`](https://glycoverse.github.io/glyparse/reference/auto_parse.html)
   are accepted, including IUPAC-condensed, WURCS, GlycoCT, and others.
   If the vector is named, the names will be used as motif names.
   Otherwise, IUPAC-condensed structure strings will be used as motif
-  names.
+  names. For motif specifications, motifs are extracted automatically
+  from the glycan structures in the experiment, and their
+  IUPAC-condensed strings are used as motif names.
 
 - method:
 
@@ -282,6 +287,22 @@ quantify_motifs(exp, motifs)
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 8 variables
+#> ℹ Sample information fields: group <fct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
+
+# Using dynamic motifs (auto-extracted from data)
+quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
+#> 
+#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 12 samples, 80 variables
+#> ℹ Sample information fields: group <fct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
+
+# Using branch motifs (auto-extracted from data)
+quantify_motifs(exp, glymotif::branch_motifs())
+#> 
+#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 12 samples, 20 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
 ```
