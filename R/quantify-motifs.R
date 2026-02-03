@@ -186,6 +186,9 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
       # Case: IUPAC structure strings
       motif_structures <- glyparse::auto_parse(motifs)
     }
+  } else if (inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")) {
+    # Case: Motif spec objects - will be resolved by add_motifs_int
+    motif_structures <- NULL  # Will be set after add_motifs_int returns
   } else {
     rlang::abort("`motifs` must be a character vector or a 'glyrepr_structure' object.")
   }
@@ -195,6 +198,11 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
   # `add_motifs_int()` has a complex logic of determining the column names,
   # so we use a simpler approach to get the column names.
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
+
+  # For motif specs, extract structures from column names (IUPAC strings)
+  if (inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")) {
+    motif_structures <- glyparse::parse_iupac_condensed(mp_cols)
+  }
 
   # Create lookup tibble: motif names -> motif structures
   motif_lookup <- tibble::tibble(
