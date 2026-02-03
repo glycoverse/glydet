@@ -248,3 +248,59 @@ test_that("quantify_motifs works with glycan_structure vector", {
     "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
   ))
 })
+
+test_that("quantify_motifs works with dynamic_motifs() for glycomics data", {
+  exp <- glycomics_exp()
+  result <- quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 2), method = "absolute")
+
+  # Check that result has motifs extracted
+  expect_true(nrow(result$var_info) > 0)
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(all(glyrepr::is_glycan_structure(result$var_info$motif_structure)))
+
+  # Check that motif names are IUPAC strings (auto-generated)
+  expect_type(result$var_info$motif, "character")
+  expect_true(all(nchar(result$var_info$motif) > 0))
+})
+
+test_that("quantify_motifs works with branch_motifs() for glycomics data", {
+  exp <- glycomics_exp()
+  result <- quantify_motifs(exp, glymotif::branch_motifs(), method = "absolute")
+
+  # Check that result has motifs extracted
+  expect_true(nrow(result$var_info) > 0)
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(all(glyrepr::is_glycan_structure(result$var_info$motif_structure)))
+
+  # Check that motif names are trimmed branch names (not full IUPAC with core)
+  expect_type(result$var_info$motif, "character")
+  expect_true(all(nchar(result$var_info$motif) > 0))
+})
+
+test_that("quantify_motifs works with dynamic_motifs() for glycoproteomics data", {
+  exp <- glycoproteomics_exp()
+  result <- quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 2), method = "absolute")
+
+  # Check that result has motifs extracted
+  expect_true(nrow(result$var_info) > 0)
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(all(glyrepr::is_glycan_structure(result$var_info$motif_structure)))
+
+  # Check protein and protein_site columns are preserved
+  expect_true("protein" %in% colnames(result$var_info))
+  expect_true("protein_site" %in% colnames(result$var_info))
+})
+
+test_that("quantify_motifs works with branch_motifs() for glycoproteomics data", {
+  exp <- glycoproteomics_exp()
+  result <- quantify_motifs(exp, glymotif::branch_motifs(), method = "absolute")
+
+  # Check that result has motifs extracted
+  expect_true(nrow(result$var_info) > 0)
+  expect_true("motif_structure" %in% colnames(result$var_info))
+  expect_true(all(glyrepr::is_glycan_structure(result$var_info$motif_structure)))
+
+  # Check protein and protein_site columns are preserved
+  expect_true("protein" %in% colnames(result$var_info))
+  expect_true("protein_site" %in% colnames(result$var_info))
+})

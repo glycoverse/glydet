@@ -30,7 +30,7 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.12.1),
+    glymotif (>= 0.12.2.9000),
     glyparse (>= 0.5.3),
     glyrepr (>= 0.10.0),
     memoise,
@@ -41,7 +41,7 @@ Imports:
     tidyr,
     tidyselect
 Remotes: 
-    glycoverse/glymotif@*release,
+    glycoverse/glymotif,
     glycoverse/glyexp@*release,
     glycoverse/glyclean@*release,
     glycoverse/glystats@*release

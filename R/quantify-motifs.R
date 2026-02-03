@@ -110,11 +110,14 @@
 #'
 #' @inheritParams derive_traits
 #' @param motifs A character vector of motif names, glycan structure strings,
-#'   or a 'glyrepr_structure' object.
+#'   a 'glyrepr_structure' object, or a motif specification from [glymotif::dynamic_motifs()]
+#'   or [glymotif::branch_motifs()].
 #'   For glycan structure strings, all formats supported by [glyparse::auto_parse()] are accepted,
 #'   including IUPAC-condensed, WURCS, GlycoCT, and others.
 #'   If the vector is named, the names will be used as motif names.
 #'   Otherwise, IUPAC-condensed structure strings will be used as motif names.
+#'   For motif specifications, motifs are extracted automatically from the glycan structures
+#'   in the experiment, and their IUPAC-condensed strings are used as motif names.
 #' @param method A character string specifying the quantification method.
 #'   Must be either "absolute" or "relative". Default is "relative".
 #'   See "Relative and Absolute Motif Quantification" section for details.
@@ -166,6 +169,12 @@
 #'
 #' quantify_motifs(exp, motifs)
 #'
+#' # Using dynamic motifs (auto-extracted from data)
+#' quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
+#'
+#' # Using branch motifs (auto-extracted from data)
+#' quantify_motifs(exp, glymotif::branch_motifs())
+#'
 #' @seealso [derive_traits()], [glymotif::have_motifs()]
 #' @export
 quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL, ignore_linkages = FALSE) {
@@ -186,8 +195,11 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
       # Case: IUPAC structure strings
       motif_structures <- glyparse::auto_parse(motifs)
     }
+  } else if (inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")) {
+    # Case: Motif spec objects - will be resolved by add_motifs_int
+    motif_structures <- NULL  # Will be set after add_motifs_int returns
   } else {
-    rlang::abort("`motifs` must be a character vector or a 'glyrepr_structure' object.")
+    rlang::abort("`motifs` must be a character vector, a 'glyrepr_structure' object, or a motif specification from `dynamic_motifs()` or `branch_motifs()`.")
   }
 
   # Add meta-properties columns to the variable information tibble
@@ -195,6 +207,12 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
   # `add_motifs_int()` has a complex logic of determining the column names,
   # so we use a simpler approach to get the column names.
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
+
+  # For motif specs, extract structures from column names (IUPAC strings)
+  is_motif_spec <- inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")
+  if (is_motif_spec) {
+    motif_structures <- glyparse::parse_iupac_condensed(mp_cols)
+  }
 
   # Create lookup tibble: motif names -> motif structures
   motif_lookup <- tibble::tibble(
