@@ -110,11 +110,14 @@
 #'
 #' @inheritParams derive_traits
 #' @param motifs A character vector of motif names, glycan structure strings,
-#'   or a 'glyrepr_structure' object.
+#'   a 'glyrepr_structure' object, or a motif specification from [glymotif::dynamic_motifs()]
+#'   or [glymotif::branch_motifs()].
 #'   For glycan structure strings, all formats supported by [glyparse::auto_parse()] are accepted,
 #'   including IUPAC-condensed, WURCS, GlycoCT, and others.
 #'   If the vector is named, the names will be used as motif names.
 #'   Otherwise, IUPAC-condensed structure strings will be used as motif names.
+#'   For motif specifications, motifs are extracted automatically from the glycan structures
+#'   in the experiment, and their IUPAC-condensed strings are used as motif names.
 #' @param method A character string specifying the quantification method.
 #'   Must be either "absolute" or "relative". Default is "relative".
 #'   See "Relative and Absolute Motif Quantification" section for details.
@@ -165,6 +168,12 @@
 #' )
 #'
 #' quantify_motifs(exp, motifs)
+#'
+#' # Using dynamic motifs (auto-extracted from data)
+#' quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
+#'
+#' # Using branch motifs (auto-extracted from data)
+#' quantify_motifs(exp, glymotif::branch_motifs())
 #'
 #' @seealso [derive_traits()], [glymotif::have_motifs()]
 #' @export

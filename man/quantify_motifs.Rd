@@ -23,11 +23,14 @@ as not all glycoproteomics identification softwares provide this information.
 or a character vector of glycan structure strings supported by \code{glyparse::auto_parse()}.}
 
 \item{motifs}{A character vector of motif names, glycan structure strings,
-or a 'glyrepr_structure' object.
+a 'glyrepr_structure' object, or a motif specification from \code{\link[glymotif:dynamic_motifs]{glymotif::dynamic_motifs()}}
+or \code{\link[glymotif:branch_motifs]{glymotif::branch_motifs()}}.
 For glycan structure strings, all formats supported by \code{\link[glyparse:auto_parse]{glyparse::auto_parse()}} are accepted,
 including IUPAC-condensed, WURCS, GlycoCT, and others.
 If the vector is named, the names will be used as motif names.
-Otherwise, IUPAC-condensed structure strings will be used as motif names.}
+Otherwise, IUPAC-condensed structure strings will be used as motif names.
+For motif specifications, motifs are extracted automatically from the glycan structures
+in the experiment, and their IUPAC-condensed strings are used as motif names.}
 
 \item{method}{A character string specifying the quantification method.
 Must be either "absolute" or "relative". Default is "relative".
@@ -192,6 +195,12 @@ motifs <- c(
 )
 
 quantify_motifs(exp, motifs)
+
+# Using dynamic motifs (auto-extracted from data)
+quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
+
+# Using branch motifs (auto-extracted from data)
+quantify_motifs(exp, glymotif::branch_motifs())
 
 }
 \seealso{
