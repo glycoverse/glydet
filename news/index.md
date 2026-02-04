@@ -1,6 +1,11 @@
 # Changelog
 
-## glydet (development version)
+## glydet 0.10.0
+
+### New features
+
+- [`quantify_motifs()`](https://glycoverse.github.io/glydet/reference/quantify_motifs.md)
+  now supports `dynamic_motifs()` and `branch_motifs()` from glymotif.
 
 ## glydet 0.9.1
 
