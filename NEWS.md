@@ -1,4 +1,8 @@
-# glydet (development version)
+# glydet 0.10.1
+
+## Minor improvements and bug fixes
+
+* Update glymotif dependency to use release version (>= 0.13.0).
 
 # glydet 0.10.0
 
