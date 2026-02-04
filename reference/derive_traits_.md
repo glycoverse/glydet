@@ -98,9 +98,6 @@ Other columns in the original tibble are not included.
 library(dplyr)
 #> 
 #> Attaching package: ‘dplyr’
-#> The following object is masked from ‘package:glyexp’:
-#> 
-#>     select_var
 #> The following objects are masked from ‘package:stats’:
 #> 
 #>     filter, lag
