@@ -1,6 +1,10 @@
 # Changelog
 
-## glydet (development version)
+## glydet 0.10.2
+
+### Minor improvements and bug fixes
+
+- Update dependency strategy to use the r-universe repo.
 
 ## glydet 0.10.1
 
