@@ -40,11 +40,6 @@ Imports:
     tibble,
     tidyr,
     tidyselect
-Remotes: 
-    glycoverse/glymotif@*release,
-    glycoverse/glyexp@*release,
-    glycoverse/glyclean@*release,
-    glycoverse/glystats@*release
 Depends: 
     R (>= 4.1)
 VignetteBuilder: knitr
