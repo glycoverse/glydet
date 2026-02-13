@@ -8,6 +8,17 @@ domain-specific language to define custom derived traits.
 
 ## Installation
 
+### Install glycoverse
+
+We recommend installing the meta-package
+[glycoverse](https://github.com/glycoverse/glycoverse), which includes
+this package and other core glycoverse packages.
+
+### Install glydet alone
+
+If you don’t want to install all glycoverse packages, you can only
+install glydet.
+
 You can install the latest release of glydet from
 [r-universe](https://glycoverse.r-universe.dev/glydet)
 (**recommended**):
@@ -29,6 +40,11 @@ Or install the development version (NOT recommended):
 ``` r
 pak::pkg_install("glycoverse/glydet")
 ```
+
+**Note:** Tips and troubleshooting for the meta-package
+[glycoverse](https://github.com/glycoverse/glycoverse) are also
+applicable here: [Installation of
+glycoverse](https://github.com/glycoverse/glycoverse#installation).
 
 ## Documentation
 
@@ -53,7 +69,6 @@ First, let’s load necessary packages and get the data ready.
 
 ``` r
 library(glyexp)
-#> Warning: 程序包'glyexp'是用R版本4.5.2 来建造的
 library(glyclean)
 library(glydet)
 
