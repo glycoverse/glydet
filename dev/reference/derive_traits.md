@@ -152,7 +152,7 @@ trait_exp <- derive_traits(exp)
 trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 812 variables
+#> ℹ Expression matrix: 12 samples, 826 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 
@@ -166,7 +166,7 @@ more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
 more_trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3596 variables
+#> ℹ Expression matrix: 12 samples, 3658 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```

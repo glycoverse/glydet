@@ -271,7 +271,7 @@ anova_res <- gly_anova(trait_exp)
 #> ℹ Number of groups: 4
 #> ℹ Groups: "H", "M", "Y", and "C"
 #> ℹ Pairwise comparisons will be performed, with levels coming first as reference groups.
-#> Warning: 269 variables failed to fit the model
+#> Warning: 281 variables failed to fit the model
 anova_res$tidy_result$main_test |>
   dplyr::filter(trait == "TFc", p_adj < 0.05)
 #> # A tibble: 12 × 14
@@ -360,7 +360,7 @@ get_meta_properties(glycans)
 #>   Tp      B        nA    nF   nFc   nFa    nG   nGt    nS    nM
 #>   <fct>   <lgl> <int> <int> <int> <int> <int> <int> <int> <int>
 #> 1 complex FALSE     2     0     0     0     2     0     2     3
-#> 2 hybrid  FALSE     2     0     0     0     1     0     1     4
+#> 2 complex FALSE     2     0     0     0     1     0     1     4
 #> 3 complex FALSE     2     0     0     0     2     2     0     3
 #> 4 complex FALSE     2     0     0     0     2     1     1     3
 #> 5 complex FALSE     2     0     0     0     2     1     0     4
@@ -380,14 +380,14 @@ get_var_info(exp_with_mp)
 #>    variable protein glycan_composition glycan_structure protein_site gene  Tp   
 #>    <chr>    <chr>   <comp>             <struct>                <int> <chr> <fct>
 #>  1 P08185-… P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP… comp…
-#>  2 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   hybr…
+#>  2 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
 #>  3 P04196-… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          344 HRG   comp…
 #>  4 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
 #>  5 P10909-… P10909  Hex(6)HexNAc(5)    Hex(??-?)HexNAc…          291 CLU   comp…
 #>  6 P04196-… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
 #>  7 P04196-… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          345 HRG   comp…
 #>  8 P04196-… P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG   comp…
-#>  9 P04196-… P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG   comp…
+#>  9 P04196-… P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG   hybr…
 #> 10 P04196-… P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG   comp…
 #> # ℹ 3,969 more rows
 #> # ℹ 9 more variables: B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>,
@@ -406,7 +406,7 @@ exp_with_mp |>
   filter_var(Tp == "highmannose")
 #> 
 #> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 213 variables
+#> ℹ Expression matrix: 12 samples, 332 variables
 #> ℹ Sample information fields: group <fct>
 #> ℹ Variable information fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
 ```
@@ -443,7 +443,7 @@ Each function can be called directly for quick structural analysis:
 
 ``` r
 n_glycan_type(glycans)
-#> [1] complex hybrid  complex complex complex
+#> [1] complex complex complex complex complex
 #> Levels: paucimannose hybrid highmannose complex
 ```
 
