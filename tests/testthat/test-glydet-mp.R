@@ -25,7 +25,7 @@ hybrid_H4N3a3 <- function() {
   glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[Man(a1-3)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
 }
 
-complex_H3N3 <- function() {
+hybrid_H3N3 <- function() {
   glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
 }
 
@@ -97,10 +97,11 @@ test_that("n_glycan_type identifies highmannose correctly", {
 test_that("n_glycan_type identifies hybrid correctly", {
   glycans <- c(
     hybrid_H5N3(),
-    hybrid_H4N3a3()
+    hybrid_H4N3a3(),
+    glyrepr::as_glycan_structure("Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-")
   )
   expected <- factor(
-    c("hybrid", "hybrid"),
+    c("hybrid", "hybrid", "hybrid"),
     levels = c("paucimannose", "hybrid", "highmannose", "complex")
   )
   expect_equal(n_glycan_type(glycans), expected)
@@ -108,12 +109,11 @@ test_that("n_glycan_type identifies hybrid correctly", {
 
 test_that("n_glycan_type identifies complex correctly", {
   glycans <- c(
-    complex_H3N3(),
     complex_H3N4(),
     complex_H4N4()
   )
   expected <- factor(
-    c("complex", "complex", "complex"),
+    c("complex", "complex"),
     levels = c("paucimannose", "hybrid", "highmannose", "complex")
   )
   expect_equal(n_glycan_type(glycans), expected)
@@ -131,7 +131,7 @@ test_that("has_bisecting identifies bisecting correctly", {
 # ========== Number of antennae ==========
 test_that("n_antennae counts antennae correctly", {
   glycans <- c(
-    complex_H3N3(),
+    hybrid_H3N3(),
     complex_H4N4(),
     complex_H3N5_bisect(),
     complex_H6N5a3()
@@ -151,7 +151,7 @@ test_that("n_antennae counts antenna motifs in non-complex glycans", {
 # ========== Number of core fucoses ==========
 test_that("n_core_fuc counts core fucoses correctly", {
   glycans <- c(
-    complex_H3N3(),
+    hybrid_H3N3(),
     complex_H3N4F1_coreF(),
     complex_H3N4F2_2coreF(),
     complex_H3N4F1_armF()
@@ -162,7 +162,7 @@ test_that("n_core_fuc counts core fucoses correctly", {
 # ========== Number of arm fucoses ==========
 test_that("n_arm_fuc counts arm fucoses correctly", {
   glycans <- c(
-    complex_H3N3(),
+    hybrid_H3N3(),
     complex_H3N4F1_armF(),
     complex_H3N4F2_2armF(),
     complex_H3N4F1_coreF()
