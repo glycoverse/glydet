@@ -7,7 +7,7 @@ test_that("get_meta_properties works with default meta-property functions", {
   result <- get_meta_properties(glycans)
   expected <- tibble::tibble(
     Tp = factor(
-      c("paucimannose", "complex", "complex"),
+      c("paucimannose", "complex", "hybrid"),
       levels = c("paucimannose", "hybrid", "highmannose", "complex")
     ),
     B = c(FALSE, FALSE, FALSE),
