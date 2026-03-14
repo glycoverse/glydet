@@ -1,4 +1,8 @@
-# glydet (development version)
+# glydet 0.10.3
+
+## Minor improvements and bug fixes
+
+* Fix a bug in `n_glycan_type()` where a mono-antennary N-glycan with nothing on the a6-Man was incorrectly classified as "complex" instead of "hybrid".
 
 # glydet 0.10.2
 
