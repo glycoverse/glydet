@@ -163,18 +163,18 @@ all_mp_fns <- function() {
 #'
 #' @export
 n_glycan_type <- function(glycans) {
-  motif_names <- c("core", "pauciman", "hybrid", "highman")
+  motif_names <- c("branch", "pauciman", "core")
   motifs <- purrr::map(motif_names, .get_n_glycan_motif)
   motifs <- do.call(c, motifs)
-  alignments <- c("whole", "whole", "core", "core")
-  have_motif_mat <- glymotif::have_motifs(glycans, motifs, alignments, ignore_linkages = TRUE)
-  colnames(have_motif_mat) <- motif_names
+  alignments <- c("core", "whole", "whole")
+  count_motif_mat <- glymotif::count_motifs(glycans, motifs, alignments, ignore_linkages = TRUE)
+  colnames(count_motif_mat) <- motif_names
   res <- dplyr::case_when(
-    have_motif_mat[, "core"] ~ "paucimannose",
-    have_motif_mat[, "pauciman"] ~ "paucimannose",
-    have_motif_mat[, "hybrid"] ~ "hybrid",
-    have_motif_mat[, "highman"] ~ "highmannose",
-    TRUE ~ "complex"
+    count_motif_mat[, "core"] == 1 ~ "paucimannose",
+    count_motif_mat[, "pauciman"] == 1 ~ "paucimannose",
+    count_motif_mat[, "branch"] == 0 ~ "highmannose",
+    count_motif_mat[, "branch"] == 1 ~ "hybrid",
+    .default = "complex"
   )
   res <- factor(res, levels = c("paucimannose", "hybrid", "highmannose", "complex"))
   res
@@ -248,8 +248,7 @@ n_man <- function(glycans) {
     name,
     core     = glymotif::get_motif_structure("N-Glycan core basic"),
     pauciman = glyparse::parse_iupac_condensed("Hex(??-?)[Hex(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-"),
-    hybrid   = glymotif::get_motif_structure("N-Glycan hybrid"),
-    highman  = glymotif::get_motif_structure("N-Glycan high mannose"),
+    branch   = glyparse::parse_iupac_condensed("HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"),
     bisect   = glymotif::get_motif_structure("N-glycan core, bisected"),
     antenna  = glyparse::parse_iupac_condensed("HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"),
     core_fuc = glymotif::get_motif_structure("N-Glycan core, core-fucosylated"),
