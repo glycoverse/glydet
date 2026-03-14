@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.10.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.10.3</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -338,7 +338,7 @@ conditions:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Number of groups: <span style="color: #0000BB;">4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"H"</span>, <span style="color: #0000BB;">"M"</span>, <span style="color: #0000BB;">"Y"</span>, and <span style="color: #0000BB;">"C"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Pairwise comparisons will be performed, with levels coming first as reference groups.</span></span>
-<span><span class="co">#&gt; Warning: <span style="color: #0000BB;">269</span> variables failed to fit the model</span></span>
+<span><span class="co">#&gt; Warning: <span style="color: #0000BB;">281</span> variables failed to fit the model</span></span>
 <span><span class="va">anova_res</span><span class="op">$</span><span class="va">tidy_result</span><span class="op">$</span><span class="va">main_test</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">trait</span> <span class="op">==</span> <span class="st">"TFc"</span>, <span class="va">p_adj</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 14</span></span></span>
@@ -423,7 +423,7 @@ representations of glycan structures.</p>
 <span><span class="co">#&gt;   Tp      B        nA    nF   nFc   nFa    nG   nGt    nS    nM</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> complex FALSE     2     0     0     0     2     0     2     3</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> hybrid  FALSE     2     0     0     0     1     0     1     4</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> complex FALSE     2     0     0     0     1     0     1     4</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> complex FALSE     2     0     0     0     2     2     0     3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> complex FALSE     2     0     0     0     2     1     1     3</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> complex FALSE     2     0     0     0     2     1     0     4</span></span></code></pre></div>
@@ -441,14 +441,14 @@ directly:</p>
 <span><span class="co">#&gt;    variable protein glycan_composition glycan_structure protein_site gene  Tp   </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P08185-… P08185  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          176 SERP… comp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   hybr…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          344 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P10909-… P10909  <span style="color: #000000;">Hex</span>(6)<span style="color: #000000;">HexNAc</span>(5)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          291 CLU   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          345 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(5)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">dH</span>… <span style="color: #000000;">dHex</span>(??-?)<span style="color: #000000;">Hex</span>(?…          344 HRG   comp…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(3)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          344 HRG   comp…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(3)    <span style="color: #000000;">Hex</span>(??-?)<span style="color: #000000;">HexNAc</span>…          344 HRG   hybr…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P04196-… P04196  <span style="color: #000000;">Hex</span>(4)<span style="color: #000000;">HexNAc</span>(4)<span style="color: #000000;">Ne</span>… <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(…          344 HRG   comp…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 3,969 more rows</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 9 more variables: B &lt;lgl&gt;, nA &lt;int&gt;, nF &lt;int&gt;, nFc &lt;int&gt;, nFa &lt;int&gt;,</span></span></span>
@@ -464,7 +464,7 @@ glycans:</p>
 <span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/filter_obs.html" class="external-link">filter_var</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"highmannose"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycoproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">213</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">332</span> variables</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">Tp</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nF</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
 </div>
@@ -549,7 +549,7 @@ built-in meta-property functions:</p>
 analysis:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/n_glycan_type.html">n_glycan_type</a></span><span class="op">(</span><span class="va">glycans</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] complex hybrid  complex complex complex</span></span>
+<span><span class="co">#&gt; [1] complex complex complex complex complex</span></span>
 <span><span class="co">#&gt; Levels: paucimannose hybrid highmannose complex</span></span></code></pre></div>
 </div>
 </div>

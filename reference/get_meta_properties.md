@@ -55,7 +55,7 @@ get_meta_properties(glycans)
 #>   <fct>        <lgl> <int> <int> <int> <int> <int> <int> <int> <int>
 #> 1 paucimannose FALSE     0     0     0     0     0     0     0     3
 #> 2 complex      FALSE     2     1     0     1     0     0     0     3
-#> 3 complex      FALSE     1     0     0     0     0     0     0     3
+#> 3 hybrid       FALSE     1     0     0     0     0     0     0     3
 
 # Use custom meta-property functions
 fns <- list(
