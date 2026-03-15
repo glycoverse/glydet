@@ -7,8 +7,6 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/glydet)](https://CRAN.R-project.org/package=glydet)
 [![R-universe
 version](https://glycoverse.r-universe.dev/glydet/badges/version)](https://glycoverse.r-universe.dev/glydet)
 [![R-CMD-check](https://github.com/glycoverse/glydet/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/glycoverse/glydet/actions/workflows/R-CMD-check.yaml)
@@ -86,6 +84,7 @@ First, let’s load necessary packages and get the data ready.
 ``` r
 library(glyexp)
 library(glyclean)
+#> Warning: 程序包'glyclean'是用R版本4.5.2 来建造的
 library(glydet)
 
 exp <- auto_clean(real_experiment)
