@@ -33,13 +33,13 @@ test_that("derive_traits works for glycomics experiments", {
       2/3, 1, 0.5),
     nrow = 2, ncol = 3, byrow = TRUE
   )
-  rownames(expected_expr_mat) <- c("V1", "V2")
+  rownames(expected_expr_mat) <- c("TFc", "TC")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 
   # Test var_info
   expected_var_info <- tibble::tibble(
-    variable = c("V1", "V2"),
+    variable = c("TFc", "TC"),
     trait = c("TFc", "TC")
   )
   expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
@@ -97,13 +97,13 @@ test_that("derive_traits works for glycoproteomics experiments", {
     ),
    nrow = 4, ncol = 3, byrow = TRUE
   )
-  rownames(expected_expr_mat) <- paste0("V", 1:4)
+  rownames(expected_expr_mat) <- c("P1-10-TFc", "P1-10-TC", "P2-20-TFc", "P2-20-TC")
   colnames(expected_expr_mat) <- paste0("S", 1:3)
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 
   # Test var_info
   expected_var_info <- tibble::tibble(
-    variable = paste0("V", 1:4),
+    variable = c("P1-10-TFc", "P1-10-TC", "P2-20-TFc", "P2-20-TC"),
     protein = c("P1", "P1", "P2", "P2"),
     protein_site = c(10L, 10L, 20L, 20L),
     trait = c("TFc", "TC", "TFc", "TC")
@@ -160,13 +160,13 @@ test_that("derive_traits works with custom meta-properties", {
     ),
     nrow = 2, ncol = 3, byrow = TRUE
   )
-  rownames(expected_expr_mat) <- c("V1", "V2")
+  rownames(expected_expr_mat) <- c("many_N", "many_H")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 
   # Test var_info
   expected_var_info <- tibble::tibble(
-    variable = c("V1", "V2"),
+    variable = c("many_N", "many_H"),
     trait = c("many_N", "many_H")
   )
   expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
@@ -218,13 +218,13 @@ test_that("derive_traits works with custom meta-property columns", {
       1/3, 0, 0.5),
     nrow = 3, ncol = 3, byrow = TRUE
   )
-  rownames(expected_expr_mat) <- c("V1", "V2", "V3")
+  rownames(expected_expr_mat) <- c("SG", "EG", "LG")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 
   # Test var_info
   expected_var_info <- tibble::tibble(
-    variable = c("V1", "V2", "V3"),
+    variable = c("SG", "EG", "LG"),
     trait = c("SG", "EG", "LG")
   )
   expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
@@ -260,7 +260,7 @@ test_that("derive_traits works with custom meta-property columns that overwrite 
 
   # Test expr_mat
   expected_expr_mat <- matrix(0, nrow = 1, ncol = 3)
-  rownames(expected_expr_mat) <- "V1"
+  rownames(expected_expr_mat) <- "TS"
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 })
