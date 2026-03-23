@@ -61,7 +61,7 @@ test_that("quantify_motifs works for glycomics data absolutely", {
     nrow = 2, byrow = TRUE
   )
   colnames(expected_expr_mat) <- colnames(exp$expr_mat)
-  rownames(expected_expr_mat) <- c("V1", "V2")
+  rownames(expected_expr_mat) <- c("sia", "core")
   expect_equal(result$expr_mat, expected_expr_mat)
   expect_equal(result$var_info$motif, c("sia", "core"))
 })
@@ -79,7 +79,7 @@ test_that("quantify_motifs works for glycomics data relatively", {
     nrow = 2, byrow = TRUE
   )
   colnames(expected_expr_mat) <- colnames(exp$expr_mat)
-  rownames(expected_expr_mat) <- c("V1", "V2")
+  rownames(expected_expr_mat) <- c("sia", "core")
   expect_equal(result$expr_mat, expected_expr_mat)
   expect_equal(result$var_info$motif, c("sia", "core"))
 })
@@ -104,11 +104,11 @@ test_that("quantify_motifs works for glycoproteomics data absolutely", {
     nrow = 4, byrow = TRUE
   )
   colnames(expected_expr_mat) <- colnames(exp$expr_mat)
-  rownames(expected_expr_mat) <- c("V1", "V2", "V3", "V4")
+  rownames(expected_expr_mat) <- c("P1-1-sia", "P1-1-core", "P1-2-sia", "P1-2-core")
   expect_equal(result$expr_mat, expected_expr_mat)
 
   # Check non-structure columns match
-  expect_equal(result$var_info$variable, c("V1", "V2", "V3", "V4"))
+  expect_equal(result$var_info$variable, c("P1-1-sia", "P1-1-core", "P1-2-sia", "P1-2-core"))
   expect_equal(result$var_info$protein, c("P1", "P1", "P1", "P1"))
   expect_equal(result$var_info$protein_site, c(1, 1, 2, 2))
   expect_equal(result$var_info$motif, c("sia", "core", "sia", "core"))
@@ -145,11 +145,11 @@ test_that("quantify_motifs works for glycoproteomics data relatively", {
     nrow = 4, byrow = TRUE
   )
   colnames(expected_expr_mat) <- colnames(exp$expr_mat)
-  rownames(expected_expr_mat) <- c("V1", "V2", "V3", "V4")
+  rownames(expected_expr_mat) <- c("P1-1-sia", "P1-1-core", "P1-2-sia", "P1-2-core")
   expect_equal(result$expr_mat, expected_expr_mat)
 
   # Check non-structure columns match
-  expect_equal(result$var_info$variable, c("V1", "V2", "V3", "V4"))
+  expect_equal(result$var_info$variable, c("P1-1-sia", "P1-1-core", "P1-2-sia", "P1-2-core"))
   expect_equal(result$var_info$protein, c("P1", "P1", "P1", "P1"))
   expect_equal(result$var_info$protein_site, c(1, 1, 2, 2))
   expect_equal(result$var_info$motif, c("sia", "core", "sia", "core"))

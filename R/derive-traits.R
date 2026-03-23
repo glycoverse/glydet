@@ -130,7 +130,8 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
   )
 
   res_exp |>
-    glyexp::left_join_var(explanations, by = "trait")
+    glyexp::left_join_var(explanations, by = "trait") |>
+    glyexp::standardize_variable()
 }
 
 #' Calculate Derived Traits from Tidy Data
