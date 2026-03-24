@@ -130,16 +130,16 @@ get_var_info(exp)
 #> # A tibble: 3,979 × 6
 #>    variable       protein glycan_composition glycan_structure protein_site gene 
 #>    <chr>          <chr>   <comp>             <struct>                <int> <chr>
-#>  1 P08185-N176-H… P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP…
-#>  2 P04196-N344-H… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
-#>  3 P04196-N344-H… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          344 HRG  
-#>  4 P04196-N344-H… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
-#>  5 P10909-N291-H… P10909  Hex(6)HexNAc(5)    Hex(??-?)HexNAc…          291 CLU  
-#>  6 P04196-N344-H… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
-#>  7 P04196-N345-H… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          345 HRG  
-#>  8 P04196-N344-H… P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG  
-#>  9 P04196-N344-H… P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG  
-#> 10 P04196-N344-H… P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  1 P08185-176-He… P08185  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          176 SERP…
+#>  2 P04196-344-He… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  3 P04196-344-He… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          344 HRG  
+#>  4 P04196-344-He… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  5 P10909-291-He… P10909  Hex(6)HexNAc(5)    Hex(??-?)HexNAc…          291 CLU  
+#>  6 P04196-344-He… P04196  Hex(5)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
+#>  7 P04196-345-He… P04196  Hex(5)HexNAc(4)    Hex(??-?)HexNAc…          345 HRG  
+#>  8 P04196-344-He… P04196  Hex(5)HexNAc(4)dH… dHex(??-?)Hex(?…          344 HRG  
+#>  9 P04196-344-He… P04196  Hex(4)HexNAc(3)    Hex(??-?)HexNAc…          344 HRG  
+#> 10 P04196-344-He… P04196  Hex(4)HexNAc(4)Ne… NeuAc(??-?)Hex(…          344 HRG  
 #> # ℹ 3,969 more rows
 ```
 
@@ -164,18 +164,18 @@ get_sample_info(exp)
 
 ``` r
 get_expr_mat(exp)[1:5, 1:5]
-#>                                                 C1           C2         C3
-#> P08185-N176-Hex(5)HexNAc(4)NeuAc(2)   6.676837e+03 2.007225e+04      13368
-#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-1 3.772892e+08 5.658012e+08   99052192
-#> P04196-N344-Hex(5)HexNAc(4)           5.300372e+08 5.611186e+08  210626085
-#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-2 3.006477e+09 2.649997e+09 1201420056
-#> P10909-N291-Hex(6)HexNAc(5)-1         2.772362e+07 3.181527e+07    8016730
-#>                                                 H1           H2
-#> P08185-N176-Hex(5)HexNAc(4)NeuAc(2)   4.105520e+04 1.754469e+04
-#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-1 2.391413e+04 1.408332e+07
-#> P04196-N344-Hex(5)HexNAc(4)           9.224067e+08 8.450856e+08
-#> P04196-N344-Hex(5)HexNAc(4)NeuAc(1)-2 3.438030e+09 3.879662e+09
-#> P10909-N291-Hex(6)HexNAc(5)-1         6.820649e+07 4.501783e+07
+#>                                                C1           C2         C3
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   6.676837e+03 2.007225e+04      13368
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 3.772892e+08 5.658012e+08   99052192
+#> P04196-344-Hex(5)HexNAc(4)           5.300372e+08 5.611186e+08  210626085
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 3.006477e+09 2.649997e+09 1201420056
+#> P10909-291-Hex(6)HexNAc(5)-1         2.772362e+07 3.181527e+07    8016730
+#>                                                H1           H2
+#> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   4.105520e+04 1.754469e+04
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-1 2.391413e+04 1.408332e+07
+#> P04196-344-Hex(5)HexNAc(4)           9.224067e+08 8.450856e+08
+#> P04196-344-Hex(5)HexNAc(4)NeuAc(1)-2 3.438030e+09 3.879662e+09
+#> P10909-291-Hex(6)HexNAc(5)-1         6.820649e+07 4.501783e+07
 ```
 
 Now for the magic moment ✨—let’s calculate some derived traits!
@@ -200,30 +200,30 @@ each derived trait on each glycosite in each sample.”
 ``` r
 get_var_info(trait_exp)
 #> # A tibble: 3,864 × 6
-#>    variable protein protein_site trait gene  explanation                        
-#>    <chr>    <chr>          <int> <chr> <chr> <chr>                              
-#>  1 V1       A6NJW9            49 TM    CD8B2 Proportion of high-mannose glycans…
-#>  2 V2       A6NJW9            49 TH    CD8B2 Proportion of hybrid glycans among…
-#>  3 V3       A6NJW9            49 TC    CD8B2 Proportion of complex glycans amon…
-#>  4 V4       A6NJW9            49 MM    CD8B2 Abundance-weighted mean of mannose…
-#>  5 V5       A6NJW9            49 CA2   CD8B2 Proportion of bi-antennary glycans…
-#>  6 V6       A6NJW9            49 CA3   CD8B2 Proportion of tri-antennary glycan…
-#>  7 V7       A6NJW9            49 CA4   CD8B2 Proportion of tetra-antennary glyc…
-#>  8 V8       A6NJW9            49 TF    CD8B2 Proportion of fucosylated glycans …
-#>  9 V9       A6NJW9            49 TFc   CD8B2 Proportion of core-fucosylated gly…
-#> 10 V10      A6NJW9            49 TFa   CD8B2 Proportion of arm-fucosylated glyc…
+#>    variable      protein protein_site trait gene  explanation                   
+#>    <glue>        <chr>          <int> <chr> <chr> <chr>                         
+#>  1 A6NJW9-49-TM  A6NJW9            49 TM    CD8B2 Proportion of high-mannose gl…
+#>  2 A6NJW9-49-TH  A6NJW9            49 TH    CD8B2 Proportion of hybrid glycans …
+#>  3 A6NJW9-49-TC  A6NJW9            49 TC    CD8B2 Proportion of complex glycans…
+#>  4 A6NJW9-49-MM  A6NJW9            49 MM    CD8B2 Abundance-weighted mean of ma…
+#>  5 A6NJW9-49-CA2 A6NJW9            49 CA2   CD8B2 Proportion of bi-antennary gl…
+#>  6 A6NJW9-49-CA3 A6NJW9            49 CA3   CD8B2 Proportion of tri-antennary g…
+#>  7 A6NJW9-49-CA4 A6NJW9            49 CA4   CD8B2 Proportion of tetra-antennary…
+#>  8 A6NJW9-49-TF  A6NJW9            49 TF    CD8B2 Proportion of fucosylated gly…
+#>  9 A6NJW9-49-TFc A6NJW9            49 TFc   CD8B2 Proportion of core-fucosylate…
+#> 10 A6NJW9-49-TFa A6NJW9            49 TFa   CD8B2 Proportion of arm-fucosylated…
 #> # ℹ 3,854 more rows
 ```
 
 ``` r
 # These are the trait values!
 get_expr_mat(trait_exp)[1:5, 1:5]
-#>    C1 C2 C3 H1 H2
-#> V1  0  0  0  0  0
-#> V2  0  0  0  0  0
-#> V3  1  1  1  1  1
-#> V4 NA NA NA NA NA
-#> V5  1  1  1  1  1
+#>               C1 C2 C3 H1 H2
+#> A6NJW9-49-TM   0  0  0  0  0
+#> A6NJW9-49-TH   0  0  0  0  0
+#> A6NJW9-49-TC   1  1  1  1  1
+#> A6NJW9-49-MM  NA NA NA NA NA
+#> A6NJW9-49-CA2  1  1  1  1  1
 ```
 
 🎉 **Congratulations!** You’ve just calculated a comprehensive suite of
@@ -275,20 +275,20 @@ anova_res <- gly_anova(trait_exp)
 anova_res$tidy_result$main_test |>
   dplyr::filter(trait == "TFc", p_adj < 0.05)
 #> # A tibble: 12 × 14
-#>    variable protein protein_site trait gene   explanation    term     df   sumsq
-#>    <chr>    <chr>          <int> <chr> <chr>  <chr>          <chr> <dbl>   <dbl>
-#>  1 V457     P00748           249 TFc   F12    Proportion of… group     3 5.48e-4
-#>  2 V709     P01591            71 TFc   JCHAIN Proportion of… group     3 7.71e-2
-#>  3 V919     P02679            78 TFc   FGG    Proportion of… group     3 3.65e-3
-#>  4 V1115    P02765           176 TFc   AHSG   Proportion of… group     3 9.41e-5
-#>  5 V1227    P02790           240 TFc   HPX    Proportion of… group     3 6.29e-2
-#>  6 V1353    P03952           494 TFc   KLKB1  Proportion of… group     3 2.31e-3
-#>  7 V1381    P04004            86 TFc   VTN    Proportion of… group     3 6.50e-3
-#>  8 V1661    P04278           396 TFc   SHBG   Proportion of… group     3 2.99e-2
-#>  9 V1675    P05090            98 TFc   APOD   Proportion of… group     3 1.70e-2
-#> 10 V2165    P0C0L4          1328 TFc   C4A    Proportion of… group     3 1.74e-2
-#> 11 V2515    P19652           103 TFc   ORM2   Proportion of… group     3 6.44e-2
-#> 12 V2865    P43652            33 TFc   AFM    Proportion of… group     3 5.47e-3
+#>    variable     protein protein_site trait gene  explanation term     df   sumsq
+#>    <glue>       <chr>          <int> <chr> <chr> <chr>       <chr> <dbl>   <dbl>
+#>  1 P00748-249-… P00748           249 TFc   F12   Proportion… group     3 5.48e-4
+#>  2 P01591-71-T… P01591            71 TFc   JCHA… Proportion… group     3 7.71e-2
+#>  3 P02679-78-T… P02679            78 TFc   FGG   Proportion… group     3 3.65e-3
+#>  4 P02765-176-… P02765           176 TFc   AHSG  Proportion… group     3 9.41e-5
+#>  5 P02790-240-… P02790           240 TFc   HPX   Proportion… group     3 6.29e-2
+#>  6 P03952-494-… P03952           494 TFc   KLKB1 Proportion… group     3 2.31e-3
+#>  7 P04004-86-T… P04004            86 TFc   VTN   Proportion… group     3 6.50e-3
+#>  8 P04278-396-… P04278           396 TFc   SHBG  Proportion… group     3 2.99e-2
+#>  9 P05090-98-T… P05090            98 TFc   APOD  Proportion… group     3 1.70e-2
+#> 10 P0C0L4-1328… P0C0L4          1328 TFc   C4A   Proportion… group     3 1.74e-2
+#> 11 P19652-103-… P19652           103 TFc   ORM2  Proportion… group     3 6.44e-2
+#> 12 P43652-33-T… P43652            33 TFc   AFM   Proportion… group     3 5.47e-3
 #> # ℹ 5 more variables: meansq <dbl>, statistic <dbl>, p_val <dbl>, p_adj <dbl>,
 #> #   post_hoc <chr>
 ```

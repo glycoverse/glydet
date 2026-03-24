@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.10.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.10.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -145,8 +145,8 @@ glycoproteomics data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define our motifs of interest using IUPAC-condensed format</span></span>
 <span><span class="va">motifs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  Lx <span class="op">=</span> <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>,  <span class="co"># Lewis x antigen</span></span>
-<span>  SLx <span class="op">=</span> <span class="st">"NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>  <span class="co"># Sialyl Lewis x antigen</span></span>
+<span>  Lxa <span class="op">=</span> <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>,  <span class="co"># Lewis x/a antigen</span></span>
+<span>  SLxa <span class="op">=</span> <span class="st">"NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>  <span class="co"># Sialyl Lewis x/a antigen</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Quantify the motifs in our dataset</span></span>
@@ -160,18 +160,18 @@ glycoproteomics data.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">motif_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 552 × 6</span></span></span>
-<span><span class="co">#&gt;    variable protein protein_site motif gene   motif_structure                   </span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                          </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> V1       A6NJW9            49 Lx    CD8B2  <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNAc</span>(??-   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> V2       A6NJW9            49 SLx   CD8B2  <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">H</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> V3       O14786           150 Lx    NRP1   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNAc</span>(??-   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> V4       O14786           150 SLx   NRP1   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">H</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> V5       O43866           226 Lx    CD5L   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNAc</span>(??-   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> V6       O43866           226 SLx   CD5L   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">H</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> V7       O75437           244 Lx    ZNF254 <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNAc</span>(??-   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> V8       O75437           244 SLx   ZNF254 <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">H</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> V9       O75581           281 Lx    LRP6   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNAc</span>(??-   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> V10      O75581           281 SLx   LRP6   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">H</span>…</span></span>
+<span><span class="co">#&gt;    variable        protein protein_site motif gene   motif_structure            </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                   </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> A6NJW9-49-Lxa   A6NJW9            49 Lxa   CD8B2  <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> A6NJW9-49-SLxa  A6NJW9            49 SLxa  CD8B2  <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> O14786-150-Lxa  O14786           150 Lxa   NRP1   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> O14786-150-SLxa O14786           150 SLxa  NRP1   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> O43866-226-Lxa  O43866           226 Lxa   CD5L   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> O43866-226-SLxa O43866           226 SLxa  CD5L   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> O75437-244-Lxa  O75437           244 Lxa   ZNF254 <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> O75437-244-SLxa O75437           244 SLxa  ZNF254 <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> O75581-281-Lxa  O75581           281 Lxa   LRP6   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> O75581-281-SLxa O75581           281 SLxa  LRP6   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 542 more rows</span></span></span></code></pre></div>
 <p>Notice how the variable information now includes a <code>motif</code>
 column instead of the usual <code>trait</code> column. Don’t worry—this
@@ -290,16 +290,16 @@ quantification.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># First, add the meta-properties to the variable information</span></span>
 <span><span class="va">motifs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>  nLx <span class="op">=</span> <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>,  <span class="co"># Lewis x antigen</span></span>
-<span>  nSLx <span class="op">=</span> <span class="st">"NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>  <span class="co"># Sialyl Lewis x antigen</span></span>
+<span>  nLxa <span class="op">=</span> <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>,  <span class="co"># Lewis x/a antigen</span></span>
+<span>  nSLxa <span class="op">=</span> <span class="st">"NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>  <span class="co"># Sialyl Lewis x/a antigen</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">exp_with_mps</span> <span class="op">&lt;-</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/add_motifs_int.html" class="external-link">add_motifs_int</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">motifs</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define the traits using wsum() for absolute quantification</span></span>
-<span><span class="va">trait_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Lx <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nLx</span><span class="op">)</span>, SLx <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nSLx</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">trait_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Lxa <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nLxa</span><span class="op">)</span>, SLxa <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nSLxa</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate the traits</span></span>
-<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp_with_mps</span>, trait_fns <span class="op">=</span> <span class="va">trait_fns</span>, mp_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nLx"</span>, <span class="st">"nSLx"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp_with_mps</span>, trait_fns <span class="op">=</span> <span class="va">trait_fns</span>, mp_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"nLxa"</span>, <span class="st">"nSLxa"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>This code snippet is functionally equivalent to:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The much simpler approach using quantify_motifs()</span></span>

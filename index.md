@@ -70,6 +70,7 @@ First, let’s load necessary packages and get the data ready.
 ``` r
 library(glyexp)
 library(glyclean)
+#> Warning: 程序包'glyclean'是用R版本4.5.2 来建造的
 library(glydet)
 
 exp <- auto_clean(real_experiment)

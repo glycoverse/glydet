@@ -25,7 +25,7 @@ exp <- auto_clean(real_experiment)
 
 ## Custom Traits
 
-`glydet` provides three trait factory functions for creating custom
+`glydet` provides five trait factory functions for creating custom
 derived traits:
 
 - [`prop()`](https://glycoverse.github.io/glydet/reference/prop.md) for
@@ -34,7 +34,12 @@ derived traits:
   for computing the abundance ratio between two glycan subsets
 - [`wmean()`](https://glycoverse.github.io/glydet/reference/wmean.md)
   for calculating the weighted mean of a quantitative property, weighted
-  by glycan abundances
+  by glycan abundance
+- [`total()`](https://glycoverse.github.io/glydet/reference/total.md)
+  for calculating the total abundance of a specific glycan subset
+- [`wsum()`](https://glycoverse.github.io/glydet/reference/wsum.md) for
+  calculating the weighted sum of a quantitative property, weighted by
+  glycan abundance
 
 All derived traits in `glydet` are constructed using these three factory
 functions. The definitions of all built-in traits demonstrate their
@@ -56,15 +61,15 @@ usage:
 - `TS`: `prop(nS > 0)`
 
 These definitions utilize meta-properties as building blocks. For
-instance, `T` represents glycan type, `nM` denotes the number of mannose
-residues, and so forth. To retrieve all available built-in
+instance, `Tp` represents glycan type, `nM` denotes the number of
+mannose residues, and so forth. To retrieve all available built-in
 meta-properties, use `names(all_mp_fns())`.
 
 The complete list of built-in meta-properties is provided below:
 
 | Name  | Function                                                                             | Type    | Description                                                                      |
 |-------|--------------------------------------------------------------------------------------|---------|----------------------------------------------------------------------------------|
-| `T`   | [`n_glycan_type()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)  | factor  | Type of the glycan, either “complex”, “hybrid”, “highmannose”, or “pausimannose” |
+| `Tp`  | [`n_glycan_type()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)  | factor  | Type of the glycan, either “complex”, “hybrid”, “highmannose”, or “pausimannose” |
 | `B`   | [`has_bisecting()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)  | logical | Whether the glycan has a bisecting GlcNAc                                        |
 | `nA`  | [`n_antennae()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)     | integer | Number of antennae                                                               |
 | `nF`  | [`n_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)          | integer | Number of fucoses                                                                |
@@ -99,6 +104,7 @@ glycans is defined as:
 
 ``` r
 prop(nFc > 0)
+#> prop(nFc > 0, na_action = "keep")
 ```
 
 Since `nFc` is an integer meta-property representing the number of core
@@ -109,6 +115,7 @@ Consider this simpler example:
 
 ``` r
 prop(B)
+#> prop(B, na_action = "keep")
 ```
 
 This demonstrates a straightforward trait definition. Since `B`
@@ -119,6 +126,7 @@ A more complex example demonstrates compound logical operations:
 
 ``` r
 prop(nS > 0 & nFa > 0)
+#> prop(nS > 0 & nFa > 0, na_action = "keep")
 ```
 
 This trait calculates the proportion of glycans containing both sialic
@@ -132,6 +140,7 @@ example, the `CF` trait is defined as:
 
 ``` r
 prop(nF > 0)
+#> prop(nF > 0, na_action = "keep")
 ```
 
 We know that `nFc + nFa` is equivalent to `nF`, so the above definition
@@ -139,6 +148,7 @@ is equivalent to:
 
 ``` r
 prop((nFc + nFa) > 0)
+#> prop((nFc + nFa) > 0, na_action = "keep")
 ```
 
 As a general principle, any R expression that evaluates to a logical
@@ -158,6 +168,7 @@ The `CA2` trait is defined as follows:
 
 ``` r
 prop(nA == 2, within = (Tp == "complex"))
+#> prop(nA == 2, within = (Tp == "complex"), na_action = "keep")
 ```
 
 Note that parentheses around `Tp == "complex"` are optional.
@@ -165,6 +176,7 @@ Consequently, this alternative definition is equally valid:
 
 ``` r
 prop(nA == 2, within = Tp == "complex")
+#> prop(nA == 2, within = (Tp == "complex"), na_action = "keep")
 ```
 
 Combining these two parameters enables the creation of sophisticated
@@ -174,6 +186,7 @@ as:
 
 ``` r
 prop(nS > 0, within = (nFc > 0 & nA == 4))
+#> prop(nS > 0, within = (nFc > 0 & nA == 4), na_action = "keep")
 ```
 
 Having mastered the usage of
@@ -209,6 +222,7 @@ For example, the ratio of complex to hybrid glycans is defined as:
 
 ``` r
 ratio(Tp == "complex", Tp == "hybrid")
+#> ratio(Tp == "complex", Tp == "hybrid", na_action = "keep")
 ```
 
 The first expression defines the numerator, while the second expression
@@ -220,12 +234,14 @@ non-bisecting glycans within the bi-antennary subset is defined as:
 
 ``` r
 ratio(B, !B, within = (nA == 2))
+#> ratio(B, !B, within = (nA == 2), na_action = "keep")
 ```
 
 This represents syntactic sugar for the more verbose:
 
 ``` r
 ratio(B & (nA == 2), (!B) & (nA == 2))
+#> ratio(B & (nA == 2), (!B) & (nA == 2), na_action = "keep")
 ```
 
 The `within` parameter provides clearer semantics and reduces
@@ -242,9 +258,11 @@ functionally identical:
 ``` r
 # using prop()
 prop(nFc > 0, within = (Tp == "complex"))
+#> prop(nFc > 0, within = (Tp == "complex"), na_action = "keep")
 
 # using ratio()
 ratio(nFc > 0 & Tp == "complex", Tp == "complex")
+#> ratio(nFc > 0 & Tp == "complex", Tp == "complex", na_action = "keep")
 ```
 
 However,
@@ -336,6 +354,7 @@ defined as:
 
 ``` r
 wmean(nA)
+#> wmean(nA, na_action = "keep")
 ```
 
 The average degree of sialylation per antenna across all glycans is
@@ -343,6 +362,7 @@ defined as:
 
 ``` r
 wmean(nS / nA)
+#> wmean(nS/nA, na_action = "keep")
 ```
 
 The `within` parameter can be utilized to restrict the weighted-mean
@@ -351,6 +371,7 @@ of antennae within complex glycans is defined as:
 
 ``` r
 wmean(nA, within = (Tp == "complex"))
+#> wmean(nA, within = (Tp == "complex"), na_action = "keep")
 ```
 
 Practice exercises:
@@ -370,6 +391,7 @@ For example, the total abundance of all complex glycans is defined as:
 
 ``` r
 total(Tp == "complex")
+#> total(Tp == "complex")
 ```
 
 There is no `within` parameter for
@@ -378,6 +400,7 @@ you can always add a restriction to the expression by using `&`.
 
 ``` r
 total(Tp == "complex" & nA == 4)
+#> total(Tp == "complex" & nA == 4)
 ```
 
 #### `wsum()`
@@ -463,6 +486,11 @@ my_traits <- list(
   A4S = wmean(nS / nA, within = (nA == 4))
 )
 derive_traits(exp, trait_fns = my_traits)
+#> 
+#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 12 samples, 828 variables
+#> ℹ Sample information fields: group <fct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 ```
 
 The identifiers “A2S”, “A3S”, and “A4S” represent the derived trait

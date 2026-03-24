@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.10.3</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.10.4</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@ details.</p>
 <div class="section level2">
 <h2 id="custom-traits">Custom Traits<a class="anchor" aria-label="anchor" href="#custom-traits"></a>
 </h2>
-<p><code>glydet</code> provides three trait factory functions for
+<p><code>glydet</code> provides five trait factory functions for
 creating custom derived traits:</p>
 <ul>
 <li>
@@ -97,7 +97,13 @@ specific glycan subset</li>
 glycan subsets</li>
 <li>
 <code><a href="../reference/wmean.html">wmean()</a></code> for calculating the weighted mean of a
-quantitative property, weighted by glycan abundances</li>
+quantitative property, weighted by glycan abundance</li>
+<li>
+<code><a href="../reference/total.html">total()</a></code> for calculating the total abundance of a
+specific glycan subset</li>
+<li>
+<code><a href="../reference/wsum.html">wsum()</a></code> for calculating the weighted sum of a
+quantitative property, weighted by glycan abundance</li>
 </ul>
 <p>All derived traits in <code>glydet</code> are constructed using these
 three factory functions. The definitions of all built-in traits
@@ -151,9 +157,10 @@ demonstrate their usage:</p>
 </li>
 </ul>
 <p>These definitions utilize meta-properties as building blocks. For
-instance, <code>T</code> represents glycan type, <code>nM</code> denotes
-the number of mannose residues, and so forth. To retrieve all available
-built-in meta-properties, use <code>names(all_mp_fns())</code>.</p>
+instance, <code>Tp</code> represents glycan type, <code>nM</code>
+denotes the number of mannose residues, and so forth. To retrieve all
+available built-in meta-properties, use
+<code>names(all_mp_fns())</code>.</p>
 <p>The complete list of built-in meta-properties is provided below:</p>
 <table class="table">
 <colgroup>
@@ -170,7 +177,7 @@ built-in meta-properties, use <code>names(all_mp_fns())</code>.</p>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>T</code></td>
+<td><code>Tp</code></td>
 <td><code><a href="../reference/n_glycan_type.html">n_glycan_type()</a></code></td>
 <td>factor</td>
 <td>Type of the glycan, either “complex”, “hybrid”, “highmannose”, or
@@ -253,20 +260,23 @@ referenced within the expression.</p>
 <p>For example, the proportion of core-fucosylated glycans within all
 glycans is defined as:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nFc &gt; 0</span>, na_action = "keep")</span></span></code></pre></div>
 <p>Since <code>nFc</code> is an integer meta-property representing the
 number of core fucoses, the expression <code>nFc &gt; 0</code> evaluates
 to a logical vector, creating a valid trait definition.</p>
 <p>Consider this simpler example:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">B</span>, na_action = "keep")</span></span></code></pre></div>
 <p>This demonstrates a straightforward trait definition. Since
 <code>B</code> (bisecting GlcNAc presence) is already a logical
 meta-property, <code>prop(B)</code> constitutes a valid trait
 definition.</p>
 <p>A more complex example demonstrates compound logical operations:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nFa</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nFa</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nS &gt; 0 &amp; nFa &gt; 0</span>, na_action = "keep")</span></span></code></pre></div>
 <p>This trait calculates the proportion of glycans containing both
 sialic acid and arm fucose. Both <code>nS &gt; 0</code> and
 <code>nFa &gt; 0</code> represent logical expressions, combined using
@@ -276,11 +286,13 @@ these expressions.</p>
 <p>Arithmetic calculations can also be incorporated within expressions.
 For example, the <code>CF</code> trait is defined as:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nF</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nF</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nF &gt; 0</span>, na_action = "keep")</span></span></code></pre></div>
 <p>We know that <code>nFc + nFa</code> is equivalent to <code>nF</code>,
 so the above definition is equivalent to:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="op">(</span><span class="va">nFc</span> <span class="op">+</span> <span class="va">nFa</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="op">(</span><span class="va">nFc</span> <span class="op">+</span> <span class="va">nFa</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">(nFc + nFa) &gt; 0</span>, na_action = "keep")</span></span></code></pre></div>
 <p>As a general principle, any R expression that evaluates to a logical
 vector is valid for use with <code><a href="../reference/prop.html">prop()</a></code>.</p>
 <p>The traits described above calculate proportions relative to the
@@ -294,18 +306,21 @@ evaluates to a logical vector, following the same syntax as the primary
 parameter.</p>
 <p>The <code>CA2</code> trait is defined as follows:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nA == 2</span>, within = <span style="font-weight: bold;">(Tp == "complex")</span>, na_action = "keep")</span></span></code></pre></div>
 <p>Note that parentheses around <code>Tp == "complex"</code> are
 optional. Consequently, this alternative definition is equally
 valid:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span>, within <span class="op">=</span> <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nA == 2</span>, within = <span style="font-weight: bold;">(Tp == "complex")</span>, na_action = "keep")</span></span></code></pre></div>
 <p>Combining these two parameters enables the creation of sophisticated
 trait definitions. For instance, the proportion of sialylated glycans
 within the subset of core-fucosylated tetra-antennary glycans is defined
 as:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nS &gt; 0</span>, within = <span style="font-weight: bold;">(nFc &gt; 0 &amp; nA == 4)</span>, na_action = "keep")</span></span></code></pre></div>
 <p>Having mastered the usage of <code><a href="../reference/prop.html">prop()</a></code>, examine the
 definitions of built-in proportion traits to reinforce your
 understanding.</p>
@@ -335,7 +350,8 @@ vectors, similar to <code><a href="../reference/prop.html">prop()</a></code>.</p
 <p>For example, the ratio of complex to hybrid glycans is defined
 as:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"hybrid"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ratio(<span style="font-weight: bold;">Tp == "complex"</span>, <span style="font-weight: bold;">Tp == "hybrid"</span>, na_action = "keep")</span></span></code></pre></div>
 <p>The first expression defines the numerator, while the second
 expression defines the denominator.</p>
 <p>The <code>within</code> parameter can be employed to apply
@@ -343,10 +359,12 @@ restrictions to both numerator and denominator. For example, the ratio
 of bisecting to non-bisecting glycans within the bi-antennary subset is
 defined as:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span>, <span class="op">!</span><span class="va">B</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span>, <span class="op">!</span><span class="va">B</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ratio(<span style="font-weight: bold;">B</span>, <span style="font-weight: bold;">!B</span>, within = <span style="font-weight: bold;">(nA == 2)</span>, na_action = "keep")</span></span></code></pre></div>
 <p>This represents syntactic sugar for the more verbose:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span>, <span class="op">(</span><span class="op">!</span><span class="va">B</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">B</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span>, <span class="op">(</span><span class="op">!</span><span class="va">B</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ratio(<span style="font-weight: bold;">B &amp; (nA == 2)</span>, <span style="font-weight: bold;">(!B) &amp; (nA == 2)</span>, na_action = "keep")</span></span></code></pre></div>
 <p>The <code>within</code> parameter provides clearer semantics and
 reduces redundancy.</p>
 <p>Note that <code><a href="../reference/prop.html">prop()</a></code> represents a special case of
@@ -357,9 +375,11 @@ definitions are functionally identical:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># using prop()</span></span>
 <span><span class="fu"><a href="../reference/prop.html">prop</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; prop(<span style="font-weight: bold;">nFc &gt; 0</span>, within = <span style="font-weight: bold;">(Tp == "complex")</span>, na_action = "keep")</span></span>
 <span></span>
 <span><span class="co"># using ratio()</span></span>
-<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/ratio.html">ratio</a></span><span class="op">(</span><span class="va">nFc</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; ratio(<span style="font-weight: bold;">nFc &gt; 0 &amp; Tp == "complex"</span>, <span style="font-weight: bold;">Tp == "complex"</span>, na_action = "keep")</span></span></code></pre></div>
 <p>However, <code><a href="../reference/prop.html">prop()</a></code> is recommended when appropriate for
 enhanced readability, as it provides more intuitive semantics that align
 with natural language. The <code><a href="../reference/prop.html">prop()</a></code> example above can be
@@ -423,16 +443,19 @@ vectors, contrasting with the logical vectors required by
 <p>For example, the average number of antennae across all glycans is
 defined as:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; wmean(<span style="font-weight: bold;">nA</span>, na_action = "keep")</span></span></code></pre></div>
 <p>The average degree of sialylation per antenna across all glycans is
 defined as:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span><span class="op">)</span></span>
+<span><span class="co">#&gt; wmean(<span style="font-weight: bold;">nS/nA</span>, na_action = "keep")</span></span></code></pre></div>
 <p>The <code>within</code> parameter can be utilized to restrict the
 weighted-mean calculation to specific glycan subsets. For example, the
 average number of antennae within complex glycans is defined as:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; wmean(<span style="font-weight: bold;">nA</span>, within = <span style="font-weight: bold;">(Tp == "complex")</span>, na_action = "keep")</span></span></code></pre></div>
 <p>Practice exercises:</p>
 <ol style="list-style-type: decimal">
 <li>Define a trait calculating the average degree of sialylation per
@@ -450,12 +473,14 @@ derived traits in <code>glydet</code>.</p>
 <p>For example, the total abundance of all complex glycans is defined
 as:</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/total.html">total</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/total.html">total</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; total(<span style="font-weight: bold;">Tp == "complex"</span>)</span></span></code></pre></div>
 <p>There is no <code>within</code> parameter for <code><a href="../reference/total.html">total()</a></code>,
 as you can always add a restriction to the expression by using
 <code>&amp;</code>.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/total.html">total</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/total.html">total</a></span><span class="op">(</span><span class="va">Tp</span> <span class="op">==</span> <span class="st">"complex"</span> <span class="op">&amp;</span> <span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span></span>
+<span><span class="co">#&gt; total(<span style="font-weight: bold;">Tp == "complex" &amp; nA == 4</span>)</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="wsum">
@@ -526,7 +551,12 @@ subsets of varying antenna counts:</p>
 <span>  A3S <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  A4S <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nS</span> <span class="op">/</span> <span class="va">nA</span>, within <span class="op">=</span> <span class="op">(</span><span class="va">nA</span> <span class="op">==</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span>, trait_fns <span class="op">=</span> <span class="va">my_traits</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">828</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p>The identifiers “A2S”, “A3S”, and “A4S” represent the derived trait
 names.</p>
 <p>When <code>trait_fns</code> is omitted, <code><a href="../reference/derive_traits.html">derive_traits()</a></code>
