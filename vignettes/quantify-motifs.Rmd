@@ -51,8 +51,8 @@ Let's dive into a practical example:
 ```{r}
 # Define our motifs of interest using IUPAC-condensed format
 motifs <- c(
-  Lx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
-  SLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
+  Lxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
+  SLxa = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x/a antigen
 )
 
 # Quantify the motifs in our dataset
@@ -151,16 +151,16 @@ This will help you understand that motif quantification is essentially just a sp
 ```r
 # First, add the meta-properties to the variable information
 motifs <- c(
-  nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
-  nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
+  nLxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
+  nSLxa = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x/a antigen
 )
 exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
 
 # Define the traits using wsum() for absolute quantification
-trait_fns <- list(Lx = wsum(nLx), SLx = wsum(nSLx))
+trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))
 
 # Calculate the traits
-derive_traits(exp_with_mps, trait_fns = trait_fns, mp_cols = c("nLx", "nSLx"))
+derive_traits(exp_with_mps, trait_fns = trait_fns, mp_cols = c("nLxa", "nSLxa"))
 ```
 
 This code snippet is functionally equivalent to:
