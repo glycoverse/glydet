@@ -1,4 +1,9 @@
-# glydet (development version)
+# glydet 0.10.4
+
+## Minor improvements and bug fixes
+
+* `derive_traits()` now standardizes variable names in the output for consistency (#7).
+* Fix errors in examples in the "Quantifying Glycan Motifs" and "Defining Custom Traits" vignettes.
 
 # glydet 0.10.3
 
