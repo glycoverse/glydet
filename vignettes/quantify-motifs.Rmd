@@ -160,7 +160,7 @@ exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
 trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))
 
 # Calculate the traits
-derive_traits(exp_with_mps, trait_fns = trait_fns, mp_cols = c("nLxa", "nSLxa"))
+derive_traits(exp_with_mps, trait_fns = trait_fns)
 ```
 
 This code snippet is functionally equivalent to:

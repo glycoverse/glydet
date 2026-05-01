@@ -24,9 +24,11 @@
 #' @param mp_cols A character vector of column names in the `var_info` tibble to use as meta-properties.
 #'   If names are provided, they will be used as names of the meta-properties,
 #'   otherwise the column names will be used.
-#'   Meta-properties specified in `mp_cols` will overwrite those introduced by `mp_fns` with the same names,
-#'   including the built-in meta-properties.
-#'   Default is `NULL`, which means no columns are used as meta-properties.
+#'   When `mp_cols` is specified, the selected columns overwrite meta-properties introduced by `mp_fns`
+#'   with the same names, including built-in meta-properties.
+#'   Default is `NULL`, which means all columns in `var_info` are available as meta-properties by their
+#'   existing names. In this default mode, meta-properties introduced by `mp_fns` take precedence over
+#'   `var_info` columns with the same names.
 #'
 #' @returns
 #' A new [glyexp::experiment()] object for derived traits.
@@ -295,7 +297,10 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 #' @noRd
 .get_mps <- function(exp, mp_fns, mp_cols) {
   if (is.null(mp_cols)) {
-    mp_cols <- character()
+    mp_tbl1 <- get_meta_properties(exp$var_info[["glycan_structure"]], mp_fns)
+    mp_tbl2 <- exp$var_info |>
+      dplyr::select(-dplyr::any_of(colnames(mp_tbl1)))
+    return(dplyr::bind_cols(mp_tbl1, mp_tbl2))
   }
   mp_tbl1 <- exp$var_info |>
     dplyr::select(dplyr::all_of(mp_cols))
@@ -380,7 +385,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
       "Trait functions must use defined meta-properties.",
       "x" = "Unknown meta-properties: {.field {objs_not_found}}",
       "i" = "Available meta-properties: {.field {colnames(mp_tbl)}}",
-      "i" = "Did you forget to define custom meta-properties in {.arg mp_fns} or {.arg mp_cols}?"
+      "i" = "Did you forget to add matching {.field var_info} columns, define custom meta-properties in {.arg mp_fns}, or use {.arg mp_cols} to rename columns?"
     ), call = NULL)
   }
 
