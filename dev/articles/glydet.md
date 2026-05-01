@@ -55,6 +55,7 @@ sample to be comparable.
 ## 🎯 Dive Right In: Your First Analysis
 
 ``` r
+
 library(glydet)
 library(glyrepr)
 library(glyexp)
@@ -78,6 +79,7 @@ diving into trait analysis. This ensures your results are as clean and
 reliable as your data!
 
 ``` r
+
 exp <- auto_clean(real_experiment)  # Preprocess the data
 #> 
 #> ── Normalizing data ──
@@ -126,6 +128,7 @@ Let’s take a quick peek at our dataset to understand what we’re working
 with:
 
 ``` r
+
 get_var_info(exp)
 #> # A tibble: 3,979 × 6
 #>    variable       protein glycan_composition glycan_structure protein_site gene 
@@ -144,6 +147,7 @@ get_var_info(exp)
 ```
 
 ``` r
+
 get_sample_info(exp)
 #> # A tibble: 12 × 2
 #>    sample group
@@ -163,6 +167,7 @@ get_sample_info(exp)
 ```
 
 ``` r
+
 get_expr_mat(exp)[1:5, 1:5]
 #>                                                C1           C2         C3
 #> P08185-176-Hex(5)HexNAc(4)NeuAc(2)   6.676837e+03 2.007225e+04      13368
@@ -181,6 +186,7 @@ get_expr_mat(exp)[1:5, 1:5]
 Now for the magic moment ✨—let’s calculate some derived traits!
 
 ``` r
+
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 
@@ -198,6 +204,7 @@ glycan on each glycosite in each sample,” it now contains “the value of
 each derived trait on each glycosite in each sample.”
 
 ``` r
+
 get_var_info(trait_exp)
 #> # A tibble: 3,864 × 6
 #>    variable      protein protein_site trait gene  explanation                   
@@ -216,6 +223,7 @@ get_var_info(trait_exp)
 ```
 
 ``` r
+
 # These are the trait values!
 get_expr_mat(trait_exp)[1:5, 1:5]
 #>               C1 C2 C3 H1 H2
@@ -267,6 +275,7 @@ demonstrate with an ANOVA analysis to identify glycosites with
 significantly different levels of core-fucosylation across conditions:
 
 ``` r
+
 anova_res <- gly_anova(trait_exp)
 #> ℹ Number of groups: 4
 #> ℹ Groups: "H", "M", "Y", and "C"
@@ -274,7 +283,7 @@ anova_res <- gly_anova(trait_exp)
 #> Warning: 281 variables failed to fit the model
 anova_res$tidy_result$main_test |>
   dplyr::filter(trait == "TFc", p_adj < 0.05)
-#> # A tibble: 12 × 14
+#> # A tibble: 12 × 15
 #>    variable     protein protein_site trait gene  explanation term     df   sumsq
 #>    <glue>       <chr>          <int> <chr> <chr> <chr>       <chr> <dbl>   <dbl>
 #>  1 P00748-249-… P00748           249 TFc   F12   Proportion… group     3 5.48e-4
@@ -289,8 +298,8 @@ anova_res$tidy_result$main_test |>
 #> 10 P0C0L4-1328… P0C0L4          1328 TFc   C4A   Proportion… group     3 1.74e-2
 #> 11 P19652-103-… P19652           103 TFc   ORM2  Proportion… group     3 6.44e-2
 #> 12 P43652-33-T… P43652            33 TFc   AFM   Proportion… group     3 5.47e-3
-#> # ℹ 5 more variables: meansq <dbl>, statistic <dbl>, p_val <dbl>, p_adj <dbl>,
-#> #   post_hoc <chr>
+#> # ℹ 6 more variables: meansq <dbl>, statistic <dbl>, p_val <dbl>, p_adj <dbl>,
+#> #   effect_size <dbl>, post_hoc <chr>
 ```
 
 🔍 **Discovery time!** We’ve identified several glycosites with
@@ -337,6 +346,7 @@ Let’s see
 in action! We’ll extract a few glycan structures from our dataset:
 
 ``` r
+
 glycans <- unique(get_var_info(exp)$glycan_structure)[1:5]
 glycans
 #> <glycan_structure[5]>
@@ -355,6 +365,7 @@ vector—these are standardized representations of glycan structures.
 Now watch the magic happen as we calculate their meta-properties:
 
 ``` r
+
 get_meta_properties(glycans)
 #> # A tibble: 5 × 10
 #>   Tp      B        nA    nF   nFc   nFa    nG   nGt    nS    nM
@@ -374,6 +385,7 @@ objects? Perfect! You can supercharge your variable information by
 adding meta-properties directly:
 
 ``` r
+
 exp_with_mp <- add_meta_properties(exp)
 get_var_info(exp_with_mp)
 #> # A tibble: 3,979 × 16
@@ -402,6 +414,7 @@ For instance, let’s filter for all glycoforms containing high-mannose
 glycans:
 
 ``` r
+
 exp_with_mp |>
   filter_var(Tp == "highmannose")
 #> 
@@ -419,6 +432,7 @@ vectors and return corresponding property values. `glydet` comes packed
 with a comprehensive library of built-in meta-property functions:
 
 ``` r
+
 names(all_mp_fns())
 #>  [1] "Tp"  "B"   "nA"  "nF"  "nFc" "nFa" "nG"  "nGt" "nS"  "nM"
 ```
@@ -426,22 +440,23 @@ names(all_mp_fns())
 📚 **Your complete toolkit:** Here’s the full roster of built-in
 meta-property functions:
 
-| Name  | Function                                                                                 | Description                                                                      |
-|-------|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
-| `Tp`  | [`n_glycan_type()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)  | Type of the glycan, either “complex”, “hybrid”, “highmannose”, or “pausimannose” |
-| `B`   | [`has_bisecting()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)  | Whether the glycan has a bisecting GlcNAc                                        |
-| `nA`  | [`n_antennae()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)     | Number of antennae                                                               |
-| `nF`  | [`n_fuc()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)          | Number of fucoses                                                                |
-| `nFc` | [`n_core_fuc()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)     | Number of core fucoses                                                           |
-| `nFa` | [`n_arm_fuc()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)      | Number of arm fucoses                                                            |
-| `nG`  | [`n_gal()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)          | Number of galactoses                                                             |
-| `nGt` | [`n_terminal_gal()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of terminal galactoses                                                    |
-| `nS`  | [`n_sia()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)          | Number of sialic acids                                                           |
-| `nM`  | [`n_man()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)          | Number of mannoses                                                               |
+| Name | Function | Description |
+|----|----|----|
+| `Tp` | [`n_glycan_type()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Type of the glycan, either “complex”, “hybrid”, “highmannose”, or “pausimannose” |
+| `B` | [`has_bisecting()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Whether the glycan has a bisecting GlcNAc |
+| `nA` | [`n_antennae()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of antennae |
+| `nF` | [`n_fuc()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of fucoses |
+| `nFc` | [`n_core_fuc()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of core fucoses |
+| `nFa` | [`n_arm_fuc()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of arm fucoses |
+| `nG` | [`n_gal()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of galactoses |
+| `nGt` | [`n_terminal_gal()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of terminal galactoses |
+| `nS` | [`n_sia()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of sialic acids |
+| `nM` | [`n_man()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md) | Number of mannoses |
 
 Each function can be called directly for quick structural analysis:
 
 ``` r
+
 n_glycan_type(glycans)
 #> [1] complex complex complex complex complex
 #> Levels: paucimannose hybrid highmannose complex
@@ -466,6 +481,7 @@ often challenging.
 For example, this ambiguous structure works perfectly:
 
 ``` r
+
 # Generic monosaccharides with unknown linkages ❓
 ambiguous_glycan <- "HexNAc(??-?)Hex(??-?)[Hex(??-?)]Hex(??-?)HexNAc(??-?)[dHex(??-?)]HexNAc(??-"
 ```
@@ -477,6 +493,7 @@ well-characterized structures. The package equally handles glycans with
 complete structural information:
 
 ``` r
+
 # Fully specified structure with specific monosaccharides and linkages ✅
 detailed_glycan <- "GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-3)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-"
 ```
@@ -499,6 +516,7 @@ glycomics data using
 [`glyexp::real_experiment2`](https://glycoverse.github.io/glyexp/reference/real_experiment2.html).
 
 ``` r
+
 exp <- auto_clean(real_experiment2)
 #> 
 #> ── Removing variables with too many missing values ──
@@ -508,21 +526,17 @@ exp <- auto_clean(real_experiment2)
 #> ℹ Total removed: 10 (14.93%) variables.
 #> ✔ Variable removal completed.
 #> 
-#> ── Normalizing data ──
-#> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycomics". Using `normalize_median_quotient()` + `normalize_total_area()`.
-#> ✔ Normalization completed.
-#> 
-#> ── Normalizing data (Total Area) ──
-#> 
-#> ✔ Total area normalization completed.
-#> 
 #> ── Imputing missing values ──
 #> 
 #> ℹ No QC samples found. Using default imputation method based on sample size.
 #> ℹ Sample size > 100, using `impute_miss_forest()`.
 #> ✔ Imputation completed.
+#> 
+#> ── Normalizing data ──
+#> 
+#> ℹ No QC samples found. Using default normalization method based on experiment type.
+#> ℹ Experiment type is "glycomics" with "nrow(exp)" glycans.
+#> ✔ Normalization completed.
 #> 
 #> ── Correcting batch effects ──
 #> 

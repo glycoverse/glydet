@@ -2,6 +2,14 @@
 
 ## glydet (development version)
 
+### Minor improvements and bug fixes
+
+- [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
+  can now use columns in `var_info` as meta-properties without
+  specifying `mp_cols`. Built-in meta-properties keep precedence by
+  default; use `mp_cols` when columns need renaming or explicit
+  overrides (#10).
+
 ## glydet 0.10.4
 
 ### Minor improvements and bug fixes

@@ -704,8 +704,7 @@ introducing more sophisticated and linkage-awared meta-properties.</p>
 <p>The first method is handy if all information you need is already
 encoded in glycan structures. However, there are situations that you
 need to rely on other meta-data. In this case, you can use columns in
-the variable information tibble as meta-properties directly, by
-specifying the <code>mp_cols</code> parameter.</p>
+the variable information tibble as meta-properties directly.</p>
 <p>For example, let’s use the sialic acid linkage type example above.
 You might have used special derivatization methods to differentiate the
 two linkage types. This information might end up in a column in the
@@ -747,15 +746,32 @@ sialylation per galactose:</p>
 <span>  <span class="co"># Average degree of a2-6 sialylation per galactose</span></span>
 <span>  GE <span class="op">=</span> <span class="fu"><a href="../reference/wmean.html">wmean</a></span><span class="op">(</span><span class="va">nE</span> <span class="op">/</span> <span class="va">nG</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>And use <code>mp_cols</code> to tell <code><a href="../reference/derive_traits.html">derive_traits()</a></code> to
-use these columns as meta-properties:</p>
+<p>If the column names match the meta-property names used in the trait
+definitions, <code><a href="../reference/derive_traits.html">derive_traits()</a></code> can use them directly:</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">exp3</span> <span class="op">&lt;-</span> <span class="va">exp2</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/rename_obs.html" class="external-link">rename_var</a></span><span class="op">(</span>nE <span class="op">=</span> <span class="va">n_a26_sia</span>, nL <span class="op">=</span> <span class="va">n_a23_sia</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp3</span>, trait_fns <span class="op">=</span> <span class="va">sia_traits</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">552</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">nL</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
+<p>If you want to use different column names in <code>var_info</code>,
+use <code>mp_cols</code> to map those columns to the meta-property names
+in the trait definitions:</p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp2</span>, trait_fns <span class="op">=</span> <span class="va">sia_traits</span>, mp_cols <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>nL <span class="op">=</span> <span class="st">"n_a23_sia"</span>, nE <span class="op">=</span> <span class="st">"n_a26_sia"</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">552</span> variables</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">n_a23_sia</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
+<p>When <code>mp_cols</code> is omitted, built-in meta-properties take
+precedence over <code>var_info</code> columns with the same names. Use
+<code>mp_cols</code> only when you intentionally want selected columns
+to rename or overwrite meta-properties.</p>
 </div>
 </div>
 <div class="section level2">
@@ -768,12 +784,12 @@ language. To use this feature, you need to install the
 DeepSeek chat model. You can obtain an API key from <a href="https://platform.deepseek.com" class="external-link uri">https://platform.deepseek.com</a>. Please set the
 environment variable <code>DEEPSEEK_API_KEY</code> to your API key using
 <code><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv()</a></code>:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Works for a single session</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>DEEPSEEK_API_KEY <span class="op">=</span> <span class="st">"your_api_key"</span><span class="op">)</span></span></code></pre></div>
 <p>Then you can transform your ideas into trait functions by calling
 <code><a href="../reference/make_trait.html">make_trait()</a></code>:</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  nS <span class="op">=</span> <span class="fu"><a href="../reference/make_trait.html">make_trait</a></span><span class="op">(</span><span class="st">"the average number of sialic acids"</span><span class="op">)</span>,</span>
 <span>  nG <span class="op">=</span> <span class="fu"><a href="../reference/make_trait.html">make_trait</a></span><span class="op">(</span><span class="st">"the average number of galactoses"</span><span class="op">)</span></span>

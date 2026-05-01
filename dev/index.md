@@ -24,6 +24,7 @@ You can install the latest release of glydet from
 (**recommended**):
 
 ``` r
+
 # install.packages("pak")
 pak::repo_add(glycoverse = "https://glycoverse.r-universe.dev")
 pak::pkg_install("glydet")
@@ -32,12 +33,14 @@ pak::pkg_install("glydet")
 Or from [GitHub](https://github.com/glycoverse/glydet):
 
 ``` r
+
 pak::pkg_install("glycoverse/glydet@*release")
 ```
 
 Or install the development version (NOT recommended):
 
 ``` r
+
 pak::pkg_install("glycoverse/glydet")
 ```
 
@@ -68,6 +71,7 @@ in the `glycoverse` ecosystem, including `glyexp`, `glyrepr`,
 First, let’s load necessary packages and get the data ready.
 
 ``` r
+
 library(glyexp)
 library(glyclean)
 #> Warning: 程序包'glyclean'是用R版本4.5.2 来建造的
@@ -77,6 +81,7 @@ exp <- auto_clean(real_experiment)
 ```
 
 ``` r
+
 exp
 #> 
 #> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
@@ -88,6 +93,7 @@ exp
 Now, let’s calculate some derived traits!
 
 ``` r
+
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 
@@ -105,6 +111,7 @@ glycan on each glycosite in each sample,” it now contains “the value of
 each derived trait on each glycosite in each sample.”
 
 ``` r
+
 get_var_info(trait_exp)
 #> # A tibble: 3,864 × 6
 #>    variable protein protein_site trait gene  explanation                        
@@ -123,6 +130,7 @@ get_var_info(trait_exp)
 ```
 
 ``` r
+
 get_expr_mat(trait_exp)[1:5, 1:5]
 #>    C1 C2 C3 H1 H2
 #> V1  0  0  0  0  0
