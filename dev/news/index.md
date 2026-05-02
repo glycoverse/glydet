@@ -14,7 +14,7 @@
   can now use columns in `var_info` as meta-properties without
   specifying `mp_cols`. Built-in meta-properties keep precedence by
   default; use `mp_cols` when columns need renaming or explicit
-  overrides (#10).
+  overrides (#12).
 
 ## glydet 0.10.4
 
