@@ -10,15 +10,23 @@ to get ideas. Currently, only
 and
 [`wmean()`](https://glycoverse.github.io/glydet/dev/reference/wmean.md)
 are supported. To use this feature, you need to install the `ellmer`
-package. You also need to provide an API key for the DeepSeek chat
-model. Please set the environment variable `DEEPSEEK_API_KEY` to your
-API key using [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html).
-You can obtain an API key from https://platform.deepseek.com.
+package. DeepSeek is used by default for backward compatibility. Other
+`ellmer` providers can be selected with `provider`, `model`, and
+provider-specific API key configuration.
 
 ## Usage
 
 ``` r
-make_trait(description, custom_mp = NULL, max_retries = 2, verbose = FALSE)
+make_trait(
+  description,
+  custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
 ```
 
 ## Arguments
@@ -49,6 +57,30 @@ make_trait(description, custom_mp = NULL, max_retries = 2, verbose = FALSE)
 
   Whether to print verbose output. Default is FALSE. This is useful for
   inspecting how LLMs generate trait functions.
+
+- provider:
+
+  AI provider passed to `ellmer`. One of "deepseek", "openai",
+  "anthropic", "gemini", "openrouter", or "openai_compatible".
+  "google_gemini" is accepted as an alias for "gemini". Defaults to
+  `getOption("glydet.ai_provider", "deepseek")`.
+
+- model:
+
+  Model to use. Defaults to `getOption("glydet.ai_model")`, or
+  "deepseek-chat" for DeepSeek and the provider default for other
+  providers.
+
+- api_key:
+
+  API key for the selected provider. If `NULL`, the provider specific
+  environment variable is used. Defaults to
+  `getOption("glydet.ai_api_key")`.
+
+- base_url:
+
+  Optional base URL for custom or OpenAI-compatible endpoints. Defaults
+  to `getOption("glydet.ai_base_url")`.
 
 ## Value
 

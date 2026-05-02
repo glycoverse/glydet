@@ -563,8 +563,14 @@ We have introduced a new argument `use_ai` to
 [`explain_trait()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
 since glydet 0.7.0. If `use_ai` is TRUE, the function will use a Large
 Language Model (LLM) to explain the trait, which covers more complex
-cases and edge cases. Check out the documentation of
+cases and edge cases. You can pass the same AI configuration arguments
+used by
+[`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md),
+such as `provider`, `model`, `api_key`, and `base_url`. Check out the
+documentation of
 [`explain_trait()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
+and
+[`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
 for details.
 
 ## Custom Meta-Properties
@@ -802,16 +808,43 @@ meta-properties.
 [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
 allows you to create a trait from natural language. To use this feature,
 you need to install the `ellmer` package (not a forced dependency of
-`glydet`). You also need to provide an API key for the DeepSeek chat
-model. You can obtain an API key from <https://platform.deepseek.com>.
-Please set the environment variable `DEEPSEEK_API_KEY` to your API key
-using [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html):
+`glydet`). DeepSeek is used by default for backward compatibility. You
+can obtain a DeepSeek API key from <https://platform.deepseek.com> and
+set it with [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html):
 
 ``` r
 
 # Works for a single session
 Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
 ```
+
+You can also use other `ellmer` providers by passing provider settings
+directly:
+
+``` r
+
+make_trait(
+  "the average number of sialic acids",
+  provider = "openai",
+  model = "gpt-4o-mini",
+  api_key = Sys.getenv("OPENAI_API_KEY")
+)
+```
+
+Or configure defaults once per session:
+
+``` r
+
+options(
+  glydet.ai_provider = "openai",
+  glydet.ai_model = "gpt-4o-mini",
+  glydet.ai_api_key = Sys.getenv("OPENAI_API_KEY")
+)
+```
+
+For OpenAI-compatible endpoints, set `provider = "openai_compatible"`
+and pass `base_url`. For Gemini, use `provider = "gemini"`;
+`provider = "google_gemini"` is also accepted as an alias.
 
 Then you can transform your ideas into trait functions by calling
 [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md):

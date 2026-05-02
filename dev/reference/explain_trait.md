@@ -14,7 +14,15 @@ and works best with traits defined by built-in meta-properties.
 ## Usage
 
 ``` r
-explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
+explain_trait(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
 ```
 
 ## Arguments
@@ -27,16 +35,39 @@ explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
 
   **\[experimental\]** Whether to use a Large Language Model (LLM) to
   explain the trait. Default is FALSE. To use this feature, you need to
-  install the `ellmer` package. You also need to provide an API key for
-  the DeepSeek chat model. Please set the environment variable
-  `DEEPSEEK_API_KEY` to your API key. You can obtain an API key from
-  https://platform.deepseek.com.
+  install the `ellmer` package. DeepSeek is used by default for backward
+  compatibility. Other `ellmer` providers can be selected with
+  `provider`, `model`, and provider-specific API key configuration.
 
 - custom_mp:
 
   A named character vector of custom meta-properties. The names are the
   meta-property names, and the values are in the format "(type)
   description". Only used when `use_ai = TRUE`.
+
+- provider:
+
+  AI provider passed to `ellmer` when `use_ai = TRUE`. One of
+  "deepseek", "openai", "anthropic", "gemini", "openrouter", or
+  "openai_compatible". "google_gemini" is accepted as an alias for
+  "gemini". Defaults to `getOption("glydet.ai_provider", "deepseek")`.
+
+- model:
+
+  Model to use when `use_ai = TRUE`. Defaults to
+  `getOption("glydet.ai_model")`, or "deepseek-chat" for DeepSeek and
+  the provider default for other providers.
+
+- api_key:
+
+  API key for the selected provider. If `NULL`, the provider specific
+  environment variable is used. Defaults to
+  `getOption("glydet.ai_api_key")`.
+
+- base_url:
+
+  Optional base URL for custom or OpenAI-compatible endpoints. Defaults
+  to `getOption("glydet.ai_base_url")`.
 
 ## Value
 

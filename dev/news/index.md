@@ -4,6 +4,12 @@
 
 ### Minor improvements and bug fixes
 
+- [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
+  and AI-enabled
+  [`explain_trait()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
+  now support configurable `ellmer` providers, including OpenAI,
+  Anthropic, Gemini, OpenRouter, and OpenAI-compatible endpoints, with
+  `glydet.ai_*` package options for session defaults (#14).
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
   can now use columns in `var_info` as meta-properties without
   specifying `mp_cols`. Built-in meta-properties keep precedence by

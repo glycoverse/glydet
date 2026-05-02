@@ -591,8 +591,12 @@ understand your analytical approach.</p>
 <p>We have introduced a new argument <code>use_ai</code> to
 <code><a href="../reference/explain_trait.html">explain_trait()</a></code> since glydet 0.7.0. If <code>use_ai</code>
 is TRUE, the function will use a Large Language Model (LLM) to explain
-the trait, which covers more complex cases and edge cases. Check out the
-documentation of <code><a href="../reference/explain_trait.html">explain_trait()</a></code> for details.</p>
+the trait, which covers more complex cases and edge cases. You can pass
+the same AI configuration arguments used by <code><a href="../reference/make_trait.html">make_trait()</a></code>,
+such as <code>provider</code>, <code>model</code>, <code>api_key</code>,
+and <code>base_url</code>. Check out the documentation of
+<code><a href="../reference/explain_trait.html">explain_trait()</a></code> and <code><a href="../reference/make_trait.html">make_trait()</a></code> for
+details.</p>
 </div>
 </div>
 <div class="section level2">
@@ -780,16 +784,36 @@ to rename or overwrite meta-properties.</p>
 <p><code><a href="../reference/make_trait.html">make_trait()</a></code> allows you to create a trait from natural
 language. To use this feature, you need to install the
 <code>ellmer</code> package (not a forced dependency of
-<code>glydet</code>). You also need to provide an API key for the
-DeepSeek chat model. You can obtain an API key from <a href="https://platform.deepseek.com" class="external-link uri">https://platform.deepseek.com</a>. Please set the
-environment variable <code>DEEPSEEK_API_KEY</code> to your API key using
+<code>glydet</code>). DeepSeek is used by default for backward
+compatibility. You can obtain a DeepSeek API key from <a href="https://platform.deepseek.com" class="external-link uri">https://platform.deepseek.com</a> and set it with
 <code><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv()</a></code>:</p>
 <div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Works for a single session</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Sys.setenv.html" class="external-link">Sys.setenv</a></span><span class="op">(</span>DEEPSEEK_API_KEY <span class="op">=</span> <span class="st">"your_api_key"</span><span class="op">)</span></span></code></pre></div>
+<p>You can also use other <code>ellmer</code> providers by passing
+provider settings directly:</p>
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/make_trait.html">make_trait</a></span><span class="op">(</span></span>
+<span>  <span class="st">"the average number of sialic acids"</span>,</span>
+<span>  provider <span class="op">=</span> <span class="st">"openai"</span>,</span>
+<span>  model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>,</span>
+<span>  api_key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"OPENAI_API_KEY"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Or configure defaults once per session:</p>
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span></span>
+<span>  glydet.ai_provider <span class="op">=</span> <span class="st">"openai"</span>,</span>
+<span>  glydet.ai_model <span class="op">=</span> <span class="st">"gpt-4o-mini"</span>,</span>
+<span>  glydet.ai_api_key <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.getenv.html" class="external-link">Sys.getenv</a></span><span class="op">(</span><span class="st">"OPENAI_API_KEY"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>For OpenAI-compatible endpoints, set
+<code>provider = "openai_compatible"</code> and pass
+<code>base_url</code>. For Gemini, use <code>provider = "gemini"</code>;
+<code>provider = "google_gemini"</code> is also accepted as an
+alias.</p>
 <p>Then you can transform your ideas into trait functions by calling
 <code><a href="../reference/make_trait.html">make_trait()</a></code>:</p>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_traits</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
 <span>  nS <span class="op">=</span> <span class="fu"><a href="../reference/make_trait.html">make_trait</a></span><span class="op">(</span><span class="st">"the average number of sialic acids"</span><span class="op">)</span>,</span>
 <span>  nG <span class="op">=</span> <span class="fu"><a href="../reference/make_trait.html">make_trait</a></span><span class="op">(</span><span class="st">"the average number of galactoses"</span><span class="op">)</span></span>
