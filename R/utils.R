@@ -53,6 +53,18 @@
   provider
 }
 
+#' Normalize optional AI string arguments
+#'
+#' @param value Optional string value.
+#' @returns `NULL` for missing or empty values, otherwise the original value.
+#' @noRd
+.normalize_optional_ai_string <- function(value) {
+  if (is.null(value) || identical(value, "")) {
+    return(NULL)
+  }
+  value
+}
+
 #' Human-readable AI provider label
 #'
 #' @param provider Provider name.
@@ -98,6 +110,7 @@
   model = getOption("glydet.ai_model", NULL)
 ) {
   provider <- .normalize_ai_provider(provider)
+  model <- .normalize_optional_ai_string(model)
   if (!is.null(model)) {
     return(model)
   }
@@ -117,6 +130,7 @@
   provider = getOption("glydet.ai_provider", "deepseek"),
   api_key = getOption("glydet.ai_api_key", NULL)
 ) {
+  api_key <- .normalize_optional_ai_string(api_key)
   if (!is.null(api_key) && nzchar(api_key)) {
     return(api_key)
   }
@@ -125,11 +139,17 @@
   api_key <- Sys.getenv(envvar)
   if (api_key == "") {
     label <- .ai_provider_label(provider)
-    cli::cli_abort(c(
+    bullets <- c(
       "API key for {label} chat model is not set.",
-      "i" = "Please set the environment variable `{envvar}` to your API key, or pass `api_key` directly.",
-      "i" = "For OpenAI-compatible endpoints, set `OPENAI_API_KEY` and pass `base_url`."
-    ))
+      "i" = "Please set the environment variable `{envvar}` to your API key, or pass `api_key` directly."
+    )
+    if (identical(provider, "openai_compatible")) {
+      bullets <- c(
+        bullets,
+        "i" = "For OpenAI-compatible endpoints, also pass `base_url`."
+      )
+    }
+    cli::cli_abort(bullets)
   }
   api_key
 }
@@ -153,6 +173,7 @@
   rlang::check_installed("ellmer")
   provider <- .normalize_ai_provider(provider)
   model <- .resolve_ai_model(provider, model)
+  base_url <- .normalize_optional_ai_string(base_url)
 
   args <- list(
     system_prompt = system_prompt,

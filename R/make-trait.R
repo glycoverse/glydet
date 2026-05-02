@@ -28,7 +28,8 @@
 #'   This is useful for inspecting how LLMs generate trait functions.
 #' @param provider AI provider passed to `ellmer`. One of "deepseek",
 #'   "openai", "anthropic", "gemini", "openrouter", or "openai_compatible".
-#'   Defaults to `getOption("glydet.ai_provider", "deepseek")`.
+#'   "google_gemini" is accepted as an alias for "gemini". Defaults to
+#'   `getOption("glydet.ai_provider", "deepseek")`.
 #' @param model Model to use. Defaults to `getOption("glydet.ai_model")`,
 #'   or "deepseek-chat" for DeepSeek and the provider default for other providers.
 #' @param api_key API key for the selected provider. If `NULL`, the provider
@@ -64,6 +65,9 @@ make_trait <- function(
   checkmate::assert_character(custom_mp, names = "named", null.ok = TRUE)
   checkmate::assert_count(max_retries)
   provider <- .normalize_ai_provider(provider)
+  model <- .normalize_optional_ai_string(model)
+  api_key <- .normalize_optional_ai_string(api_key)
+  base_url <- .normalize_optional_ai_string(base_url)
   checkmate::assert_string(model, null.ok = TRUE)
   checkmate::assert_string(api_key, null.ok = TRUE)
   checkmate::assert_string(base_url, null.ok = TRUE)

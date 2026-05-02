@@ -36,7 +36,8 @@ This is useful for inspecting how LLMs generate trait functions.}
 
 \item{provider}{AI provider passed to \code{ellmer}. One of "deepseek",
 "openai", "anthropic", "gemini", "openrouter", or "openai_compatible".
-Defaults to \code{getOption("glydet.ai_provider", "deepseek")}.}
+"google_gemini" is accepted as an alias for "gemini". Defaults to
+\code{getOption("glydet.ai_provider", "deepseek")}.}
 
 \item{model}{Model to use. Defaults to \code{getOption("glydet.ai_model")},
 or "deepseek-chat" for DeepSeek and the provider default for other providers.}

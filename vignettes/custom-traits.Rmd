@@ -623,6 +623,7 @@ options(
 ```
 
 For OpenAI-compatible endpoints, set `provider = "openai_compatible"` and pass `base_url`.
+For Gemini, use `provider = "gemini"`; `provider = "google_gemini"` is also accepted as an alias.
 
 Then you can transform your ideas into trait functions by calling `make_trait()`:
 

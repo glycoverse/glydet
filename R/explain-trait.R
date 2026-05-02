@@ -17,7 +17,8 @@
 #'   "(type) description". Only used when `use_ai = TRUE`.
 #' @param provider AI provider passed to `ellmer` when `use_ai = TRUE`.
 #'   One of "deepseek", "openai", "anthropic", "gemini", "openrouter", or
-#'   "openai_compatible". Defaults to
+#'   "openai_compatible". "google_gemini" is accepted as an alias for
+#'   "gemini". Defaults to
 #'   `getOption("glydet.ai_provider", "deepseek")`.
 #' @param model Model to use when `use_ai = TRUE`. Defaults to
 #'   `getOption("glydet.ai_model")`, or "deepseek-chat" for DeepSeek and the

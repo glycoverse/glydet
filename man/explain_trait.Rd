@@ -30,7 +30,8 @@ The names are the meta-property names, and the values are in the format
 
 \item{provider}{AI provider passed to \code{ellmer} when \code{use_ai = TRUE}.
 One of "deepseek", "openai", "anthropic", "gemini", "openrouter", or
-"openai_compatible". Defaults to
+"openai_compatible". "google_gemini" is accepted as an alias for
+"gemini". Defaults to
 \code{getOption("glydet.ai_provider", "deepseek")}.}
 
 \item{model}{Model to use when \code{use_ai = TRUE}. Defaults to
