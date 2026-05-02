@@ -193,16 +193,16 @@ make_trait <- function(
   base_url = getOption("glydet.ai_base_url", NULL)
 ) {
   # Get AI explanation of the generated trait
-  old_options <- options(
-    glydet.ai_provider = provider,
-    glydet.ai_model = model,
-    glydet.ai_api_key = api_key,
-    glydet.ai_base_url = base_url
-  )
-  on.exit(options(old_options), add = TRUE)
-
   explanation <- tryCatch(
-    explain_trait(trait_fn, use_ai = TRUE, custom_mp = custom_mp),
+    explain_trait(
+      trait_fn,
+      use_ai = TRUE,
+      custom_mp = custom_mp,
+      api_key = api_key,
+      model = model,
+      provider = provider,
+      base_url = base_url
+    ),
     error = function(e) NULL
   )
 

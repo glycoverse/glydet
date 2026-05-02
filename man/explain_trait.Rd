@@ -4,7 +4,15 @@
 \alias{explain_trait}
 \title{Explain a Derived Trait}
 \usage{
-explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
+explain_trait(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
 }
 \arguments{
 \item{trait_fn}{A derived trait function created by one of the trait factories.}
@@ -13,13 +21,28 @@ explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
 Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 To use this feature, you need to install the \code{ellmer} package.
 DeepSeek is used by default for backward compatibility. Other \code{ellmer}
-providers can be selected with the \code{glydet.ai_provider},
-\code{glydet.ai_model}, \code{glydet.ai_api_key}, and \code{glydet.ai_base_url}
-package options.}
+providers can be selected with \code{provider}, \code{model}, and provider-specific
+API key configuration.}
 
 \item{custom_mp}{A named character vector of custom meta-properties.
 The names are the meta-property names, and the values are in the format
 "(type) description". Only used when \code{use_ai = TRUE}.}
+
+\item{provider}{AI provider passed to \code{ellmer} when \code{use_ai = TRUE}.
+One of "deepseek", "openai", "anthropic", "gemini", "openrouter", or
+"openai_compatible". Defaults to
+\code{getOption("glydet.ai_provider", "deepseek")}.}
+
+\item{model}{Model to use when \code{use_ai = TRUE}. Defaults to
+\code{getOption("glydet.ai_model")}, or "deepseek-chat" for DeepSeek and the
+provider default for other providers.}
+
+\item{api_key}{API key for the selected provider. If \code{NULL}, the provider
+specific environment variable is used. Defaults to
+\code{getOption("glydet.ai_api_key")}.}
+
+\item{base_url}{Optional base URL for custom or OpenAI-compatible endpoints.
+Defaults to \code{getOption("glydet.ai_base_url")}.}
 }
 \value{
 A character string containing a concise English explanation of the trait.

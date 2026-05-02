@@ -421,7 +421,9 @@ or when collaborating with team members who need to understand your analytical a
 We have introduced a new argument `use_ai` to `explain_trait()` since glydet 0.7.0.
 If `use_ai` is TRUE, the function will use a Large Language Model (LLM) to explain the trait,
 which covers more complex cases and edge cases.
-Check out the documentation of `explain_trait()` for details.
+You can pass the same AI configuration arguments used by `make_trait()`, such as
+`provider`, `model`, `api_key`, and `base_url`.
+Check out the documentation of `explain_trait()` and `make_trait()` for details.
 
 ## Custom Meta-Properties
 

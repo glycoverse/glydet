@@ -15,7 +15,7 @@ test_that("make_trait works when AI response is valid and consistent", {
 
   # Mock explain_trait with use_ai = TRUE to return consistent explanation
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL, ...) {
       if (use_ai) {
         return("Proportion of sialylated glycans among all glycans.")
       }
@@ -49,11 +49,20 @@ test_that("make_trait routes explicit provider settings to ellmer", {
   )
 
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(
+      trait_fn,
+      use_ai = FALSE,
+      custom_mp = NULL,
+      api_key = NULL,
+      model = NULL,
+      provider = NULL,
+      base_url = NULL
+    ) {
       if (use_ai) {
-        expect_equal(getOption("glydet.ai_provider"), "openai")
-        expect_equal(getOption("glydet.ai_model"), "gpt-4o-mini")
-        expect_equal(getOption("glydet.ai_api_key"), "openai-key")
+        captured$explain_api_key <- api_key
+        captured$explain_model <- model
+        captured$explain_provider <- provider
+        captured$explain_base_url <- base_url
       }
       "Proportion of sialylated glycans among all glycans."
     }
@@ -88,6 +97,10 @@ test_that("make_trait routes explicit provider settings to ellmer", {
   expect_equal(captured$model, "gpt-4o-mini")
   expect_equal(captured$echo, "none")
   expect_equal(captured$api_key, "openai-key")
+  expect_equal(captured$explain_provider, "openai")
+  expect_equal(captured$explain_model, "gpt-4o-mini")
+  expect_equal(captured$explain_api_key, "openai-key")
+  expect_null(captured$explain_base_url)
   expect_equal(captured$consistency_provider, "openai")
   expect_equal(captured$consistency_model, "gpt-4o-mini")
   expect_equal(captured$consistency_api_key, "openai-key")
@@ -113,7 +126,7 @@ test_that("make_trait uses package-level AI provider options", {
   )
 
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL, ...) {
       "Proportion of sialylated glycans among all glycans."
     },
     .ask_ai = function(...) "YES"
@@ -148,7 +161,7 @@ test_that("make_trait supports OpenAI-compatible endpoints", {
   )
 
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL, ...) {
       "Proportion of sialylated glycans among all glycans."
     },
     .ask_ai = function(...) "YES"
@@ -195,7 +208,7 @@ test_that("make_trait retries when explanation is inconsistent", {
 
   # Mock explain_trait
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL, ...) {
       if (use_ai) {
         attr_val <- attr(trait_fn, "cond")
         if (!is.null(attr_val) && rlang::expr_text(attr_val) == "nF > 0") {
@@ -254,7 +267,7 @@ test_that("make_trait raises an error after max retries with inconsistent explan
 
   # Mock explain_trait
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL, ...) {
       if (use_ai) {
         return("Proportion of fucosylated glycans among all glycans.")
       }
@@ -303,7 +316,7 @@ test_that("custom_mp works with make_trait", {
 
   # Mock explain_trait
   local_mocked_bindings(
-    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL, ...) {
       if (use_ai) {
         return("Proportion of glycans with a2,6-linked sialic acids.")
       }
