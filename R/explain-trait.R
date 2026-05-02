@@ -9,12 +9,25 @@
 #' @param use_ai `r lifecycle::badge("experimental")`
 #'   Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 #'   To use this feature, you need to install the `ellmer` package.
-#'   You also need to provide an API key for the DeepSeek chat model.
-#'   Please set the environment variable `DEEPSEEK_API_KEY` to your API key.
-#'   You can obtain an API key from https://platform.deepseek.com.
+#'   DeepSeek is used by default for backward compatibility. Other `ellmer`
+#'   providers can be selected with `provider`, `model`, and provider-specific
+#'   API key configuration.
 #' @param custom_mp A named character vector of custom meta-properties.
 #'   The names are the meta-property names, and the values are in the format
 #'   "(type) description". Only used when `use_ai = TRUE`.
+#' @param provider AI provider passed to `ellmer` when `use_ai = TRUE`.
+#'   One of "deepseek", "openai", "anthropic", "gemini", "openrouter", or
+#'   "openai_compatible". "google_gemini" is accepted as an alias for
+#'   "gemini". Defaults to
+#'   `getOption("glydet.ai_provider", "deepseek")`.
+#' @param model Model to use when `use_ai = TRUE`. Defaults to
+#'   `getOption("glydet.ai_model")`, or "deepseek-chat" for DeepSeek and the
+#'   provider default for other providers.
+#' @param api_key API key for the selected provider. If `NULL`, the provider
+#'   specific environment variable is used. Defaults to
+#'   `getOption("glydet.ai_api_key")`.
+#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
+#'   Defaults to `getOption("glydet.ai_base_url")`.
 #'
 #' @returns A character string containing a concise English explanation of the trait.
 #'
@@ -36,12 +49,28 @@
 #' explain_trait(wsum(nS, within = (Tp == "complex")))
 #'
 #' @export
-explain_trait <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   UseMethod("explain_trait")
 }
 
 #' @export
-explain_trait.default <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait.default <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   cli::cli_abort(c(
     "Object must be a glydet trait function.",
     "x" = "Got an object of class {.cls {class(trait_fn)}}.",
@@ -50,45 +79,120 @@ explain_trait.default <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
 }
 
 #' @export
-explain_trait.glydet_prop <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait.glydet_prop <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   if (use_ai) {
-    .explain_with_ai(trait_fn, custom_mp)
+    .explain_with_ai(
+      trait_fn,
+      custom_mp,
+      provider = provider,
+      model = model,
+      api_key = api_key,
+      base_url = base_url
+    )
   } else {
     .explain_prop(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_ratio <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait.glydet_ratio <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   if (use_ai) {
-    .explain_with_ai(trait_fn, custom_mp)
+    .explain_with_ai(
+      trait_fn,
+      custom_mp,
+      provider = provider,
+      model = model,
+      api_key = api_key,
+      base_url = base_url
+    )
   } else {
     .explain_ratio(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_wmean <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait.glydet_wmean <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   if (use_ai) {
-    .explain_with_ai(trait_fn, custom_mp)
+    .explain_with_ai(
+      trait_fn,
+      custom_mp,
+      provider = provider,
+      model = model,
+      api_key = api_key,
+      base_url = base_url
+    )
   } else {
     .explain_wmean(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_total <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait.glydet_total <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   if (use_ai) {
-    .explain_with_ai(trait_fn, custom_mp)
+    .explain_with_ai(
+      trait_fn,
+      custom_mp,
+      provider = provider,
+      model = model,
+      api_key = api_key,
+      base_url = base_url
+    )
   } else {
     .explain_total(trait_fn)
   }
 }
 
 #' @export
-explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+explain_trait.glydet_wsum <- function(
+  trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   if (use_ai) {
-    .explain_with_ai(trait_fn, custom_mp)
+    .explain_with_ai(
+      trait_fn,
+      custom_mp,
+      provider = provider,
+      model = model,
+      api_key = api_key,
+      base_url = base_url
+    )
   } else {
     .explain_wsum(trait_fn)
   }
@@ -576,10 +680,24 @@ explain_trait.glydet_wsum <- function(trait_fn, use_ai = FALSE, custom_mp = NULL
   paste(prompt, example_prompt, sep = "\n")
 }
 
-.explain_with_ai <- function(trait_fn, custom_mp = NULL) {
+.explain_with_ai <- function(
+  trait_fn,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   trait_str <- rlang::expr_text(trait_fn)
   str_type <- stringr::str_extract(trait_str, "prop|ratio|wmean|total|wsum")
   system_prompt <- .explain_sys_prompt(str_type, custom_mp)
   user_prompt <- paste0("INPUT: ", trait_str, "\nOUTPUT: ")
-  .ask_ai(system_prompt, user_prompt)
+  .ask_ai(
+    system_prompt,
+    user_prompt,
+    api_key = api_key,
+    model = model,
+    provider = provider,
+    base_url = base_url
+  )
 }

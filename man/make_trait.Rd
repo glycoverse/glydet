@@ -4,7 +4,16 @@
 \alias{make_trait}
 \title{Use a Large Language Model (LLM) to create a derived trait function}
 \usage{
-make_trait(description, custom_mp = NULL, max_retries = 2, verbose = FALSE)
+make_trait(
+  description,
+  custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
 }
 \arguments{
 \item{description}{A description of the trait in natural language.}
@@ -24,6 +33,21 @@ formula's explanation doesn't match the original description. Default is 2.}
 
 \item{verbose}{Whether to print verbose output. Default is FALSE.
 This is useful for inspecting how LLMs generate trait functions.}
+
+\item{provider}{AI provider passed to \code{ellmer}. One of "deepseek",
+"openai", "anthropic", "gemini", "openrouter", or "openai_compatible".
+"google_gemini" is accepted as an alias for "gemini". Defaults to
+\code{getOption("glydet.ai_provider", "deepseek")}.}
+
+\item{model}{Model to use. Defaults to \code{getOption("glydet.ai_model")},
+or "deepseek-chat" for DeepSeek and the provider default for other providers.}
+
+\item{api_key}{API key for the selected provider. If \code{NULL}, the provider
+specific environment variable is used. Defaults to
+\code{getOption("glydet.ai_api_key")}.}
+
+\item{base_url}{Optional base URL for custom or OpenAI-compatible endpoints.
+Defaults to \code{getOption("glydet.ai_base_url")}.}
 }
 \value{
 A derived trait function.
@@ -36,9 +60,9 @@ If the description is not clear, an error will be raised.
 Try to read the descriptions of built-in traits to get ideas.
 Currently, only \code{prop()}, \code{ratio()}, and \code{wmean()} are supported.
 To use this feature, you need to install the \code{ellmer} package.
-You also need to provide an API key for the DeepSeek chat model.
-Please set the environment variable \code{DEEPSEEK_API_KEY} to your API key using \code{Sys.setenv()}.
-You can obtain an API key from https://platform.deepseek.com.
+DeepSeek is used by default for backward compatibility. Other \code{ellmer}
+providers can be selected with \code{provider}, \code{model}, and provider-specific
+API key configuration.
 }
 \examples{
 # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")

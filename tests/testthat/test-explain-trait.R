@@ -264,10 +264,47 @@ test_that("explain_trait works for wsum traits", {
   )
 })
 
-test_that("explain_trait works with use_ai = TURE", {
-  local_mocked_bindings(.ask_ai = function(system_prompt, user_prompt) "AI response")
+test_that("explain_trait works with use_ai = TRUE", {
+  local_mocked_bindings(.ask_ai = function(...) "AI response")
   expect_equal(
     explain_trait(prop(nFc > 0), use_ai = TRUE),
     "AI response"
   )
+})
+
+test_that("explain_trait passes explicit AI provider settings", {
+  captured <- new.env(parent = emptyenv())
+  local_mocked_bindings(
+    .ask_ai = function(
+      system_prompt,
+      user_prompt,
+      api_key = NULL,
+      model = NULL,
+      provider = NULL,
+      base_url = NULL
+    ) {
+      captured$api_key <- api_key
+      captured$model <- model
+      captured$provider <- provider
+      captured$base_url <- base_url
+      "AI response"
+    }
+  )
+
+  expect_equal(
+    explain_trait(
+      prop(nFc > 0),
+      use_ai = TRUE,
+      provider = "openai",
+      model = "gpt-4o-mini",
+      api_key = "openai-key",
+      base_url = "https://example.test/v1"
+    ),
+    "AI response"
+  )
+
+  expect_equal(captured$provider, "openai")
+  expect_equal(captured$model, "gpt-4o-mini")
+  expect_equal(captured$api_key, "openai-key")
+  expect_equal(captured$base_url, "https://example.test/v1")
 })
