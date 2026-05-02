@@ -1,6 +1,6 @@
 test_that("make_trait works when AI response is valid and consistent", {
   # Mock .get_api_key to avoid needing actual API key
-  local_mocked_bindings(.get_api_key = function() "mock_key")
+  local_mocked_bindings(.get_api_key = function(...) "mock_key")
 
   # Mock the chat object
   mock_chat <- list(
@@ -25,7 +25,7 @@ test_that("make_trait works when AI response is valid and consistent", {
 
   # Mock the consistency check to return YES
   local_mocked_bindings(
-    .ask_ai = function(system_prompt, user_prompt, model = "deepseek-chat") {
+    .ask_ai = function(...) {
       "YES"
     }
   )
@@ -34,9 +34,143 @@ test_that("make_trait works when AI response is valid and consistent", {
   expect_s3_class(res, "glydet_prop")
 })
 
+test_that("make_trait routes explicit provider settings to ellmer", {
+  captured <- new.env(parent = emptyenv())
+
+  local_mocked_bindings(
+    chat_openai = function(system_prompt, model, echo, credentials) {
+      captured$system_prompt <- system_prompt
+      captured$model <- model
+      captured$echo <- echo
+      captured$api_key <- credentials()
+      list(chat = function(prompt) "prop(nS > 0)")
+    },
+    .package = "ellmer"
+  )
+
+  local_mocked_bindings(
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+      if (use_ai) {
+        expect_equal(getOption("glydet.ai_provider"), "openai")
+        expect_equal(getOption("glydet.ai_model"), "gpt-4o-mini")
+        expect_equal(getOption("glydet.ai_api_key"), "openai-key")
+      }
+      "Proportion of sialylated glycans among all glycans."
+    }
+  )
+
+  local_mocked_bindings(
+    .ask_ai = function(
+      system_prompt,
+      user_prompt,
+      api_key = NULL,
+      model = NULL,
+      provider = NULL,
+      base_url = NULL
+    ) {
+      captured$consistency_api_key <- api_key
+      captured$consistency_model <- model
+      captured$consistency_provider <- provider
+      captured$consistency_base_url <- base_url
+      "YES"
+    }
+  )
+
+  res <- make_trait(
+    "proportion of sialylated glycans",
+    provider = "openai",
+    model = "gpt-4o-mini",
+    api_key = "openai-key"
+  )
+
+  expect_s3_class(res, "glydet_prop")
+  expect_match(captured$system_prompt, "professional glycobiologist")
+  expect_equal(captured$model, "gpt-4o-mini")
+  expect_equal(captured$echo, "none")
+  expect_equal(captured$api_key, "openai-key")
+  expect_equal(captured$consistency_provider, "openai")
+  expect_equal(captured$consistency_model, "gpt-4o-mini")
+  expect_equal(captured$consistency_api_key, "openai-key")
+  expect_null(captured$consistency_base_url)
+})
+
+test_that("make_trait uses package-level AI provider options", {
+  captured <- new.env(parent = emptyenv())
+  old_options <- options(
+    glydet.ai_provider = "openai",
+    glydet.ai_model = "gpt-4o-mini",
+    glydet.ai_api_key = "option-key"
+  )
+  on.exit(options(old_options), add = TRUE)
+
+  local_mocked_bindings(
+    chat_openai = function(system_prompt, model, echo, credentials) {
+      captured$model <- model
+      captured$api_key <- credentials()
+      list(chat = function(prompt) "prop(nS > 0)")
+    },
+    .package = "ellmer"
+  )
+
+  local_mocked_bindings(
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+      "Proportion of sialylated glycans among all glycans."
+    },
+    .ask_ai = function(...) "YES"
+  )
+
+  res <- make_trait("proportion of sialylated glycans")
+
+  expect_s3_class(res, "glydet_prop")
+  expect_equal(captured$model, "gpt-4o-mini")
+  expect_equal(captured$api_key, "option-key")
+})
+
+test_that("make_trait supports OpenAI-compatible endpoints", {
+  captured <- new.env(parent = emptyenv())
+
+  local_mocked_bindings(
+    chat_openai_compatible = function(
+      base_url,
+      name,
+      system_prompt,
+      model = NULL,
+      echo,
+      credentials
+    ) {
+      captured$base_url <- base_url
+      captured$name <- name
+      captured$model <- model
+      captured$api_key <- credentials()
+      list(chat = function(prompt) "prop(nS > 0)")
+    },
+    .package = "ellmer"
+  )
+
+  local_mocked_bindings(
+    explain_trait = function(trait_fn, use_ai = FALSE, custom_mp = NULL) {
+      "Proportion of sialylated glycans among all glycans."
+    },
+    .ask_ai = function(...) "YES"
+  )
+
+  res <- make_trait(
+    "proportion of sialylated glycans",
+    provider = "openai_compatible",
+    api_key = "compatible-key",
+    base_url = "https://example.test/v1"
+  )
+
+  expect_s3_class(res, "glydet_prop")
+  expect_equal(captured$base_url, "https://example.test/v1")
+  expect_equal(captured$name, "OpenAI-compatible")
+  expect_null(captured$model)
+  expect_equal(captured$api_key, "compatible-key")
+})
+
 test_that("make_trait retries when explanation is inconsistent", {
   # Mock .get_api_key
-  local_mocked_bindings(.get_api_key = function() "mock_key")
+  local_mocked_bindings(.get_api_key = function(...) "mock_key")
 
   call_count <- 0
 
@@ -76,7 +210,7 @@ test_that("make_trait retries when explanation is inconsistent", {
   # Mock consistency check: NO for first, YES for second
   consistency_call_count <- 0
   local_mocked_bindings(
-    .ask_ai = function(system_prompt, user_prompt, model = "deepseek-chat") {
+    .ask_ai = function(...) {
       consistency_call_count <<- consistency_call_count + 1
       if (consistency_call_count == 1) "NO" else "YES"
     }
@@ -89,7 +223,7 @@ test_that("make_trait retries when explanation is inconsistent", {
 
 test_that("make_trait raises an error when AI response is invalid", {
   # Mock .get_api_key
-  local_mocked_bindings(.get_api_key = function() "mock_key")
+  local_mocked_bindings(.get_api_key = function(...) "mock_key")
 
   # Mock the chat object
   mock_chat <- list(
@@ -106,7 +240,7 @@ test_that("make_trait raises an error when AI response is invalid", {
 
 test_that("make_trait raises an error after max retries with inconsistent explanations", {
   # Mock .get_api_key
-  local_mocked_bindings(.get_api_key = function() "mock_key")
+  local_mocked_bindings(.get_api_key = function(...) "mock_key")
 
   # Mock the chat object
   mock_chat <- list(
@@ -130,7 +264,7 @@ test_that("make_trait raises an error after max retries with inconsistent explan
 
   # Always return NO for consistency
   local_mocked_bindings(
-    .ask_ai = function(system_prompt, user_prompt, model = "deepseek-chat") "NO"
+    .ask_ai = function(...) "NO"
   )
 
   expect_error(
@@ -154,7 +288,7 @@ test_that("custom_mp parameter includes custom meta-properties in system prompt"
 
 test_that("custom_mp works with make_trait", {
   # Mock .get_api_key
-  local_mocked_bindings(.get_api_key = function() "mock_key")
+  local_mocked_bindings(.get_api_key = function(...) "mock_key")
 
   captured_system_prompt <- NULL
 
@@ -179,7 +313,7 @@ test_that("custom_mp works with make_trait", {
 
   # Mock the consistency check to return YES
   local_mocked_bindings(
-    .ask_ai = function(system_prompt, user_prompt, model = "deepseek-chat") "YES"
+    .ask_ai = function(...) "YES"
   )
 
   custom_mp <- c(nE = "(integer) number of a2,6-linked sialic acids")

@@ -9,9 +9,10 @@
 #' @param use_ai `r lifecycle::badge("experimental")`
 #'   Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 #'   To use this feature, you need to install the `ellmer` package.
-#'   You also need to provide an API key for the DeepSeek chat model.
-#'   Please set the environment variable `DEEPSEEK_API_KEY` to your API key.
-#'   You can obtain an API key from https://platform.deepseek.com.
+#'   DeepSeek is used by default for backward compatibility. Other `ellmer`
+#'   providers can be selected with the `glydet.ai_provider`,
+#'   `glydet.ai_model`, `glydet.ai_api_key`, and `glydet.ai_base_url`
+#'   package options.
 #' @param custom_mp A named character vector of custom meta-properties.
 #'   The names are the meta-property names, and the values are in the format
 #'   "(type) description". Only used when `use_ai = TRUE`.

@@ -8,9 +8,9 @@
 #' Try to read the descriptions of built-in traits to get ideas.
 #' Currently, only `prop()`, `ratio()`, and `wmean()` are supported.
 #' To use this feature, you need to install the `ellmer` package.
-#' You also need to provide an API key for the DeepSeek chat model.
-#' Please set the environment variable `DEEPSEEK_API_KEY` to your API key using `Sys.setenv()`.
-#' You can obtain an API key from https://platform.deepseek.com.
+#' DeepSeek is used by default for backward compatibility. Other `ellmer`
+#' providers can be selected with `provider`, `model`, and provider-specific
+#' API key configuration.
 #'
 #' @param description A description of the trait in natural language.
 #' @param custom_mp A named character vector of custom meta-properties.
@@ -26,6 +26,16 @@
 #'   formula's explanation doesn't match the original description. Default is 2.
 #' @param verbose Whether to print verbose output. Default is FALSE.
 #'   This is useful for inspecting how LLMs generate trait functions.
+#' @param provider AI provider passed to `ellmer`. One of "deepseek",
+#'   "openai", "anthropic", "gemini", "openrouter", or "openai_compatible".
+#'   Defaults to `getOption("glydet.ai_provider", "deepseek")`.
+#' @param model Model to use. Defaults to `getOption("glydet.ai_model")`,
+#'   or "deepseek-chat" for DeepSeek and the provider default for other providers.
+#' @param api_key API key for the selected provider. If `NULL`, the provider
+#'   specific environment variable is used. Defaults to
+#'   `getOption("glydet.ai_api_key")`.
+#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
+#'   Defaults to `getOption("glydet.ai_base_url")`.
 #'
 #' @returns A derived trait function.
 #'
@@ -40,21 +50,36 @@
 #' # derive_traits(exp, trait_fns = my_traits)
 #'
 #' @export
-make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose = FALSE) {
+make_trait <- function(
+  description,
+  custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   checkmate::assert_string(description)
   checkmate::assert_character(custom_mp, names = "named", null.ok = TRUE)
   checkmate::assert_count(max_retries)
+  provider <- .normalize_ai_provider(provider)
+  checkmate::assert_string(model, null.ok = TRUE)
+  checkmate::assert_string(api_key, null.ok = TRUE)
+  checkmate::assert_string(base_url, null.ok = TRUE)
   description <- stringr::str_trim(description)
   rlang::check_installed("ellmer")
 
-  api_key <- .get_api_key()
+  model <- .resolve_ai_model(provider, model)
+  api_key <- .get_api_key(provider = provider, api_key = api_key)
   system_prompt <- .make_trait_sys_prompt(description, custom_mp)
 
-  chat <- ellmer::chat_deepseek(
+  chat <- .create_ai_chat(
     system_prompt = system_prompt,
-    model = "deepseek-chat",
-    echo = "none",
-    credentials = function() api_key
+    api_key = api_key,
+    provider = provider,
+    model = model,
+    base_url = base_url
   )
 
   # Initial prompt
@@ -92,7 +117,15 @@ make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose =
 
     # Valid formula, now do reflection check
     trait_fn <- result$trait_fn
-    reflection_result <- .check_trait_consistency(description, trait_fn, custom_mp)
+    reflection_result <- .check_trait_consistency(
+      description,
+      trait_fn,
+      custom_mp,
+      api_key = api_key,
+      model = model,
+      provider = provider,
+      base_url = base_url
+    )
 
     if (reflection_result$consistent) {
       return(trait_fn)
@@ -150,8 +183,24 @@ make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose =
   )
 }
 
-.check_trait_consistency <- function(description, trait_fn, custom_mp = NULL) {
+.check_trait_consistency <- function(
+  description,
+  trait_fn,
+  custom_mp = NULL,
+  api_key = getOption("glydet.ai_api_key", NULL),
+  model = getOption("glydet.ai_model", NULL),
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   # Get AI explanation of the generated trait
+  old_options <- options(
+    glydet.ai_provider = provider,
+    glydet.ai_model = model,
+    glydet.ai_api_key = api_key,
+    glydet.ai_base_url = base_url
+  )
+  on.exit(options(old_options), add = TRUE)
+
   explanation <- tryCatch(
     explain_trait(trait_fn, use_ai = TRUE, custom_mp = custom_mp),
     error = function(e) NULL
@@ -163,12 +212,26 @@ make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose =
   }
 
   # Ask AI to judge if the explanation matches the description
-  is_consistent <- .ask_ai_consistency(description, explanation)
+  is_consistent <- .ask_ai_consistency(
+    description,
+    explanation,
+    api_key = api_key,
+    model = model,
+    provider = provider,
+    base_url = base_url
+  )
 
   list(consistent = is_consistent, explanation = explanation)
 }
 
-.ask_ai_consistency <- function(description, explanation) {
+.ask_ai_consistency <- function(
+  description,
+  explanation,
+  api_key = getOption("glydet.ai_api_key", NULL),
+  model = getOption("glydet.ai_model", NULL),
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   system_prompt <- paste(
     "You are a professional glycobiologist.",
     "Your task is to judge if two statements about glycan traits are semantically equivalent.",
@@ -182,7 +245,14 @@ make_trait <- function(description, custom_mp = NULL, max_retries = 2, verbose =
     "Are these two statements semantically equivalent? Answer YES or NO only."
   )
 
-  response <- .ask_ai(system_prompt, user_prompt)
+  response <- .ask_ai(
+    system_prompt,
+    user_prompt,
+    api_key = api_key,
+    model = model,
+    provider = provider,
+    base_url = base_url
+  )
   stringr::str_detect(toupper(response), "YES")
 }
 

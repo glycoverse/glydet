@@ -12,9 +12,10 @@ explain_trait(trait_fn, use_ai = FALSE, custom_mp = NULL)
 \item{use_ai}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 To use this feature, you need to install the \code{ellmer} package.
-You also need to provide an API key for the DeepSeek chat model.
-Please set the environment variable \code{DEEPSEEK_API_KEY} to your API key.
-You can obtain an API key from https://platform.deepseek.com.}
+DeepSeek is used by default for backward compatibility. Other \code{ellmer}
+providers can be selected with the \code{glydet.ai_provider},
+\code{glydet.ai_model}, \code{glydet.ai_api_key}, and \code{glydet.ai_base_url}
+package options.}
 
 \item{custom_mp}{A named character vector of custom meta-properties.
 The names are the meta-property names, and the values are in the format

@@ -22,26 +22,197 @@
   }
 }
 
-.get_api_key <- function() {
-  api_key <- Sys.getenv("DEEPSEEK_API_KEY")
+#' Supported AI provider names
+#'
+#' @returns Character vector of provider choices accepted by glydet.
+#' @noRd
+.ai_provider_choices <- function() {
+  c(
+    "deepseek",
+    "openai",
+    "anthropic",
+    "gemini",
+    "google_gemini",
+    "openrouter",
+    "openai_compatible"
+  )
+}
+
+#' Normalize AI provider aliases
+#'
+#' @param provider Provider name or supported alias.
+#' @returns Canonical provider name.
+#' @noRd
+.normalize_ai_provider <- function(
+  provider = getOption("glydet.ai_provider", "deepseek")
+) {
+  provider <- rlang::arg_match(provider, .ai_provider_choices())
+  if (identical(provider, "google_gemini")) {
+    return("gemini")
+  }
+  provider
+}
+
+#' Human-readable AI provider label
+#'
+#' @param provider Provider name.
+#' @returns Provider label for messages.
+#' @noRd
+.ai_provider_label <- function(provider) {
+  switch(
+    .normalize_ai_provider(provider),
+    deepseek = "DeepSeek",
+    openai = "OpenAI",
+    anthropic = "Anthropic",
+    gemini = "Google Gemini",
+    openrouter = "OpenRouter",
+    openai_compatible = "OpenAI-compatible"
+  )
+}
+
+#' Environment variable for an AI provider API key
+#'
+#' @param provider Provider name.
+#' @returns Environment variable name.
+#' @noRd
+.ai_provider_envvar <- function(provider) {
+  switch(
+    .normalize_ai_provider(provider),
+    deepseek = "DEEPSEEK_API_KEY",
+    openai = "OPENAI_API_KEY",
+    anthropic = "ANTHROPIC_API_KEY",
+    gemini = "GEMINI_API_KEY",
+    openrouter = "OPENROUTER_API_KEY",
+    openai_compatible = "OPENAI_API_KEY"
+  )
+}
+
+#' Resolve the default AI model for a provider
+#'
+#' @param provider Provider name.
+#' @param model Optional model name supplied by the caller.
+#' @returns Model name, or `NULL` to use the provider default.
+#' @noRd
+.resolve_ai_model <- function(
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL)
+) {
+  provider <- .normalize_ai_provider(provider)
+  if (!is.null(model)) {
+    return(model)
+  }
+  if (identical(provider, "deepseek")) {
+    return("deepseek-chat")
+  }
+  NULL
+}
+
+#' Resolve an AI API key
+#'
+#' @param provider Provider name.
+#' @param api_key Optional explicit API key.
+#' @returns API key string.
+#' @noRd
+.get_api_key <- function(
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  api_key = getOption("glydet.ai_api_key", NULL)
+) {
+  if (!is.null(api_key) && nzchar(api_key)) {
+    return(api_key)
+  }
+  provider <- .normalize_ai_provider(provider)
+  envvar <- .ai_provider_envvar(provider)
+  api_key <- Sys.getenv(envvar)
   if (api_key == "") {
+    label <- .ai_provider_label(provider)
     cli::cli_abort(c(
-      "API key for DeepSeek chat model is not set.",
-      "i" = "Please set the environment variable `DEEPSEEK_API_KEY` to your API key.",
-      "i" = "You can obtain an API key from https://platform.deepseek.com."
+      "API key for {label} chat model is not set.",
+      "i" = "Please set the environment variable `{envvar}` to your API key, or pass `api_key` directly.",
+      "i" = "For OpenAI-compatible endpoints, set `OPENAI_API_KEY` and pass `base_url`."
     ))
   }
   api_key
 }
 
-.ask_ai <- function(system_prompt, user_prompt, model = "deepseek-chat") {
+#' Create an ellmer chat object for a configured provider
+#'
+#' @param system_prompt System prompt for the chat object.
+#' @param api_key API key for the selected provider.
+#' @param provider Provider name.
+#' @param model Optional model name.
+#' @param base_url Optional provider base URL.
+#' @returns An `ellmer` chat object.
+#' @noRd
+.create_ai_chat <- function(
+  system_prompt,
+  api_key,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
   rlang::check_installed("ellmer")
-  api_key <- .get_api_key()
-  chat <- ellmer::chat_deepseek(
+  provider <- .normalize_ai_provider(provider)
+  model <- .resolve_ai_model(provider, model)
+
+  args <- list(
     system_prompt = system_prompt,
     model = model,
     echo = "none",
     credentials = function() api_key
+  )
+  if (is.null(model)) {
+    args$model <- NULL
+  }
+
+  chat_fun <- switch(
+    provider,
+    deepseek = ellmer::chat_deepseek,
+    openai = ellmer::chat_openai,
+    anthropic = ellmer::chat_anthropic,
+    gemini = ellmer::chat_google_gemini,
+    openrouter = ellmer::chat_openrouter,
+    openai_compatible = ellmer::chat_openai_compatible
+  )
+
+  if (identical(provider, "openai_compatible")) {
+    if (is.null(base_url)) {
+      cli::cli_abort(
+        "`base_url` is required when `provider = \"openai_compatible\"`."
+      )
+    }
+    args <- c(list(base_url = base_url, name = "OpenAI-compatible"), args)
+  } else if (!is.null(base_url)) {
+    args$base_url <- base_url
+  }
+
+  do.call(chat_fun, args)
+}
+
+#' Send a text-only AI request
+#'
+#' @param system_prompt System prompt for the AI request.
+#' @param user_prompt User prompt for the AI request.
+#' @param api_key API key for the selected provider.
+#' @param model Optional model name.
+#' @param provider Provider name.
+#' @param base_url Optional provider base URL.
+#' @returns Character AI response.
+#' @noRd
+.ask_ai <- function(
+  system_prompt,
+  user_prompt,
+  api_key = getOption("glydet.ai_api_key", NULL),
+  model = getOption("glydet.ai_model", NULL),
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
+  api_key <- .get_api_key(provider = provider, api_key = api_key)
+  chat <- .create_ai_chat(
+    system_prompt = system_prompt,
+    api_key = api_key,
+    provider = provider,
+    model = model,
+    base_url = base_url
   )
   as.character(chat$chat(user_prompt))
 }
