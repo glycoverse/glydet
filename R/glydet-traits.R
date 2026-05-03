@@ -86,7 +86,7 @@ basic_traits <- function(sia_link = FALSE) {
     TS = prop(nS > 0)
   )
   if (sia_link) {
-    cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?basic_traits} for details.")
+    .inform_sia_link("basic_traits")
     sia_traits <- list(
       # Average degree of a2,6-linked sialylation per galactose
       GE = wmean(nE / nG),
@@ -316,7 +316,7 @@ all_traits <- function(sia_link = FALSE) {
   traits <- c(suppressMessages(basic_traits(sia_link)), additional_traits)
 
   if (sia_link) {
-    cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?all_traits} for details.")
+    .inform_sia_link("all_traits")
     sia_traits <- list(
       # Average degree of a2,6-linked sialylation per antenna within mono-antennary glycans
       A1E = wmean(nE / nA, within = (nA == 1)),
@@ -424,7 +424,7 @@ traits_clerc_2018 <- function(sia_link = FALSE) {
     A4F0GS = wmean(nS, within = (nA == 4 & nF == 0 & nG > 0))
   )
   if (sia_link) {
-    cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?traits_florent_2018} for details.")
+    .inform_sia_link("traits_clerc_2018")
     sia_traits <- list(
       A2L0F = prop(nF > 0, within = (nA == 2 & nL == 0)),
       A3L0F = prop(nF > 0, within = (nA == 3 & nL == 0)),
@@ -458,6 +458,10 @@ traits_clerc_2018 <- function(sia_link = FALSE) {
     traits <- c(traits, sia_traits)
   }
   traits
+}
+
+.inform_sia_link <- function(func_name) {
+  cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?{func_name}} for details.")
 }
 
 # To avoid note about global variables in R CMD check
