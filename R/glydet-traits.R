@@ -356,5 +356,109 @@ all_traits <- function(sia_link = FALSE) {
   traits
 }
 
+#' Get Traits in Clerc et al. 2018
+#'
+#' These traits are the ones used by Clerc et al. 2018 (https://doi.org/10.1053/j.gastro.2018.05.030).
+#' We generally don't recommend using these traits because they are either redundant
+#' or missing some important traits.
+#' We include this function because this paper is very influential in the field.
+#'
+#' @inheritSection basic_traits Usage of sialic acid linkage traits
+#'
+#' @inheritParams basic_traits
+#' @returns A named list of derived traits.
+#' @examples
+#' traits_clerc_2018()[1:5]
+#' @export
+traits_clerc_2018 <- function(sia_link = FALSE) {
+  traits <- list(
+    CA1 = prop(nA == 1),
+    CA2 = prop(nA == 2),
+    CA3 = prop(nA == 3),
+    CA4 = prop(nA == 4),
+    TC = prop(Tp == "complex"),
+    TM = prop(Tp == "highmannose"),
+    THy = prop(Tp == "hybrid"),
+    MM = wmean(nM, within = (Tp == "highmannose")),
+    MHy = ratio(Tp == "highmannose", Tp == "hybrid"),
+    TA2FS0 = prop(nA == 2 & nFc == 0 & nS == 0),
+    CF = prop(nF > 0, within = (Tp == "complex")),
+    CFa = prop(nFa > 0, within = (Tp == "complex")),
+    A2Fa = prop(nFa > 0, within = nA == 2),
+    A3Fa = prop(nFa > 0, within = nA == 3),
+    A1F0 = prop(nA == 1 & nF == 0),
+    A2F = prop(nF > 0, within = (nA == 2)),
+    A3F = prop(nF > 0, within = (nA == 3)),
+    A2SF = prop(nF > 0, within = (nA == 2 & nS > 0)),
+    A2S0F = prop(nF > 0, within = (nA == 2 & nS == 0)),
+    CB = prop(B, within = (Tp == "complex")),
+    A2B = prop(B, within = (nA == 2)),
+    A2FB = prop(B, within = (nA == 2 & nF > 0)),
+    A2F0B = prop(B, within = (nA == 2 & nF == 0)),
+    A2SB = prop(B, within = (nA == 2 & nS > 0)),
+    A2S0B = prop(B, within = (nA == 2 & nS == 0)),
+    A2FSB = prop(B, within = (nA == 2 & nF > 0 & nS > 0)),
+    A2F0SB = prop(B, within = (nA == 2 & nF == 0 & nS > 0)),
+    A2FS0B = prop(B, within = (nA == 2 & nF > 0 & nS == 0)),
+    A2F0S0B = prop(B, within = (nA == 2 & nF == 0 & nS == 0)),
+    CG = prop(nG > 0, within = (Tp == "complex")),
+    A2G = wmean(nG, within = (nA == 2)),
+    A2FG = wmean(nG, within = (nA == 2 & nF > 0)),
+    A2F0G = wmean(nG, within = (nA == 2 & nF == 0)),
+    A2SG = wmean(nG, within = (nA == 2 & nS > 0)),
+    A2S0G = wmean(nG, within = (nA == 2 & nS == 0)),
+    A2FSG = wmean(nG, within = (nA == 2 & nF > 0 & nS > 0)),
+    A2FS0G = wmean(nG, within = (nA == 2 & nF > 0 & nS == 0)),
+    A2F0SG = wmean(nG, within = (nA == 2 & nF == 0 & nS > 0)),
+    A2F0S0G = wmean(nG, within = (nA == 2 & nF == 0 & nS == 0)),
+    CS = prop(nS > 0, within = (Tp == "complex")),
+    A2S = wmean(nS, within = (nA == 2)),
+    A2FS = wmean(nS, within = (nA == 2 & nF > 0)),
+    A2F0S = wmean(nS, within = (nA == 2 & nF == 0)),
+    A2GS = wmean(nS / nG, within = (nA == 2 & nG > 0)),
+    A3GS = wmean(nS / nG, within = (nA == 3 & nG > 0)),
+    A2FGS = wmean(nS, within = (nA == 2 & nF > 0 & nG > 0)),
+    A3FGS = wmean(nS, within = (nA == 3 & nF > 0 & nG > 0)),
+    A2F0GS = wmean(nS, within = (nA == 2 & nF == 0 & nG > 0)),
+    A3F0GS = wmean(nS, within = (nA == 3 & nF == 0 & nG > 0)),
+    A4F0GS = wmean(nS, within = (nA == 4 & nF == 0 & nG > 0))
+  )
+  if (sia_link) {
+    cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?traits_florent_2018} for details.")
+    sia_traits <- list(
+      A2L0F = prop(nF > 0, within = (nA == 2 & nL == 0)),
+      A3L0F = prop(nF > 0, within = (nA == 3 & nL == 0)),
+      A2E0F = prop(nF > 0, within = (nA == 2 & nE == 0)),
+      A2LF = prop(nF > 0, within = (nA == 2 & nL > 0)),
+      A3LF = prop(nF > 0, within = (nA == 3 & nL > 0)),
+      A1EF = prop(nF > 0, within = (nA == 1 & nE > 0)),
+      A2EF = prop(nF > 0, within = (nA == 2 & nE > 0)),
+      A3EF = prop(nF > 0, within = (nA == 3 & nE > 0)),
+      A2L = wmean(nL, within = (nA == 2)),
+      A2FL = wmean(nL, within = (nA == 2 & nF > 0)),
+      A2F0L = wmean(nL, within = (nA == 2 & nF == 0)),
+      A2GL = wmean(nL / nG, within = (nA == 2 & nG > 0)),
+      A3GL = wmean(nL / nG, within = (nA == 3 & nG > 0)),
+      A2FGL = wmean(nL / nG, within = (nA == 2 & nF > 0 & nG > 0)),
+      A3FGL = wmean(nL / nG, within = (nA == 3 & nF > 0 & nG > 0)),
+      A2F0GL = wmean(nL / nG, within = (nA == 2 & nF == 0 & nG > 0)),
+      A3F0GL = wmean(nL / nG, within = (nA == 3 & nF == 0 & nG > 0)),
+      A4F0GL = wmean(nL / nG, within = (nA == 4 & nF == 0 & nG > 0)),
+      A2E = wmean(nE, within = (nA == 2)),
+      A2FE = wmean(nE, within = (nA == 2 & nF > 0)),
+      A2F0E = wmean(nE, within = (nA == 2 & nF == 0)),
+      A2GE = wmean(nE / nG, within = (nA == 2 & nG > 0)),
+      A3GE = wmean(nE / nG, within = (nA == 3 & nG > 0)),
+      A2FGE = wmean(nE / nG, within = (nA == 2 & nF > 0 & nG > 0)),
+      A3FGE = wmean(nE / nG, within = (nA == 3 & nF > 0 & nG > 0)),
+      A2F0GE = wmean(nE / nG, within = (nA == 2 & nF == 0 & nG > 0)),
+      A3F0GE = wmean(nE / nG, within = (nA == 3 & nF == 0 & nG > 0)),
+      A4F0GE = wmean(nE / nG, within = (nA == 4 & nF == 0 & nG > 0))
+    )
+    traits <- c(traits, sia_traits)
+  }
+  traits
+}
+
 # To avoid note about global variables in R CMD check
 Tp <- nM <- nA <- nF <- nFc <- nFa <- nG <- nS <- nE <- nL <- nGt <- nT <- B <- NULL

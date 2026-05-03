@@ -21,3 +21,15 @@ test_that("all_traits() with sia_link = TRUE works", {
   expect_true(is.list(traits))
   expect_true(all(c("TM", "CA2", "TF", "A2Fc", "GE", "GL", "A2E", "A2L") %in% names(traits)))
 })
+
+test_that("traits_clerc_2018() works", {
+  traits <- traits_clerc_2018()
+  expect_true(is.list(traits))
+  expect_true(all(c("A2F0GS", "A3F0GS", "A4F0GS") %in% names(traits)))
+})
+
+test_that("traits_clerc_2018() with sia_link = TRUE works", {
+  expect_snapshot(traits <- traits_clerc_2018(sia_link = TRUE))
+  expect_true(is.list(traits))
+  expect_true(all(c("A2F0GS", "A3F0GS", "A4F0GS", "A2L0F", "A3L0F") %in% names(traits)))
+})
