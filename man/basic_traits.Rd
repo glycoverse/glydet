@@ -37,7 +37,7 @@ The explanations of the derived traits are as follows:
 \item \code{TS}: Proportion of sialylated glycans
 }
 
-Two additional sialic acid linkage traits are included if \code{sia_link = TRUE}.
+Four additional sialic acid linkage traits are included if \code{sia_link = TRUE}.
 \itemize{
 \item \code{GE}: Average degree of a2,6-linked sialylation per galactose
 \item \code{GL}: Average degree of a2,3-linked sialylation per galactose

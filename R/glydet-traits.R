@@ -25,7 +25,7 @@
 #' - `AG`: Average degree of galactosylation per antenna
 #' - `TS`: Proportion of sialylated glycans
 #'
-#' Two additional sialic acid linkage traits are included if `sia_link = TRUE`.
+#' Four additional sialic acid linkage traits are included if `sia_link = TRUE`.
 #'
 #' - `GE`: Average degree of a2,6-linked sialylation per galactose
 #' - `GL`: Average degree of a2,3-linked sialylation per galactose
