@@ -36,10 +36,10 @@ The explanations of the derived traits are as follows:
 
 Two additional sialic acid linkage traits are included if \code{sia_link = TRUE}.
 \itemize{
-\item \code{GE}: Average degree of α2,6-linked sialylation per galactose
-\item \code{GL}: Average degree of α2,3-linked sialylation per galactose
-\item \code{TE}: Proportion of α2,6-linked sialylated glycans
-\item \code{TL}: Proportion of α2,3-linked sialylated glycans
+\item \code{GE}: Average degree of a2,6-linked sialylation per galactose
+\item \code{GL}: Average degree of a2,3-linked sialylation per galactose
+\item \code{TE}: Proportion of a2,6-linked sialylated glycans
+\item \code{TL}: Proportion of a2,3-linked sialylated glycans
 }
 }
 
@@ -47,8 +47,8 @@ Two additional sialic acid linkage traits are included if \code{sia_link = TRUE}
 To use these sialic acid linkage traits,
 \code{var_info} of the input \code{glyexp::experiment()} must have the following columns:
 \itemize{
-\item \code{nE}: Number of α2,6-linked sialic acids
-\item \code{nL}: Number of α2,3-linked sialic acids
+\item \code{nE}: Number of a2,6-linked sialic acids
+\item \code{nL}: Number of a2,3-linked sialic acids
 }
 
 Note that you have to add these two columns even if the \code{glycan_structure} column has intact linkages.

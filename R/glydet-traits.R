@@ -27,18 +27,18 @@
 #'
 #' Two additional sialic acid linkage traits are included if `sia_link = TRUE`.
 #'
-#' - `GE`: Average degree of α2,6-linked sialylation per galactose
-#' - `GL`: Average degree of α2,3-linked sialylation per galactose
-#' - `TE`: Proportion of α2,6-linked sialylated glycans
-#' - `TL`: Proportion of α2,3-linked sialylated glycans
+#' - `GE`: Average degree of a2,6-linked sialylation per galactose
+#' - `GL`: Average degree of a2,3-linked sialylation per galactose
+#' - `TE`: Proportion of a2,6-linked sialylated glycans
+#' - `TL`: Proportion of a2,3-linked sialylated glycans
 #'
 #' # Usage of sialic acid linkage traits
 #'
 #' To use these sialic acid linkage traits,
 #' `var_info` of the input `glyexp::experiment()` must have the following columns:
 #'
-#' - `nE`: Number of α2,6-linked sialic acids
-#' - `nL`: Number of α2,3-linked sialic acids
+#' - `nE`: Number of a2,6-linked sialic acids
+#' - `nL`: Number of a2,3-linked sialic acids
 #'
 #' Note that you have to add these two columns even if the `glycan_structure` column has intact linkages.
 #' This is because by convention all traits work with glycan structures with "basic" structure levels
@@ -85,13 +85,13 @@ basic_traits <- function(sia_link = FALSE) {
   if (sia_link) {
     cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?basic_traits} for details.")
     sia_traits <- list(
-      # Average degree of α2,6-linked sialylation per galactose
+      # Average degree of a2,6-linked sialylation per galactose
       GE = wmean(nE / nG),
-      # Average degree of α2,3-linked sialylation per galactose
+      # Average degree of a2,3-linked sialylation per galactose
       GL = wmean(nL / nG),
-      # Proportion of α2,6-linked sialylated glycans
+      # Proportion of a2,6-linked sialylated glycans
       TE = prop(nE > 0),
-      # Proportion of α2,3-linked sialylated glycans
+      # Proportion of a2,3-linked sialylated glycans
       TL = prop(nL > 0)
     )
     traits <- c(traits, sia_traits)
