@@ -33,6 +33,7 @@ Imports:
     glymotif (>= 0.13.0),
     glyparse (>= 0.5.3),
     glyrepr (>= 0.10.0),
+    lifecycle,
     memoise,
     purrr,
     rlang,
