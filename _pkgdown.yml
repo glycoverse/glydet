@@ -4,3 +4,55 @@ template:
 
 development:
   mode: auto
+
+reference:
+- title: "Main functions"
+  desc: >
+    Entry points for the package.
+  contents:
+  - derive_traits
+  - derive_traits_
+  - quantify_motifs
+- title: "Out-of-box trait sets"
+  desc: >
+    Curated sets of derived traits for out-of-box use.
+  contents:
+  - starts_with("traits_")
+  - basic_traits
+  - all_traits
+- title: "Utility functions"
+  desc: >
+    Helper functions for trait interpretation and construction.
+  contents:
+  - explain_trait
+  - make_trait
+- title: "Trait factories"
+  desc: >
+    Functions for constructing custom derived traits.
+  contents:
+  - prop
+  - ratio
+  - wmean
+  - total
+  - wsum
+- title: "Meta-property utilities"
+  desc: >
+    Functions for working with glycan meta-properties.
+  contents:
+  - add_meta_properties
+  - all_mp_fns
+  - get_meta_properties
+- title: "Meta-property functions"
+  desc: >
+    Functions for calculating specific glycan meta-properties.
+  contents:
+  - n_glycan_type
+  - has_bisecting
+  - n_antennae
+  - n_arm_fuc
+  - n_core_fuc
+  - n_fuc
+  - n_gal
+  - n_man
+  - n_sia
+  - n_terminal_gal
