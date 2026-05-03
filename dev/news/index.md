@@ -13,7 +13,7 @@
   [`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md)),
   and `A1E`–`A4E`, `A1L`–`A4L`, `A1GE`–`A4GE`, `A1GL`–`A4GL` (in
   [`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)).
-  These traits require `nE` and `nL` columns in `var_info` (#9).
+  These traits require `nE` and `nL` columns in `var_info` (#15).
 
 ### Minor improvements and bug fixes
 
@@ -28,6 +28,10 @@
   specifying `mp_cols`. Built-in meta-properties keep precedence by
   default; use `mp_cols` when columns need renaming or explicit
   overrides (#12).
+- Rewrite the “Get Started with glydet” vignette to first introduce the
+  core functionality of `glydet` on a glycomics dataset, then apply it
+  to a glycoproteomics dataset, to provide a more gradual learning curve
+  for new users (#8).
 
 ## glydet 0.10.4
 
