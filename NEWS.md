@@ -3,6 +3,7 @@
 ## New features
 
 * `basic_traits()` and `all_traits()` now support an optional `sia_link` parameter. When set to `TRUE`, additional sialic acid linkage traits are included: `GE`, `GL`, `TE`, `TL` (in `basic_traits()`), and `A1E`–`A4E`, `A1L`–`A4L`, `A1GE`–`A4GE`, `A1GL`–`A4GL` (in `all_traits()`). These traits require `nE` and `nL` columns in `var_info` (#15).
+* Add `traits_clerc_2018()`, `traits_li_2025()`, and `traits_fu_2026()` as new sets of built-in traits (#16).
 
 ## Minor improvements and bug fixes
 
