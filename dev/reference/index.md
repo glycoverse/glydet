@@ -40,6 +40,12 @@
   : Create a Ratio Trait
 - [`total()`](https://glycoverse.github.io/glydet/dev/reference/total.md)
   : Create a Total Abundance Trait
+- [`traits_clerc_2018()`](https://glycoverse.github.io/glydet/dev/reference/traits_clerc_2018.md)
+  : Get Traits in Clerc et al. 2018
+- [`traits_fu_2026()`](https://glycoverse.github.io/glydet/dev/reference/traits_fu_2026.md)
+  : Get Traits in Fu et al. 2026
+- [`traits_li_2025()`](https://glycoverse.github.io/glydet/dev/reference/traits_li_2025.md)
+  : Get Traits in Li et al. 2025
 - [`wmean()`](https://glycoverse.github.io/glydet/dev/reference/wmean.md)
   : Create a Weighted-Mean Trait
 - [`wsum()`](https://glycoverse.github.io/glydet/dev/reference/wsum.md)

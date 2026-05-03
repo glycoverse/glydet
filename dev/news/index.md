@@ -14,6 +14,12 @@
   and `A1E`–`A4E`, `A1L`–`A4L`, `A1GE`–`A4GE`, `A1GL`–`A4GL` (in
   [`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)).
   These traits require `nE` and `nL` columns in `var_info` (#15).
+- Add
+  [`traits_clerc_2018()`](https://glycoverse.github.io/glydet/dev/reference/traits_clerc_2018.md),
+  [`traits_li_2025()`](https://glycoverse.github.io/glydet/dev/reference/traits_li_2025.md),
+  and
+  [`traits_fu_2026()`](https://glycoverse.github.io/glydet/dev/reference/traits_fu_2026.md)
+  as new sets of built-in traits (#16).
 
 ### Minor improvements and bug fixes
 
