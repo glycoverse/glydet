@@ -1,25 +1,32 @@
-test_that("basic_traits() works", {
-  traits <- basic_traits()
+test_that("traits_basic() works", {
+  traits <- traits_basic()
   expect_true(is.list(traits))
   expect_true(all(c("TM", "CA2", "TF") %in% names(traits)))
 })
 
-test_that("basic_traits() with sia_link = TRUE works", {
-  expect_snapshot(traits <- basic_traits(sia_link = TRUE))
+test_that("traits_basic() with sia_link = TRUE works", {
+  expect_snapshot(traits <- traits_basic(sia_link = TRUE))
   expect_true(is.list(traits))
   expect_true(all(c("TM", "CA2", "TF", "GE", "GL") %in% names(traits)))
 })
 
-test_that("all_traits() works", {
-  traits <- all_traits()
+test_that("traits_detailed() works", {
+  traits <- traits_detailed()
   expect_true(is.list(traits))
   expect_true(all(c("TM", "CA2", "TF", "A2Fc") %in% names(traits)))
 })
 
-test_that("all_traits() with sia_link = TRUE works", {
-  expect_snapshot(traits <- all_traits(sia_link = TRUE))
+test_that("traits_detailed() with sia_link = TRUE works", {
+  expect_snapshot(traits <- traits_detailed(sia_link = TRUE))
   expect_true(is.list(traits))
   expect_true(all(c("TM", "CA2", "TF", "A2Fc", "GE", "GL", "A2E", "A2L") %in% names(traits)))
+})
+
+test_that("old trait set names remain aliases", {
+  expect_identical(basic_traits(), traits_basic())
+  expect_identical(suppressMessages(basic_traits(sia_link = TRUE)), suppressMessages(traits_basic(sia_link = TRUE)))
+  expect_identical(all_traits(), traits_detailed())
+  expect_identical(suppressMessages(all_traits(sia_link = TRUE)), suppressMessages(traits_detailed(sia_link = TRUE)))
 })
 
 test_that("traits_clerc_2018() works", {

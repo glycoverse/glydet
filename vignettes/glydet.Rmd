@@ -308,7 +308,7 @@ This allows you to define custom derived traits that use structural features bey
 ## What's Next?
 
 Now you have the main concepts needed to use `glydet`.
-You can try `all_traits()` to calculate more advanced and detailed derived traits.
+You can try `traits_detailed()` to calculate more detailed derived traits.
 You can also start to define your own meta-property functions and derived traits.
 Check out the [Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette
 to learn how to define your own derived traits.
