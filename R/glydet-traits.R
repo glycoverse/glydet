@@ -371,6 +371,7 @@ all_traits <- function(sia_link = FALSE) {
 #' traits_clerc_2018()[1:5]
 #' @export
 traits_clerc_2018 <- function(sia_link = FALSE) {
+  checkmate::assert_flag(sia_link)
   traits <- list(
     CA1 = prop(nA == 1),
     CA2 = prop(nA == 2),
