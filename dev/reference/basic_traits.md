@@ -8,14 +8,21 @@ level, and branching level.
 ## Usage
 
 ``` r
-basic_traits()
+basic_traits(sia_link = FALSE)
 ```
+
+## Arguments
+
+- sia_link:
+
+  A boolean indicating whether to include sialic acid linkage traits.
+  Default is `FALSE`.
 
 ## Value
 
 A named list of derived traits.
 
-## Details
+## Descriptions of traits
 
 The explanations of the derived traits are as follows:
 
@@ -46,6 +53,33 @@ The explanations of the derived traits are as follows:
 - `AG`: Average degree of galactosylation per antenna
 
 - `TS`: Proportion of sialylated glycans
+
+Four additional sialic acid linkage traits are included if
+`sia_link = TRUE`.
+
+- `GE`: Average degree of a2,6-linked sialylation per galactose
+
+- `GL`: Average degree of a2,3-linked sialylation per galactose
+
+- `TE`: Proportion of a2,6-linked sialylated glycans
+
+- `TL`: Proportion of a2,3-linked sialylated glycans
+
+## Usage of sialic acid linkage traits
+
+To use these sialic acid linkage traits, `var_info` of the input
+[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+must have the following columns:
+
+- `nE`: Number of a2,6-linked sialic acids
+
+- `nL`: Number of a2,3-linked sialic acids
+
+Note that you have to add these two columns even if the
+`glycan_structure` column has intact linkages. This is because by
+convention all traits work with glycan structures with "basic" structure
+levels (i.e., with generic monosaccharides like "Hex" and "HexNAc" and
+no linkages specified).
 
 ## Examples
 

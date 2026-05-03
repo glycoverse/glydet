@@ -8,8 +8,15 @@ conditions.
 ## Usage
 
 ``` r
-all_traits()
+all_traits(sia_link = FALSE)
 ```
+
+## Arguments
+
+- sia_link:
+
+  A boolean indicating whether to include sialic acid linkage traits.
+  Default is `FALSE`.
 
 ## Value
 
@@ -155,6 +162,73 @@ The explanations of the derived traits are as follows:
 
 - `A4GS`: Average degree of sialylation per galactose within
   tetra-antennary glycans
+
+These additional sialic acid linkage traits are included if
+`sia_link = TRUE`.
+
+- `A1E`: Average degree of a2,6-linked sialylation per antenna within
+  mono-antennary glycans
+
+- `A2E`: Average degree of a2,6-linked sialylation per antenna within
+  bi-antennary glycans
+
+- `A3E`: Average degree of a2,6-linked sialylation per antenna within
+  tri-antennary glycans
+
+- `A4E`: Average degree of a2,6-linked sialylation per antenna within
+  tetra-antennary glycans
+
+- `A1L`: Average degree of a2,3-linked sialylation per antenna within
+  mono-antennary glycans
+
+- `A2L`: Average degree of a2,3-linked sialylation per antenna within
+  bi-antennary glycans
+
+- `A3L`: Average degree of a2,3-linked sialylation per antenna within
+  tri-antennary glycans
+
+- `A4L`: Average degree of a2,3-linked sialylation per antenna within
+  tetra-antennary glycans
+
+- `A1GE`: Average degree of a2,6-linked sialylation per galactose within
+  mono-antennary glycans
+
+- `A2GE`: Average degree of a2,6-linked sialylation per galactose within
+  bi-antennary glycans
+
+- `A3GE`: Average degree of a2,6-linked sialylation per galactose within
+  tri-antennary glycans
+
+- `A4GE`: Average degree of a2,6-linked sialylation per galactose within
+  tetra-antennary glycans
+
+- `A1GL`: Average degree of a2,3-linked sialylation per galactose within
+  mono-antennary glycans
+
+- `A2GL`: Average degree of a2,3-linked sialylation per galactose within
+  bi-antennary glycans
+
+- `A3GL`: Average degree of a2,3-linked sialylation per galactose within
+  tri-antennary glycans
+
+- `A4GL`: Average degree of a2,3-linked sialylation per galactose within
+  tetra-antennary glycans
+
+## Usage of sialic acid linkage traits
+
+To use these sialic acid linkage traits, `var_info` of the input
+[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+must have the following columns:
+
+- `nE`: Number of a2,6-linked sialic acids
+
+- `nL`: Number of a2,3-linked sialic acids
+
+Note that you have to add these two columns even if the
+`glycan_structure` column has intact linkages. This is because by
+convention all traits work with glycan structures with "basic" structure
+levels (i.e., with generic monosaccharides like "Hex" and "HexNAc" and
+no linkages specified).
 
 ## Examples
 

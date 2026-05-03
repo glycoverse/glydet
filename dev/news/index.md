@@ -2,6 +2,19 @@
 
 ## glydet (development version)
 
+### New features
+
+- [`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md)
+  and
+  [`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)
+  now support an optional `sia_link` parameter. When set to `TRUE`,
+  additional sialic acid linkage traits are included: `GE`, `GL`, `TE`,
+  `TL` (in
+  [`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md)),
+  and `A1E`–`A4E`, `A1L`–`A4L`, `A1GE`–`A4GE`, `A1GL`–`A4GL` (in
+  [`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)).
+  These traits require `nE` and `nL` columns in `var_info` (#9).
+
 ### Minor improvements and bug fixes
 
 - [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)

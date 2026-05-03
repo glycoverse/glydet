@@ -52,15 +52,23 @@ and branching level.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">basic_traits</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">basic_traits</span><span class="op">(</span>sia_link <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-sia-link">sia_link<a class="anchor" aria-label="anchor" href="#arg-sia-link"></a></dt>
+<dd><p>A boolean indicating whether to include sialic acid linkage traits. Default is <code>FALSE</code>.</p></dd>
+
+</dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A named list of derived traits.</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <h2 id="descriptions-of-traits">Descriptions of traits<a class="anchor" aria-label="anchor" href="#descriptions-of-traits"></a></h2>
     <p>The explanations of the derived traits are as follows:</p><ul><li><p><code>TM</code>: Proportion of highmannose glycans</p></li>
 <li><p><code>TH</code>: Proportion of hybrid glycans</p></li>
 <li><p><code>TC</code>: Proportion of complex glycans</p></li>
@@ -75,7 +83,20 @@ and branching level.</p>
 <li><p><code>GS</code>: Average degree of sialylation per galactose</p></li>
 <li><p><code>AG</code>: Average degree of galactosylation per antenna</p></li>
 <li><p><code>TS</code>: Proportion of sialylated glycans</p></li>
+</ul><p>Four additional sialic acid linkage traits are included if <code>sia_link = TRUE</code>.</p><ul><li><p><code>GE</code>: Average degree of a2,6-linked sialylation per galactose</p></li>
+<li><p><code>GL</code>: Average degree of a2,3-linked sialylation per galactose</p></li>
+<li><p><code>TE</code>: Proportion of a2,6-linked sialylated glycans</p></li>
+<li><p><code>TL</code>: Proportion of a2,3-linked sialylated glycans</p></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="usage-of-sialic-acid-linkage-traits">Usage of sialic acid linkage traits<a class="anchor" aria-label="anchor" href="#usage-of-sialic-acid-linkage-traits"></a></h2>
+    <p>To use these sialic acid linkage traits,
+<code>var_info</code> of the input <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> must have the following columns:</p><ul><li><p><code>nE</code>: Number of a2,6-linked sialic acids</p></li>
+<li><p><code>nL</code>: Number of a2,3-linked sialic acids</p></li>
+</ul><p>Note that you have to add these two columns even if the <code>glycan_structure</code> column has intact linkages.
+This is because by convention all traits work with glycan structures with "basic" structure levels
+(i.e., with generic monosaccharides like "Hex" and "HexNAc" and no linkages specified).</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

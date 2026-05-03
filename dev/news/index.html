@@ -39,6 +39,11 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glydet-development-version">glydet (development version)<a class="anchor" aria-label="anchor" href="#glydet-development-version"></a></h2>
 <div class="section level3">
+<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<ul><li>
+<code><a href="../reference/basic_traits.html">basic_traits()</a></code> and <code><a href="../reference/all_traits.html">all_traits()</a></code> now support an optional <code>sia_link</code> parameter. When set to <code>TRUE</code>, additional sialic acid linkage traits are included: <code>GE</code>, <code>GL</code>, <code>TE</code>, <code>TL</code> (in <code><a href="../reference/basic_traits.html">basic_traits()</a></code>), and <code>A1E</code>–<code>A4E</code>, <code>A1L</code>–<code>A4L</code>, <code>A1GE</code>–<code>A4GE</code>, <code>A1GL</code>–<code>A4GL</code> (in <code><a href="../reference/all_traits.html">all_traits()</a></code>). These traits require <code>nE</code> and <code>nL</code> columns in <code>var_info</code> (#9).</li>
+</ul></div>
+<div class="section level3">
 <h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
 <ul><li>
 <code><a href="../reference/make_trait.html">make_trait()</a></code> and AI-enabled <code><a href="../reference/explain_trait.html">explain_trait()</a></code> now support configurable <code>ellmer</code> providers, including OpenAI, Anthropic, Gemini, OpenRouter, and OpenAI-compatible endpoints, with <code>glydet.ai_*</code> package options for session defaults (#14).</li>
