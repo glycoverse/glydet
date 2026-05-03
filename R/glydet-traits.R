@@ -54,6 +54,7 @@
 #'
 #' @export
 basic_traits <- function(sia_link = FALSE) {
+  checkmate::assert_flag(sia_link)
   traits <- list(
     # Proportion of highmannose glycans
     TM = prop(Tp == "highmannose"),
@@ -188,6 +189,7 @@ basic_traits <- function(sia_link = FALSE) {
 #'
 #' @export
 all_traits <- function(sia_link = FALSE) {
+  checkmate::assert_flag(sia_link)
   additional_traits <- list(
 
     # ===== Advanced Fucosylation Traits =====
