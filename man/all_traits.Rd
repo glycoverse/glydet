@@ -6,6 +6,9 @@
 \usage{
 all_traits(sia_link = FALSE)
 }
+\arguments{
+\item{sia_link}{A boolean indicating whether to include sialic acid linkage traits. Default is \code{FALSE}.}
+}
 \value{
 A named list of derived traits.
 }

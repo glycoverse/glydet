@@ -44,6 +44,8 @@
 #' This is because by convention all traits work with glycan structures with "basic" structure levels
 #' (i.e., with generic monosaccharides like "Hex" and "HexNAc" and no linkages specified).
 #'
+#' @param sia_link A boolean indicating whether to include sialic acid linkage traits. Default is `FALSE`.
+#'
 #' @returns
 #' A named list of derived traits.
 #'
@@ -177,7 +179,7 @@ basic_traits <- function(sia_link = FALSE) {
 #' - `A4GL`: Average degree of a2,3-linked sialylation per galactose within tetra-antennary glycans
 #'
 #' @inheritSection basic_traits Usage of sialic acid linkage traits
-#'
+#' @inheritParams basic_traits
 #' @returns
 #' A named list of derived traits.
 #'
