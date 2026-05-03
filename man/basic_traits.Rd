@@ -4,7 +4,7 @@
 \alias{basic_traits}
 \title{Get Basic Derived Traits}
 \usage{
-basic_traits()
+basic_traits(sia_link = FALSE)
 }
 \value{
 A named list of derived traits.
@@ -15,7 +15,7 @@ They describe global properties of a glycome including the type of glycans,
 fucosylation level, sialylation level, galactosylation level,
 and branching level.
 }
-\details{
+\section{Descriptions of traits}{
 The explanations of the derived traits are as follows:
 \itemize{
 \item \code{TM}: Proportion of highmannose glycans
@@ -33,7 +33,29 @@ The explanations of the derived traits are as follows:
 \item \code{AG}: Average degree of galactosylation per antenna
 \item \code{TS}: Proportion of sialylated glycans
 }
+
+Two additional sialic acid linkage traits are included if \code{sia_link = TRUE}.
+\itemize{
+\item \code{GE}: Average degree of α2,6-linked sialylation per galactose
+\item \code{GL}: Average degree of α2,3-linked sialylation per galactose
+\item \code{TE}: Proportion of α2,6-linked sialylated glycans
+\item \code{TL}: Proportion of α2,3-linked sialylated glycans
 }
+}
+
+\section{Usage of sialic acid linkage traits}{
+To use these sialic acid linkage traits,
+\code{var_info} of the input \code{glyexp::experiment()} must have the following columns:
+\itemize{
+\item \code{nE}: Number of α2,6-linked sialic acids
+\item \code{nL}: Number of α2,3-linked sialic acids
+}
+
+Note that you have to add these two columns even if the \code{glycan_structure} column has intact linkages.
+This is because by convention all traits work with glycan structures with "basic" structure levels
+(i.e., with generic monosaccharides like "Hex" and "HexNAc" and no linkages specified).
+}
+
 \examples{
 basic_traits()
 

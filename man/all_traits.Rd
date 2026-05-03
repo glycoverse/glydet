@@ -4,7 +4,7 @@
 \alias{all_traits}
 \title{Get All Derived Traits}
 \usage{
-all_traits()
+all_traits(sia_link = FALSE)
 }
 \value{
 A named list of derived traits.
@@ -66,7 +66,40 @@ The explanations of the derived traits are as follows:
 \item \code{A3GS}: Average degree of sialylation per galactose within tri-antennary glycans
 \item \code{A4GS}: Average degree of sialylation per galactose within tetra-antennary glycans
 }
+
+These additional sialic acid linkage traits are included if \code{sia_link = TRUE}.
+\itemize{
+\item \code{A1E}: Average degree of a2,6-linked sialylation per antenna within mono-antennary glycans
+\item \code{A2E}: Average degree of a2,6-linked sialylation per antenna within bi-antennary glycans
+\item \code{A3E}: Average degree of a2,6-linked sialylation per antenna within tri-antennary glycans
+\item \code{A4E}: Average degree of a2,6-linked sialylation per antenna within tetra-antennary glycans
+\item \code{A1L}: Average degree of a2,3-linked sialylation per antenna within mono-antennary glycans
+\item \code{A2L}: Average degree of a2,3-linked sialylation per antenna within bi-antennary glycans
+\item \code{A3L}: Average degree of a2,3-linked sialylation per antenna within tri-antennary glycans
+\item \code{A4L}: Average degree of a2,3-linked sialylation per antenna within tetra-antennary glycans
+\item \code{A1GE}: Average degree of a2,6-linked sialylation per galactose within mono-antennary glycans
+\item \code{A2GE}: Average degree of a2,6-linked sialylation per galactose within bi-antennary glycans
+\item \code{A3GE}: Average degree of a2,6-linked sialylation per galactose within tri-antennary glycans
+\item \code{A4GE}: Average degree of a2,6-linked sialylation per galactose within tetra-antennary glycans
+\item \code{A1GL}: Average degree of a2,3-linked sialylation per galactose within mono-antennary glycans
+\item \code{A2GL}: Average degree of a2,3-linked sialylation per galactose within bi-antennary glycans
+\item \code{A3GL}: Average degree of a2,3-linked sialylation per galactose within tri-antennary glycans
+\item \code{A4GL}: Average degree of a2,3-linked sialylation per galactose within tetra-antennary glycans
 }
+}
+\section{Usage of sialic acid linkage traits}{
+To use these sialic acid linkage traits,
+\code{var_info} of the input \code{glyexp::experiment()} must have the following columns:
+\itemize{
+\item \code{nE}: Number of α2,6-linked sialic acids
+\item \code{nL}: Number of α2,3-linked sialic acids
+}
+
+Note that you have to add these two columns even if the \code{glycan_structure} column has intact linkages.
+This is because by convention all traits work with glycan structures with "basic" structure levels
+(i.e., with generic monosaccharides like "Hex" and "HexNAc" and no linkages specified).
+}
+
 \examples{
 all_traits()
 
