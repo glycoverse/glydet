@@ -418,11 +418,11 @@ traits_clerc_2018 <- function(sia_link = FALSE) {
     A2F0S = wmean(nS, within = (nA == 2 & nF == 0)),
     A2GS = wmean(nS / nG, within = (nA == 2 & nG > 0)),
     A3GS = wmean(nS / nG, within = (nA == 3 & nG > 0)),
-    A2FGS = wmean(nS, within = (nA == 2 & nF > 0 & nG > 0)),
-    A3FGS = wmean(nS, within = (nA == 3 & nF > 0 & nG > 0)),
-    A2F0GS = wmean(nS, within = (nA == 2 & nF == 0 & nG > 0)),
-    A3F0GS = wmean(nS, within = (nA == 3 & nF == 0 & nG > 0)),
-    A4F0GS = wmean(nS, within = (nA == 4 & nF == 0 & nG > 0))
+    A2FGS = wmean(nS / nG, within = (nA == 2 & nF > 0 & nG > 0)),
+    A3FGS = wmean(nS / nG, within = (nA == 3 & nF > 0 & nG > 0)),
+    A2F0GS = wmean(nS / nG, within = (nA == 2 & nF == 0 & nG > 0)),
+    A3F0GS = wmean(nS / nG, within = (nA == 3 & nF == 0 & nG > 0)),
+    A4F0GS = wmean(nS / nG, within = (nA == 4 & nF == 0 & nG > 0))
   )
   if (sia_link) {
     .inform_sia_link("traits_clerc_2018")
