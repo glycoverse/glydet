@@ -14,25 +14,16 @@ knitr::opts_chunk$set(
 )
 ```
 
-Glycan derived traits are summary features calculated from individual glycan abundances.
-Instead of analyzing every single glycan structure,
-we combine related glycans into biologically meaningful groups.
-For example, traits describing the overall level of galactosylation, sialylation, fucosylation, or branching.
-These derived traits capture broader patterns in glycosylation and reduce noise from individual measurements.
+Derived traits are fabricated features that capture specific structural characteristics of a glycome.
+For example, the proportion of core fucosylated glycans within all glycans is a derived trait
+that reflects the overall level of core fucosylation.
+The glycomics community has long recognized the value of derived traits for interpreting complex glycomics data,
+but calculating them has often been a manual, error-prone process.
 
-Compared with analyzing raw glycan abundances (the "direct traits"),
-using derived traits has several advantages.
-It simplifies the data while keeping key biological information,
-making it easier to interpret and compare across samples.
-Derived traits also tend to be more robust and less affected by technical variation,
-and they can better highlight biological trends or associations with phenotypes.
-In short, derived traits help us see the forest rather than just the trees 🌲🌲🌲.
-
-Enter `glydet` 🚀—your toolkit for calculating derived traits with unprecedented precision.
-But here's where it gets exciting:
-`glydet` brings the power of derived traits to the glycoproteomics community for the first time,
-enabling **site-specific trait analysis**.
-Plus, it features an intuitive domain-specific language that lets you define custom traits tailored to your research needs.
+`glydet` makes this workflow more direct.
+The package provides tools for automatically calculating a wide range of derived traits.
+It also provides a flexible interface for defining custom traits.
+For glycoproteomics data, `glydet` can calculate derived traits in a site-specific manner.
 
 ## Important Notes Before You Start
 
@@ -42,13 +33,12 @@ This package is built on the [glyrepr](https://github.com/glycoverse/glyrepr) pa
 and heavily relies on the [glyexp](https://github.com/glycoverse/glyexp) package.
 If you are not familiar with these two packages,
 we highly recommend checking out their introductions first.
-Also, to fully understand the concepts and functions in this package,
-it is recommended to have a basic understanding of the [glymotif](https://github.com/glycoverse/glymotif) package.
 
 ### Data Types
 
 `glydet` is designed to work with untargeted glycomics and glycoproteomics data.
 Label-free quantification data is readily supported by `glyread` and `glyclean`.
+
 For labeling quantification like TMT, ratios between the target and reference channels (TMT ratios)
 must be converted to abundance matrix following this procedure:
 
@@ -57,7 +47,7 @@ must be converted to abundance matrix following this procedure:
 
 This enables the quantification of different glycopeptides in the same sample to be comparable.
 
-## 🎯 Dive Right In: Your First Analysis
+## Your First Analysis
 
 ```{r setup}
 library(glydet)
@@ -65,22 +55,20 @@ library(glyrepr)
 library(glyexp)
 library(glyclean)
 library(glystats)
+library(dplyr)
 ```
 
-Ready to see `glydet` in action?
-Let's jump straight into a real-world example that demonstrates its power!
-We'll work with `glyexp::real_experiment` — 
-an authentic N-glycoproteomics dataset from 12 patients with varying liver conditions. 
+We'll work with `glyexp::real_experiment2`, a real glycomics dataset containing 144 samples and 67 glycans.
 
-⚠️ **Pro tip:** Always preprocess your data with `glyclean` before diving into trait analysis.
-This ensures your results are as clean and reliable as your data!
+Before calculating derived traits, preprocess your data with `glyclean`.
+This makes the trait analysis use the cleaned abundance data.
 
 ```{r}
-exp <- auto_clean(real_experiment)  # Preprocess the data
+exp <- auto_clean(real_experiment2)  # Preprocess the data
 exp
 ```
 
-Let's take a quick peek at our dataset to understand what we're working with:
+Let's inspect the dataset before calculating traits:
 
 ```{r}
 get_var_info(exp)
@@ -94,28 +82,27 @@ get_sample_info(exp)
 get_expr_mat(exp)[1:5, 1:5]
 ```
 
-Now for the magic moment ✨—let's calculate some derived traits!
+Now let's calculate derived traits:
 
 ```{r}
 trait_exp <- derive_traits(exp)
 trait_exp
 ```
 
-Voilà! What you see is a brand new `experiment()` object with "traitomics" type.
-Think of it as your original dataset's sophisticated cousin 🎭 —
-instead of tracking "quantification of each glycan on each glycosite in each sample,"
-it now contains "the value of each derived trait on each glycosite in each sample."
+The result is a new `experiment()` object with "traitomics" type.
+Instead of storing the abundance of each glycan in each sample,
+it stores the value of each derived trait in each sample.
 
 ```{r}
 get_var_info(trait_exp)
 ```
 
 ```{r}
-# These are the trait values!
+# These are the trait values
 get_expr_mat(trait_exp)[1:5, 1:5]
 ```
 
-🎉 **Congratulations!** You've just calculated a comprehensive suite of derived traits in a site-specific manner:
+`derive_traits()` calculated the following built-in derived traits:
 
 - **`TM`**: Proportion of high-mannose glycans
 - **`TH`**: Proportion of hybrid glycans  
@@ -132,106 +119,137 @@ get_expr_mat(trait_exp)[1:5, 1:5]
 - **`AG`**: Average degree of galactosylation per antenna
 - **`TS`**: Proportion of sialylated glycans
 
-💡 **The key insight:** We treat the glycans on each glycosite as a separate mini-glycome,
-then calculate derived traits for each one across all samples.
-For instance, if a particular glycosite hosts 10 different glycans,
-the `TFc` value represents the proportion of core-fucosylated glycans within those 10 structures in each sample.
-
-**Important Note:** All built-in derived traits only work for N-glycans.
+**Important note:** All built-in derived traits only work for N-glycans.
 For other types of glycans, you need to define your own derived traits.
 Check out the [Defining Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette
 to learn how to define your own derived traits.
-In fact, for other types of glycans not so complex as N-glycans, e.g. O-glycans,
+For glycan classes with simpler structural patterns than N-glycans, such as O-glycans,
 we recommend using [motif quantification](https://glycoverse.github.io/glydet/articles/quantify-motifs.html) instead.
 
-Now comes the fun part!
-📊 You can leverage all the powerful functions in the `glystats` package to analyze your derived traits.
-Let's demonstrate with an ANOVA analysis to identify glycosites with significantly different levels of core-fucosylation across conditions:
+Because `derive_traits()` returns a `glyexp::experiment()` object,
+functions in `glystats` can be applied to the derived traits to perform statistical analyses.
 
 ```{r}
 anova_res <- gly_anova(trait_exp)
-anova_res$tidy_result$main_test |>
-  dplyr::filter(trait == "TFc", p_adj < 0.05)
+anova_res |>
+  get_tidy_result("main_test") |>
+  filter(p_adj < 0.05)
 ```
 
-🔍 **Discovery time!** We've identified several glycosites with statistically significant differences
-in core-fucosylation levels across our patient groups —
-exactly the kind of biological insights that make derived traits so powerful!
+## Site-Specific Derived Traits in Glycoproteomics
 
-## 🔧 Under the Hood: Understanding Meta-Properties
+Calculating derived traits for glycoproteomics data requires grouping by glycosite.
 
-Curious about how the magic happens?
-Let's lift the hood and explore `glydet`'s inner workings—but don't worry,
-we'll keep things accessible! 
+Let's first review the structure of glycoproteomics data.
+Usually, in glycoproteomics, we analyze the quantification of glycoforms in samples.
+A glycoform is a unique combination of a glycosite and a glycan structure.
+Note that one glycosite can have many different glycan structures,
+resulting in multiple glycoforms for the same site.
 
-The key concept you need to understand is **"meta-properties"** -
-think of them as the molecular fingerprints of individual glycans.
+To calculate derived traits for glycoproteomics data,
+we calculate derived traits separately within each glycosite.
+This captures site-specific glycosylation patterns and their variations across samples.
 
-🆚 **What's the difference?**
+Operationally, there is no difference between calculating derived traits for glycomics and glycoproteomics data.
 
-- **Derived traits** describe entire glycomes (or all glycans on a glycosite) and their values fluctuate across samples
-- **Meta-properties** describe individual glycans regardless of their abundance —
-like counting antennae,core fucoses, or sialic acids on a single structure
+```{r}
+# A glycoproteomics dataset
+gp_exp <- auto_clean(glyexp::real_experiment)
+gp_exp
+```
 
-🧠 **The connection:** Meta-properties are the building blocks for derived traits.
+```{r}
+gp_trait_exp <- derive_traits(gp_exp)
+gp_trait_exp
+```
+
+The result is also a `glyexp::experiment()` object but with "traitproteomics" type.
+The only difference is that the variable information now contains a `glycosite` column,
+which indicates the glycosite for each trait variable.
+The experiment object therefore contains the value of each derived trait for each glycosite in each sample.
+
+You can again apply `glystats` functions to perform statistical analyses.
+For example, we can identify glycosites with dysregulated core fucosylation:
+
+```{r}
+gly_anova(gp_trait_exp) |>
+  get_tidy_result("main_test") |>
+  filter(trait == "TFc", p_adj < 0.05) |>
+  select(protein, protein_site)
+```
+
+## Understanding Meta-Properties
+
+To understand how `glydet` calculates derived traits,
+it helps to look at the meta-properties used by the package.
+
+The key concept is **"meta-properties"**:
+properties that describe individual glycans.
+
+**What's the difference?**
+
+- **Derived traits** describe entire glycomes, or all glycans on a glycosite, and their values vary across samples
+- **Meta-properties** describe individual glycans regardless of their abundance, such as the number of antennae, core fucoses, or sialic acids on a single structure
+
+**The connection:** Derived traits are calculated from meta-properties and abundance values.
 When you call `derive_traits()`,
 `glydet` automatically calculates meta-properties for all glycans first,
 then uses this information to compute the derived traits you see.
 
-Want to work with meta-properties directly? 🛠️ You're in luck! `glydet` provides two handy functions:
+You can also work with meta-properties directly through two functions:
 
 - **`get_meta_properties()`**: Calculate meta-properties for any set of glycans
-- **`add_meta_properties()`**: Enrich your `experiment()` object by adding meta-properties to variable information
+- **`add_meta_properties()`**: Add meta-properties to the variable information of an `experiment()` object
 
-### 🔬 get_meta_properties()
+### get_meta_properties()
 
-Let's see `get_meta_properties()` in action!
-We'll extract a few glycan structures from our dataset:
+Let's try `get_meta_properties()` with a few glycan structures from the dataset:
 
 ```{r}
 glycans <- unique(get_var_info(exp)$glycan_structure)[1:5]
 glycans
 ```
 
-📝 **Note:** `glycans` is a `glyrepr::glycan_structure()` vector—these are standardized representations of glycan structures.
+**Note:** `glycans` is a `glyrepr::glycan_structure()` vector.
+These are standardized representations of glycan structures.
 
-Now watch the magic happen as we calculate their meta-properties:
+Now calculate their meta-properties:
 
 ```{r}
 get_meta_properties(glycans)
 ```
 
-### 📈 add_meta_properties()
+### add_meta_properties()
 
-Working with `glyexp::experiment()` objects? Perfect!
-You can supercharge your variable information by adding meta-properties directly:
+When working with `glyexp::experiment()` objects,
+you can add meta-properties directly to the variable information:
 
 ```{r}
 exp_with_mp <- add_meta_properties(exp)
 get_var_info(exp_with_mp)
 ```
 
-✨ **Look at that transformation!** Your variable information is now enriched with multiple meta-property columns.
-This opens up powerful filtering possibilities based on structural features. 
+The variable information now contains multiple meta-property columns.
+This supports filtering based on structural features.
 
-For instance, let's filter for all glycoforms containing high-mannose glycans:
+For instance, filter for all glycoforms containing high-mannose glycans:
 
 ```{r}
 exp_with_mp |>
   filter_var(Tp == "highmannose")
 ```
 
-### 🧰 Meta-Property Functions: Your Structural Toolkit
+### Meta-Property Functions
 
-Behind the scenes, meta-properties are actually functions that take `glyrepr::glycan_structure()` vectors
+Meta-properties are implemented as functions that take `glyrepr::glycan_structure()` vectors
 and return corresponding property values.
-`glydet` comes packed with a comprehensive library of built-in meta-property functions:
+`glydet` includes a set of built-in meta-property functions:
 
 ```{r}
 names(all_mp_fns())
 ```
 
-📚 **Your complete toolkit:** Here's the full roster of built-in meta-property functions:
+Here is the full list of built-in meta-property functions:
 
 | Name | Function | Description |
 |------|----------|-------------|
@@ -246,62 +264,50 @@ names(all_mp_fns())
 | `nS` | `n_sia()` | Number of sialic acids |
 | `nM` | `n_man()` | Number of mannoses |
 
-Each function can be called directly for quick structural analysis:
+Each function can be called directly:
 
 ```{r}
 n_glycan_type(glycans)
 ```
 
-## 🧩 Working with Structural Ambiguity
+## Working with Structural Ambiguity
 
 An important design principle of `glydet` is its ability to handle glycan structures with varying levels of detail.
 All built-in meta-properties and derived traits are designed to work with the **minimum information typically available**
 for N-glycans in most experimental scenarios.
 
-### 🔧 Generic vs. Specific Monosaccharides
+### Generic vs. Specific Monosaccharides
 
-`glydet` works seamlessly with generic monosaccharide names (e.g., "Hex", "HexNAc", "dHex") and structures lacking linkage information.
+`glydet` works with generic monosaccharide names, such as "Hex", "HexNAc", and "dHex", as well as structures lacking linkage information.
 This level of structural resolution reflects what is commonly achievable in glycoproteomics workflows,
 where complete structural determination is often challenging.
 
-For example, this ambiguous structure works perfectly:
+For example, this ambiguous structure is supported:
 
 ```{r}
-# Generic monosaccharides with unknown linkages ❓
+# Generic monosaccharides with unknown linkages
 ambiguous_glycan <- "HexNAc(??-?)Hex(??-?)[Hex(??-?)]Hex(??-?)HexNAc(??-?)[dHex(??-?)]HexNAc(??-"
 ```
 
-### ✨ Handling Detailed Structures 
+### Handling Detailed Structures 
 
 This design philosophy doesn't limit `glydet`'s applicability to well-characterized structures.
-The package equally handles glycans with complete structural information:
+The package also handles glycans with complete structural information:
 
 ```{r}
-# Fully specified structure with specific monosaccharides and linkages ✅
+# Fully specified structure with specific monosaccharides and linkages
 detailed_glycan <- "GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-3)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-"
 ```
 
-### 🚀 Extending Functionality
+### Extending Functionality
 
 When working with highly detailed structural information,
 you may want to create specialized meta-property functions that leverage specific monosaccharide identities or linkage patterns.
-This allows you to define custom derived traits that capture structural features beyond the generic framework provided by the built-in functions.
-
-## Working with Glycomics Data
-
-Working with glycomics data has no difference from working with glycoproteomics data,
-even more straightforward as the resulting `experiment()` has a simpler structure.
-Here we briefly demonstrate how to work with glycomics data using `glyexp::real_experiment2`.
-
-```{r}
-exp <- auto_clean(real_experiment2)
-trait_exp <- derive_traits(exp)
-trait_exp
-```
+This allows you to define custom derived traits that use structural features beyond those covered by the built-in functions.
 
 ## What's Next?
 
-Now you have a good understanding of `glydet` and how to use it.
+Now you have the main concepts needed to use `glydet`.
 You can try `all_traits()` to calculate more advanced and detailed derived traits.
 You can also start to define your own meta-property functions and derived traits.
 Check out the [Custom Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html) vignette

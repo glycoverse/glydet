@@ -8,6 +8,7 @@
 
 * `make_trait()` and AI-enabled `explain_trait()` now support configurable `ellmer` providers, including OpenAI, Anthropic, Gemini, OpenRouter, and OpenAI-compatible endpoints, with `glydet.ai_*` package options for session defaults (#14).
 * `derive_traits()` can now use columns in `var_info` as meta-properties without specifying `mp_cols`. Built-in meta-properties keep precedence by default; use `mp_cols` when columns need renaming or explicit overrides (#12).
+* Rewrite the "Get Started with glydet" vignette to first introduce the core functionality of `glydet` on a glycomics dataset, then apply it to a glycoproteomics dataset, to provide a more gradual learning curve for new users (#8).
 
 # glydet 0.10.4
 
