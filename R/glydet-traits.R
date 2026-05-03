@@ -460,6 +460,95 @@ traits_clerc_2018 <- function(sia_link = FALSE) {
   traits
 }
 
+#' Get Traits in Fu et al. 2026
+#'
+#' These traits are the ones used by Fu et al. 2026 (https://doi.org/10.1038/s41467-026-68579-x).
+#' It is much like `all_traits()`, but doesn't differentiate core- and arm-fucosylation,
+#' and doesn't include the sialic acid linkage traits.
+#' Also, many traits are too specific to be useful and interpretable.
+#'
+#' @returns A named list of derived traits.
+#' @examples
+#' traits_fu_2026()[1:5]
+#' @export
+traits_fu_2026 <- function() {
+  list(
+    TM = prop(Tp == "highmannose"),
+    THy = prop(Tp == "hybrid"),
+    TC = prop(Tp == "complex"),
+    MM = wmean(nM, within = (Tp == "highmannose")),
+    CA2 = prop(nA == 2),
+    CA3 = prop(nA == 3),
+    CA4 = prop(nA == 4),
+    TF = prop(nF > 0),
+    A1F = prop(nF > 0, within = (nA == 1)),
+    A2F = prop(nF > 0, within = (nA == 2)),
+    A3F = prop(nF > 0, within = (nA == 3)),
+    A4F = prop(nF > 0, within = (nA == 4)),
+    A1SF = prop(nF > 0, within = (nA == 1 & nS > 0)),
+    A2SF = prop(nF > 0, within = (nA == 2 & nS > 0)),
+    A3SF = prop(nF > 0, within = (nA == 3 & nS > 0)),
+    A4SF = prop(nF > 0, within = (nA == 4 & nS > 0)),
+    A1S0F = prop(nF > 0, within = (nA == 1 & nS == 0)),
+    A2S0F = prop(nF > 0, within = (nA == 2 & nS == 0)),
+    A3S0F = prop(nF > 0, within = (nA == 3 & nS == 0)),
+    A4S0F = prop(nF > 0, within = (nA == 4 & nS == 0)),
+    TB = prop(B),
+    A2B = prop(B, within = (nA == 2)),
+    A3B = prop(B, within = (nA == 3)),
+    A4B = prop(B, within = (nA == 4)),
+    A2FB = prop(B, within = (nA == 2 & nF > 0)),
+    A2F0B = prop(B, within = (nA == 2 & nF == 0)),
+    A2SB = prop(B, within = (nA == 2 & nS > 0)),
+    A2S0B = prop(B, within = (nA == 2 & nS == 0)),
+    A3B = prop(B, within = (nA == 3)),
+    A3FB = prop(B, within = (nA == 3 & nF > 0)),
+    A3F0B = prop(B, within = (nA == 3 & nF == 0)),
+    A3SB = prop(B, within = (nA == 3 & nS > 0)),
+    A3S0B = prop(B, within = (nA == 3 & nS == 0)),
+    A4B = prop(B, within = (nA == 4)),
+    A4FB = prop(B, within = (nA == 4 & nF > 0)),
+    A4F0B = prop(B, within = (nA == 4 & nF == 0)),
+    A4SB = prop(B, within = (nA == 4 & nS > 0)),
+    A4S0B = prop(B, within = (nA == 4 & nS == 0)),
+    CG = prop(nG > 0),
+    A1G = wmean(nG, within = (nA == 1)),
+    A2G = wmean(nG, within = (nA == 2)),
+    A3G = wmean(nG, within = (nA == 3)),
+    A4G = wmean(nG, within = (nA == 4)),
+    A1FG = wmean(nG, within = (nA == 1 & nF > 0)),
+    A2FG = wmean(nG, within = (nA == 2 & nF > 0)),
+    A3FG = wmean(nG, within = (nA == 3 & nF > 0)),
+    A4FG = wmean(nG, within = (nA == 4 & nF > 0)),
+    A1F0G = wmean(nG, within = (nA == 1 & nF == 0)),
+    A2F0G = wmean(nG, within = (nA == 2 & nF == 0)),
+    A3F0G = wmean(nG, within = (nA == 3 & nF == 0)),
+    A4F0G = wmean(nG, within = (nA == 4 & nF == 0)),
+    A1SG = wmean(nG, within = (nA == 1 & nS > 0)),
+    A2SG = wmean(nG, within = (nA == 2 & nS > 0)),
+    A3SG = wmean(nG, within = (nA == 3 & nS > 0)),
+    A4SG = wmean(nG, within = (nA == 4 & nS > 0)),
+    A1S0G = wmean(nG, within = (nA == 1 & nS == 0)),
+    A2S0G = wmean(nG, within = (nA == 2 & nS == 0)),
+    A3S0G = wmean(nG, within = (nA == 3 & nS == 0)),
+    A4S0G = wmean(nG, within = (nA == 4 & nS == 0)),
+    TS = prop(nS > 0),
+    GS = wmean(nS / nG, within = (nG > 0)),
+    A1GS = wmean(nS / nG, within = (nA == 1 & nG > 0)),
+    A2GS = wmean(nS / nG, within = (nA == 2 & nG > 0)),
+    A3GS = wmean(nS / nG, within = (nA == 3 & nG > 0)),
+    A4GS = wmean(nS / nG, within = (nA == 4 & nG > 0)),
+    A1FGS = wmean(nS / nG, within = (nA == 1 & nF > 0 & nG > 0)),
+    A2FGS = wmean(nS / nG, within = (nA == 2 & nF > 0 & nG > 0)),
+    A3FGS = wmean(nS / nG, within = (nA == 3 & nF > 0 & nG > 0)),
+    A4FGS = wmean(nS / nG, within = (nA == 4 & nF > 0 & nG > 0)),
+    A1F0GS = wmean(nS / nG, within = (nA == 1 & nF == 0 & nG > 0)),
+    A2F0GS = wmean(nS / nG, within = (nA == 2 & nF == 0 & nG > 0)),
+    A3F0GS = wmean(nS / nG, within = (nA == 3 & nF == 0 & nG > 0)),
+    A4F0GS = wmean(nS / nG, within = (nA == 4 & nF == 0 & nG > 0))
+  )
+}
+
 .inform_sia_link <- function(func_name) {
   cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?{func_name}} for details.")
 }
