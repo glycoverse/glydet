@@ -35,7 +35,7 @@ derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
   A named list of derived trait functions created by trait factories.
   Names of the list are the names of the derived traits. Default is
   `NULL`, which means all derived traits in
-  [`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md)
+  [`traits_basic()`](https://glycoverse.github.io/glydet/dev/reference/traits_basic.md)
   are calculated.
 
 - mp_fns:
@@ -98,8 +98,8 @@ data, and "traitproteomics" for glycoproteomics data.
 
 ## See also
 
-[`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md),
-[`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)
+[`traits_basic()`](https://glycoverse.github.io/glydet/dev/reference/traits_basic.md),
+[`traits_detailed()`](https://glycoverse.github.io/glydet/dev/reference/traits_detailed.md)
 
 ## Examples
 
@@ -159,12 +159,12 @@ trait_exp
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 
 # By default, only basic traits are calculated
-names(basic_traits())
+names(traits_basic())
 #>  [1] "TM"  "TH"  "TC"  "MM"  "CA2" "CA3" "CA4" "TF"  "TFc" "TFa" "TB"  "GS" 
 #> [13] "AG"  "TS" 
 
-# You can calculate all traits in `all_traits()`
-more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
+# You can calculate detailed traits in `traits_detailed()`
+more_trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
 more_trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────

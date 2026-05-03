@@ -78,9 +78,9 @@ trait.
 
 ``` r
 # Explain built-in traits
-explain_trait(basic_traits()$TM)
+explain_trait(traits_basic()$TM)
 #> [1] "Proportion of high-mannose glycans among all glycans."
-explain_trait(basic_traits()$GS)
+explain_trait(traits_basic()$GS)
 #> [1] "Abundance-weighted mean of degree of sialylation per galactose among all glycans."
 
 # Explain custom traits

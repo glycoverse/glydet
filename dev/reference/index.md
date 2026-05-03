@@ -6,10 +6,6 @@
   : Add Meta-Properties to Experiment
 - [`all_mp_fns()`](https://glycoverse.github.io/glydet/dev/reference/all_mp_fns.md)
   : Get All Meta-Property Functions
-- [`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)
-  : Get All Derived Traits
-- [`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md)
-  : Get Basic Derived Traits
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
   : Calculate Derived Traits
 - [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
@@ -40,8 +36,14 @@
   : Create a Ratio Trait
 - [`total()`](https://glycoverse.github.io/glydet/dev/reference/total.md)
   : Create a Total Abundance Trait
+- [`traits_basic()`](https://glycoverse.github.io/glydet/dev/reference/traits_basic.md)
+  [`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/traits_basic.md)
+  : Get Basic Derived Traits
 - [`traits_clerc_2018()`](https://glycoverse.github.io/glydet/dev/reference/traits_clerc_2018.md)
   : Get Traits in Clerc et al. 2018
+- [`traits_detailed()`](https://glycoverse.github.io/glydet/dev/reference/traits_detailed.md)
+  [`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/traits_detailed.md)
+  : Get Detailed Derived Traits
 - [`traits_fu_2026()`](https://glycoverse.github.io/glydet/dev/reference/traits_fu_2026.md)
   : Get Traits in Fu et al. 2026
 - [`traits_li_2025()`](https://glycoverse.github.io/glydet/dev/reference/traits_li_2025.md)

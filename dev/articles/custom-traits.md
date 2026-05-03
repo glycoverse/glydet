@@ -528,7 +528,7 @@ names.
 When `trait_fns` is omitted,
 [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
 internally invokes
-[`basic_traits()`](https://glycoverse.github.io/glydet/dev/reference/basic_traits.md)
+[`traits_basic()`](https://glycoverse.github.io/glydet/dev/reference/traits_basic.md)
 to utilize built-in trait functions.
 
 ### Validating Trait Definitions

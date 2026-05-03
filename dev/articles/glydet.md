@@ -591,10 +591,10 @@ by the built-in functions.
 ## What’s Next?
 
 Now you have the main concepts needed to use `glydet`. You can try
-[`all_traits()`](https://glycoverse.github.io/glydet/dev/reference/all_traits.md)
-to calculate more advanced and detailed derived traits. You can also
-start to define your own meta-property functions and derived traits.
-Check out the [Custom
+[`traits_detailed()`](https://glycoverse.github.io/glydet/dev/reference/traits_detailed.md)
+to calculate more detailed derived traits. You can also start to define
+your own meta-property functions and derived traits. Check out the
+[Custom
 Traits](https://glycoverse.github.io/glydet/articles/custom-traits.html)
 vignette to learn how to define your own derived traits. Or you can
 check out a special type of derived traits: [motif
