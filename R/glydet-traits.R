@@ -549,6 +549,50 @@ traits_fu_2026 <- function() {
   )
 }
 
+#' Get Traits in Li et al. 2025
+#'
+#' These traits are the ones used by Li et al. 2025 (https://doi.org/10.1038/s41467-025-57633-9).
+#' These traits were created based only on glycan compositions, not structures.
+#' Here the traits are remapped to use glycan structures,
+#' so they are not exactly the same as the ones in the paper.
+#' Generally we don't recommend using these traits because they capture too little information.
+#' We include this function because this paper is very influential in the field.
+#'
+#' @returns A named list of derived traits.
+#' @examples
+#' traits_li_2025()[1:5]
+#' @export
+traits_li_2025 <- function() {
+  list(
+    S0 = prop(nS == 0),
+    S = prop(nS > 0),
+    S1 = prop(nS == 1),
+    S2 = prop(nS == 2),
+    S3 = prop(nS == 3),
+    S4 = prop(nS == 4),
+    F0 = prop(nF == 0),
+    F = prop(nF > 0),
+    F1 = prop(nF == 1),
+    FX = prop(nF > 1),
+    SF = prop(nS > 0 & nF > 0),
+    SF0 = prop(nS > 0 & nF == 0),
+    S0F = prop(nS == 0 & nF > 0),
+    S0F0 = prop(nS == 0 & nF == 0),
+    HM = prop(Tp == "highmannose"),
+    CHy = prop(Tp == "hybrid" | Tp == "complex"),
+    HB = prop(nA > 2),
+    LB = prop(nA <= 2),
+    SHB = prop(nS > 0, within = (nA > 2)),
+    SLB = prop(nS > 0, within = (nA <= 2)),
+    S0HB = prop(nS == 0, within = (nA > 2)),
+    S0LB = prop(nS == 0, within = (nA <= 2)),
+    FHB = prop(nF > 0, within = (nA > 2)),
+    FLB = prop(nF > 0, within = (nA <= 2)),
+    F0HB = prop(nF == 0, within = (nA > 2)),
+    F0LB = prop(nF == 0, within = (nA <= 2))
+  )
+}
+
 .inform_sia_link <- function(func_name) {
   cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?{func_name}} for details.")
 }

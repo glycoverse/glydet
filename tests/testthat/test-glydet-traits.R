@@ -39,3 +39,9 @@ test_that("traits_fu_2026() works", {
   expect_true(is.list(traits))
   expect_true(all(c("TM", "THy", "TC") %in% names(traits)))
 })
+
+test_that("traits_li_2025() works", {
+  traits <- traits_li_2025()
+  expect_true(is.list(traits))
+  expect_true(all(c("S1", "S2", "S3", "S4") %in% names(traits)))
+})
