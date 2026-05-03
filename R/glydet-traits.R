@@ -6,6 +6,8 @@
 #' and branching level.
 #'
 #' @details
+#' # Descriptions of traits
+#'
 #' The explanations of the derived traits are as follows:
 #'
 #' - `TM`: Proportion of highmannose glycans
@@ -23,6 +25,27 @@
 #' - `AG`: Average degree of galactosylation per antenna
 #' - `TS`: Proportion of sialylated glycans
 #'
+#' Four additional sialic acid linkage traits are included if `sia_link = TRUE`.
+#'
+#' - `GE`: Average degree of a2,6-linked sialylation per galactose
+#' - `GL`: Average degree of a2,3-linked sialylation per galactose
+#' - `TE`: Proportion of a2,6-linked sialylated glycans
+#' - `TL`: Proportion of a2,3-linked sialylated glycans
+#'
+#' # Usage of sialic acid linkage traits
+#'
+#' To use these sialic acid linkage traits,
+#' `var_info` of the input `glyexp::experiment()` must have the following columns:
+#'
+#' - `nE`: Number of a2,6-linked sialic acids
+#' - `nL`: Number of a2,3-linked sialic acids
+#'
+#' Note that you have to add these two columns even if the `glycan_structure` column has intact linkages.
+#' This is because by convention all traits work with glycan structures with "basic" structure levels
+#' (i.e., with generic monosaccharides like "Hex" and "HexNAc" and no linkages specified).
+#'
+#' @param sia_link A boolean indicating whether to include sialic acid linkage traits. Default is `FALSE`.
+#'
 #' @returns
 #' A named list of derived traits.
 #'
@@ -30,8 +53,9 @@
 #' basic_traits()
 #'
 #' @export
-basic_traits <- function() {
-  list(
+basic_traits <- function(sia_link = FALSE) {
+  checkmate::assert_flag(sia_link)
+  traits <- list(
     # Proportion of highmannose glycans
     TM = prop(Tp == "highmannose"),
     # Proportion of hybrid glycans
@@ -61,6 +85,21 @@ basic_traits <- function() {
     # Proportion of sialylated glycans
     TS = prop(nS > 0)
   )
+  if (sia_link) {
+    cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?basic_traits} for details.")
+    sia_traits <- list(
+      # Average degree of a2,6-linked sialylation per galactose
+      GE = wmean(nE / nG),
+      # Average degree of a2,3-linked sialylation per galactose
+      GL = wmean(nL / nG),
+      # Proportion of a2,6-linked sialylated glycans
+      TE = prop(nE > 0),
+      # Proportion of a2,3-linked sialylated glycans
+      TL = prop(nL > 0)
+    )
+    traits <- c(traits, sia_traits)
+  }
+  traits
 }
 
 #' Get All Derived Traits
@@ -121,6 +160,27 @@ basic_traits <- function() {
 #' - `A3GS`: Average degree of sialylation per galactose within tri-antennary glycans
 #' - `A4GS`: Average degree of sialylation per galactose within tetra-antennary glycans
 #'
+#' These additional sialic acid linkage traits are included if `sia_link = TRUE`.
+#'
+#' - `A1E`: Average degree of a2,6-linked sialylation per antenna within mono-antennary glycans
+#' - `A2E`: Average degree of a2,6-linked sialylation per antenna within bi-antennary glycans
+#' - `A3E`: Average degree of a2,6-linked sialylation per antenna within tri-antennary glycans
+#' - `A4E`: Average degree of a2,6-linked sialylation per antenna within tetra-antennary glycans
+#' - `A1L`: Average degree of a2,3-linked sialylation per antenna within mono-antennary glycans
+#' - `A2L`: Average degree of a2,3-linked sialylation per antenna within bi-antennary glycans
+#' - `A3L`: Average degree of a2,3-linked sialylation per antenna within tri-antennary glycans
+#' - `A4L`: Average degree of a2,3-linked sialylation per antenna within tetra-antennary glycans
+#' - `A1GE`: Average degree of a2,6-linked sialylation per galactose within mono-antennary glycans
+#' - `A2GE`: Average degree of a2,6-linked sialylation per galactose within bi-antennary glycans
+#' - `A3GE`: Average degree of a2,6-linked sialylation per galactose within tri-antennary glycans
+#' - `A4GE`: Average degree of a2,6-linked sialylation per galactose within tetra-antennary glycans
+#' - `A1GL`: Average degree of a2,3-linked sialylation per galactose within mono-antennary glycans
+#' - `A2GL`: Average degree of a2,3-linked sialylation per galactose within bi-antennary glycans
+#' - `A3GL`: Average degree of a2,3-linked sialylation per galactose within tri-antennary glycans
+#' - `A4GL`: Average degree of a2,3-linked sialylation per galactose within tetra-antennary glycans
+#'
+#' @inheritSection basic_traits Usage of sialic acid linkage traits
+#' @inheritParams basic_traits
 #' @returns
 #' A named list of derived traits.
 #'
@@ -128,7 +188,8 @@ basic_traits <- function() {
 #' all_traits()
 #'
 #' @export
-all_traits <- function() {
+all_traits <- function(sia_link = FALSE) {
+  checkmate::assert_flag(sia_link)
   additional_traits <- list(
 
     # ===== Advanced Fucosylation Traits =====
@@ -252,8 +313,48 @@ all_traits <- function() {
     A4GS = wmean(nS / nG, within = (nA == 4))
   )
 
-  c(basic_traits(), additional_traits)
+  traits <- c(suppressMessages(basic_traits(sia_link)), additional_traits)
+
+  if (sia_link) {
+    cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?all_traits} for details.")
+    sia_traits <- list(
+      # Average degree of a2,6-linked sialylation per antenna within mono-antennary glycans
+      A1E = wmean(nE / nA, within = (nA == 1)),
+      # Average degree of a2,6-linked sialylation per antenna within bi-antennary glycans
+      A2E = wmean(nE / nA, within = (nA == 2)),
+      # Average degree of a2,6-linked sialylation per antenna within tri-antennary glycans
+      A3E = wmean(nE / nA, within = (nA == 3)),
+      # Average degree of a2,6-linked sialylation per antenna within tetra-antennary glycans
+      A4E = wmean(nE / nA, within = (nA == 4)),
+      # Average degree of a2,3-linked sialylation per antenna within mono-antennary glycans
+      A1L = wmean(nL / nA, within = (nA == 1)),
+      # Average degree of a2,3-linked sialylation per antenna within bi-antennary glycans
+      A2L = wmean(nL / nA, within = (nA == 2)),
+      # Average degree of a2,3-linked sialylation per antenna within tri-antennary glycans
+      A3L = wmean(nL / nA, within = (nA == 3)),
+      # Average degree of a2,3-linked sialylation per antenna within tetra-antennary glycans
+      A4L = wmean(nL / nA, within = (nA == 4)),
+      # Average degree of a2,6-linked sialylation per galactose within mono-antennary glycans
+      A1GE = wmean(nE / nG, within = (nA == 1)),
+      # Average degree of a2,6-linked sialylation per galactose within bi-antennary glycans
+      A2GE = wmean(nE / nG, within = (nA == 2)),
+      # Average degree of a2,6-linked sialylation per galactose within tri-antennary glycans
+      A3GE = wmean(nE / nG, within = (nA == 3)),
+      # Average degree of a2,6-linked sialylation per galactose within tetra-antennary glycans
+      A4GE = wmean(nE / nG, within = (nA == 4)),
+      # Average degree of a2,3-linked sialylation per galactose within mono-antennary glycans
+      A1GL = wmean(nL / nG, within = (nA == 1)),
+      # Average degree of a2,3-linked sialylation per galactose within bi-antennary glycans
+      A2GL = wmean(nL / nG, within = (nA == 2)),
+      # Average degree of a2,3-linked sialylation per galactose within tri-antennary glycans
+      A3GL = wmean(nL / nG, within = (nA == 3)),
+      # Average degree of a2,3-linked sialylation per galactose within tetra-antennary glycans
+      A4GL = wmean(nL / nG, within = (nA == 4))
+    )
+    traits <- c(traits, sia_traits)
+  }
+  traits
 }
 
 # To avoid note about global variables in R CMD check
-Tp <- nM <- nA <- nF <- nFc <- nFa <- nG <- nS <- nGt <- nT <- B <- NULL
+Tp <- nM <- nA <- nF <- nFc <- nFa <- nG <- nS <- nE <- nL <- nGt <- nT <- B <- NULL

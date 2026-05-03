@@ -1,5 +1,9 @@
 # glydet (development version)
 
+## New features
+
+* `basic_traits()` and `all_traits()` now support an optional `sia_link` parameter. When set to `TRUE`, additional sialic acid linkage traits are included: `GE`, `GL`, `TE`, `TL` (in `basic_traits()`), and `A1E`–`A4E`, `A1L`–`A4L`, `A1GE`–`A4GE`, `A1GL`–`A4GL` (in `all_traits()`). These traits require `nE` and `nL` columns in `var_info` (#9).
+
 ## Minor improvements and bug fixes
 
 * `make_trait()` and AI-enabled `explain_trait()` now support configurable `ellmer` providers, including OpenAI, Anthropic, Gemini, OpenRouter, and OpenAI-compatible endpoints, with `glydet.ai_*` package options for session defaults (#14).
