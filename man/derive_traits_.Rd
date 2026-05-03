@@ -34,7 +34,7 @@ That is the quantification of each glycan structure on each glycosite in each sa
 
 \item{trait_fns}{A named list of derived trait functions created by trait factories.
 Names of the list are the names of the derived traits.
-Default is \code{NULL}, which means all derived traits in \code{\link[=basic_traits]{basic_traits()}} are calculated.}
+Default is \code{NULL}, which means all derived traits in \code{\link[=traits_basic]{traits_basic()}} are calculated.}
 
 \item{mp_fns}{A named list of meta-property functions.
 This parameter is useful if your trait functions use custom meta-properties
@@ -79,5 +79,5 @@ traits
 
 }
 \seealso{
-\code{\link[=derive_traits]{derive_traits()}}, \code{\link[=basic_traits]{basic_traits()}}, \code{\link[=all_traits]{all_traits()}}
+\code{\link[=derive_traits]{derive_traits()}}, \code{\link[=traits_basic]{traits_basic()}}, \code{\link[=traits_detailed]{traits_detailed()}}
 }

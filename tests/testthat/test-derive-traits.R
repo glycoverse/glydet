@@ -360,7 +360,7 @@ test_that("derive_traits works with default traits", {
   trait_exp <- derive_traits(exp)
 
   # Test var_info
-  expect_setequal(trait_exp$var_info$trait, names(basic_traits()))
+  expect_setequal(trait_exp$var_info$trait, names(traits_basic()))
 })
 
 test_that("derive_traits works with all traits", {
@@ -386,11 +386,11 @@ test_that("derive_traits works with all traits", {
   exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
 
   # Calculate derived traits
-  trait_exp <- derive_traits(exp, trait_fns = all_traits())
+  trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
 
   # Test var_info
-  expect_setequal(trait_exp$var_info$trait, names(all_traits()))
-  expect_true(all(names(basic_traits()) %in% names(all_traits())))
+  expect_setequal(trait_exp$var_info$trait, names(traits_detailed()))
+  expect_true(all(names(traits_basic()) %in% names(traits_detailed())))
 })
 
 test_that("derive_traits keeps glycosite descriptive columns in var_info", {
@@ -566,7 +566,7 @@ test_that("derive_traits_ works with default traits", {
     value = c(1, 0, 1, 1, 1, 1, 1, 1, 0)
   )
   trait_tbl <- derive_traits_(tbl, "glycomics")
-  expect_setequal(trait_tbl$trait, names(basic_traits()))
+  expect_setequal(trait_tbl$trait, names(traits_basic()))
 })
 
 test_that("derive_traits raises error for empty trait_fns", {

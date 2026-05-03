@@ -33,8 +33,8 @@
 #'
 #' @examples
 #' # Explain built-in traits
-#' explain_trait(basic_traits()$TM)
-#' explain_trait(basic_traits()$GS)
+#' explain_trait(traits_basic()$TM)
+#' explain_trait(traits_basic()$GS)
 #'
 #' # Explain custom traits
 #' explain_trait(prop(nFc > 0))
