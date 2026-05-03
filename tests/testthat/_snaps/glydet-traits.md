@@ -1,16 +1,16 @@
-# basic_traits() with sia_link = TRUE works
+# traits_basic() with sia_link = TRUE works
 
     Code
-      traits <- basic_traits(sia_link = TRUE)
+      traits <- traits_basic(sia_link = TRUE)
     Message
-      i Please ensure that nE and nL are in var_info. See `?basic_traits` for details.
+      i Please ensure that nE and nL are in var_info. See `?traits_basic` for details.
 
-# all_traits() with sia_link = TRUE works
+# traits_detailed() with sia_link = TRUE works
 
     Code
-      traits <- all_traits(sia_link = TRUE)
+      traits <- traits_detailed(sia_link = TRUE)
     Message
-      i Please ensure that nE and nL are in var_info. See `?all_traits` for details.
+      i Please ensure that nE and nL are in var_info. See `?traits_detailed` for details.
 
 # traits_clerc_2018() with sia_link = TRUE works
 

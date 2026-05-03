@@ -16,7 +16,7 @@
 #'   or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
 #' @param trait_fns A named list of derived trait functions created by trait factories.
 #'   Names of the list are the names of the derived traits.
-#'   Default is `NULL`, which means all derived traits in [basic_traits()] are calculated.
+#'   Default is `NULL`, which means all derived traits in [traits_basic()] are calculated.
 #' @param mp_fns A named list of meta-property functions.
 #'   This parameter is useful if your trait functions use custom meta-properties
 #'   other than those in [all_mp_fns()].
@@ -68,19 +68,19 @@
 #' trait_exp
 #'
 #' # By default, only basic traits are calculated
-#' names(basic_traits())
+#' names(traits_basic())
 #'
-#' # You can calculate all traits in `all_traits()`
-#' more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
+#' # You can calculate detailed traits in `traits_detailed()`
+#' more_trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
 #' more_trait_exp
 #'
-#' @seealso [basic_traits()], [all_traits()]
+#' @seealso [traits_basic()], [traits_detailed()]
 #'
 #' @export
 derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) {
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
-    trait_fns <- basic_traits()
+    trait_fns <- traits_basic()
   } else {
     if (length(trait_fns) == 0) {
       cli::cli_abort(c(
@@ -94,7 +94,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
       "{.arg trait_fns} must be a non-empty named list or NULL.",
       "x" = "Got a list with no names.",
       "i" = "Please add names to the list as the names of the derived traits.",
-      "i" = "Call {.fn basic_traits} to see an example."
+      "i" = "Call {.fn traits_basic} to see an example."
     ))
   }
   checkmate::assert_character(mp_cols, null.ok = TRUE)
@@ -110,7 +110,7 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
   }
 
   if (is.null(trait_fns)) {
-    trait_fns <- basic_traits()
+    trait_fns <- traits_basic()
   }
   if (is.null(mp_fns)) {
     mp_fns <- all_mp_fns()
@@ -192,12 +192,12 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
 #' traits <- derive_traits_(tidy_data, data_type = "glycomics")
 #' traits
 #'
-#' @seealso [derive_traits()], [basic_traits()], [all_traits()]
+#' @seealso [derive_traits()], [traits_basic()], [traits_detailed()]
 #'
 #' @export
 derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   if (is.null(trait_fns)) {
-    trait_fns <- basic_traits()
+    trait_fns <- traits_basic()
   } else {
     if (length(trait_fns) == 0) {
       cli::cli_abort(c(
@@ -211,7 +211,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
       "{.arg trait_fns} must be a non-empty named list or NULL.",
       "x" = "Got a list with no names.",
       "i" = "Please add names to the list as the names of the derived traits.",
-      "i" = "Call {.fn basic_traits} to see an example."
+      "i" = "Call {.fn traits_basic} to see an example."
     ))
   }
 
