@@ -11,7 +11,7 @@ A named list of derived traits.
 }
 \description{
 These traits are the ones used by Fu et al. 2026 (https://doi.org/10.1038/s41467-026-68579-x).
-It is much like \code{traits_detailed()}, but doesn't differentiate core- and arm-fucosylation,
+It is much like \code{all_traits()}, but doesn't differentiate core- and arm-fucosylation,
 and doesn't include the sialic acid linkage traits.
 Also, many traits are too specific to be useful and interpretable.
 }

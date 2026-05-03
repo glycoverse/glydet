@@ -50,10 +50,10 @@
 #' A named list of derived traits.
 #'
 #' @examples
-#' traits_basic()
+#' basic_traits()
 #'
 #' @export
-traits_basic <- function(sia_link = FALSE) {
+basic_traits <- function(sia_link = FALSE) {
   checkmate::assert_flag(sia_link)
   traits <- list(
     # Proportion of highmannose glycans
@@ -86,7 +86,7 @@ traits_basic <- function(sia_link = FALSE) {
     TS = prop(nS > 0)
   )
   if (sia_link) {
-    .inform_sia_link("traits_basic")
+    .inform_sia_link("basic_traits")
     sia_traits <- list(
       # Average degree of a2,6-linked sialylation per galactose
       GE = wmean(nE / nG),
@@ -102,16 +102,10 @@ traits_basic <- function(sia_link = FALSE) {
   traits
 }
 
-#' @rdname traits_basic
-#' @export
-basic_traits <- function(sia_link = FALSE) {
-  traits_basic(sia_link = sia_link)
-}
-
-#' Get Detailed Derived Traits
+#' Get All Derived Traits
 #'
-#' This function returns a named list of detailed derived traits.
-#' Compared to [traits_basic()], this function includes derived traits with more
+#' This function returns a named list of all derived traits.
+#' Compared to [basic_traits()], this function includes derived traits with more
 #' detailed `within` conditions.
 #'
 #' @details
@@ -185,16 +179,16 @@ basic_traits <- function(sia_link = FALSE) {
 #' - `A3GL`: Average degree of a2,3-linked sialylation per galactose within tri-antennary glycans
 #' - `A4GL`: Average degree of a2,3-linked sialylation per galactose within tetra-antennary glycans
 #'
-#' @inheritSection traits_basic Usage of sialic acid linkage traits
-#' @inheritParams traits_basic
+#' @inheritSection basic_traits Usage of sialic acid linkage traits
+#' @inheritParams basic_traits
 #' @returns
 #' A named list of derived traits.
 #'
 #' @examples
-#' traits_detailed()
+#' all_traits()
 #'
 #' @export
-traits_detailed <- function(sia_link = FALSE) {
+all_traits <- function(sia_link = FALSE) {
   checkmate::assert_flag(sia_link)
   additional_traits <- list(
 
@@ -319,10 +313,10 @@ traits_detailed <- function(sia_link = FALSE) {
     A4GS = wmean(nS / nG, within = (nA == 4))
   )
 
-  traits <- c(suppressMessages(traits_basic(sia_link)), additional_traits)
+  traits <- c(suppressMessages(basic_traits(sia_link)), additional_traits)
 
   if (sia_link) {
-    .inform_sia_link("traits_detailed")
+    .inform_sia_link("all_traits")
     sia_traits <- list(
       # Average degree of a2,6-linked sialylation per antenna within mono-antennary glycans
       A1E = wmean(nE / nA, within = (nA == 1)),
@@ -362,12 +356,6 @@ traits_detailed <- function(sia_link = FALSE) {
   traits
 }
 
-#' @rdname traits_detailed
-#' @export
-all_traits <- function(sia_link = FALSE) {
-  traits_detailed(sia_link = sia_link)
-}
-
 #' Get Traits in Clerc et al. 2018
 #'
 #' These traits are the ones used by Clerc et al. 2018 (https://doi.org/10.1053/j.gastro.2018.05.030).
@@ -375,9 +363,9 @@ all_traits <- function(sia_link = FALSE) {
 #' or missing some important traits.
 #' We include this function because this paper is very influential in the field.
 #'
-#' @inheritSection traits_basic Usage of sialic acid linkage traits
+#' @inheritSection basic_traits Usage of sialic acid linkage traits
 #'
-#' @inheritParams traits_basic
+#' @inheritParams basic_traits
 #' @returns A named list of derived traits.
 #' @examples
 #' traits_clerc_2018()[1:5]
@@ -476,7 +464,7 @@ traits_clerc_2018 <- function(sia_link = FALSE) {
 #' Get Traits in Fu et al. 2026
 #'
 #' These traits are the ones used by Fu et al. 2026 (https://doi.org/10.1038/s41467-026-68579-x).
-#' It is much like `traits_detailed()`, but doesn't differentiate core- and arm-fucosylation,
+#' It is much like `all_traits()`, but doesn't differentiate core- and arm-fucosylation,
 #' and doesn't include the sialic acid linkage traits.
 #' Also, many traits are too specific to be useful and interpretable.
 #'

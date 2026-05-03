@@ -1,58 +1,58 @@
 test_that("explain_trait works for proportion traits", {
-  # Basic proportion traits from traits_detailed()
+  # Basic proportion traits from all_traits()
   expect_equal(
-    explain_trait(traits_detailed()$TM),
+    explain_trait(all_traits()$TM),
     "Proportion of high-mannose glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TH),
+    explain_trait(all_traits()$TH),
     "Proportion of hybrid glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TC),
+    explain_trait(all_traits()$TC),
     "Proportion of complex glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TF),
+    explain_trait(all_traits()$TF),
     "Proportion of fucosylated glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TFc),
+    explain_trait(all_traits()$TFc),
     "Proportion of core-fucosylated glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TFa),
+    explain_trait(all_traits()$TFa),
     "Proportion of arm-fucosylated glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TS),
+    explain_trait(all_traits()$TS),
     "Proportion of sialylated glycans among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$TB),
+    explain_trait(all_traits()$TB),
     "Proportion of glycans with bisecting GlcNAc among all glycans."
   )
   
   # Proportion traits with within condition
   expect_equal(
-    explain_trait(traits_detailed()$CA2),
+    explain_trait(all_traits()$CA2),
     "Proportion of bi-antennary glycans within complex glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$CA3),
+    explain_trait(all_traits()$CA3),
     "Proportion of tri-antennary glycans within complex glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$CA4),
+    explain_trait(all_traits()$CA4),
     "Proportion of tetra-antennary glycans within complex glycans."
   )
 })
@@ -115,19 +115,19 @@ test_that("explain_trait works for ratio traits", {
 })
 
 test_that("explain_trait works for weighted-mean traits", {
-  # Basic weighted means from traits_detailed()
+  # Basic weighted means from all_traits()
   expect_equal(
-    explain_trait(traits_detailed()$MM),
+    explain_trait(all_traits()$MM),
     "Abundance-weighted mean of mannose count within high-mannose glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$GS),
+    explain_trait(all_traits()$GS),
     "Abundance-weighted mean of degree of sialylation per galactose among all glycans."
   )
   
   expect_equal(
-    explain_trait(traits_detailed()$AG),
+    explain_trait(all_traits()$AG),
     "Abundance-weighted mean of degree of galactosylation per antenna among all glycans."
   )
   
