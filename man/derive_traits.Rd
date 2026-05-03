@@ -18,7 +18,7 @@ or a character vector of glycan structure strings supported by \code{glyparse::a
 
 \item{trait_fns}{A named list of derived trait functions created by trait factories.
 Names of the list are the names of the derived traits.
-Default is \code{NULL}, which means all derived traits in \code{\link[=traits_basic]{traits_basic()}} are calculated.}
+Default is \code{NULL}, which means all derived traits in \code{\link[=basic_traits]{basic_traits()}} are calculated.}
 
 \item{mp_fns}{A named list of meta-property functions.
 This parameter is useful if your trait functions use custom meta-properties
@@ -82,13 +82,13 @@ trait_exp <- derive_traits(exp)
 trait_exp
 
 # By default, only basic traits are calculated
-names(traits_basic())
+names(basic_traits())
 
-# You can calculate detailed traits in `traits_detailed()`
-more_trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
+# You can calculate all traits in `all_traits()`
+more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
 more_trait_exp
 
 }
 \seealso{
-\code{\link[=traits_basic]{traits_basic()}}, \code{\link[=traits_detailed]{traits_detailed()}}
+\code{\link[=basic_traits]{basic_traits()}}, \code{\link[=all_traits]{all_traits()}}
 }
