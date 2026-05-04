@@ -2,6 +2,8 @@
 
 ## glydet (development version)
 
+## glydet 0.11.0
+
 ### New features
 
 - [`traits_basic()`](https://glycoverse.github.io/glydet/dev/reference/traits_basic.md)
@@ -47,6 +49,7 @@
   core functionality of `glydet` on a glycomics dataset, then apply it
   to a glycoproteomics dataset, to provide a more gradual learning curve
   for new users (#8).
+- Fix lifecycle badge rendering in the reference site.
 
 ## glydet 0.10.4
 

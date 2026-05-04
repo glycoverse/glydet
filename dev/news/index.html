@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.10.4.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.11.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,20 +38,24 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glydet-development-version">glydet (development version)<a class="anchor" aria-label="anchor" href="#glydet-development-version"></a></h2>
+</div>
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.11.0" id="glydet-0110">glydet 0.11.0<a class="anchor" aria-label="anchor" href="#glydet-0110"></a></h2>
 <div class="section level3">
-<h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
+<h3 id="new-features-0-11-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-11-0"></a></h3>
 <ul><li>
 <code><a href="../reference/traits_basic.html">traits_basic()</a></code> and <code><a href="../reference/traits_detailed.html">traits_detailed()</a></code> now support an optional <code>sia_link</code> parameter. When set to <code>TRUE</code>, additional sialic acid linkage traits are included: <code>GE</code>, <code>GL</code>, <code>TE</code>, <code>TL</code> (in <code><a href="../reference/traits_basic.html">traits_basic()</a></code>), and <code>A1E</code>–<code>A4E</code>, <code>A1L</code>–<code>A4L</code>, <code>A1GE</code>–<code>A4GE</code>, <code>A1GL</code>–<code>A4GL</code> (in <code><a href="../reference/traits_detailed.html">traits_detailed()</a></code>). These traits require <code>nE</code> and <code>nL</code> columns in <code>var_info</code> (#15).</li>
 <li>Add <code><a href="../reference/traits_clerc_2018.html">traits_clerc_2018()</a></code>, <code><a href="../reference/traits_li_2025.html">traits_li_2025()</a></code>, and <code><a href="../reference/traits_fu_2026.html">traits_fu_2026()</a></code> as new sets of built-in traits (#16).</li>
 <li>Add <code><a href="../reference/traits_basic.html">traits_basic()</a></code> and <code><a href="../reference/traits_detailed.html">traits_detailed()</a></code> as the preferred names for built-in trait sets. <code><a href="../reference/traits_basic.html">basic_traits()</a></code> and <code><a href="../reference/traits_detailed.html">all_traits()</a></code> remain available as compatibility aliases (#17).</li>
 </ul></div>
 <div class="section level3">
-<h3 id="minor-improvements-and-bug-fixes-development-version">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-development-version"></a></h3>
+<h3 id="minor-improvements-and-bug-fixes-0-11-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-11-0"></a></h3>
 <ul><li>
 <code><a href="../reference/make_trait.html">make_trait()</a></code> and AI-enabled <code><a href="../reference/explain_trait.html">explain_trait()</a></code> now support configurable <code>ellmer</code> providers, including OpenAI, Anthropic, Gemini, OpenRouter, and OpenAI-compatible endpoints, with <code>glydet.ai_*</code> package options for session defaults (#14).</li>
 <li>
 <code><a href="../reference/derive_traits.html">derive_traits()</a></code> can now use columns in <code>var_info</code> as meta-properties without specifying <code>mp_cols</code>. Built-in meta-properties keep precedence by default; use <code>mp_cols</code> when columns need renaming or explicit overrides (#12).</li>
 <li>Rewrite the “Get Started with glydet” vignette to first introduce the core functionality of <code>glydet</code> on a glycomics dataset, then apply it to a glycoproteomics dataset, to provide a more gradual learning curve for new users (#8).</li>
+<li>Fix lifecycle badge rendering in the reference site.</li>
 </ul></div>
 </div>
     <div class="section level2">
