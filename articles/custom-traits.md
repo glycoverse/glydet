@@ -14,6 +14,7 @@ natural language. Check out the last section of this vignette for
 details.
 
 ``` r
+
 library(dplyr)
 library(glydet)
 library(glyexp)
@@ -67,18 +68,18 @@ meta-properties, use `names(all_mp_fns())`.
 
 The complete list of built-in meta-properties is provided below:
 
-| Name  | Function                                                                             | Type    | Description                                                                      |
-|-------|--------------------------------------------------------------------------------------|---------|----------------------------------------------------------------------------------|
-| `Tp`  | [`n_glycan_type()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)  | factor  | Type of the glycan, either “complex”, “hybrid”, “highmannose”, or “pausimannose” |
-| `B`   | [`has_bisecting()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)  | logical | Whether the glycan has a bisecting GlcNAc                                        |
-| `nA`  | [`n_antennae()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)     | integer | Number of antennae                                                               |
-| `nF`  | [`n_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)          | integer | Number of fucoses                                                                |
-| `nFc` | [`n_core_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)     | integer | Number of core fucoses                                                           |
-| `nFa` | [`n_arm_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)      | integer | Number of arm fucoses                                                            |
-| `nG`  | [`n_gal()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)          | integer | Number of galactoses                                                             |
-| `nGt` | [`n_terminal_gal()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of terminal galactoses                                                    |
-| `nS`  | [`n_sia()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)          | integer | Number of sialic acids                                                           |
-| `nM`  | [`n_man()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md)          | integer | Number of mannoses                                                               |
+| Name | Function | Type | Description |
+|----|----|----|----|
+| `Tp` | [`n_glycan_type()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | factor | Type of the glycan, either “complex”, “hybrid”, “highmannose”, or “pausimannose” |
+| `B` | [`has_bisecting()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | logical | Whether the glycan has a bisecting GlcNAc |
+| `nA` | [`n_antennae()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of antennae |
+| `nF` | [`n_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of fucoses |
+| `nFc` | [`n_core_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of core fucoses |
+| `nFa` | [`n_arm_fuc()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of arm fucoses |
+| `nG` | [`n_gal()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of galactoses |
+| `nGt` | [`n_terminal_gal()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of terminal galactoses |
+| `nS` | [`n_sia()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of sialic acids |
+| `nM` | [`n_man()`](https://glycoverse.github.io/glydet/reference/n_glycan_type.md) | integer | Number of mannoses |
 
 The following sections provide detailed explanations of each factory
 function.
@@ -103,6 +104,7 @@ For example, the proportion of core-fucosylated glycans within all
 glycans is defined as:
 
 ``` r
+
 prop(nFc > 0)
 #> prop(nFc > 0, na_action = "keep")
 ```
@@ -114,6 +116,7 @@ creating a valid trait definition.
 Consider this simpler example:
 
 ``` r
+
 prop(B)
 #> prop(B, na_action = "keep")
 ```
@@ -125,6 +128,7 @@ This demonstrates a straightforward trait definition. Since `B`
 A more complex example demonstrates compound logical operations:
 
 ``` r
+
 prop(nS > 0 & nFa > 0)
 #> prop(nS > 0 & nFa > 0, na_action = "keep")
 ```
@@ -139,6 +143,7 @@ Arithmetic calculations can also be incorporated within expressions. For
 example, the `CF` trait is defined as:
 
 ``` r
+
 prop(nF > 0)
 #> prop(nF > 0, na_action = "keep")
 ```
@@ -147,6 +152,7 @@ We know that `nFc + nFa` is equivalent to `nF`, so the above definition
 is equivalent to:
 
 ``` r
+
 prop((nFc + nFa) > 0)
 #> prop((nFc + nFa) > 0, na_action = "keep")
 ```
@@ -167,6 +173,7 @@ vector, following the same syntax as the primary parameter.
 The `CA2` trait is defined as follows:
 
 ``` r
+
 prop(nA == 2, within = (Tp == "complex"))
 #> prop(nA == 2, within = (Tp == "complex"), na_action = "keep")
 ```
@@ -175,6 +182,7 @@ Note that parentheses around `Tp == "complex"` are optional.
 Consequently, this alternative definition is equally valid:
 
 ``` r
+
 prop(nA == 2, within = Tp == "complex")
 #> prop(nA == 2, within = (Tp == "complex"), na_action = "keep")
 ```
@@ -185,6 +193,7 @@ within the subset of core-fucosylated tetra-antennary glycans is defined
 as:
 
 ``` r
+
 prop(nS > 0, within = (nFc > 0 & nA == 4))
 #> prop(nS > 0, within = (nFc > 0 & nA == 4), na_action = "keep")
 ```
@@ -221,6 +230,7 @@ accepts two expressions that evaluate to logical vectors, similar to
 For example, the ratio of complex to hybrid glycans is defined as:
 
 ``` r
+
 ratio(Tp == "complex", Tp == "hybrid")
 #> ratio(Tp == "complex", Tp == "hybrid", na_action = "keep")
 ```
@@ -233,6 +243,7 @@ numerator and denominator. For example, the ratio of bisecting to
 non-bisecting glycans within the bi-antennary subset is defined as:
 
 ``` r
+
 ratio(B, !B, within = (nA == 2))
 #> ratio(B, !B, within = (nA == 2), na_action = "keep")
 ```
@@ -240,6 +251,7 @@ ratio(B, !B, within = (nA == 2))
 This represents syntactic sugar for the more verbose:
 
 ``` r
+
 ratio(B & (nA == 2), (!B) & (nA == 2))
 #> ratio(B & (nA == 2), (!B) & (nA == 2), na_action = "keep")
 ```
@@ -256,6 +268,7 @@ where `prop(cond, within)` is mathematically equivalent to
 functionally identical:
 
 ``` r
+
 # using prop()
 prop(nFc > 0, within = (Tp == "complex"))
 #> prop(nFc > 0, within = (Tp == "complex"), na_action = "keep")
@@ -303,6 +316,7 @@ counts are 1, 2, and 3, with relative abundances of 50%, 20%, and 30%.
 The weighted-mean number of antennae is calculated as:
 
 ``` r
+
 (1 * 0.5 + 2 * 0.2 + 3 * 0.3) / (0.5 + 0.2 + 0.3)
 #> [1] 1.8
 ```
@@ -322,6 +336,7 @@ First, calculate the sialylation degree per antenna for each glycan
 (sialic acid count divided by antenna count):
 
 ``` r
+
 c(1/1, 1/2, 3/3)
 #> [1] 1.0 0.5 1.0
 ```
@@ -329,6 +344,7 @@ c(1/1, 1/2, 3/3)
 Subsequently, incorporate the abundance weighting:
 
 ``` r
+
 (1/1 * 0.5 + 1/2 * 0.2 + 3/3 * 0.3) / (0.5 + 0.2 + 0.3)
 #> [1] 0.9
 ```
@@ -353,6 +369,7 @@ For example, the average number of antennae across all glycans is
 defined as:
 
 ``` r
+
 wmean(nA)
 #> wmean(nA, na_action = "keep")
 ```
@@ -361,6 +378,7 @@ The average degree of sialylation per antenna across all glycans is
 defined as:
 
 ``` r
+
 wmean(nS / nA)
 #> wmean(nS/nA, na_action = "keep")
 ```
@@ -370,6 +388,7 @@ calculation to specific glycan subsets. For example, the average number
 of antennae within complex glycans is defined as:
 
 ``` r
+
 wmean(nA, within = (Tp == "complex"))
 #> wmean(nA, within = (Tp == "complex"), na_action = "keep")
 ```
@@ -390,6 +409,7 @@ group of glycans. This is the simplest type of derived traits in
 For example, the total abundance of all complex glycans is defined as:
 
 ``` r
+
 total(Tp == "complex")
 #> total(Tp == "complex")
 ```
@@ -399,6 +419,7 @@ There is no `within` parameter for
 you can always add a restriction to the expression by using `&`.
 
 ``` r
+
 total(Tp == "complex" & nA == 4)
 #> total(Tp == "complex" & nA == 4)
 ```
@@ -421,6 +442,7 @@ we have three glycans: `G1`, `G2`, and `G3` in two samples: `S1` and
 - Sample S2: `G1` (20), `G2` (40), `G3` (60) (intensity values)
 
 ``` r
+
 expr_mat <- matrix(c(10, 20, 30, 20, 40, 60), nrow = 3)
 rownames(expr_mat) <- c("G1", "G2", "G3")
 colnames(expr_mat) <- c("S1", "S2")
@@ -435,12 +457,14 @@ For simplicity, we don’t use any meta-properties here, just the number
 1.
 
 ``` r
+
 trait1 <- wmean(1)
 trait1(expr_mat, tibble::tibble())
 #> [1] 1 1
 ```
 
 ``` r
+
 trait2 <- wsum(1)
 trait2(expr_mat, tibble::tibble())
 #> [1]  60 120
@@ -464,6 +488,7 @@ trait functions. Note that the three factory functions described above
 return functions as their output.
 
 ``` r
+
 class(prop(nFc > 0))
 #> [1] "glydet_prop"  "glydet_trait"
 ```
@@ -480,6 +505,7 @@ The following example examines sialylation degree within glycan subsets
 of varying antenna counts:
 
 ``` r
+
 my_traits <- list(
   A2S = wmean(nS / nA, within = (nA == 2)),
   A3S = wmean(nS / nA, within = (nA == 3)),
@@ -499,7 +525,7 @@ names.
 When `trait_fns` is omitted,
 [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
 internally invokes
-[`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md)
+[`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
 to utilize built-in trait functions.
 
 ### Validating Trait Definitions
@@ -519,6 +545,7 @@ This function helps you:
 Let’s examine the `A2S` trait defined earlier as an example:
 
 ``` r
+
 explain_trait(wmean(nS / nA, within = (nA == 2)))
 #> [1] "Abundance-weighted mean of degree of sialylation per antenna within bi-antennary glycans."
 ```
@@ -533,8 +560,14 @@ We have introduced a new argument `use_ai` to
 [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
 since glydet 0.7.0. If `use_ai` is TRUE, the function will use a Large
 Language Model (LLM) to explain the trait, which covers more complex
-cases and edge cases. Check out the documentation of
+cases and edge cases. You can pass the same AI configuration arguments
+used by
+[`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md),
+such as `provider`, `model`, `api_key`, and `base_url`. Check out the
+documentation of
 [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+and
+[`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
 for details.
 
 ## Custom Meta-Properties
@@ -559,6 +592,7 @@ vector and return a vector of corresponding meta-property values.
 For example, the built-in meta-property `B` is defined as follows:
 
 ``` r
+
 # Simplified version for illustration purposes
 function(glycans) {
   motif <- "HexNAc(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"
@@ -581,6 +615,7 @@ documentation](https://glycoverse.github.io/glymotif/).
 The following example demonstrates custom meta-property creation:
 
 ``` r
+
 my_mp_fns <- list(
   # Number of Lewis antigens
   nLe = ~ glymotif::count_motif(.x, "Hex(??-?)[dHex(??-?)]HexNAc(??-"),
@@ -595,6 +630,7 @@ meta-property function definitions.
 Traits can be defined using these new meta-properties:
 
 ``` r
+
 my_traits <- list(
   # Average number of Lewis antigens per antenna
   LeA = wmean(nLe / nA),
@@ -610,6 +646,7 @@ Implementation of these custom meta-properties and traits proceeds as
 follows:
 
 ``` r
+
 derive_traits(exp, trait_fns = my_traits, mp_fns = c(my_mp_fns, all_mp_fns()))
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
@@ -627,6 +664,7 @@ custom meta-properties to count the number of sialic acids with each
 linkage type:
 
 ``` r
+
 sia_mp_fns <- list(
   # Number of a2-3 sialic acids
   nL = ~ glymotif::count_motif(.x, "NeuAc(a2-3)Hex(??-"),
@@ -639,6 +677,7 @@ And define two traits to calculate the degree of a2-3 and a2-6
 sialylation per galactose:
 
 ``` r
+
 sia_traits <- list(
   # Average degree of a2-3 sialylation per galactose
   GL = wmean(nL / nG),
@@ -650,6 +689,7 @@ sia_traits <- list(
 And calculate the traits:
 
 ``` r
+
 derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
@@ -668,8 +708,7 @@ sophisticated and linkage-awared meta-properties.
 The first method is handy if all information you need is already encoded
 in glycan structures. However, there are situations that you need to
 rely on other meta-data. In this case, you can use columns in the
-variable information tibble as meta-properties directly, by specifying
-the `mp_cols` parameter.
+variable information tibble as meta-properties directly.
 
 For example, let’s use the sialic acid linkage type example above. You
 might have used special derivatization methods to differentiate the two
@@ -677,6 +716,7 @@ linkage types. This information might end up in a column in the variable
 information tibble, not directly in the glycan structures.
 
 ``` r
+
 # Here we assume all sialic acids are a2-6
 exp2 <- exp |>
   mutate_var(
@@ -686,6 +726,7 @@ exp2 <- exp |>
 ```
 
 ``` r
+
 exp2 |>
   get_var_info() |>
   filter(n_a26_sia > 0) |>
@@ -713,6 +754,7 @@ Now we can define two traits to calculate the degree of a2-3 and a2-6
 sialylation per galactose:
 
 ``` r
+
 sia_traits <- list(
   # Average degree of a2-3 sialylation per galactose
   GL = wmean(nL / nG),
@@ -721,11 +763,30 @@ sia_traits <- list(
 )
 ```
 
-And use `mp_cols` to tell
+If the column names match the meta-property names used in the trait
+definitions,
 [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
-to use these columns as meta-properties:
+can use them directly:
 
 ``` r
+
+exp3 <- exp2 |>
+  rename_var(nE = n_a26_sia, nL = n_a23_sia)
+
+derive_traits(exp3, trait_fns = sia_traits)
+#> 
+#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
+#> ℹ Expression matrix: 12 samples, 552 variables
+#> ℹ Sample information fields: group <fct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, nL <int>, explanation <chr>
+```
+
+If you want to use different column names in `var_info`, use `mp_cols`
+to map those columns to the meta-property names in the trait
+definitions:
+
+``` r
+
 derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
@@ -734,25 +795,59 @@ derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, n_a23_sia <int>, explanation <chr>
 ```
 
+When `mp_cols` is omitted, built-in meta-properties take precedence over
+`var_info` columns with the same names. Use `mp_cols` only when you
+intentionally want selected columns to rename or overwrite
+meta-properties.
+
 ## Using `make_trait()`
 
 [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
 allows you to create a trait from natural language. To use this feature,
 you need to install the `ellmer` package (not a forced dependency of
-`glydet`). You also need to provide an API key for the DeepSeek chat
-model. You can obtain an API key from <https://platform.deepseek.com>.
-Please set the environment variable `DEEPSEEK_API_KEY` to your API key
-using [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html):
+`glydet`). DeepSeek is used by default for backward compatibility. You
+can obtain a DeepSeek API key from <https://platform.deepseek.com> and
+set it with [`Sys.setenv()`](https://rdrr.io/r/base/Sys.setenv.html):
 
 ``` r
+
 # Works for a single session
 Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
 ```
+
+You can also use other `ellmer` providers by passing provider settings
+directly:
+
+``` r
+
+make_trait(
+  "the average number of sialic acids",
+  provider = "openai",
+  model = "gpt-4o-mini",
+  api_key = Sys.getenv("OPENAI_API_KEY")
+)
+```
+
+Or configure defaults once per session:
+
+``` r
+
+options(
+  glydet.ai_provider = "openai",
+  glydet.ai_model = "gpt-4o-mini",
+  glydet.ai_api_key = Sys.getenv("OPENAI_API_KEY")
+)
+```
+
+For OpenAI-compatible endpoints, set `provider = "openai_compatible"`
+and pass `base_url`. For Gemini, use `provider = "gemini"`;
+`provider = "google_gemini"` is also accepted as an alias.
 
 Then you can transform your ideas into trait functions by calling
 [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md):
 
 ``` r
+
 my_traits <- list(
   nS = make_trait("the average number of sialic acids"),
   nG = make_trait("the average number of galactoses")

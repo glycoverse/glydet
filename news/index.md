@@ -1,5 +1,54 @@
 # Changelog
 
+## glydet 0.11.0
+
+### New features
+
+- [`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
+  and
+  [`traits_detailed()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
+  now support an optional `sia_link` parameter. When set to `TRUE`,
+  additional sialic acid linkage traits are included: `GE`, `GL`, `TE`,
+  `TL` (in
+  [`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)),
+  and `A1E`–`A4E`, `A1L`–`A4L`, `A1GE`–`A4GE`, `A1GL`–`A4GL` (in
+  [`traits_detailed()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)).
+  These traits require `nE` and `nL` columns in `var_info` (#15).
+- Add
+  [`traits_clerc_2018()`](https://glycoverse.github.io/glydet/reference/traits_clerc_2018.md),
+  [`traits_li_2025()`](https://glycoverse.github.io/glydet/reference/traits_li_2025.md),
+  and
+  [`traits_fu_2026()`](https://glycoverse.github.io/glydet/reference/traits_fu_2026.md)
+  as new sets of built-in traits (#16).
+- Add
+  [`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
+  and
+  [`traits_detailed()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
+  as the preferred names for built-in trait sets.
+  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
+  and
+  [`all_traits()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
+  remain available as compatibility aliases (#17).
+
+### Minor improvements and bug fixes
+
+- [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+  and AI-enabled
+  [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+  now support configurable `ellmer` providers, including OpenAI,
+  Anthropic, Gemini, OpenRouter, and OpenAI-compatible endpoints, with
+  `glydet.ai_*` package options for session defaults (#14).
+- [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
+  can now use columns in `var_info` as meta-properties without
+  specifying `mp_cols`. Built-in meta-properties keep precedence by
+  default; use `mp_cols` when columns need renaming or explicit
+  overrides (#12).
+- Rewrite the “Get Started with glydet” vignette to first introduce the
+  core functionality of `glydet` on a glycomics dataset, then apply it
+  to a glycoproteomics dataset, to provide a more gradual learning curve
+  for new users (#8).
+- Fix lifecycle badge rendering in the reference site.
+
 ## glydet 0.10.4
 
 ### Minor improvements and bug fixes
@@ -226,16 +275,16 @@ efficiently with less effort.
 ### Breaking changes
 
 - The old
-  [`all_traits()`](https://glycoverse.github.io/glydet/reference/all_traits.md)
+  [`all_traits()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
   is renamed to
-  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md).
+  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/traits_basic.md).
 - A new
-  [`all_traits()`](https://glycoverse.github.io/glydet/reference/all_traits.md)
+  [`all_traits()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
   is added, which includes more advanced derived traits with more
   detailed `within` conditions.
 - [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
   now uses
-  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md)
+  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
   by default.
 - [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
   now returns a
@@ -247,7 +296,7 @@ efficiently with less effort.
 ### Minor improvements and bug fixes
 
 - Introduce the new
-  [`all_traits()`](https://glycoverse.github.io/glydet/reference/all_traits.md)
+  [`all_traits()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
   in the Get Started vignette.
 - Add examples to some functions.
 

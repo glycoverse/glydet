@@ -212,7 +212,7 @@ meta-properties here):
     trait_fns <- list(Lx = wsum(nLx), SLx = wsum(nSLx))
 
     # Calculate the traits
-    derive_traits(exp_with_mps, trait_fns = trait_fns, mp_cols = c("nLx", "nSLx"))
+    derive_traits(exp_with_mps, trait_fns = trait_fns)
 
 The code snippet above is equivalent to:
 

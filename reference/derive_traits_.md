@@ -53,7 +53,7 @@ derive_traits_(tbl, data_type, trait_fns = NULL, mp_fns = NULL)
   A named list of derived trait functions created by trait factories.
   Names of the list are the names of the derived traits. Default is
   `NULL`, which means all derived traits in
-  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md)
+  [`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
   are calculated.
 
 - mp_fns:
@@ -88,8 +88,8 @@ Other columns in the original tibble are not included.
 ## See also
 
 [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md),
-[`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md),
-[`all_traits()`](https://glycoverse.github.io/glydet/reference/all_traits.md)
+[`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md),
+[`traits_detailed()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
 
 ## Examples
 

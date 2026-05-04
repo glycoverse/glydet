@@ -5,6 +5,7 @@ quantification. This powerful feature allows us to measure the abundance
 of biologically meaningful glycan substructures across your samples.
 
 ``` r
+
 library(glydet)
 library(glyexp)
 library(glyclean)
@@ -83,6 +84,7 @@ works beautifully with both glycomics and glycoproteomics data.
 Let’s dive into a practical example:
 
 ``` r
+
 # Define our motifs of interest using IUPAC-condensed format
 motifs <- c(
   Lxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
@@ -100,6 +102,7 @@ motif_exp
 ```
 
 ``` r
+
 get_var_info(motif_exp)
 #> # A tibble: 552 × 6
 #>    variable        protein protein_site motif gene   motif_structure            
@@ -229,6 +232,7 @@ for absolute quantification and
 traits for relative quantification.
 
 ``` r
+
 # First, add the meta-properties to the variable information
 motifs <- c(
   nLxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
@@ -240,12 +244,13 @@ exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
 trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))
 
 # Calculate the traits
-derive_traits(exp_with_mps, trait_fns = trait_fns, mp_cols = c("nLxa", "nSLxa"))
+derive_traits(exp_with_mps, trait_fns = trait_fns)
 ```
 
 This code snippet is functionally equivalent to:
 
 ``` r
+
 # The much simpler approach using quantify_motifs()
 quantify_motifs(exp, motifs, method = "absolute")
 ```

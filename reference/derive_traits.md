@@ -35,7 +35,7 @@ derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
   A named list of derived trait functions created by trait factories.
   Names of the list are the names of the derived traits. Default is
   `NULL`, which means all derived traits in
-  [`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md)
+  [`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md)
   are calculated.
 
 - mp_fns:
@@ -51,11 +51,13 @@ derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
 
   A character vector of column names in the `var_info` tibble to use as
   meta-properties. If names are provided, they will be used as names of
-  the meta-properties, otherwise the column names will be used.
-  Meta-properties specified in `mp_cols` will overwrite those introduced
-  by `mp_fns` with the same names, including the built-in
-  meta-properties. Default is `NULL`, which means no columns are used as
-  meta-properties.
+  the meta-properties, otherwise the column names will be used. When
+  `mp_cols` is specified, the selected columns overwrite meta-properties
+  introduced by `mp_fns` with the same names, including built-in
+  meta-properties. Default is `NULL`, which means all columns in
+  `var_info` are available as meta-properties by their existing names.
+  In this default mode, meta-properties introduced by `mp_fns` take
+  precedence over `var_info` columns with the same names.
 
 ## Value
 
@@ -96,8 +98,8 @@ data, and "traitproteomics" for glycoproteomics data.
 
 ## See also
 
-[`basic_traits()`](https://glycoverse.github.io/glydet/reference/basic_traits.md),
-[`all_traits()`](https://glycoverse.github.io/glydet/reference/all_traits.md)
+[`traits_basic()`](https://glycoverse.github.io/glydet/reference/traits_basic.md),
+[`traits_detailed()`](https://glycoverse.github.io/glydet/reference/traits_detailed.md)
 
 ## Examples
 
@@ -157,12 +159,12 @@ trait_exp
 #> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
 
 # By default, only basic traits are calculated
-names(basic_traits())
+names(traits_basic())
 #>  [1] "TM"  "TH"  "TC"  "MM"  "CA2" "CA3" "CA4" "TF"  "TFc" "TFa" "TB"  "GS" 
 #> [13] "AG"  "TS" 
 
-# You can calculate all traits in `all_traits()`
-more_trait_exp <- derive_traits(exp, trait_fns = all_traits())
+# You can calculate detailed traits in `traits_detailed()`
+more_trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
 more_trait_exp
 #> 
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
