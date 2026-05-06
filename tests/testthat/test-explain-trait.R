@@ -88,57 +88,77 @@ test_that("explain_trait works for custom proportion traits", {
   )
 })
 
-test_that("explain_trait explains common count predicates in proportion traits", {
+test_that("explain_trait explains fucosylation within mono-antennary glycans", {
   expect_equal(
     explain_trait(prop(nF > 0, within = (nA == 1))),
     "Proportion of fucosylated glycans within mono-antennary glycans."
   )
+})
 
+test_that("explain_trait explains galactosylation within complex glycans", {
   expect_equal(
     explain_trait(prop(nG > 0, within = (Tp == "complex"))),
     "Proportion of galactosylated glycans within complex glycans."
   )
+})
 
+test_that("explain_trait explains mono-sialylated glycans", {
   expect_equal(
     explain_trait(prop(nS == 1)),
     "Proportion of mono-sialylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains bi-sialylated glycans", {
   expect_equal(
     explain_trait(prop(nS == 2)),
     "Proportion of bi-sialylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains tri-sialylated glycans", {
   expect_equal(
     explain_trait(prop(nS == 3)),
     "Proportion of tri-sialylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains tetra-sialylated glycans", {
   expect_equal(
     explain_trait(prop(nS == 4)),
     "Proportion of tetra-sialylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains mono-fucosylated glycans", {
   expect_equal(
     explain_trait(prop(nF == 1)),
     "Proportion of mono-fucosylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains bi-fucosylated glycans", {
   expect_equal(
     explain_trait(prop(nF == 2)),
     "Proportion of bi-fucosylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains tri-fucosylated glycans", {
   expect_equal(
     explain_trait(prop(nF == 3)),
     "Proportion of tri-fucosylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains tetra-fucosylated glycans", {
   expect_equal(
     explain_trait(prop(nF == 4)),
     "Proportion of tetra-fucosylated glycans among all glycans."
   )
+})
 
+test_that("explain_trait explains less-or-equal antenna predicates", {
   expect_equal(
     explain_trait(prop(nA <= 2)),
     "Proportion of glycans with less or equal to 2 antennae among all glycans."
