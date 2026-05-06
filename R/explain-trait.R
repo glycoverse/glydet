@@ -401,9 +401,22 @@ explain_trait.glydet_wsum <- function(
     if (rlang::is_symbol(var) && rlang::as_string(var) == "nA") {
       if (rlang::is_syntactic_literal(val)) {
         antenna_count <- rlang::eval_bare(val)
+        if (antenna_count == 1) return("mono-antennary glycans")
         if (antenna_count == 2) return("bi-antennary glycans")
         if (antenna_count == 3) return("tri-antennary glycans")
         if (antenna_count == 4) return("tetra-antennary glycans")
+      }
+    }
+
+    if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val)) {
+      var_name <- rlang::as_string(var)
+      val_num <- rlang::eval_bare(val)
+
+      if (var_name == "nS" && val_num %in% 1:4) {
+        return(paste0(.count_prefix(val_num), "-sialylated glycans"))
+      }
+      if (var_name == "nF" && val_num %in% 1:4) {
+        return(paste0(.count_prefix(val_num), "-fucosylated glycans"))
       }
     }
   }
@@ -420,6 +433,7 @@ explain_trait.glydet_wsum <- function(
       if (val_num == 0) {
         if (var_name == "nS") return("sialylated glycans")
         if (var_name == "nF") return("fucosylated glycans")
+        if (var_name == "nG") return("galactosylated glycans")
         if (var_name == "nFc") return("core-fucosylated glycans")
         if (var_name == "nFa") return("arm-fucosylated glycans")
       }
@@ -428,6 +442,20 @@ explain_trait.glydet_wsum <- function(
       if (var_name == "nA") {
         return(paste0("glycans with more than ", val_num, " antennae"))
       }
+    }
+  }
+
+  if (op == "<=" && length(args) == 2) {
+    var <- args[[1]]
+    val <- args[[2]]
+
+    if (
+      rlang::is_symbol(var) &&
+      rlang::as_string(var) == "nA" &&
+      rlang::is_syntactic_literal(val)
+    ) {
+      antenna_count <- rlang::eval_bare(val)
+      return(paste0("glycans with less or equal to ", antenna_count, " antennae"))
     }
   }
 
@@ -458,6 +486,23 @@ explain_trait.glydet_wsum <- function(
   }
 
   return(NULL)
+}
+
+#' Translate Small Counts to Glycan Description Prefixes
+#'
+#' @param count A count from 1 to 4.
+#'
+#' @returns A character prefix such as "mono", "bi", "tri", or "tetra".
+#' @noRd
+.count_prefix <- function(count) {
+  prefixes <- c(
+    "1" = "mono",
+    "2" = "bi",
+    "3" = "tri",
+    "4" = "tetra"
+  )
+
+  prefixes[[as.character(count)]]
 }
 
 .try_special_value_patterns <- function(expr) {
