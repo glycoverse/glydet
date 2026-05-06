@@ -455,7 +455,21 @@ explain_trait.glydet_wsum <- function(
       rlang::is_syntactic_literal(val)
     ) {
       antenna_count <- rlang::eval_bare(val)
-      return(paste0("glycans with less or equal to ", antenna_count, " antennae"))
+      return(paste0("glycans with at most ", antenna_count, " antennae"))
+    }
+  }
+
+  if (op == ">=" && length(args) == 2) {
+    var <- args[[1]]
+    val <- args[[2]]
+
+    if (
+      rlang::is_symbol(var) &&
+      rlang::as_string(var) == "nA" &&
+      rlang::is_syntactic_literal(val)
+    ) {
+      antenna_count <- rlang::eval_bare(val)
+      return(paste0("glycans with at least ", antenna_count, " antennae"))
     }
   }
 

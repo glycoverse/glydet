@@ -158,10 +158,17 @@ test_that("explain_trait explains tetra-fucosylated glycans", {
   )
 })
 
-test_that("explain_trait explains less-or-equal antenna predicates", {
+test_that("explain_trait explains at-most antenna predicates", {
   expect_equal(
     explain_trait(prop(nA <= 2)),
-    "Proportion of glycans with less or equal to 2 antennae among all glycans."
+    "Proportion of glycans with at most 2 antennae among all glycans."
+  )
+})
+
+test_that("explain_trait explains at-least antenna predicates", {
+  expect_equal(
+    explain_trait(prop(nA >= 2)),
+    "Proportion of glycans with at least 2 antennae among all glycans."
   )
 })
 
