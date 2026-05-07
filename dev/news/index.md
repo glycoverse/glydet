@@ -2,6 +2,12 @@
 
 ## glydet (development version)
 
+### Minor improvements and bug fixes
+
+- Improve
+  [`explain_trait()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
+  wording for common count predicates (#19).
+
 ## glydet 0.11.0
 
 ### New features
