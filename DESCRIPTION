@@ -19,6 +19,7 @@ Suggests:
     glyexp (>= 0.12.3),
     glyclean (>= 0.12.0),
     glystats (>= 0.6.3),
+    imputeLCMD,
     missForest,
     ellmer
 Config/testthat/edition: 3
