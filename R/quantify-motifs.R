@@ -177,7 +177,13 @@
 #'
 #' @seealso [derive_traits()], [glymotif::have_motifs()]
 #' @export
-quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL, ignore_linkages = FALSE) {
+quantify_motifs <- function(
+  exp,
+  motifs,
+  method = "relative",
+  alignments = NULL,
+  ignore_linkages = FALSE
+) {
   checkmate::assert_class(exp, "glyexp_experiment")
   # `motifs` is validated in `glymotif::add_motifs_int()`
   checkmate::assert_choice(method, c("absolute", "relative"))
@@ -188,28 +194,39 @@ quantify_motifs <- function(exp, motifs, method = "relative", alignments = NULL,
     # Case: glycan_structure vector (no names possible)
     motif_structures <- motifs
   } else if (is.character(motifs)) {
-    if (all(glymotif::is_known_motif(motifs))) {
+    if (.are_db_motif_names(motifs)) {
       # Case: Known motif names from database
-      motif_structures <- glymotif::get_motif_structure(motifs)
+      motif_structures <- .get_db_motif_structure(motifs)
     } else {
       # Case: IUPAC structure strings
       motif_structures <- glyparse::auto_parse(motifs)
     }
-  } else if (inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")) {
+  } else if (
+    inherits(motifs, "dynamic_motifs_spec") ||
+      inherits(motifs, "branch_motifs_spec")
+  ) {
     # Case: Motif spec objects - will be resolved by add_motifs_int
-    motif_structures <- NULL  # Will be set after add_motifs_int returns
+    motif_structures <- NULL # Will be set after add_motifs_int returns
   } else {
-    rlang::abort("`motifs` must be a character vector, a 'glyrepr_structure' object, or a motif specification from `dynamic_motifs()` or `branch_motifs()`.")
+    rlang::abort(
+      "`motifs` must be a character vector, a 'glyrepr_structure' object, or a motif specification from `dynamic_motifs()` or `branch_motifs()`."
+    )
   }
 
   # Add meta-properties columns to the variable information tibble
-  exp2 <- glymotif::add_motifs_int(exp, motifs, alignments = alignments, ignore_linkages = ignore_linkages)
+  exp2 <- glymotif::add_motifs_int(
+    exp,
+    motifs,
+    alignments = alignments,
+    ignore_linkages = ignore_linkages
+  )
   # `add_motifs_int()` has a complex logic of determining the column names,
   # so we use a simpler approach to get the column names.
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
 
   # For motif specs, extract structures from column names (IUPAC strings)
-  is_motif_spec <- inherits(motifs, "dynamic_motifs_spec") || inherits(motifs, "branch_motifs_spec")
+  is_motif_spec <- inherits(motifs, "dynamic_motifs_spec") ||
+    inherits(motifs, "branch_motifs_spec")
   if (is_motif_spec) {
     motif_structures <- glyparse::parse_iupac_condensed(mp_cols)
   }

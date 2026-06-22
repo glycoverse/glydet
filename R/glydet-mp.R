@@ -1,7 +1,6 @@
 # This file contains built-in meta-property functions.
 # These functions all work with generic glycans. (e.g. "Hex", "HexNAc")
 
-
 #' Get All Meta-Property Functions
 #'
 #' This function returns a named list of all meta-property functions:
@@ -167,7 +166,12 @@ n_glycan_type <- function(glycans) {
   motifs <- purrr::map(motif_names, .get_n_glycan_motif)
   motifs <- do.call(c, motifs)
   alignments <- c("core", "whole", "whole")
-  count_motif_mat <- glymotif::count_motifs(glycans, motifs, alignments, ignore_linkages = TRUE)
+  count_motif_mat <- glymotif::count_motifs(
+    glycans,
+    motifs,
+    alignments,
+    ignore_linkages = TRUE
+  )
   colnames(count_motif_mat) <- motif_names
   res <- dplyr::case_when(
     count_motif_mat[, "core"] == 1 ~ "paucimannose",
@@ -176,7 +180,10 @@ n_glycan_type <- function(glycans) {
     count_motif_mat[, "branch"] == 1 ~ "hybrid",
     .default = "complex"
   )
-  res <- factor(res, levels = c("paucimannose", "hybrid", "highmannose", "complex"))
+  res <- factor(
+    res,
+    levels = c("paucimannose", "hybrid", "highmannose", "complex")
+  )
   res
 }
 
@@ -184,14 +191,24 @@ n_glycan_type <- function(glycans) {
 #' @export
 has_bisecting <- function(glycans) {
   bisect_motif <- .get_n_glycan_motif("bisect")
-  glymotif::have_motif(glycans, bisect_motif, alignment = "core", ignore_linkages = TRUE)
+  glymotif::have_motif(
+    glycans,
+    bisect_motif,
+    alignment = "core",
+    ignore_linkages = TRUE
+  )
 }
 
 #' @rdname n_glycan_type
 #' @export
 n_antennae <- function(glycans) {
   antenna_motif <- .get_n_glycan_motif("antenna")
-  glymotif::count_motif(glycans, antenna_motif, alignment = "core", ignore_linkages = TRUE)
+  glymotif::count_motif(
+    glycans,
+    antenna_motif,
+    alignment = "core",
+    ignore_linkages = TRUE
+  )
 }
 
 #' @rdname n_glycan_type
@@ -204,28 +221,48 @@ n_fuc <- function(glycans) {
 #' @export
 n_core_fuc <- function(glycans) {
   core_fuc_motif <- .get_n_glycan_motif("core_fuc")
-  glymotif::count_motif(glycans, core_fuc_motif, alignment = "core", ignore_linkages = TRUE)
+  glymotif::count_motif(
+    glycans,
+    core_fuc_motif,
+    alignment = "core",
+    ignore_linkages = TRUE
+  )
 }
 
 #' @rdname n_glycan_type
 #' @export
 n_arm_fuc <- function(glycans) {
   arm_fuc_motif <- .get_n_glycan_motif("arm_fuc")
-  glymotif::count_motif(glycans, arm_fuc_motif, alignment = "core", ignore_linkages = TRUE)
+  glymotif::count_motif(
+    glycans,
+    arm_fuc_motif,
+    alignment = "core",
+    ignore_linkages = TRUE
+  )
 }
 
 #' @rdname n_glycan_type
 #' @export
 n_gal <- function(glycans) {
   gal_motif <- .get_n_glycan_motif("gal")
-  glymotif::count_motif(glycans, gal_motif, alignment = "substructure", ignore_linkages = TRUE)
+  glymotif::count_motif(
+    glycans,
+    gal_motif,
+    alignment = "substructure",
+    ignore_linkages = TRUE
+  )
 }
 
 #' @rdname n_glycan_type
 #' @export
 n_terminal_gal <- function(glycans) {
   gal_motif <- .get_n_glycan_motif("gal")
-  glymotif::count_motif(glycans, gal_motif, alignment = "terminal", ignore_linkages = TRUE)
+  glymotif::count_motif(
+    glycans,
+    gal_motif,
+    alignment = "terminal",
+    ignore_linkages = TRUE
+  )
 }
 
 #' @rdname n_glycan_type
@@ -239,21 +276,34 @@ n_sia <- function(glycans) {
 n_man <- function(glycans) {
   gal_motif <- .get_n_glycan_motif("gal")
   n_hex <- glyrepr::count_mono(glycans, "Hex")
-  n_gal <- glymotif::count_motif(glycans, gal_motif, alignment = "substructure", ignore_linkages = TRUE)
+  n_gal <- glymotif::count_motif(
+    glycans,
+    gal_motif,
+    alignment = "substructure",
+    ignore_linkages = TRUE
+  )
   n_hex - n_gal
 }
 
 .get_n_glycan_motif <- function(name) {
   motif <- switch(
     name,
-    core     = glymotif::get_motif_structure("N-Glycan core basic"),
-    pauciman = glyparse::parse_iupac_condensed("Hex(??-?)[Hex(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-"),
-    branch   = glyparse::parse_iupac_condensed("HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"),
-    bisect   = glymotif::get_motif_structure("N-glycan core, bisected"),
-    antenna  = glyparse::parse_iupac_condensed("HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"),
-    core_fuc = glymotif::get_motif_structure("N-Glycan core, core-fucosylated"),
-    arm_fuc  = glymotif::get_motif_structure("N-Glycan core, arm-fucosylated"),
-    gal      = glyparse::parse_iupac_condensed("Hex(??-?)HexNAc(??-?)Hex(??-?)Hex(??-")
+    core = .get_db_motif_structure("N-Glycan core basic"),
+    pauciman = glyparse::parse_iupac_condensed(
+      "Hex(??-?)[Hex(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-"
+    ),
+    branch = glyparse::parse_iupac_condensed(
+      "HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"
+    ),
+    bisect = .get_db_motif_structure("N-glycan core, bisected"),
+    antenna = glyparse::parse_iupac_condensed(
+      "HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"
+    ),
+    core_fuc = .get_db_motif_structure("N-Glycan core, core-fucosylated"),
+    arm_fuc = .get_db_motif_structure("N-Glycan core, arm-fucosylated"),
+    gal = glyparse::parse_iupac_condensed(
+      "Hex(??-?)HexNAc(??-?)Hex(??-?)Hex(??-"
+    )
   )
   motif <- glyrepr::convert_to_generic(motif)
   motif <- glyrepr::remove_linkages(motif)
