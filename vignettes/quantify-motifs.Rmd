@@ -154,7 +154,10 @@ motifs <- c(
   nLxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
   nSLxa = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x/a antigen
 )
-exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
+exp_with_mps <- exp |>
+  mutate_var(
+    tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+  )
 
 # Define the traits using wsum() for absolute quantification
 trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))

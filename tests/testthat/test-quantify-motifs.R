@@ -73,6 +73,39 @@ glycoproteomics_exp <- function() {
   )
 }
 
+test_that(".add_motif_count_mps adds motif count columns", {
+  exp <- glycomics_exp()
+  motifs <- c(
+    sia = "Neu5Ac(a2-3)Gal(b1-",
+    core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+  )
+
+  result <- .add_motif_count_mps(exp, motifs)
+
+  expect_identical(result$expr_mat, exp$expr_mat)
+  expect_equal(
+    setdiff(colnames(result$var_info), colnames(exp$var_info)),
+    c("sia", "core")
+  )
+  expect_equal(result$var_info$sia, c(0L, 1L, 2L))
+  expect_equal(result$var_info$core, c(1L, 1L, 1L))
+})
+
+test_that(".add_motif_count_mps uses motif strings for unnamed columns", {
+  exp <- glycomics_exp()
+  motifs <- c(
+    "Neu5Ac(a2-3)Gal(b1-",
+    "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+  )
+
+  result <- .add_motif_count_mps(exp, motifs)
+
+  expect_equal(
+    setdiff(colnames(result$var_info), colnames(exp$var_info)),
+    motifs
+  )
+})
+
 test_that("quantify_motifs works for glycomics data absolutely", {
   exp <- glycomics_exp()
   motifs <- c(

@@ -86,7 +86,10 @@
 #'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
 #'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 #' )
-#' exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
+#' exp_with_mps <- exp |>
+#'   glyexp::mutate_var(
+#'     tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+#'   )
 #'
 #' # Define the traits
 #' trait_fns <- list(Lx = wsum(nLx), SLx = wsum(nSLx))
@@ -185,7 +188,6 @@ quantify_motifs <- function(
   ignore_linkages = FALSE
 ) {
   checkmate::assert_class(exp, "glyexp_experiment")
-  # `motifs` is validated in `glymotif::add_motifs_int()`
   checkmate::assert_choice(method, c("absolute", "relative"))
 
   # ----- Create motif lookup tibble -----
@@ -205,23 +207,20 @@ quantify_motifs <- function(
     inherits(motifs, "dynamic_motifs_spec") ||
       inherits(motifs, "branch_motifs_spec")
   ) {
-    # Case: Motif spec objects - will be resolved by add_motifs_int
-    motif_structures <- NULL # Will be set after add_motifs_int returns
+    # Case: Motif spec objects - resolved while counting motif meta-properties
+    motif_structures <- NULL # Will be set from the resulting motif columns
   } else {
     rlang::abort(
       "`motifs` must be a character vector, a 'glyrepr_structure' object, or a motif specification from `dynamic_motifs()` or `branch_motifs()`."
     )
   }
 
-  # Add meta-properties columns to the variable information tibble
-  exp2 <- glymotif::add_motifs_int(
+  exp2 <- .add_motif_count_mps(
     exp,
     motifs,
     alignments = alignments,
     ignore_linkages = ignore_linkages
   )
-  # `add_motifs_int()` has a complex logic of determining the column names,
-  # so we use a simpler approach to get the column names.
   mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
 
   # For motif specs, extract structures from column names (IUPAC strings)
@@ -265,4 +264,65 @@ quantify_motifs <- function(
   )
 
   result
+}
+
+#' Add motif count meta-property columns
+#'
+#' @param exp A [glyexp::experiment()] object.
+#' @inheritParams quantify_motifs
+#'
+#' @returns A [glyexp::experiment()] object with motif count columns added to `var_info`.
+#' @noRd
+.add_motif_count_mps <- function(
+  exp,
+  motifs,
+  alignments = NULL,
+  ignore_linkages = FALSE
+) {
+  .check_var_info_cols(exp, "glycan_structure")
+
+  motif_counts <- glymotif::count_motifs(
+    exp$var_info$glycan_structure,
+    motifs,
+    alignments = alignments,
+    ignore_linkages = ignore_linkages
+  )
+  colnames(motif_counts) <- .motif_count_colnames(motifs, motif_counts)
+
+  glyexp::mutate_var(exp, tibble::as_tibble(motif_counts))
+}
+
+#' Get motif count column names
+#'
+#' @param motifs Motif definitions passed to [quantify_motifs()].
+#' @param motif_counts A count matrix returned by [glymotif::count_motifs()].
+#'
+#' @returns A character vector of column names for motif count meta-properties.
+#' @noRd
+.motif_count_colnames <- function(motifs, motif_counts) {
+  count_names <- colnames(motif_counts)
+  if (!is.null(count_names)) {
+    return(count_names)
+  }
+
+  fallback_names <- NULL
+  if (glyrepr::is_glycan_structure(motifs)) {
+    fallback_names <- as.character(motifs)
+  } else if (is.character(motifs)) {
+    fallback_names <- motifs
+  }
+
+  if (is.null(fallback_names)) {
+    cli::cli_abort(
+      "Could not determine motif count column names from {.arg motifs}."
+    )
+  }
+
+  motif_names <- names(motifs)
+  if (is.null(motif_names)) {
+    motif_names <- rep("", length(fallback_names))
+  }
+  unnamed <- !nzchar(motif_names)
+  motif_names[unnamed] <- fallback_names[unnamed]
+  motif_names
 }

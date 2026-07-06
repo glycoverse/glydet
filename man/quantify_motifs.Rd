@@ -38,10 +38,10 @@ See "Relative and Absolute Motif Quantification" section for details.}
 
 \item{alignments}{A character vector specifying the alignment method for each motif.
 Can be "terminal", "substructure", "core", "whole" or "exact". Default is "substructure".
-See \code{\link[glymotif:have_motifs]{glymotif::have_motifs()}} for details.}
+See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 
 \item{ignore_linkages}{A logical value. If \code{TRUE}, linkages will be ignored in the comparison.
-See \code{\link[glymotif:have_motifs]{glymotif::have_motifs()}} for details.}
+See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 }
 \value{
 A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object containing motif quantifications.
@@ -159,7 +159,10 @@ motifs <- c(
   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 )
-exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
+exp_with_mps <- exp |>
+  glyexp::mutate_var(
+    tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+  )
 
 # Define the traits
 trait_fns <- list(Lx = wsum(nLx), SLx = wsum(nSLx))
@@ -204,5 +207,5 @@ quantify_motifs(exp, glymotif::branch_motifs())
 
 }
 \seealso{
-\code{\link[=derive_traits]{derive_traits()}}, \code{\link[glymotif:have_motifs]{glymotif::have_motifs()}}
+\code{\link[=derive_traits]{derive_traits()}}, \code{\link[glymotif:have_motif]{glymotif::have_motifs()}}
 }
