@@ -103,14 +103,15 @@ derive_traits <- function(
     ))
   }
   checkmate::assert_character(mp_cols, null.ok = TRUE)
+  var_info <- glyexp::get_var_info(exp)
   if (!is.null(mp_cols)) {
-    invalid_cols <- setdiff(mp_cols, colnames(exp$var_info))
+    invalid_cols <- setdiff(mp_cols, colnames(var_info))
     if (length(invalid_cols) > 0) {
       cli::cli_abort(
         c(
           "{.arg mp_cols} must be a character vector of column names in the `var_info` tibble.",
           "x" = "The following columns are not found: {.field {invalid_cols}}.",
-          "i" = "Available columns: {.field {colnames(exp$var_info)}}."
+          "i" = "Available columns: {.field {colnames(var_info)}}."
         ),
         call = NULL
       )
@@ -129,8 +130,9 @@ derive_traits <- function(
     explanation = purrr::map_chr(trait_fns, explain_trait)
   )
 
+  exp_type <- glyexp::get_exp_type(exp)
   res_exp <- switch(
-    exp$meta_data$exp_type,
+    exp_type,
     glycomics = .derive_traits_glycomics(exp, trait_fns, mp_fns, mp_cols),
     glycoproteomics = .derive_traits_glycoproteomics(
       exp,
@@ -141,7 +143,7 @@ derive_traits <- function(
     cli::cli_abort(
       c(
         "{.arg exp} must be of type {.val glycomics} or {.val glycoproteomics}.",
-        "x" = "Got {.val {exp$meta_data$exp_type}}."
+        "x" = "Got {.val {exp_type}}."
       ),
       call = NULL
     )
@@ -253,7 +255,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 
 .derive_traits_glycomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, "glycan_structure")
-  expr_mat <- exp$expr_mat
+  expr_mat <- glyexp::get_expr_mat(exp)
   mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
   var_info <- tibble::tibble(
@@ -261,31 +263,30 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
     trait = names(trait_fns)
   )
   rownames(res_mat) <- var_info$variable
-  exp$expr_mat <- res_mat
-  exp$var_info <- var_info
-  exp$meta_data$exp_type <- "traitomics"
-  exp
+  .rebuild_experiment(exp, res_mat, var_info, exp_type = "traitomics")
 }
 
 .derive_traits_glycoproteomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, c("glycan_structure", "protein", "protein_site"))
+  expr_mat <- glyexp::get_expr_mat(exp)
+  var_info <- glyexp::get_var_info(exp)
   mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   glycosites <- stringr::str_c(
-    exp$var_info[["protein"]],
-    exp$var_info[["protein_site"]],
+    var_info[["protein"]],
+    var_info[["protein_site"]],
     sep = "@"
   )
   splits <- split(seq_along(glycosites), glycosites)
 
   derive_one_site <- function(site_idx) {
-    site_expr_mat <- exp$expr_mat[site_idx, , drop = FALSE]
+    site_expr_mat <- expr_mat[site_idx, , drop = FALSE]
     site_mp_tbl <- mp_tbl[site_idx, ]
 
     res_mat <- .derive_traits_mat(site_expr_mat, trait_fns, site_mp_tbl)
     res_var_info <- tibble::tibble(
       variable = NA_character_, # Placeholder, will be replaced later
-      protein = unique(exp$var_info[["protein"]][site_idx]),
-      protein_site = unique(exp$var_info[["protein_site"]][site_idx]),
+      protein = unique(var_info[["protein"]][site_idx]),
+      protein_site = unique(var_info[["protein_site"]][site_idx]),
       trait = names(trait_fns)
     )
 
@@ -297,17 +298,14 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   res_var_info <- do.call(rbind, purrr::map(res_list, ~ .x$res_var_info))
   res_var_info$variable <- paste0("V", seq_len(nrow(res_var_info)))
   rownames(res_mat) <- res_var_info$variable
-  glycosite_descriptions <- .get_glycosite_var_info(exp$var_info)
+  glycosite_descriptions <- .get_glycosite_var_info(var_info)
   res_var_info <- dplyr::left_join(
     res_var_info,
     glycosite_descriptions,
     by = c("protein", "protein_site")
   )
 
-  exp$expr_mat <- res_mat
-  exp$var_info <- res_var_info
-  exp$meta_data$exp_type <- "traitproteomics"
-  exp
+  .rebuild_experiment(exp, res_mat, res_var_info, exp_type = "traitproteomics")
 }
 
 #' Get Meta-Properties from Experiment
@@ -320,16 +318,17 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 #'
 #' @noRd
 .get_mps <- function(exp, mp_fns, mp_cols) {
+  var_info <- glyexp::get_var_info(exp)
   if (is.null(mp_cols)) {
-    mp_tbl1 <- get_meta_properties(exp$var_info[["glycan_structure"]], mp_fns)
-    mp_tbl2 <- exp$var_info |>
+    mp_tbl1 <- get_meta_properties(var_info[["glycan_structure"]], mp_fns)
+    mp_tbl2 <- var_info |>
       dplyr::select(-dplyr::any_of(colnames(mp_tbl1)))
     return(dplyr::bind_cols(mp_tbl1, mp_tbl2))
   }
-  mp_tbl1 <- exp$var_info |>
+  mp_tbl1 <- var_info |>
     dplyr::select(dplyr::all_of(mp_cols))
   mp_fns <- mp_fns[setdiff(names(mp_fns), colnames(mp_tbl1))]
-  mp_tbl2 <- get_meta_properties(exp$var_info[["glycan_structure"]], mp_fns)
+  mp_tbl2 <- get_meta_properties(var_info[["glycan_structure"]], mp_fns)
   mp_tbl <- dplyr::bind_cols(mp_tbl1, mp_tbl2)
   mp_tbl
 }

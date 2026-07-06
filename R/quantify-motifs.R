@@ -221,7 +221,10 @@ quantify_motifs <- function(
     alignments = alignments,
     ignore_linkages = ignore_linkages
   )
-  mp_cols <- setdiff(colnames(exp2$var_info), colnames(exp$var_info))
+  mp_cols <- setdiff(
+    colnames(glyexp::get_var_info(exp2)),
+    colnames(glyexp::get_var_info(exp))
+  )
 
   # For motif specs, extract structures from column names (IUPAC strings)
   is_motif_spec <- inherits(motifs, "dynamic_motifs_spec") ||
@@ -257,13 +260,7 @@ quantify_motifs <- function(
     glyexp::select_var(-all_of("explanation"))
 
   # Add motif_structure column via left_join
-  result$var_info <- dplyr::left_join(
-    tibble::as_tibble(result$var_info),
-    motif_lookup,
-    by = "motif"
-  )
-
-  result
+  glyexp::left_join_var(result, motif_lookup, by = "motif")
 }
 
 #' Add motif count meta-property columns
@@ -282,7 +279,7 @@ quantify_motifs <- function(
   .check_var_info_cols(exp, "glycan_structure")
 
   motif_counts <- glymotif::count_motifs(
-    exp$var_info$glycan_structure,
+    glyexp::get_var_info(exp)[["glycan_structure"]],
     motifs,
     alignments = alignments,
     ignore_linkages = ignore_linkages

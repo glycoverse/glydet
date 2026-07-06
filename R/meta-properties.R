@@ -89,6 +89,7 @@ add_meta_properties <- function(
   checkmate::assert_flag(overwrite)
   .check_var_info_cols(exp, struc_col)
 
+  var_info <- glyexp::get_var_info(exp)
   if (is.null(mp_fns)) {
     mp_names <- names(all_mp_fns())
   } else {
@@ -96,10 +97,11 @@ add_meta_properties <- function(
   }
   if (overwrite) {
     # Remove the existing meta-property columns if any
-    exp$var_info <- exp$var_info[, setdiff(colnames(exp$var_info), mp_names)]
+    exp <- glyexp::select_var(exp, -dplyr::any_of(mp_names))
+    var_info <- glyexp::get_var_info(exp)
   } else {
     # Check if any existing columns are the same as the new meta-property names
-    exist_mp_names <- intersect(mp_names, colnames(exp$var_info))
+    exist_mp_names <- intersect(mp_names, colnames(var_info))
     if (length(exist_mp_names) > 0) {
       cli::cli_abort(c(
         "Variable information tibble must not contain columns with the same names as the meta-properties.",
@@ -108,7 +110,6 @@ add_meta_properties <- function(
     }
   }
 
-  meta_properties <- get_meta_properties(exp$var_info[[struc_col]], mp_fns)
-  exp$var_info <- dplyr::bind_cols(exp$var_info, meta_properties)
-  exp
+  meta_properties <- get_meta_properties(var_info[[struc_col]], mp_fns)
+  glyexp::mutate_var(exp, tibble::as_tibble(meta_properties))
 }

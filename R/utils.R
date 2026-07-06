@@ -12,7 +12,8 @@
 }
 
 .check_var_info_cols <- function(exp, cols) {
-  has_cols <- cols %in% colnames(exp$var_info)
+  var_info <- glyexp::get_var_info(exp)
+  has_cols <- cols %in% colnames(var_info)
   if (!all(has_cols)) {
     missing_cols <- cols[!has_cols]
     cli::cli_abort(c(
@@ -20,6 +21,29 @@
       "x" = "Cannot find {.field {missing_cols}} in {.field var_info}."
     ))
   }
+}
+
+#' Rebuild an Experiment with Updated Data
+#'
+#' @param exp A [glyexp::experiment()] object.
+#' @param expr_mat A matrix of expression values.
+#' @param var_info A tibble of variable information.
+#' @param exp_type Experiment type for the rebuilt experiment.
+#'
+#' @returns A [glyexp::experiment()] object with the updated data.
+#' @noRd
+.rebuild_experiment <- function(exp, expr_mat, var_info, exp_type) {
+  meta_data <- glyexp::get_meta_data(exp)
+  meta_data[["exp_type"]] <- exp_type
+  args <- c(
+    list(
+      expr_mat = expr_mat,
+      sample_info = glyexp::get_sample_info(exp),
+      var_info = var_info
+    ),
+    meta_data
+  )
+  do.call(glyexp::experiment, args)
 }
 
 #' Supported AI provider names
