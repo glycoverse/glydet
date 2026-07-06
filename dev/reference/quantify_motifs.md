@@ -206,7 +206,10 @@ meta-properties here):
       nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
       nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
     )
-    exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
+    exp_with_mps <- exp |>
+      glyexp::mutate_var(
+        tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+      )
 
     # Define the traits
     trait_fns <- list(Lx = wsum(nLx), SLx = wsum(nSLx))

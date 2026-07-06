@@ -375,21 +375,18 @@ gly_anova(gp_trait_exp) |>
 #> ℹ Groups: "H", "M", "Y", and "C"
 #> ℹ Pairwise comparisons will be performed, with levels coming first as reference groups.
 #> Warning: 281 variables failed to fit the model
-#> # A tibble: 12 × 2
-#>    protein protein_site
-#>    <chr>          <int>
-#>  1 P00748           249
-#>  2 P01591            71
-#>  3 P02679            78
-#>  4 P02765           176
-#>  5 P02790           240
-#>  6 P04004            86
-#>  7 P05090            98
-#>  8 P06681           621
-#>  9 P0C0L4          1328
-#> 10 P0C0L4          1391
-#> 11 P19652           103
-#> 12 P20851            64
+#> # A tibble: 9 × 2
+#>   protein protein_site
+#>   <chr>          <int>
+#> 1 P00748           249
+#> 2 P01591            71
+#> 3 P02765           176
+#> 4 P04004            86
+#> 5 P05090            98
+#> 6 P06681           621
+#> 7 P0C0L4          1328
+#> 8 P19652           103
+#> 9 P20851            64
 ```
 
 ## Understanding Meta-Properties
