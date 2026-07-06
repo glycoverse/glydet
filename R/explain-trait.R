@@ -257,8 +257,10 @@ explain_trait.glydet_wsum <- function(
 
   # Remove outer parentheses if present (consistent with print methods)
   within_text <- rlang::expr_text(within_expr)
-  if (stringr::str_starts(within_text, stringr::fixed("(")) && 
-      stringr::str_ends(within_text, stringr::fixed(")"))) {
+  if (
+    stringr::str_starts(within_text, stringr::fixed("(")) &&
+      stringr::str_ends(within_text, stringr::fixed(")"))
+  ) {
     within_expr <- rlang::parse_expr(stringr::str_sub(within_text, 2, -2))
   }
 
@@ -308,7 +310,11 @@ explain_trait.glydet_wsum <- function(
       arg_desc <- .expr_to_description(args[[1]])
       # Handle special negation cases
       if (stringr::str_starts(arg_desc, "glycans with")) {
-        return(stringr::str_replace(arg_desc, "glycans with", "glycans without"))
+        return(stringr::str_replace(
+          arg_desc,
+          "glycans with",
+          "glycans without"
+        ))
       }
       if (stringr::str_ends(arg_desc, " glycans")) {
         return(paste("non-", arg_desc, sep = ""))
@@ -392,8 +398,12 @@ explain_trait.glydet_wsum <- function(
     if (rlang::is_symbol(var) && rlang::as_string(var) == "Tp") {
       if (rlang::is_string(val)) {
         type_val <- rlang::eval_bare(val)
-        if (type_val == "highmannose") return("high-mannose glycans")
-        if (type_val == "hybrid") return("hybrid glycans")
+        if (type_val == "highmannose") {
+          return("high-mannose glycans")
+        }
+        if (type_val == "hybrid") {
+          return("hybrid glycans")
+        }
         if (type_val == "complex") return("complex glycans")
       }
     }
@@ -401,9 +411,15 @@ explain_trait.glydet_wsum <- function(
     if (rlang::is_symbol(var) && rlang::as_string(var) == "nA") {
       if (rlang::is_syntactic_literal(val)) {
         antenna_count <- rlang::eval_bare(val)
-        if (antenna_count == 1) return("mono-antennary glycans")
-        if (antenna_count == 2) return("bi-antennary glycans")
-        if (antenna_count == 3) return("tri-antennary glycans")
+        if (antenna_count == 1) {
+          return("mono-antennary glycans")
+        }
+        if (antenna_count == 2) {
+          return("bi-antennary glycans")
+        }
+        if (antenna_count == 3) {
+          return("tri-antennary glycans")
+        }
         if (antenna_count == 4) return("tetra-antennary glycans")
       }
     }
@@ -428,16 +444,24 @@ explain_trait.glydet_wsum <- function(
     if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val)) {
       val_num <- rlang::eval_bare(val)
       var_name <- rlang::as_string(var)
-      
+
       # Handle nX > 0 patterns (presence/absence)
       if (val_num == 0) {
-        if (var_name == "nS") return("sialylated glycans")
-        if (var_name == "nF") return("fucosylated glycans")
-        if (var_name == "nG") return("galactosylated glycans")
-        if (var_name == "nFc") return("core-fucosylated glycans")
+        if (var_name == "nS") {
+          return("sialylated glycans")
+        }
+        if (var_name == "nF") {
+          return("fucosylated glycans")
+        }
+        if (var_name == "nG") {
+          return("galactosylated glycans")
+        }
+        if (var_name == "nFc") {
+          return("core-fucosylated glycans")
+        }
         if (var_name == "nFa") return("arm-fucosylated glycans")
       }
-      
+
       # Handle nA > n patterns (antenna count comparison)
       if (var_name == "nA") {
         return(paste0("glycans with more than ", val_num, " antennae"))
@@ -451,8 +475,8 @@ explain_trait.glydet_wsum <- function(
 
     if (
       rlang::is_symbol(var) &&
-      rlang::as_string(var) == "nA" &&
-      rlang::is_syntactic_literal(val)
+        rlang::as_string(var) == "nA" &&
+        rlang::is_syntactic_literal(val)
     ) {
       antenna_count <- rlang::eval_bare(val)
       return(paste0("glycans with at most ", antenna_count, " antennae"))
@@ -465,8 +489,8 @@ explain_trait.glydet_wsum <- function(
 
     if (
       rlang::is_symbol(var) &&
-      rlang::as_string(var) == "nA" &&
-      rlang::is_syntactic_literal(val)
+        rlang::as_string(var) == "nA" &&
+        rlang::is_syntactic_literal(val)
     ) {
       antenna_count <- rlang::eval_bare(val)
       return(paste0("glycans with at least ", antenna_count, " antennae"))
@@ -477,11 +501,21 @@ explain_trait.glydet_wsum <- function(
     var <- args[[1]]
     val <- args[[2]]
 
-    if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
+    if (
+      rlang::is_symbol(var) &&
+        rlang::is_syntactic_literal(val) &&
+        rlang::eval_bare(val) == 0
+    ) {
       var_name <- rlang::as_string(var)
-      if (var_name == "nF") return("non-fucosylated glycans")
-      if (var_name == "nFc") return("non-core-fucosylated glycans")
-      if (var_name == "nFa") return("non-arm-fucosylated glycans")
+      if (var_name == "nF") {
+        return("non-fucosylated glycans")
+      }
+      if (var_name == "nFc") {
+        return("non-core-fucosylated glycans")
+      }
+      if (var_name == "nFa") {
+        return("non-arm-fucosylated glycans")
+      }
       if (var_name == "nS") return("non-sialylated glycans")
     }
   }
@@ -490,11 +524,21 @@ explain_trait.glydet_wsum <- function(
     var <- args[[1]]
     val <- args[[2]]
 
-    if (rlang::is_symbol(var) && rlang::is_syntactic_literal(val) && rlang::eval_bare(val) == 0) {
+    if (
+      rlang::is_symbol(var) &&
+        rlang::is_syntactic_literal(val) &&
+        rlang::eval_bare(val) == 0
+    ) {
       var_name <- rlang::as_string(var)
-      if (var_name == "nF") return("fucosylated glycans")
-      if (var_name == "nFc") return("core-fucosylated glycans")
-      if (var_name == "nFa") return("arm-fucosylated glycans")
+      if (var_name == "nF") {
+        return("fucosylated glycans")
+      }
+      if (var_name == "nFc") {
+        return("core-fucosylated glycans")
+      }
+      if (var_name == "nFa") {
+        return("arm-fucosylated glycans")
+      }
       if (var_name == "nS") return("sialylated glycans")
     }
   }
@@ -550,11 +594,17 @@ explain_trait.glydet_wsum <- function(
   # Handle special patterns first
   if (connector == "and") {
     # Special handling for "glycans with X" patterns
-    if (stringr::str_starts(right_desc, "glycans with ") && stringr::str_ends(left_desc, " glycans")) {
+    if (
+      stringr::str_starts(right_desc, "glycans with ") &&
+        stringr::str_ends(left_desc, " glycans")
+    ) {
       left_adj <- stringr::str_replace(left_desc, " glycans$", "")
       right_feature <- stringr::str_replace(right_desc, "^glycans with ", "")
       return(paste0(left_adj, " glycans with ", right_feature))
-    } else if (stringr::str_starts(left_desc, "glycans with ") && stringr::str_ends(right_desc, " glycans")) {
+    } else if (
+      stringr::str_starts(left_desc, "glycans with ") &&
+        stringr::str_ends(right_desc, " glycans")
+    ) {
       right_adj <- stringr::str_replace(right_desc, " glycans$", "")
       left_feature <- stringr::str_replace(left_desc, "^glycans with ", "")
       return(paste0(right_adj, " glycans with ", left_feature))
@@ -565,16 +615,20 @@ explain_trait.glydet_wsum <- function(
   left_pattern <- "^(.*?) glycans$"
   right_pattern <- "^(.*?) glycans$"
 
-  if (stringr::str_detect(left_desc, left_pattern) && stringr::str_detect(right_desc, right_pattern)) {
-
+  if (
+    stringr::str_detect(left_desc, left_pattern) &&
+      stringr::str_detect(right_desc, right_pattern)
+  ) {
     left_adj <- stringr::str_extract(left_desc, left_pattern) |>
       stringr::str_replace(left_pattern, "\\1")
     right_adj <- stringr::str_extract(right_desc, right_pattern) |>
       stringr::str_replace(right_pattern, "\\1")
 
     # Handle merging differently for "and" vs "or"
-    if (!stringr::str_detect(left_adj, " and | or ") && !stringr::str_detect(right_adj, " and | or ")) {
-
+    if (
+      !stringr::str_detect(left_adj, " and | or ") &&
+        !stringr::str_detect(right_adj, " and | or ")
+    ) {
       if (connector == "and") {
         # For "and": compound characteristics of the same glycans
         # Convert adjective endings to noun forms when using "with"
@@ -600,7 +654,7 @@ explain_trait.glydet_wsum <- function(
   conversions <- list(
     "fucosylated" = "fucosylation",
     "core-fucosylated" = "core-fucosylation",
-    "arm-fucosylated" = "arm-fucosylation", 
+    "arm-fucosylated" = "arm-fucosylation",
     "sialylated" = "sialylation",
     "galactosylated" = "galactosylation",
     "fucosylated" = "fucosylation",
@@ -623,7 +677,10 @@ explain_trait.glydet_wsum <- function(
 # ----- AI-assisted explanations --------------------------------------
 
 .explain_sys_prompt <- function(trait_type, custom_mp = NULL) {
-  checkmate::assert_choice(trait_type, c("prop", "ratio", "wmean", "total", "wsum"))
+  checkmate::assert_choice(
+    trait_type,
+    c("prop", "ratio", "wmean", "total", "wsum")
+  )
 
   # Build custom meta-properties section
   custom_mp_lines <- ""
@@ -729,7 +786,8 @@ explain_trait.glydet_wsum <- function(
     sep = "\n"
   )
 
-  example_prompt <- switch(trait_type,
+  example_prompt <- switch(
+    trait_type,
     "prop" = prop_examples,
     "ratio" = ratio_examples,
     "wmean" = wmean_examples,

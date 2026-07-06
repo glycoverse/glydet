@@ -77,7 +77,12 @@
 #' @seealso [traits_basic()], [traits_detailed()]
 #'
 #' @export
-derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) {
+derive_traits <- function(
+  exp,
+  trait_fns = NULL,
+  mp_fns = NULL,
+  mp_cols = NULL
+) {
   checkmate::assert_class(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
     trait_fns <- traits_basic()
@@ -101,11 +106,14 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
   if (!is.null(mp_cols)) {
     invalid_cols <- setdiff(mp_cols, colnames(exp$var_info))
     if (length(invalid_cols) > 0) {
-      cli::cli_abort(c(
-        "{.arg mp_cols} must be a character vector of column names in the `var_info` tibble.",
-        "x" = "The following columns are not found: {.field {invalid_cols}}.",
-        "i" = "Available columns: {.field {colnames(exp$var_info)}}."
-      ), call = NULL)
+      cli::cli_abort(
+        c(
+          "{.arg mp_cols} must be a character vector of column names in the `var_info` tibble.",
+          "x" = "The following columns are not found: {.field {invalid_cols}}.",
+          "i" = "Available columns: {.field {colnames(exp$var_info)}}."
+        ),
+        call = NULL
+      )
     }
   }
 
@@ -124,11 +132,19 @@ derive_traits <- function(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL) 
   res_exp <- switch(
     exp$meta_data$exp_type,
     glycomics = .derive_traits_glycomics(exp, trait_fns, mp_fns, mp_cols),
-    glycoproteomics = .derive_traits_glycoproteomics(exp, trait_fns, mp_fns, mp_cols),
-    cli::cli_abort(c(
-      "{.arg exp} must be of type {.val glycomics} or {.val glycoproteomics}.",
-      "x" = "Got {.val {exp$meta_data$exp_type}}."
-    ), call = NULL)
+    glycoproteomics = .derive_traits_glycoproteomics(
+      exp,
+      trait_fns,
+      mp_fns,
+      mp_cols
+    ),
+    cli::cli_abort(
+      c(
+        "{.arg exp} must be of type {.val glycomics} or {.val glycoproteomics}.",
+        "x" = "Got {.val {exp$meta_data$exp_type}}."
+      ),
+      call = NULL
+    )
   )
 
   res_exp |>
@@ -254,7 +270,11 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 .derive_traits_glycoproteomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, c("glycan_structure", "protein", "protein_site"))
   mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
-  glycosites <- stringr::str_c(exp$var_info[["protein"]], exp$var_info[["protein_site"]], sep = "@")
+  glycosites <- stringr::str_c(
+    exp$var_info[["protein"]],
+    exp$var_info[["protein_site"]],
+    sep = "@"
+  )
   splits <- split(seq_along(glycosites), glycosites)
 
   derive_one_site <- function(site_idx) {
@@ -263,7 +283,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 
     res_mat <- .derive_traits_mat(site_expr_mat, trait_fns, site_mp_tbl)
     res_var_info <- tibble::tibble(
-      variable = NA_character_,  # Placeholder, will be replaced later
+      variable = NA_character_, # Placeholder, will be replaced later
       protein = unique(exp$var_info[["protein"]][site_idx]),
       protein_site = unique(exp$var_info[["protein_site"]][site_idx]),
       trait = names(trait_fns)
@@ -278,7 +298,11 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   res_var_info$variable <- paste0("V", seq_len(nrow(res_var_info)))
   rownames(res_mat) <- res_var_info$variable
   glycosite_descriptions <- .get_glycosite_var_info(exp$var_info)
-  res_var_info <- dplyr::left_join(res_var_info, glycosite_descriptions, by = c("protein", "protein_site"))
+  res_var_info <- dplyr::left_join(
+    res_var_info,
+    glycosite_descriptions,
+    by = c("protein", "protein_site")
+  )
 
   exp$expr_mat <- res_mat
   exp$var_info <- res_var_info
@@ -339,7 +363,12 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 }
 
 .derive_traits_glycomics_ <- function(tbl, trait_fns, mp_fns) {
-  data_wide <-  tidyr::pivot_wider(tbl, id_cols = "glycan_structure", names_from = "sample", values_from = "value")
+  data_wide <- tidyr::pivot_wider(
+    tbl,
+    id_cols = "glycan_structure",
+    names_from = "sample",
+    values_from = "value"
+  )
   expr_mat <- as.matrix(data_wide[, -1])
   glycans <- data_wide[["glycan_structure"]]
   mp_tbl <- get_meta_properties(glycans, mp_fns)
@@ -347,13 +376,23 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   res_mat |>
     tibble::as_tibble() |>
     dplyr::mutate(trait = names(trait_fns)) |>
-    tidyr::pivot_longer(-dplyr::all_of("trait"), names_to = "sample", values_to = "value")
+    tidyr::pivot_longer(
+      -dplyr::all_of("trait"),
+      names_to = "sample",
+      values_to = "value"
+    )
 }
 
 .derive_traits_glycoproteomics_ <- function(tbl, trait_fns, mp_fns) {
   tbl |>
     dplyr::nest_by(.data$protein, .data$protein_site) |>
-    dplyr::mutate(trait_data = list(.derive_traits_glycomics_(.data$data, trait_fns, mp_fns))) |>
+    dplyr::mutate(
+      trait_data = list(.derive_traits_glycomics_(
+        .data$data,
+        trait_fns,
+        mp_fns
+      ))
+    ) |>
     dplyr::select(dplyr::all_of(c("protein", "protein_site", "trait_data"))) |>
     tidyr::unnest("trait_data") |>
     dplyr::ungroup()
@@ -378,19 +417,28 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   error_list <- purrr::map(res_list, ~ .x$error)
   error_list <- purrr::discard(error_list, is.null)
   error_msgs <- purrr::map_chr(error_list, rlang::cnd_message)
-  objs_not_found <- stringr::str_extract(error_msgs, "object '([^']+)' not found", group = 1)
+  objs_not_found <- stringr::str_extract(
+    error_msgs,
+    "object '([^']+)' not found",
+    group = 1
+  )
   objs_not_found <- purrr::discard(objs_not_found, is.na)
   if (length(objs_not_found) > 0) {
-    cli::cli_abort(c(
-      "Trait functions must use defined meta-properties.",
-      "x" = "Unknown meta-properties: {.field {objs_not_found}}",
-      "i" = "Available meta-properties: {.field {colnames(mp_tbl)}}",
-      "i" = "Did you forget to add matching {.field var_info} columns, define custom meta-properties in {.arg mp_fns}, or use {.arg mp_cols} to rename columns?"
-    ), call = NULL)
+    cli::cli_abort(
+      c(
+        "Trait functions must use defined meta-properties.",
+        "x" = "Unknown meta-properties: {.field {objs_not_found}}",
+        "i" = "Available meta-properties: {.field {colnames(mp_tbl)}}",
+        "i" = "Did you forget to add matching {.field var_info} columns, define custom meta-properties in {.arg mp_fns}, or use {.arg mp_cols} to rename columns?"
+      ),
+      call = NULL
+    )
   }
 
   # Raise other errors
-  other_errors <- error_list[!stringr::str_detect(error_msgs, "object '[^']+' not found")]
+  other_errors <- error_list[
+    !stringr::str_detect(error_msgs, "object '[^']+' not found")
+  ]
   if (length(other_errors) > 0) {
     # Re-raise the first other error encountered.
     # This mimics the behavior of normally raising errors, where only the first error is raised.

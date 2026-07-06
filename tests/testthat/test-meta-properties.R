@@ -29,10 +29,13 @@ test_that("get_meta_properties works with custom meta-property functions", {
     "Fuc(a1-3)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-",
     "GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
   )
-  result <- get_meta_properties(glycans, list(
-    nN = ~ glyrepr::count_mono(.x, "HexNAc"),
-    nH = ~ glyrepr::count_mono(.x, "Hex")
-  ))
+  result <- get_meta_properties(
+    glycans,
+    list(
+      nN = ~ glyrepr::count_mono(.x, "HexNAc"),
+      nH = ~ glyrepr::count_mono(.x, "Hex")
+    )
+  )
   expected <- tibble::tibble(
     nN = c(2L, 4L, 3L),
     nH = c(3L, 3L, 3L)
@@ -44,16 +47,22 @@ test_that("add_meta_properties works with default meta-property functions", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10)
   exp <- add_meta_properties(exp)
-  expect_true(all(c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+  expect_true(all(
+    c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in%
+      colnames(exp$var_info)
+  ))
 })
 
 test_that("add_meta_properties works with custom meta-property functions", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10)
-  exp <- add_meta_properties(exp, list(
-    nN = ~ glyrepr::count_mono(.x, "HexNAc"),
-    nH = ~ glyrepr::count_mono(.x, "Hex")
-  ))
+  exp <- add_meta_properties(
+    exp,
+    list(
+      nN = ~ glyrepr::count_mono(.x, "HexNAc"),
+      nH = ~ glyrepr::count_mono(.x, "Hex")
+    )
+  )
   expect_true(all(c("nN", "nH") %in% colnames(exp$var_info)))
 })
 
@@ -62,7 +71,10 @@ test_that("add_meta_properties works with custom struc_col", {
     glyexp::slice_head_var(n = 10) |>
     glyexp::rename_var(struc = glycan_structure)
   exp <- add_meta_properties(exp, struc_col = "struc")
-  expect_true(all(c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+  expect_true(all(
+    c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in%
+      colnames(exp$var_info)
+  ))
 })
 
 test_that("add_meta_properties throws error if struc_col not found", {
@@ -89,5 +101,8 @@ test_that("add_meta_properties works with overwrite = TRUE", {
     glyexp::slice_head_var(n = 10) |>
     glyexp::mutate_var(Tp = "complex")
   exp <- add_meta_properties(exp, overwrite = TRUE)
-  expect_true(all(c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in% colnames(exp$var_info)))
+  expect_true(all(
+    c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in%
+      colnames(exp$var_info)
+  ))
 })

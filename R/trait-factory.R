@@ -96,13 +96,20 @@ prop <- function(cond, within = NULL, na_action = "keep") {
   calc_fn <- function(expr_mat, mp_tbl, within_cond) {
     cond_eval <- rlang::eval_tidy(cond, data = mp_tbl)
     cond_eval[is.na(cond_eval)] <- FALSE
-    num <- colSums(expr_mat[cond_eval & within_cond, , drop = FALSE], na.rm = TRUE)
+    num <- colSums(
+      expr_mat[cond_eval & within_cond, , drop = FALSE],
+      na.rm = TRUE
+    )
     denom <- colSums(expr_mat[within_cond, , drop = FALSE], na.rm = TRUE)
     list(num = num, denom = denom)
   }
 
   structure(
-    .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
+    .create_trait_calculator(
+      calc_fn,
+      within_quo = within,
+      na_action = na_action
+    ),
     cond = rlang::quo_get_expr(cond),
     within = rlang::quo_get_expr(within),
     na_action = na_action,
@@ -119,7 +126,9 @@ print.glydet_prop <- function(x, ...) {
     cli::cli_text("prop({.strong {cond_expr}}, na_action = \"{na_action}\")")
   } else {
     within_expr <- .format_within_expr(within_expr)
-    cli::cli_text("prop({.strong {cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
+    cli::cli_text(
+      "prop({.strong {cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")"
+    )
   }
   invisible(x)
 }
@@ -190,13 +199,23 @@ ratio <- function(num_cond, denom_cond, within = NULL, na_action = "keep") {
     denom_cond_eval <- rlang::eval_tidy(denom_cond, data = mp_tbl)
     num_cond_eval[is.na(num_cond_eval)] <- FALSE
     denom_cond_eval[is.na(denom_cond_eval)] <- FALSE
-    num <- colSums(expr_mat[num_cond_eval & within_cond, , drop = FALSE], na.rm = TRUE)
-    denom <- colSums(expr_mat[denom_cond_eval & within_cond, , drop = FALSE], na.rm = TRUE)
+    num <- colSums(
+      expr_mat[num_cond_eval & within_cond, , drop = FALSE],
+      na.rm = TRUE
+    )
+    denom <- colSums(
+      expr_mat[denom_cond_eval & within_cond, , drop = FALSE],
+      na.rm = TRUE
+    )
     list(num = num, denom = denom)
   }
 
   structure(
-    .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
+    .create_trait_calculator(
+      calc_fn,
+      within_quo = within,
+      na_action = na_action
+    ),
     num_cond = rlang::quo_get_expr(num_cond),
     denom_cond = rlang::quo_get_expr(denom_cond),
     within = rlang::quo_get_expr(within),
@@ -212,10 +231,14 @@ print.glydet_ratio <- function(x, ...) {
   within_expr <- rlang::expr_text(attr(x, "within"))
   na_action <- attr(x, "na_action")
   if (within_expr == "NULL") {
-    cli::cli_text("ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, na_action = \"{na_action}\")")
+    cli::cli_text(
+      "ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, na_action = \"{na_action}\")"
+    )
   } else {
     within_expr <- .format_within_expr(within_expr)
-    cli::cli_text("ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
+    cli::cli_text(
+      "ratio({.strong {num_cond_expr}}, {.strong {denom_cond_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")"
+    )
   }
   invisible(x)
 }
@@ -291,7 +314,11 @@ wmean <- function(val, within = NULL, na_action = "keep") {
   }
 
   structure(
-    .create_trait_calculator(calc_fn, within_quo = within, na_action = na_action),
+    .create_trait_calculator(
+      calc_fn,
+      within_quo = within,
+      na_action = na_action
+    ),
     val = rlang::quo_get_expr(val),
     within = rlang::quo_get_expr(within),
     na_action = na_action,
@@ -308,7 +335,9 @@ print.glydet_wmean <- function(x, ...) {
     cli::cli_text("wmean({.strong {val_expr}}, na_action = \"{na_action}\")")
   } else {
     within_expr <- .format_within_expr(within_expr)
-    cli::cli_text("wmean({.strong {val_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")")
+    cli::cli_text(
+      "wmean({.strong {val_expr}}, within = {.strong ({within_expr})}, na_action = \"{na_action}\")"
+    )
   }
   invisible(x)
 }
@@ -384,7 +413,11 @@ total <- function(cond) {
     unname(res)
   }
 
-  structure(f, cond = rlang::quo_get_expr(cond), class = c("glydet_total", "glydet_trait"))
+  structure(
+    f,
+    cond = rlang::quo_get_expr(cond),
+    class = c("glydet_total", "glydet_trait")
+  )
 }
 
 #' @export
@@ -474,7 +507,9 @@ print.glydet_wsum <- function(x, ...) {
     cli::cli_text("wsum({.strong {val_expr}})")
   } else {
     within_expr <- .format_within_expr(within_expr)
-    cli::cli_text("wsum({.strong {val_expr}}, within = {.strong ({within_expr})})")
+    cli::cli_text(
+      "wsum({.strong {val_expr}}, within = {.strong ({within_expr})})"
+    )
   }
   invisible(x)
 }

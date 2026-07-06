@@ -1,9 +1,9 @@
 create_expr_mat <- function() {
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
@@ -18,7 +18,7 @@ test_that("prop(nFc > 0) works", {
   mp_tbl <- tibble::tibble(nFc = c(1, 0, 1))
   trait_fn <- prop(nFc > 0)
   result <- trait_fn(expr_mat, mp_tbl)
-  expect_equal(result, c(2/3, 1/2, 1/2))
+  expect_equal(result, c(2 / 3, 1 / 2, 1 / 2))
 })
 
 test_that("prop(nFc > 0 & nS > 0) works", {
@@ -30,7 +30,7 @@ test_that("prop(nFc > 0 & nS > 0) works", {
 
   trait_fn <- prop(nFc > 0 & nS > 0)
   result <- trait_fn(expr_mat, mp_tbl)
-  expect_equal(result, c(1/3, 0, 1/2))
+  expect_equal(result, c(1 / 3, 0, 1 / 2))
 })
 
 test_that("prop(nFc > 0, within = (Tp == 'complex')) works", {
@@ -42,14 +42,14 @@ test_that("prop(nFc > 0, within = (Tp == 'complex')) works", {
 
   trait_fn <- prop(nFc > 0, within = (Tp == "complex"))
   result <- trait_fn(expr_mat, mp_tbl)
-  expect_equal(result, c(1/2, 0, 1/2))
+  expect_equal(result, c(1 / 2, 0, 1 / 2))
 })
 
 test_that("prop() handles Inf", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(
     nFc = c(1, 0, 1),
-    T = c("hybrid", "hybrid", "hybrid")  # no complex here
+    T = c("hybrid", "hybrid", "hybrid") # no complex here
   )
 
   trait_fn <- prop(nFc > 0, within = (Tp == "complex"))
@@ -61,7 +61,7 @@ test_that("prop() handles NA through na_action = 'zero'", {
   expr_mat <- create_expr_mat()
   mp_tbl <- tibble::tibble(
     nFc = c(1, 0, 1),
-    T = c("hybrid", "hybrid", "hybrid")  # no complex here
+    T = c("hybrid", "hybrid", "hybrid") # no complex here
   )
 
   trait_fn <- prop(nFc > 0, within = (Tp == "complex"), na_action = "zero")
@@ -71,10 +71,10 @@ test_that("prop() handles NA through na_action = 'zero'", {
 
 test_that("prop() handles NA in expr_mat", {
   expr_mat <- matrix(
-    c(NA, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(NA, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
@@ -86,7 +86,7 @@ test_that("prop() handles NA in expr_mat", {
   trait_fn <- prop(nFc > 0)
   result <- trait_fn(expr_mat, mp_tbl)
   # The first sample is 1/2, because NA is ignored
-  expect_equal(result, c(1/2, 1/2, 1/2))
+  expect_equal(result, c(1 / 2, 1 / 2, 1 / 2))
 })
 
 test_that("prop() handles NA in cond and within", {
@@ -94,7 +94,7 @@ test_that("prop() handles NA in cond and within", {
   mp_tbl <- tibble::tibble(nFc = c(NA, 0, 1))
   trait_fn <- prop(nFc > 0)
   result <- trait_fn(expr_mat, mp_tbl)
-  expect_equal(result, c(1/3, 1/2, 0))
+  expect_equal(result, c(1 / 3, 1 / 2, 0))
 })
 
 # ----- ratio -----
@@ -188,10 +188,22 @@ test_that("prop print", {
 
 test_that("ratio print", {
   expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid")))
-  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", within = Tp == "complex")))
-  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", within = (Tp == "complex"))))
+  expect_snapshot(print(ratio(
+    Tp == "complex",
+    Tp == "hybrid",
+    within = Tp == "complex"
+  )))
+  expect_snapshot(print(ratio(
+    Tp == "complex",
+    Tp == "hybrid",
+    within = (Tp == "complex")
+  )))
   expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", within = NULL)))
-  expect_snapshot(print(ratio(Tp == "complex", Tp == "hybrid", na_action = "zero")))
+  expect_snapshot(print(ratio(
+    Tp == "complex",
+    Tp == "hybrid",
+    na_action = "zero"
+  )))
 })
 
 test_that("wmean print", {

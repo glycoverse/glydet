@@ -19,14 +19,22 @@ test_that("traits_detailed() works", {
 test_that("traits_detailed() with sia_link = TRUE works", {
   expect_snapshot(traits <- traits_detailed(sia_link = TRUE))
   expect_true(is.list(traits))
-  expect_true(all(c("TM", "CA2", "TF", "A2Fc", "GE", "GL", "A2E", "A2L") %in% names(traits)))
+  expect_true(all(
+    c("TM", "CA2", "TF", "A2Fc", "GE", "GL", "A2E", "A2L") %in% names(traits)
+  ))
 })
 
 test_that("old trait set names remain aliases", {
   expect_identical(basic_traits(), traits_basic())
-  expect_identical(suppressMessages(basic_traits(sia_link = TRUE)), suppressMessages(traits_basic(sia_link = TRUE)))
+  expect_identical(
+    suppressMessages(basic_traits(sia_link = TRUE)),
+    suppressMessages(traits_basic(sia_link = TRUE))
+  )
   expect_identical(all_traits(), traits_detailed())
-  expect_identical(suppressMessages(all_traits(sia_link = TRUE)), suppressMessages(traits_detailed(sia_link = TRUE)))
+  expect_identical(
+    suppressMessages(all_traits(sia_link = TRUE)),
+    suppressMessages(traits_detailed(sia_link = TRUE))
+  )
 })
 
 test_that("traits_clerc_2018() works", {
@@ -38,7 +46,9 @@ test_that("traits_clerc_2018() works", {
 test_that("traits_clerc_2018() with sia_link = TRUE works", {
   expect_snapshot(traits <- traits_clerc_2018(sia_link = TRUE))
   expect_true(is.list(traits))
-  expect_true(all(c("A2F0GS", "A3F0GS", "A4F0GS", "A2L0F", "A3L0F") %in% names(traits)))
+  expect_true(all(
+    c("A2F0GS", "A3F0GS", "A4F0GS", "A2L0F", "A3L0F") %in% names(traits)
+  ))
 })
 
 test_that("traits_fu_2026() works", {

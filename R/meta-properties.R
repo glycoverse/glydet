@@ -78,7 +78,12 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 #' @seealso [get_meta_properties()], [glyexp::experiment()]
 #'
 #' @export
-add_meta_properties <- function(exp, mp_fns = NULL, struc_col = "glycan_structure", overwrite = FALSE) {
+add_meta_properties <- function(
+  exp,
+  mp_fns = NULL,
+  struc_col = "glycan_structure",
+  overwrite = FALSE
+) {
   checkmate::assert_class(exp, "glyexp_experiment")
   checkmate::assert_string(struc_col)
   checkmate::assert_flag(overwrite)

@@ -197,7 +197,6 @@ basic_traits <- function(sia_link = FALSE) {
 traits_detailed <- function(sia_link = FALSE) {
   checkmate::assert_flag(sia_link)
   additional_traits <- list(
-
     # ===== Advanced Fucosylation Traits =====
 
     # Proportion of fucosylated glycans within mono-antennary glycans
@@ -605,7 +604,9 @@ traits_li_2025 <- function() {
 }
 
 .inform_sia_link <- function(func_name) {
-  cli::cli_alert_info("Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?{func_name}} for details.")
+  cli::cli_alert_info(
+    "Please ensure that {.field nE} and {.field nL} are in {.field var_info}. See {.code ?{func_name}} for details."
+  )
 }
 
 # To avoid note about global variables in R CMD check

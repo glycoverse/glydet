@@ -2,67 +2,99 @@
 
 # Test glycan structures
 paucimannose_H3N2 <- function() {
-  glyparse::parse_iupac_condensed("Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 paucimannose_H4N2a3 <- function() {
-  glyparse::parse_iupac_condensed("Man(a1-3)Man(a1-6)[Man(a1-3)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Man(a1-3)Man(a1-6)[Man(a1-3)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 highmannose_H5N2 <- function() {
-  glyparse::parse_iupac_condensed("Man(a1-3)[Man(a1-6)]Man(a1-6)[Man(a1-3)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Man(a1-3)[Man(a1-6)]Man(a1-6)[Man(a1-3)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 highmannose_H6N2 <- function() {
-  glyparse::parse_iupac_condensed("Man(a1-2)Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Man(a1-2)Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 hybrid_H5N3 <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[Man(a1-3)[Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 hybrid_H4N3a3 <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[Man(a1-3)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[Man(a1-3)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 hybrid_H3N3 <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H3N4 <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H4N4 <- function() {
-  glyparse::parse_iupac_condensed("Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H4N4S1 <- function() {
-  glyparse::parse_iupac_condensed("Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Neu5Ac(a2-3)Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H3N5_bisect <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-4)][GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-4)][GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H6N5a3 <- function() {
-  glyparse::parse_iupac_condensed("Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Gal(b1-4)GlcNAc(b1-2)[Gal(b1-4)GlcNAc(b1-4)]Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H3N4F1_coreF <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(?1-"
+  )
 }
 
 complex_H3N4F1_armF <- function() {
-  glyparse::parse_iupac_condensed("Fuc(a1-3)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Fuc(a1-3)GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 complex_H3N4F2_2coreF <- function() {
-  glyparse::parse_iupac_condensed("GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)][Fuc(a1-8)]GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)][Fuc(a1-8)]GlcNAc(?1-"
+  )
 }
 
 complex_H3N4F2_2armF <- function() {
-  glyparse::parse_iupac_condensed("Fuc(a1-3)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-")
+  glyparse::parse_iupac_condensed(
+    "Fuc(a1-3)GlcNAc(b1-2)Man(a1-3)[Fuc(a1-3)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(?1-"
+  )
 }
 
 o_glycan_core_1 <- function() {
@@ -98,7 +130,9 @@ test_that("n_glycan_type identifies hybrid correctly", {
   glycans <- c(
     hybrid_H5N3(),
     hybrid_H4N3a3(),
-    glyrepr::as_glycan_structure("Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-")
+    glyrepr::as_glycan_structure(
+      "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
+    )
   )
   expected <- factor(
     c("hybrid", "hybrid", "hybrid"),

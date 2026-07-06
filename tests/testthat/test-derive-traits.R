@@ -3,22 +3,28 @@ test_that("derive_traits works for glycomics experiments", {
   var_info <- tibble::tibble(
     variable = c("V1", "V2", "V3"),
     glycan_structure = glyparse::parse_iupac_condensed(c(
-      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
     )),
     glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_fns <- list(
@@ -29,9 +35,10 @@ test_that("derive_traits works for glycomics experiments", {
 
   # Test expr_mat
   expected_expr_mat <- matrix(
-    c(1/3, 0.5, 0.5,
-      2/3, 1, 0.5),
-    nrow = 2, ncol = 3, byrow = TRUE
+    c(1 / 3, 0.5, 0.5, 2 / 3, 1, 0.5),
+    nrow = 2,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expected_expr_mat) <- c("TFc", "TC")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
@@ -42,7 +49,10 @@ test_that("derive_traits works for glycomics experiments", {
     variable = c("TFc", "TC"),
     trait = c("TFc", "TC")
   )
-  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_equal(
+    trait_exp$var_info |> dplyr::select(-all_of("explanation")),
+    expected_var_info
+  )
   expect_true("explanation" %in% colnames(trait_exp$var_info))
 
   # Test sample_info
@@ -58,28 +68,53 @@ test_that("derive_traits works for glycoproteomics experiments", {
     variable = paste0("V", 1:6),
     protein = rep(c("P1", "P2"), each = 3),
     protein_site = rep(c(10L, 20L), each = 3),
-    glycan_structure = rep(glyparse::parse_iupac_condensed(c(
-      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
-    )), 2),
+    glycan_structure = rep(
+      glyparse::parse_iupac_condensed(c(
+        "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+        "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+        "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
+      )),
+      2
+    ),
     glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = paste0("S", 1:3))
   expr_mat <- matrix(
     # Site 1
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0,
-    # Site 2
-      1, 1, 1,
-      1, 1, 1,
-      1, 1, 1),
-    nrow = 6, ncol = 3, byrow = TRUE
+    c(
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      # Site 2
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ),
+    nrow = 6,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- paste0("V", 1:6)
   colnames(expr_mat) <- paste0("S", 1:3)
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_fns <- list(
@@ -90,14 +125,17 @@ test_that("derive_traits works for glycoproteomics experiments", {
 
   # Test expr_mat
   expected_expr_mat <- matrix(
-    c(1/3, 0.5, 0.5,
-      2/3, 1, 0.5,
-      1/3, 1/3, 1/3,
-      2/3, 2/3, 2/3
-    ),
-   nrow = 4, ncol = 3, byrow = TRUE
+    c(1 / 3, 0.5, 0.5, 2 / 3, 1, 0.5, 1 / 3, 1 / 3, 1 / 3, 2 / 3, 2 / 3, 2 / 3),
+    nrow = 4,
+    ncol = 3,
+    byrow = TRUE
   )
-  rownames(expected_expr_mat) <- c("P1-10-TFc", "P1-10-TC", "P2-20-TFc", "P2-20-TC")
+  rownames(expected_expr_mat) <- c(
+    "P1-10-TFc",
+    "P1-10-TC",
+    "P2-20-TFc",
+    "P2-20-TC"
+  )
   colnames(expected_expr_mat) <- paste0("S", 1:3)
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
 
@@ -108,7 +146,10 @@ test_that("derive_traits works for glycoproteomics experiments", {
     protein_site = c(10L, 10L, 20L, 20L),
     trait = c("TFc", "TC", "TFc", "TC")
   )
-  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_equal(
+    trait_exp$var_info |> dplyr::select(-all_of("explanation")),
+    expected_var_info
+  )
   expect_true("explanation" %in% colnames(trait_exp$var_info))
 
   # Test sample_info
@@ -123,22 +164,28 @@ test_that("derive_traits works with custom meta-properties", {
   var_info <- tibble::tibble(
     variable = c("V1", "V2", "V3"),
     glycan_structure = glyparse::parse_iupac_condensed(c(
-      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
     )),
     glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Create custom meta-property functions
   mp_fns <- list(
@@ -155,10 +202,10 @@ test_that("derive_traits works with custom meta-properties", {
 
   # Test expr_mat
   expected_expr_mat <- matrix(
-    c(2/3, 1, 1/2,
-      1/3, 0, 1/2
-    ),
-    nrow = 2, ncol = 3, byrow = TRUE
+    c(2 / 3, 1, 1 / 2, 1 / 3, 0, 1 / 2),
+    nrow = 2,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expected_expr_mat) <- c("many_N", "many_H")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
@@ -169,7 +216,10 @@ test_that("derive_traits works with custom meta-properties", {
     variable = c("many_N", "many_H"),
     trait = c("many_N", "many_H")
   )
-  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_equal(
+    trait_exp$var_info |> dplyr::select(-all_of("explanation")),
+    expected_var_info
+  )
   expect_true("explanation" %in% colnames(trait_exp$var_info))
 
   # Test sample_info
@@ -194,14 +244,20 @@ test_that("derive_traits works with custom meta-property columns", {
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_fns <- list(
@@ -209,14 +265,18 @@ test_that("derive_traits works with custom meta-property columns", {
     EG = wmean(nE / nG),
     LG = wmean(nL / nG)
   )
-  trait_exp <- derive_traits(exp, trait_fns, mp_cols = c(nE = "n_a26_sia", nL = "n_a23_sia"))
+  trait_exp <- derive_traits(
+    exp,
+    trait_fns,
+    mp_cols = c(nE = "n_a26_sia", nL = "n_a23_sia")
+  )
 
   # Test expr_mat
   expected_expr_mat <- matrix(
-    c(2/3, 0.5, 1,
-      1/3, 0.5, 0.5,
-      1/3, 0, 0.5),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(2 / 3, 0.5, 1, 1 / 3, 0.5, 0.5, 1 / 3, 0, 0.5),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expected_expr_mat) <- c("SG", "EG", "LG")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
@@ -227,7 +287,10 @@ test_that("derive_traits works with custom meta-property columns", {
     variable = c("SG", "EG", "LG"),
     trait = c("SG", "EG", "LG")
   )
-  expect_equal(trait_exp$var_info |> dplyr::select(-all_of("explanation")), expected_var_info)
+  expect_equal(
+    trait_exp$var_info |> dplyr::select(-all_of("explanation")),
+    expected_var_info
+  )
   expect_true("explanation" %in% colnames(trait_exp$var_info))
 })
 
@@ -245,14 +308,20 @@ test_that("derive_traits uses var_info columns as meta-properties by default", {
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   trait_fns <- list(
     EG = wmean(nE / nG),
@@ -261,9 +330,10 @@ test_that("derive_traits uses var_info columns as meta-properties by default", {
   trait_exp <- derive_traits(exp, trait_fns)
 
   expected_expr_mat <- matrix(
-    c(1/3, 0.5, 0.5,
-      1/3, 0, 0.5),
-    nrow = 2, ncol = 3, byrow = TRUE
+    c(1 / 3, 0.5, 0.5, 1 / 3, 0, 0.5),
+    nrow = 2,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expected_expr_mat) <- c("EG", "LG")
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
@@ -283,18 +353,24 @@ test_that("derive_traits gives built-in meta-properties precedence over var_info
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   trait_exp <- derive_traits(exp, list(TS = prop(nS > 0)))
 
-  expected_expr_mat <- matrix(c(2/3, 0.5, 1), nrow = 1)
+  expected_expr_mat <- matrix(c(2 / 3, 0.5, 1), nrow = 1)
   rownames(expected_expr_mat) <- "TS"
   colnames(expected_expr_mat) <- c("S1", "S2", "S3")
   expect_equal(trait_exp$expr_mat, expected_expr_mat)
@@ -314,14 +390,20 @@ test_that("derive_traits works with custom meta-property columns that overwrite 
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_fns <- list(TS = prop(nS > 0))
@@ -339,22 +421,28 @@ test_that("derive_traits works with default traits", {
   var_info <- tibble::tibble(
     variable = c("V1", "V2", "V3"),
     glycan_structure = glyparse::parse_iupac_condensed(c(
-      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
     )),
     glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_exp <- derive_traits(exp)
@@ -368,22 +456,28 @@ test_that("derive_traits works with all traits", {
   var_info <- tibble::tibble(
     variable = c("V1", "V2", "V3"),
     glycan_structure = glyparse::parse_iupac_condensed(c(
-      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+      "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+      "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
     )),
     glycan_composition = glyrepr::as_glycan_composition(glycan_structure)
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
   expr_mat <- matrix(
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0),
-    nrow = 3, ncol = 3, byrow = TRUE
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
@@ -395,34 +489,56 @@ test_that("derive_traits works with all traits", {
 
 test_that("derive_traits keeps glycosite descriptive columns in var_info", {
   strucs <- glyparse::parse_iupac_condensed(c(
-    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
   ))
   comps <- glyrepr::as_glycan_composition(strucs)
   var_info <- tibble::tibble(
-    variable = paste0("V", 1:6),  # index column
-    protein = rep(c("P1", "P2"), each = 3),  # keep
-    protein_site = rep(c(10L, 20L), each = 3),  # keep
-    gene = rep(c("G1", "G2"), each = 3),  # keep
-    glycan_structure = rep(strucs, 2),  # remove
-    glycan_composition = rep(comps, 2)  # remove
+    variable = paste0("V", 1:6), # index column
+    protein = rep(c("P1", "P2"), each = 3), # keep
+    protein_site = rep(c(10L, 20L), each = 3), # keep
+    gene = rep(c("G1", "G2"), each = 3), # keep
+    glycan_structure = rep(strucs, 2), # remove
+    glycan_composition = rep(comps, 2) # remove
   )
   sample_info <- tibble::tibble(sample = paste0("S", 1:3))
   expr_mat <- matrix(
     # Site 1
-    c(1, 0, 1,
-      1, 1, 1,
-      1, 1, 0,
-    # Site 2
-      1, 1, 1,
-      1, 1, 1,
-      1, 1, 1),
-    nrow = 6, ncol = 3, byrow = TRUE
+    c(
+      1,
+      0,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      0,
+      # Site 2
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1,
+      1
+    ),
+    nrow = 6,
+    ncol = 3,
+    byrow = TRUE
   )
   rownames(expr_mat) <- paste0("V", 1:6)
   colnames(expr_mat) <- paste0("S", 1:3)
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycoproteomics", glycan_type = "N")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycoproteomics",
+    glycan_type = "N"
+  )
 
   # Calculate derived traits
   trait_fns <- list(
@@ -444,18 +560,32 @@ test_that("derive_traits raises error for missing columns", {
     glycan_composition = glyrepr::glycan_composition(c(Hex = 1))
   )
   sample_info <- tibble::tibble(sample = c("S1", "S2", "S3"))
-  expr_mat <- matrix(c(1, 0, 1, 1, 1, 1, 1, 1, 0), nrow = 3, ncol = 3, byrow = TRUE)
+  expr_mat <- matrix(
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    ncol = 3,
+    byrow = TRUE
+  )
   rownames(expr_mat) <- c("V1", "V2", "V3")
   colnames(expr_mat) <- c("S1", "S2", "S3")
-  exp <- glyexp::experiment(expr_mat, sample_info, var_info, exp_type = "glycomics", glycan_type = "N")
-  expect_error(derive_traits(exp), "Variable information must contain the following columns: glycan_structure.")
+  exp <- glyexp::experiment(
+    expr_mat,
+    sample_info,
+    var_info,
+    exp_type = "glycomics",
+    glycan_type = "N"
+  )
+  expect_error(
+    derive_traits(exp),
+    "Variable information must contain the following columns: glycan_structure."
+  )
 })
 
 test_that("derive_traits_() works for glycomics experiments", {
   glycan_structure <- glyparse::parse_iupac_condensed(c(
-    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
   ))
   tbl <- tibble::tibble(
     sample = rep(c("S1", "S2", "S3"), 3),
@@ -473,7 +603,7 @@ test_that("derive_traits_() works for glycomics experiments", {
   expected <- tibble::tibble(
     trait = rep(c("TFc", "TC"), each = 3),
     sample = rep(c("S1", "S2", "S3"), 2),
-    value = c(1/3, 0.5, 0.5, 2/3, 1, 0.5)
+    value = c(1 / 3, 0.5, 0.5, 2 / 3, 1, 0.5)
   )
   expect_equal(trait_tbl[c("trait", "sample", "value")], expected)
   expect_true("explanation" %in% colnames(trait_tbl))
@@ -481,9 +611,9 @@ test_that("derive_traits_() works for glycomics experiments", {
 
 test_that("derive_traits_() works for glycoproteomics experiments", {
   glycan_structure <- glyparse::parse_iupac_condensed(c(
-    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
   ))
   tbl <- tibble::tibble(
     sample = rep(c("S1", "S2", "S3"), 6),
@@ -505,7 +635,20 @@ test_that("derive_traits_() works for glycoproteomics experiments", {
     protein_site = rep(c(10L, 20L), each = 6),
     trait = rep(rep(c("TFc", "TC"), each = 3), 2),
     sample = rep(c("S1", "S2", "S3"), 4),
-    value = c(1/3, 0.5, 0.5, 2/3, 1, 0.5, 1/3, 1/3, 1/3, 2/3, 2/3, 2/3)
+    value = c(
+      1 / 3,
+      0.5,
+      0.5,
+      2 / 3,
+      1,
+      0.5,
+      1 / 3,
+      1 / 3,
+      1 / 3,
+      2 / 3,
+      2 / 3,
+      2 / 3
+    )
   )
   expect_equal(trait_tbl |> dplyr::select(-all_of("explanation")), expected)
   expect_true("explanation" %in% colnames(trait_tbl))
@@ -517,14 +660,17 @@ test_that("derive_traits_() raises error for invalid data type", {
     variable = c("V1", "V2", "V3"),
     value = c(1, 0, 1)
   )
-  expect_error(derive_traits_(tbl, "invalid"), 'must be "glycomics" or "glycoproteomics"')
+  expect_error(
+    derive_traits_(tbl, "invalid"),
+    'must be "glycomics" or "glycoproteomics"'
+  )
 })
 
 test_that("derive_traits_ ignores other columns for glycomics experiments", {
   glycan_structure <- glyparse::parse_iupac_condensed(c(
-    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
   ))
   tbl <- tibble::tibble(
     sample = c("S1", "S2", "S3"),
@@ -532,15 +678,22 @@ test_that("derive_traits_ ignores other columns for glycomics experiments", {
     value = c(1, 0, 1),
     other = c("A", "B", "C")
   )
-  trait_tbl <- derive_traits_(tbl, "glycomics", trait_fns = list(TFc = prop(nFc > 0)))
-  expect_setequal(colnames(trait_tbl), c("trait", "sample", "value", "explanation"))
+  trait_tbl <- derive_traits_(
+    tbl,
+    "glycomics",
+    trait_fns = list(TFc = prop(nFc > 0))
+  )
+  expect_setequal(
+    colnames(trait_tbl),
+    c("trait", "sample", "value", "explanation")
+  )
 })
 
 test_that("derive_traits_ ignores other columns for glycoproteomics experiments", {
   glycan_structure <- glyparse::parse_iupac_condensed(c(
-    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
   ))
   tbl <- tibble::tibble(
     sample = c("S1", "S2", "S3"),
@@ -550,15 +703,22 @@ test_that("derive_traits_ ignores other columns for glycoproteomics experiments"
     value = c(1, 0, 1),
     other = c("A", "B", "C")
   )
-  trait_tbl <- derive_traits_(tbl, "glycoproteomics", trait_fns = list(TFc = prop(nFc > 0)))
-  expect_setequal(colnames(trait_tbl), c("protein", "protein_site", "trait", "sample", "value", "explanation"))
+  trait_tbl <- derive_traits_(
+    tbl,
+    "glycoproteomics",
+    trait_fns = list(TFc = prop(nFc > 0))
+  )
+  expect_setequal(
+    colnames(trait_tbl),
+    c("protein", "protein_site", "trait", "sample", "value", "explanation")
+  )
 })
 
 test_that("derive_traits_ works with default traits", {
   glycan_structure <- glyparse::parse_iupac_condensed(c(
-    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-",  # Man9
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-",  # core-fuc, bi-antennary
-    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"  # bi-antennary
+    "Man(a1-2)Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-3)[Man(a1-2)Man(a1-6)]Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-", # Man9
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)[Fuc(a1-6)]GlcNAc(b1-", # core-fuc, bi-antennary
+    "GlcNAc(b1-2)Man(a1-3)[GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # bi-antennary
   ))
   tbl <- tibble::tibble(
     sample = rep(c("S1", "S2", "S3"), 3),
@@ -571,22 +731,34 @@ test_that("derive_traits_ works with default traits", {
 
 test_that("derive_traits raises error for empty trait_fns", {
   exp <- glyexp::toy_experiment
-  expect_error(derive_traits(exp, trait_fns = list()), "must be a non-empty named list or NULL.")
+  expect_error(
+    derive_traits(exp, trait_fns = list()),
+    "must be a non-empty named list or NULL."
+  )
 })
 
 test_that("derive_traits_ raises error for empty trait_fns", {
   tbl <- tibble::as_tibble(glyexp::toy_experiment)
-  expect_error(derive_traits_(tbl, "glycomics", trait_fns = list()), "must be a non-empty named list or NULL.")
+  expect_error(
+    derive_traits_(tbl, "glycomics", trait_fns = list()),
+    "must be a non-empty named list or NULL."
+  )
 })
 
 test_that("derive_traits raises error when trait_fns has no names", {
   exp <- glyexp::toy_experiment
-  expect_error(derive_traits(exp, trait_fns = list(prop(nFc > 0))), "must be a non-empty named list or NULL.")
+  expect_error(
+    derive_traits(exp, trait_fns = list(prop(nFc > 0))),
+    "must be a non-empty named list or NULL."
+  )
 })
 
 test_that("derive_traits_ raises error when trait_fns has no names", {
   tbl <- tibble::as_tibble(glyexp::toy_experiment)
-  expect_error(derive_traits_(tbl, "glycomics", trait_fns = list(prop(nFc > 0))), "must be a non-empty named list or NULL.")
+  expect_error(
+    derive_traits_(tbl, "glycomics", trait_fns = list(prop(nFc > 0))),
+    "must be a non-empty named list or NULL."
+  )
 })
 
 test_that("derive_traits raises errors about unknown meta-properties", {
@@ -604,7 +776,11 @@ test_that("derive_traits raises error for invalid mp_cols", {
     glyexp::slice_head_var(n = 10) |>
     glyexp::slice_head_obs(n = 10)
   expect_error(
-    derive_traits(exp, trait_fns = list(TFc = prop(nFc > 0)), mp_cols = "invalid"),
+    derive_traits(
+      exp,
+      trait_fns = list(TFc = prop(nFc > 0)),
+      mp_cols = "invalid"
+    ),
     "must be a character vector of column names in the `var_info` tibble."
   )
 })

@@ -91,7 +91,9 @@ make_trait <- function(
 
   for (i in 0:max_retries) {
     if (i > 0 && verbose) {
-      cli::cli_alert_info("Attempt {i}/{max_retries}: Retrying with feedback...")
+      cli::cli_alert_info(
+        "Attempt {i}/{max_retries}: Retrying with feedback..."
+      )
     }
 
     # Call AI to generate trait formula
@@ -106,7 +108,8 @@ make_trait <- function(
       if (i < max_retries) {
         current_prompt <- paste0(
           "The previous formula was invalid:\n",
-          result$error, "\n",
+          result$error,
+          "\n",
           "Please fix the formula and return only the corrected expression."
         )
         next
@@ -138,9 +141,15 @@ make_trait <- function(
     # Explanation doesn't match, retry with feedback
     if (i < max_retries) {
       current_prompt <- paste0(
-        "The formula you generated was: ", result$formula, "\n",
-        "The AI explanation of this formula is: ", reflection_result$explanation, "\n",
-        "This does not match the original intent: ", description, "\n",
+        "The formula you generated was: ",
+        result$formula,
+        "\n",
+        "The AI explanation of this formula is: ",
+        reflection_result$explanation,
+        "\n",
+        "This does not match the original intent: ",
+        description,
+        "\n",
         "Please generate a corrected formula. Return only the expression."
       )
     } else {
@@ -244,8 +253,12 @@ make_trait <- function(
     sep = "\n"
   )
   user_prompt <- paste0(
-    "Original description: ", description, "\n",
-    "Generated explanation: ", explanation, "\n",
+    "Original description: ",
+    description,
+    "\n",
+    "Generated explanation: ",
+    explanation,
+    "\n",
     "Are these two statements semantically equivalent? Answer YES or NO only."
   )
 

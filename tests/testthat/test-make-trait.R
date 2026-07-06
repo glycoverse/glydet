@@ -337,6 +337,9 @@ test_that("custom_mp works with make_trait", {
   )
 
   # Verify system prompt contains custom meta-property
-  expect_match(captured_system_prompt, "nE: \\(integer\\) number of a2,6-linked sialic acids")
+  expect_match(
+    captured_system_prompt,
+    "nE: \\(integer\\) number of a2,6-linked sialic acids"
+  )
   expect_s3_class(res, "glydet_prop")
 })
