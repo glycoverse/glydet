@@ -1,8 +1,9 @@
-# glydet (development version)
+# glydet 0.11.1
 
 ## Minor improvements and bug fixes
 
-* Improve `explain_trait()` wording for common count predicates (#19).
+* Functions in this package now work with `glymotif` 0.17.0 and later.
+* `explain_trait()` now uses clearer wording for common count predicates, including mono-antennary, galactosylated, fucosylated, sialylated, and at-least or at-most antenna conditions (#19).
 
 # glydet 0.11.0
 
