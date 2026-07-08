@@ -325,7 +325,7 @@ test_that("quantify_motifs adds motif_structure column for glycoproteomics data"
 
 test_that("quantify_motifs works with known motif names", {
   exp <- glycomics_exp()
-  motifs <- c("N-Glycan core basic", "N-Glycan high mannose")
+  motifs <- c("N-Glycan core, core-fucosylated", "N-Glycan high mannose")
 
   result <- quantify_motifs(exp, motifs, method = "absolute")
 
@@ -336,7 +336,7 @@ test_that("quantify_motifs works with known motif names", {
   # Test motifs are correctly named
   expect_equal(
     result$var_info$motif,
-    c("N-Glycan core basic", "N-Glycan high mannose")
+    c("N-Glycan core, core-fucosylated", "N-Glycan high mannose")
   )
 })
 

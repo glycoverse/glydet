@@ -288,20 +288,22 @@ n_man <- function(glycans) {
 .get_n_glycan_motif <- function(name) {
   motif <- switch(
     name,
-    core = .get_db_motif_structure("N-Glycan core basic"),
-    pauciman = glyparse::parse_iupac_condensed(
+    core = glyrepr::as_glycan_structure(
+      "Hex(??-?)[Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-"
+    ),
+    pauciman = glyrepr::as_glycan_structure(
       "Hex(??-?)[Hex(??-?)Hex(??-?)]Hex(??-?)HexNAc(??-?)HexNAc(??-"
     ),
-    branch = glyparse::parse_iupac_condensed(
+    branch = glyrepr::as_glycan_structure(
       "HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"
     ),
     bisect = .get_db_motif_structure("N-glycan core, bisected"),
-    antenna = glyparse::parse_iupac_condensed(
+    antenna = glyrepr::as_glycan_structure(
       "HexNAc(??-?)Hex(??-?)Hex(??-?)HexNAc(??-?)HexNAc(??-"
     ),
     core_fuc = .get_db_motif_structure("N-Glycan core, core-fucosylated"),
     arm_fuc = .get_db_motif_structure("N-Glycan core, arm-fucosylated"),
-    gal = glyparse::parse_iupac_condensed(
+    gal = glyrepr::as_glycan_structure(
       "Hex(??-?)HexNAc(??-?)Hex(??-?)Hex(??-"
     )
   )
