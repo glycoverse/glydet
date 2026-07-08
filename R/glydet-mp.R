@@ -169,7 +169,7 @@ n_glycan_type <- function(glycans) {
   count_motif_mat <- glymotif::count_motifs(
     glycans,
     motifs,
-    alignments,
+    alignments = alignments,
     ignore_linkages = TRUE
   )
   colnames(count_motif_mat) <- motif_names
