@@ -206,7 +206,10 @@ meta-properties here):
       nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
       nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
     )
-    exp_with_mps <- glymotif::add_motifs_int(exp, motifs)
+    exp_with_mps <- exp |>
+      glyexp::mutate_var(
+        tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+      )
 
     # Define the traits
     trait_fns <- list(Lx = wsum(nLx), SLx = wsum(nSLx))
@@ -245,21 +248,20 @@ exp <- real_experiment |>
 #> 
 #> ── Normalizing data ──
 #> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
 #> ✔ Normalization completed.
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
-#> ℹ No QC samples found. Using all samples.
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 24 (0.56%) variables.
 #> ✔ Variable removal completed.
 #> 
 #> ── Imputing missing values ──
 #> 
-#> ℹ No QC samples found. Using default imputation method based on sample size.
-#> ℹ Sample size <= 30, using `impute_sample_min()`.
+#> ℹ Imputation method: `impute_min_prob()`
+#> ℹ Reason: default for "glycoproteomics" with n_samples < 30.
 #> ✔ Imputation completed.
 #> 
 #> ── Aggregating data ──
@@ -269,13 +271,13 @@ exp <- real_experiment |>
 #> 
 #> ── Normalizing data again ──
 #> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
 #> ✔ Normalization completed.
 #> 
 #> ── Correcting batch effects ──
 #> 
-#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
 
 motifs <- c(

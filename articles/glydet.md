@@ -80,26 +80,25 @@ exp <- auto_clean(real_experiment2)  # Preprocess the data
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
-#> ℹ No QC samples found. Using all samples.
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 10 (14.93%) variables.
 #> ✔ Variable removal completed.
 #> 
 #> ── Imputing missing values ──
 #> 
-#> ℹ No QC samples found. Using default imputation method based on sample size.
-#> ℹ Sample size > 100, using `impute_miss_forest()`.
+#> ℹ Imputation method: `impute_miss_forest()`
+#> ℹ Reason: default for "glycomics" with n_samples > 100.
 #> ✔ Imputation completed.
 #> 
 #> ── Normalizing data ──
 #> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycomics" with "nrow(exp)" glycans.
+#> ℹ Normalization method: `normalize_total_area()`
+#> ℹ Reason: default for "glycomics".
 #> ✔ Normalization completed.
 #> 
 #> ── Correcting batch effects ──
 #> 
-#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
 exp
 #> 
@@ -265,16 +264,16 @@ anova_res |>
   get_tidy_result("main_test") |>
   filter(p_adj < 0.05)
 #> # A tibble: 8 × 12
-#>   variable trait explanation       term     df   sumsq  meansq statistic   p_val
-#>   <glue>   <chr> <chr>             <chr> <dbl>   <dbl>   <dbl>     <dbl>   <dbl>
-#> 1 CA2      CA2   Proportion of bi… group     3 8.62e-3 2.87e-3      5.72 1.01e-3
-#> 2 CA3      CA3   Proportion of tr… group     3 2.05e-2 6.83e-3      5.35 1.61e-3
-#> 3 CA4      CA4   Proportion of te… group     3 1.18e-4 3.93e-5      4.17 7.30e-3
-#> 4 TF       TF    Proportion of fu… group     3 1.07e-1 3.58e-2      7.87 6.84e-5
-#> 5 TFc      TFc   Proportion of co… group     3 1.07e-1 3.58e-2      7.87 6.84e-5
-#> 6 TFa      TFa   Proportion of ar… group     3 1.27e-4 4.25e-5      5.44 1.44e-3
-#> 7 TB       TB    Proportion of gl… group     3 1.12e-2 3.72e-3      3.57 1.58e-2
-#> 8 AG       AG    Abundance-weight… group     3 4.96e-3 1.65e-3      3.62 1.48e-2
+#>   variable trait explanation        term     df  sumsq  meansq statistic   p_val
+#>   <glue>   <chr> <chr>              <chr> <dbl>  <dbl>   <dbl>     <dbl>   <dbl>
+#> 1 CA2      CA2   Proportion of bi-… group     3 0.0404 0.0135       5.71 1.02e-3
+#> 2 CA3      CA3   Proportion of tri… group     3 1.75   0.584        5.38 1.56e-3
+#> 3 CA4      CA4   Proportion of tet… group     3 1.12   0.372        4.82 3.19e-3
+#> 4 TF       TF    Proportion of fuc… group     3 2.15   0.716        8.45 3.36e-5
+#> 5 TFc      TFc   Proportion of cor… group     3 2.15   0.716        8.45 3.36e-5
+#> 6 TFa      TFa   Proportion of arm… group     3 2.72   0.906        7.46 1.14e-4
+#> 7 TB       TB    Proportion of gly… group     3 1.64   0.545        3.68 1.37e-2
+#> 8 AG       AG    Abundance-weighte… group     3 0.0222 0.00739      3.61 1.51e-2
 #> # ℹ 3 more variables: p_adj <dbl>, effect_size <dbl>, post_hoc <chr>
 ```
 
@@ -304,21 +303,20 @@ gp_exp <- auto_clean(glyexp::real_experiment)
 #> 
 #> ── Normalizing data ──
 #> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
 #> ✔ Normalization completed.
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
-#> ℹ No QC samples found. Using all samples.
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 24 (0.56%) variables.
 #> ✔ Variable removal completed.
 #> 
 #> ── Imputing missing values ──
 #> 
-#> ℹ No QC samples found. Using default imputation method based on sample size.
-#> ℹ Sample size <= 30, using `impute_sample_min()`.
+#> ℹ Imputation method: `impute_min_prob()`
+#> ℹ Reason: default for "glycoproteomics" with n_samples < 30.
 #> ✔ Imputation completed.
 #> 
 #> ── Aggregating data ──
@@ -328,13 +326,13 @@ gp_exp <- auto_clean(glyexp::real_experiment)
 #> 
 #> ── Normalizing data again ──
 #> 
-#> ℹ No QC samples found. Using default normalization method based on experiment type.
-#> ℹ Experiment type is "glycoproteomics". Using `normalize_median()`.
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
 #> ✔ Normalization completed.
 #> 
 #> ── Correcting batch effects ──
 #> 
-#> ℹ Batch column  not found in sample_info. Skipping batch correction.
+#> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
 gp_exp
 #> 
@@ -385,13 +383,13 @@ gly_anova(gp_trait_exp) |>
 #>  3 P02679            78
 #>  4 P02765           176
 #>  5 P02790           240
-#>  6 P03952           494
-#>  7 P04004            86
-#>  8 P04278           396
-#>  9 P05090            98
-#> 10 P0C0L4          1328
+#>  6 P04004            86
+#>  7 P05090            98
+#>  8 P06681           621
+#>  9 P0C0L4          1328
+#> 10 P0C0L4          1391
 #> 11 P19652           103
-#> 12 P43652            33
+#> 12 P20851            64
 ```
 
 ## Understanding Meta-Properties

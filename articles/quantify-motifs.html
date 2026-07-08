@@ -12,8 +12,8 @@
 <link rel="icon" sizes="any" href="../favicon.ico">
 <link rel="manifest" href="../site.webmanifest">
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Quantifying Glycan Motifs">
 </head>
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.11.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.11.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,21 +88,20 @@ samples.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Normalizing data</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using default normalization method based on experiment type.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Experiment type is <span style="color: #0000BB;">"glycoproteomics"</span>. Using `normalize_median()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalization method: `normalize_median()`</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reason: default for <span style="color: #0000BB;">"glycoproteomics"</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalization completed.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Removing variables with too many missing values</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using all samples.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Applying preset <span style="color: #0000BB;">"discovery"</span>...</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Total removed: <span style="color: #0000BB;">24</span> (<span style="color: #0000BB;">0.56</span>%) variables.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Variable removal completed.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Imputing missing values</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using default imputation method based on sample size.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample size &lt;= 30, using `impute_sample_min()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Imputation method: `impute_min_prob()`</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reason: default for <span style="color: #0000BB;">"glycoproteomics"</span> with n_samples &lt; 30.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Imputation completed.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Aggregating data</span> ──</span></span>
@@ -112,13 +111,13 @@ samples.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Normalizing data again</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> No QC samples found. Using default normalization method based on experiment type.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Experiment type is <span style="color: #0000BB;">"glycoproteomics"</span>. Using `normalize_median()`.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Normalization method: `normalize_median()`</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Reason: default for <span style="color: #0000BB;">"glycoproteomics"</span>.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Normalization completed.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Correcting batch effects</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Batch column  not found in sample_info. Skipping batch correction.</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Batch column <span style="color: #00BB00;">batch</span> not found in sample_info. Skipping batch correction.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Batch correction completed.</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="what-is-motif-quantification">What is motif quantification?<a class="anchor" aria-label="anchor" href="#what-is-motif-quantification"></a>
@@ -298,7 +297,10 @@ quantification.</p>
 <span>  nLxa <span class="op">=</span> <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>,  <span class="co"># Lewis x/a antigen</span></span>
 <span>  nSLxa <span class="op">=</span> <span class="st">"NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>  <span class="co"># Sialyl Lewis x/a antigen</span></span>
 <span><span class="op">)</span></span>
-<span><span class="va">exp_with_mps</span> <span class="op">&lt;-</span> <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/add_motifs_int.html" class="external-link">add_motifs_int</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">motifs</span><span class="op">)</span></span>
+<span><span class="va">exp_with_mps</span> <span class="op">&lt;-</span> <span class="va">exp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/mutate_obs.html" class="external-link">mutate_var</a></span><span class="op">(</span></span>
+<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motifs</a></span><span class="op">(</span><span class="va">glycan_structure</span>, <span class="va">motifs</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define the traits using wsum() for absolute quantification</span></span>
 <span><span class="va">trait_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Lxa <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nLxa</span><span class="op">)</span>, SLxa <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nSLxa</span><span class="op">)</span><span class="op">)</span></span>
