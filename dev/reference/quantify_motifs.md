@@ -93,9 +93,9 @@ the new experiment contains quantifications of each motif on each
 glycosite in each sample (for glycoproteomics data) or motif
 quantifications in each sample (for glycomics data).
 
-The `var_info` table includes a `motif_structure` column containing the
-parsed glycan structure for each motif, allowing traceability of motif
-definitions.
+The `var_info` table includes a `trait` column with motif names and a
+`motif_structure` column containing the parsed glycan structure for each
+motif, allowing traceability of motif definitions.
 
 For glycoproteomics data, with additional columns:
 
@@ -291,7 +291,7 @@ quantify_motifs(exp, motifs)
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 8 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
 
 # Using dynamic motifs (auto-extracted from data)
 quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
@@ -299,7 +299,7 @@ quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 80 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
 
 # Using branch motifs (auto-extracted from data)
 quantify_motifs(exp, glymotif::branch_motifs())
@@ -307,5 +307,5 @@ quantify_motifs(exp, glymotif::branch_motifs())
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 20 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
 ```

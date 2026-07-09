@@ -2,6 +2,11 @@
 
 ## glydet (development version)
 
+- [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
+  now uses a `trait` column in returned `var_info`, matching
+  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
+  instead of a separate `motif` column (#22).
+
 ## glydet 0.11.1
 
 ### Minor improvements and bug fixes

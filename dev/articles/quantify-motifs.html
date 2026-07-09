@@ -161,11 +161,11 @@ glycoproteomics data.</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">552</span> variables</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">motif_exp</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 552 × 6</span></span></span>
-<span><span class="co">#&gt;    variable        protein protein_site motif gene   motif_structure            </span></span>
+<span><span class="co">#&gt;    variable        protein protein_site trait gene   motif_structure            </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                   </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> A6NJW9-49-Lxa   A6NJW9            49 Lxa   CD8B2  <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> A6NJW9-49-SLxa  A6NJW9            49 SLxa  CD8B2  <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
@@ -178,10 +178,10 @@ glycoproteomics data.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> O75581-281-Lxa  O75581           281 Lxa   LRP6   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> O75581-281-SLxa O75581           281 SLxa  LRP6   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 542 more rows</span></span></span></code></pre></div>
-<p>Notice how the variable information now includes a <code>motif</code>
-column instead of the usual <code>trait</code> column. Don’t worry—this
-is just a cosmetic difference. Under the hood, the functionality works
-exactly the same way as <code><a href="../reference/derive_traits.html">derive_traits()</a></code>.</p>
+<p>Notice how the variable information includes a <code>trait</code>
+column, matching the output schema of <code><a href="../reference/derive_traits.html">derive_traits()</a></code>.
+Under the hood, motif quantification works exactly the same way as
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code>.</p>
 </div>
 <div class="section level2">
 <h2 id="absolute-vs--relative-motif-quantification">Absolute vs. relative motif quantification<a class="anchor" aria-label="anchor" href="#absolute-vs--relative-motif-quantification"></a>
@@ -331,7 +331,7 @@ power of the underlying trait derivation system.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
