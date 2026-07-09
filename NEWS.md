@@ -1,6 +1,6 @@
 # glydet (development version)
 
-* `quantify_motifs()` now uses a `trait` column in returned `var_info`, matching `derive_traits()`, instead of a separate `motif` column (#21).
+* `quantify_motifs()` now uses a `trait` column in returned `var_info`, matching `derive_traits()`, instead of a separate `motif` column (#22).
 
 # glydet 0.11.1
 
