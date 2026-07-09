@@ -64,9 +64,8 @@ motif_exp
 get_var_info(motif_exp)
 ```
 
-Notice how the variable information now includes a `motif` column instead of the usual `trait` column.
-Don't worry—this is just a cosmetic difference.
-Under the hood, the functionality works exactly the same way as `derive_traits()`.
+Notice how the variable information includes a `trait` column, matching the output schema of `derive_traits()`.
+Under the hood, motif quantification works exactly the same way as `derive_traits()`.
 
 ## Absolute vs. relative motif quantification
 

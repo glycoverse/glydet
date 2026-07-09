@@ -136,8 +136,9 @@
 #' the new experiment contains quantifications of each motif on each glycosite in each sample
 #' (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
 #'
-#' The `var_info` table includes a `motif_structure` column containing the parsed glycan structure
-#' for each motif, allowing traceability of motif definitions.
+#' The `var_info` table includes a `trait` column with motif names and a
+#' `motif_structure` column containing the parsed glycan structure for each motif,
+#' allowing traceability of motif definitions.
 #'
 #' For glycoproteomics data, with additional columns:
 #' - `protein`: protein ID
@@ -235,7 +236,7 @@ quantify_motifs <- function(
 
   # Create lookup tibble: motif names -> motif structures
   motif_lookup <- tibble::tibble(
-    motif = mp_cols,
+    trait = mp_cols,
     motif_structure = unname(motif_structures)
   )
 
@@ -250,7 +251,6 @@ quantify_motifs <- function(
   # Calculate the traits
   trait_exp <- derive_traits(exp2, trait_fns = trait_fns, mp_cols = mp_cols)
   result <- trait_exp |>
-    glyexp::rename_var(dplyr::all_of(c("motif" = "trait"))) |>
     # Remove meta-property columns (if any)
     # `derive_traits()` has a special logic of rescuing columns
     # that have "many-to-one" relationship with glycosites.
@@ -260,7 +260,7 @@ quantify_motifs <- function(
     glyexp::select_var(-all_of("explanation"))
 
   # Add motif_structure column via left_join
-  glyexp::left_join_var(result, motif_lookup, by = "motif")
+  glyexp::left_join_var(result, motif_lookup, by = "trait")
 }
 
 #' Add motif count meta-property columns
