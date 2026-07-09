@@ -121,7 +121,8 @@ test_that("quantify_motifs works for glycomics data absolutely", {
   colnames(expected_expr_mat) <- colnames(exp$expr_mat)
   rownames(expected_expr_mat) <- c("sia", "core")
   expect_equal(result$expr_mat, expected_expr_mat)
-  expect_equal(result$var_info$motif, c("sia", "core"))
+  expect_false("motif" %in% colnames(result$var_info))
+  expect_equal(result$var_info$trait, c("sia", "core"))
 })
 
 test_that("quantify_motifs works for glycomics data relatively", {
@@ -139,7 +140,7 @@ test_that("quantify_motifs works for glycomics data relatively", {
   colnames(expected_expr_mat) <- colnames(exp$expr_mat)
   rownames(expected_expr_mat) <- c("sia", "core")
   expect_equal(result$expr_mat, expected_expr_mat)
-  expect_equal(result$var_info$motif, c("sia", "core"))
+  expect_equal(result$var_info$trait, c("sia", "core"))
 })
 
 test_that("quantify_motifs works for glycoproteomics data absolutely", {
@@ -175,7 +176,7 @@ test_that("quantify_motifs works for glycoproteomics data absolutely", {
   )
   expect_equal(result$var_info$protein, c("P1", "P1", "P1", "P1"))
   expect_equal(result$var_info$protein_site, c(1, 1, 2, 2))
-  expect_equal(result$var_info$motif, c("sia", "core", "sia", "core"))
+  expect_equal(result$var_info$trait, c("sia", "core", "sia", "core"))
 
   # Check motif_structure column exists and has correct type
   expect_true("motif_structure" %in% colnames(result$var_info))
@@ -237,7 +238,7 @@ test_that("quantify_motifs works for glycoproteomics data relatively", {
   )
   expect_equal(result$var_info$protein, c("P1", "P1", "P1", "P1"))
   expect_equal(result$var_info$protein_site, c(1, 1, 2, 2))
-  expect_equal(result$var_info$motif, c("sia", "core", "sia", "core"))
+  expect_equal(result$var_info$trait, c("sia", "core", "sia", "core"))
 
   # Check motif_structure column exists and has correct type
   expect_true("motif_structure" %in% colnames(result$var_info))
@@ -265,7 +266,7 @@ test_that("quantify_motifs keeps additional columns for glycoproteomics data", {
   # Test
   expect_setequal(
     colnames(result$var_info),
-    c("variable", "protein", "protein_site", "motif", "motif_structure", "gene")
+    c("variable", "protein", "protein_site", "trait", "motif_structure", "gene")
   )
 })
 
@@ -335,7 +336,7 @@ test_that("quantify_motifs works with known motif names", {
 
   # Test motifs are correctly named
   expect_equal(
-    result$var_info$motif,
+    result$var_info$trait,
     c("N-Glycan core, core-fucosylated", "N-Glycan high mannose")
   )
 })
@@ -355,7 +356,7 @@ test_that("quantify_motifs works with glycan_structure vector", {
 
   # Test motifs are correctly named (using structure strings as names)
   expect_equal(
-    result$var_info$motif,
+    result$var_info$trait,
     c(
       "Neu5Ac(a2-3)Gal(b1-",
       "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
@@ -379,8 +380,8 @@ test_that("quantify_motifs works with dynamic_motifs() for glycomics data", {
   )))
 
   # Check that motif names are IUPAC strings (auto-generated)
-  expect_type(result$var_info$motif, "character")
-  expect_true(all(nchar(result$var_info$motif) > 0))
+  expect_type(result$var_info$trait, "character")
+  expect_true(all(nchar(result$var_info$trait) > 0))
 })
 
 test_that("quantify_motifs works with branch_motifs() for glycomics data", {
@@ -395,8 +396,8 @@ test_that("quantify_motifs works with branch_motifs() for glycomics data", {
   )))
 
   # Check that motif names are trimmed branch names (not full IUPAC with core)
-  expect_type(result$var_info$motif, "character")
-  expect_true(all(nchar(result$var_info$motif) > 0))
+  expect_type(result$var_info$trait, "character")
+  expect_true(all(nchar(result$var_info$trait) > 0))
 })
 
 test_that("quantify_motifs works with dynamic_motifs() for glycoproteomics data", {
