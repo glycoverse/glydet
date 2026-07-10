@@ -356,6 +356,59 @@ test_that("explain_trait works with use_ai = TRUE", {
   )
 })
 
+test_that("explain_traits preserves names and marks invalid traits", {
+  trait_fns <- list(
+    sialylated = prop(nS > 0),
+    invalid = "not a trait",
+    fucosylated = prop(nF > 0)
+  )
+
+  expect_warning(
+    explanations <- explain_traits(trait_fns),
+    "Could not explain trait"
+  )
+
+  expect_named(explanations, names(trait_fns))
+  expect_equal(
+    explanations[["sialylated"]],
+    "Proportion of sialylated glycans among all glycans."
+  )
+  expect_true(is.na(explanations[["invalid"]]))
+  expect_equal(
+    explanations[["fucosylated"]],
+    "Proportion of fucosylated glycans among all glycans."
+  )
+})
+
+test_that("explain_traits sends valid traits in one AI request", {
+  captured <- new.env(parent = emptyenv())
+  local_mocked_bindings(
+    .ask_ai = function(system_prompt, user_prompt, ...) {
+      captured$system_prompt <- system_prompt
+      captured$user_prompt <- user_prompt
+      "1\tSialylated glycans.\n2\t<INVALID>"
+    }
+  )
+
+  trait_fns <- list(
+    sialylated = prop(nS > 0),
+    invalid = ratio(Tp == "complex", Tp == "hybrid")
+  )
+  expect_warning(
+    explanations <- explain_traits(trait_fns, use_ai = TRUE),
+    "Could not explain trait"
+  )
+
+  expect_named(explanations, names(trait_fns))
+  expect_equal(explanations[["sialylated"]], "Sialylated glycans.")
+  expect_true(is.na(explanations[["invalid"]]))
+  expect_match(captured$user_prompt, "1\\tprop\\(nS > 0\\)")
+  expect_match(
+    captured$user_prompt,
+    '2\\tratio\\(Tp == "complex", Tp == "hybrid"\\)'
+  )
+})
+
 test_that("explain_trait passes explicit AI provider settings", {
   captured <- new.env(parent = emptyenv())
   local_mocked_bindings(

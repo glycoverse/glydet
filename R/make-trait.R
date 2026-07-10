@@ -76,7 +76,7 @@ make_trait <- function(
 
   model <- .resolve_ai_model(provider, model)
   api_key <- .get_api_key(provider = provider, api_key = api_key)
-  system_prompt <- .make_trait_sys_prompt(description, custom_mp)
+  system_prompt <- .make_trait_sys_prompt(custom_mp = custom_mp)
 
   chat <- .create_ai_chat(
     system_prompt = system_prompt,
@@ -162,6 +162,107 @@ make_trait <- function(
       ))
     }
   }
+}
+
+#' Create Multiple Derived Trait Functions with a Large Language Model
+#'
+#' @description
+#' Create trait functions from multiple natural-language descriptions in one AI
+#' request. The shared prompt is sent once. Descriptions that cannot be
+#' understood, or for which the AI returns an invalid formula, are returned as
+#' `NA` and generate a warning without preventing the remaining traits from
+#' being created.
+#'
+#' @param descriptions A character vector of trait descriptions.
+#' @param custom_mp A named character vector of custom meta-properties.
+#' @param provider AI provider passed to `ellmer`.
+#' @param model Model to use.
+#' @param api_key API key for the selected provider.
+#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
+#'
+#' @returns A list of derived trait functions. Input names are preserved; entries
+#'   that cannot be created are `NA`.
+#'
+#' @examples
+#' \dontrun{
+#' make_traits(c(
+#'   sialylated = "proportion of sialylated glycans",
+#'   galactose = "average number of galactoses"
+#' ))
+#' }
+#'
+#' @export
+make_traits <- function(
+  descriptions,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
+  checkmate::assert_character(descriptions, any.missing = TRUE)
+  checkmate::assert_character(custom_mp, names = "named", null.ok = TRUE)
+  provider <- .normalize_ai_provider(provider)
+  model <- .normalize_optional_ai_string(model)
+  api_key <- .normalize_optional_ai_string(api_key)
+  base_url <- .normalize_optional_ai_string(base_url)
+  checkmate::assert_string(model, null.ok = TRUE)
+  checkmate::assert_string(api_key, null.ok = TRUE)
+  checkmate::assert_string(base_url, null.ok = TRUE)
+
+  trait_fns <- rep(list(NA), length(descriptions))
+  names(trait_fns) <- names(descriptions)
+  descriptions <- stringr::str_squish(descriptions)
+  valid <- !is.na(descriptions) & nzchar(descriptions)
+  positions <- which(valid)
+
+  if (length(positions) > 0) {
+    api_key <- .get_api_key(provider = provider, api_key = api_key)
+    system_prompt <- paste0(
+      .make_trait_sys_prompt(custom_mp = custom_mp),
+      "\nCreate every requested trait independently. Return exactly one line per ",
+      "description in the form `index<TAB>formula`. Return `index<TAB><INVALID>` ",
+      "when a description cannot be understood."
+    )
+    chat <- .create_ai_chat(
+      system_prompt = system_prompt,
+      api_key = api_key,
+      provider = provider,
+      model = model,
+      base_url = base_url
+    )
+    user_prompt <- paste0(
+      "INPUTS:\n",
+      paste0(positions, "\t", descriptions[positions], collapse = "\n"),
+      "\nOUTPUT:"
+    )
+    formulas <- .parse_batch_response(
+      as.character(chat$chat(user_prompt)),
+      length(descriptions)
+    )
+    trait_fns[positions] <- purrr::map(
+      formulas[positions],
+      ~ {
+        if (is.na(.x)) {
+          return(NA)
+        }
+        result <- .process_trait_response(.x)
+        if (result$valid) result$trait_fn else NA
+      }
+    )
+  }
+
+  invalid_positions <- which(purrr::map_lgl(
+    trait_fns,
+    ~ is.atomic(.x) && length(.x) == 1 && is.na(.x)
+  ))
+  if (length(invalid_positions) > 0) {
+    cli::cli_warn(
+      "Could not make trait(s) at position(s): {paste(invalid_positions, collapse = ', ')}."
+    )
+  }
+
+  trait_fns
 }
 
 .process_trait_response <- function(output) {
@@ -273,7 +374,13 @@ make_trait <- function(
   stringr::str_detect(toupper(response), "YES")
 }
 
-.make_trait_sys_prompt <- function(description, custom_mp = NULL) {
+#' Build the System Prompt for Making Derived Traits
+#'
+#' @param description Deprecated and unused. Kept for internal compatibility.
+#' @param custom_mp A named character vector of custom meta-properties.
+#' @returns A system prompt for an AI chat.
+#' @noRd
+.make_trait_sys_prompt <- function(description = NULL, custom_mp = NULL) {
   # Build custom meta-properties section
   custom_mp_lines <- ""
   if (!is.null(custom_mp) && length(custom_mp) > 0) {

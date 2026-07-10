@@ -61,6 +61,109 @@ explain_trait <- function(
   UseMethod("explain_trait")
 }
 
+#' Explain Multiple Derived Traits
+#'
+#' @description
+#' Explain a list of derived trait functions. With `use_ai = TRUE`, all valid
+#' traits are sent in one request so the shared prompt is only sent once.
+#' Invalid traits, or traits that the AI cannot explain, are returned as `NA`
+#' and generate a warning without preventing the remaining traits from being
+#' explained.
+#'
+#' @param trait_fns A list of derived trait functions created by the trait
+#'   factories.
+#' @param use_ai Whether to use a Large Language Model (LLM) to explain the
+#'   traits. Default is `FALSE`.
+#' @param custom_mp A named character vector of custom meta-properties. Only
+#'   used when `use_ai = TRUE`.
+#' @param provider AI provider passed to `ellmer` when `use_ai = TRUE`.
+#' @param model Model to use when `use_ai = TRUE`.
+#' @param api_key API key for the selected provider when `use_ai = TRUE`.
+#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
+#'
+#' @returns A character vector of trait explanations. Input names are preserved;
+#'   entries that cannot be explained are `NA`.
+#'
+#' @examples
+#' explain_traits(traits_basic()[c("TM", "GS")])
+#'
+#' @export
+explain_traits <- function(
+  trait_fns,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
+  checkmate::assert_list(trait_fns)
+
+  explanations <- rep(NA_character_, length(trait_fns))
+  names(explanations) <- names(trait_fns)
+  valid <- purrr::map_lgl(
+    trait_fns,
+    ~ is.function(.x) && inherits(.x, "glydet_trait")
+  )
+
+  if (any(valid) && !use_ai) {
+    explanations[valid] <- purrr::map_chr(
+      trait_fns[valid],
+      ~ tryCatch(
+        explain_trait(.x),
+        error = function(error) NA_character_
+      )
+    )
+  }
+
+  if (any(valid) && use_ai) {
+    formulas <- purrr::map_chr(
+      trait_fns[valid],
+      ~ tryCatch(
+        .trait_to_formula(.x),
+        error = function(error) NA_character_
+      )
+    )
+    positions <- which(valid)[!is.na(formulas)]
+
+    if (length(positions) > 0) {
+      system_prompt <- paste0(
+        .explain_sys_prompt("all", custom_mp),
+        "\nThe inputs may use prop(), ratio(), wmean(), total(), or wsum().\n",
+        "Explain every input independently. Return exactly one line per input ",
+        "in the form `index<TAB>explanation`. Return `index<TAB><INVALID>` ",
+        "when an input cannot be explained."
+      )
+      user_prompt <- paste0(
+        "INPUTS:\n",
+        paste0(positions, "\t", formulas[!is.na(formulas)], collapse = "\n"),
+        "\nOUTPUT:"
+      )
+      response <- .ask_ai(
+        system_prompt,
+        user_prompt,
+        api_key = api_key,
+        model = model,
+        provider = provider,
+        base_url = base_url
+      )
+      explanations[positions] <- .parse_batch_response(
+        response,
+        length(trait_fns)
+      )[positions]
+    }
+  }
+
+  invalid_positions <- which(is.na(explanations))
+  if (length(invalid_positions) > 0) {
+    cli::cli_warn(
+      "Could not explain trait(s) at position(s): {paste(invalid_positions, collapse = ', ')}."
+    )
+  }
+
+  explanations
+}
+
 #' @export
 explain_trait.default <- function(
   trait_fn,
@@ -679,7 +782,7 @@ explain_trait.glydet_wsum <- function(
 .explain_sys_prompt <- function(trait_type, custom_mp = NULL) {
   checkmate::assert_choice(
     trait_type,
-    c("prop", "ratio", "wmean", "total", "wsum")
+    c("prop", "ratio", "wmean", "total", "wsum", "all")
   )
 
   # Build custom meta-properties section
@@ -792,7 +895,15 @@ explain_trait.glydet_wsum <- function(
     "ratio" = ratio_examples,
     "wmean" = wmean_examples,
     "total" = total_examples,
-    "wsum" = wsum_examples
+    "wsum" = wsum_examples,
+    "all" = paste(
+      prop_examples,
+      ratio_examples,
+      wmean_examples,
+      total_examples,
+      wsum_examples,
+      sep = "\n"
+    )
   )
   paste(prompt, example_prompt, sep = "\n")
 }
@@ -816,5 +927,57 @@ explain_trait.glydet_wsum <- function(
     model = model,
     provider = provider,
     base_url = base_url
+  )
+}
+
+#' Convert a Derived Trait Function to Its Factory Formula
+#'
+#' @param trait_fn A derived trait function.
+#' @returns A one-line trait factory formula.
+#' @noRd
+.trait_to_formula <- function(trait_fn) {
+  trait_class <- class(trait_fn)
+  trait_type <- sub(
+    "^glydet_",
+    "",
+    trait_class[grepl("^glydet_", trait_class)]
+  )[[1]]
+  within <- attr(trait_fn, "within")
+  within_arg <- if (is.null(within)) {
+    ""
+  } else {
+    paste0(", within = (", rlang::expr_text(within), ")")
+  }
+
+  switch(
+    trait_type,
+    prop = paste0(
+      "prop(",
+      rlang::expr_text(attr(trait_fn, "cond")),
+      within_arg,
+      ")"
+    ),
+    ratio = paste0(
+      "ratio(",
+      rlang::expr_text(attr(trait_fn, "num_cond")),
+      ", ",
+      rlang::expr_text(attr(trait_fn, "denom_cond")),
+      within_arg,
+      ")"
+    ),
+    wmean = paste0(
+      "wmean(",
+      rlang::expr_text(attr(trait_fn, "val")),
+      within_arg,
+      ")"
+    ),
+    total = paste0("total(", rlang::expr_text(attr(trait_fn, "cond")), ")"),
+    wsum = paste0(
+      "wsum(",
+      rlang::expr_text(attr(trait_fn, "val")),
+      within_arg,
+      ")"
+    ),
+    cli::cli_abort("Object must be a supported glydet trait function.")
   )
 }

@@ -450,3 +450,37 @@
   )
   as.character(chat$chat(user_prompt))
 }
+
+#' Parse a Line-Based Batch AI Response
+#'
+#' @param output Text returned by the AI.
+#' @param n Number of requested items.
+#' @returns A character vector with one entry per requested item. Invalid or
+#'   missing responses are `NA`.
+#' @noRd
+.parse_batch_response <- function(output, n) {
+  values <- rep(NA_character_, n)
+  lines <- stringr::str_split(paste(output, collapse = "\n"), "\n")[[1]]
+
+  purrr::walk(lines, function(line) {
+    match <- stringr::str_match(stringr::str_trim(line), "^([0-9]+)\\t(.+)$")
+    if (is.na(match[1, 1])) {
+      return(invisible(NULL))
+    }
+
+    position <- as.integer(match[1, 2])
+    value <- stringr::str_trim(match[1, 3])
+    if (
+      !is.na(position) &&
+        position >= 1 &&
+        position <= n &&
+        is.na(values[[position]]) &&
+        !identical(toupper(value), "<INVALID>")
+    ) {
+      values[[position]] <<- value
+    }
+    invisible(NULL)
+  })
+
+  values
+}

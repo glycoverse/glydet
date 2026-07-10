@@ -34,6 +34,37 @@ test_that("make_trait works when AI response is valid and consistent", {
   expect_s3_class(res, "glydet_prop")
 })
 
+test_that("make_traits preserves names and marks invalid descriptions", {
+  captured <- new.env(parent = emptyenv())
+  local_mocked_bindings(
+    .get_api_key = function(...) "mock_key",
+    .create_ai_chat = function(system_prompt, ...) {
+      captured$system_prompt <- system_prompt
+      list(
+        chat = function(user_prompt) {
+          captured$user_prompt <- user_prompt
+          "1\tprop(nS > 0)\n2\t<INVALID>"
+        }
+      )
+    }
+  )
+
+  descriptions <- c(
+    sialylated = "proportion of sialylated glycans",
+    invalid = "the colour of glycans"
+  )
+  expect_warning(
+    trait_fns <- make_traits(descriptions),
+    "Could not make trait"
+  )
+
+  expect_named(trait_fns, names(descriptions))
+  expect_s3_class(trait_fns[["sialylated"]], "glydet_prop")
+  expect_true(is.na(trait_fns[["invalid"]]))
+  expect_match(captured$user_prompt, "1\\tproportion of sialylated glycans")
+  expect_match(captured$user_prompt, "2\\tthe colour of glycans")
+})
+
 test_that("make_trait routes explicit provider settings to ellmer", {
   captured <- new.env(parent = emptyenv())
 
