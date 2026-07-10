@@ -1,11 +1,17 @@
-#' Explain a Derived Trait
+#' Explain Derived Traits
 #'
 #' @description
-#' This function provides a human-readable English explanation of what a derived trait represents.
-#' It works with trait functions created by the trait factories [prop()], [ratio()], [wmean()],
-#' [total()], and [wsum()], and works best with traits defined by built-in meta-properties.
+#' These functions provide human-readable English explanations of derived traits.
+#' `explain_trait()` explains one trait, while `explain_traits()` explains a list
+#' of traits. They work with trait functions created by [prop()], [ratio()],
+#' [wmean()], [total()], and [wsum()], and work best with traits defined by
+#' built-in meta-properties. When `use_ai = TRUE`, `explain_traits()` sends all
+#' valid traits in one request so the shared prompt is only sent once. Traits
+#' that cannot be explained are returned as `NA` with a warning.
 #'
 #' @param trait_fn A derived trait function created by one of the trait factories.
+#' @param trait_fns A list of derived trait functions created by the trait
+#'   factories.
 #' @param use_ai `r lifecycle::badge("experimental")`
 #'   Whether to use a Large Language Model (LLM) to explain the trait. Default is FALSE.
 #'   To use this feature, you need to install the `ellmer` package.
@@ -29,7 +35,9 @@
 #' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
 #'   Defaults to `getOption("glydet.ai_base_url")`.
 #'
-#' @returns A character string containing a concise English explanation of the trait.
+#' @returns `explain_trait()` returns a character string containing a concise
+#'   English explanation. `explain_traits()` returns a character vector with
+#'   input names preserved; entries that cannot be explained are `NA`.
 #'
 #' @examples
 #' # Explain built-in traits
@@ -48,6 +56,9 @@
 #' explain_trait(wsum(nS))
 #' explain_trait(wsum(nS, within = (Tp == "complex")))
 #'
+#' # Explain multiple traits
+#' explain_traits(traits_basic()[c("TM", "GS")])
+#'
 #' @export
 explain_trait <- function(
   trait_fn,
@@ -61,32 +72,7 @@ explain_trait <- function(
   UseMethod("explain_trait")
 }
 
-#' Explain Multiple Derived Traits
-#'
-#' @description
-#' Explain a list of derived trait functions. With `use_ai = TRUE`, all valid
-#' traits are sent in one request so the shared prompt is only sent once.
-#' Invalid traits, or traits that the AI cannot explain, are returned as `NA`
-#' and generate a warning without preventing the remaining traits from being
-#' explained.
-#'
-#' @param trait_fns A list of derived trait functions created by the trait
-#'   factories.
-#' @param use_ai Whether to use a Large Language Model (LLM) to explain the
-#'   traits. Default is `FALSE`.
-#' @param custom_mp A named character vector of custom meta-properties. Only
-#'   used when `use_ai = TRUE`.
-#' @param provider AI provider passed to `ellmer` when `use_ai = TRUE`.
-#' @param model Model to use when `use_ai = TRUE`.
-#' @param api_key API key for the selected provider when `use_ai = TRUE`.
-#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
-#'
-#' @returns A character vector of trait explanations. Input names are preserved;
-#'   entries that cannot be explained are `NA`.
-#'
-#' @examples
-#' explain_traits(traits_basic()[c("TM", "GS")])
-#'
+#' @rdname explain_trait
 #' @export
 explain_traits <- function(
   trait_fns,

@@ -1,10 +1,13 @@
-#' Use a Large Language Model (LLM) to create a derived trait function
+#' Use a Large Language Model (LLM) to Create Derived Trait Functions
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
-#' This function allows you to create a derived trait function using natural language.
-#' Note that LLMs can be unreliable, so the result should be verified manually.
-#' If the description is not clear, an error will be raised.
+#' These functions create derived trait functions from natural-language
+#' descriptions. `make_trait()` creates one trait and checks its consistency
+#' with the requested description. `make_traits()` creates a list of traits in
+#' one request, reducing repeated prompt tokens. For batch creation, descriptions
+#' that cannot be understood or produce an invalid formula are returned as `NA`
+#' with a warning. LLM-generated traits should always be verified manually.
 #' Try to read the descriptions of built-in traits to get ideas.
 #' Currently, only `prop()`, `ratio()`, and `wmean()` are supported.
 #' To use this feature, you need to install the `ellmer` package.
@@ -13,6 +16,7 @@
 #' API key configuration.
 #'
 #' @param description A description of the trait in natural language.
+#' @param descriptions A character vector of trait descriptions.
 #' @param custom_mp A named character vector of custom meta-properties.
 #'   The names are the meta-property names, and the values are in the format
 #'   "(type) description". For example:
@@ -38,7 +42,9 @@
 #' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
 #'   Defaults to `getOption("glydet.ai_base_url")`.
 #'
-#' @returns A derived trait function.
+#' @returns `make_trait()` returns a derived trait function. `make_traits()`
+#'   returns a list of derived trait functions with input names preserved; entries
+#'   that cannot be created are `NA`.
 #'
 #' @examples
 #' # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
@@ -49,6 +55,13 @@
 #'
 #' # The trait function can then be used in `derive_traits()`:
 #' # derive_traits(exp, trait_fns = my_traits)
+#'
+#' \dontrun{
+#' make_traits(c(
+#'   sialylated = "proportion of sialylated glycans",
+#'   galactose = "average number of galactoses"
+#' ))
+#' }
 #'
 #' @export
 make_trait <- function(
@@ -164,33 +177,7 @@ make_trait <- function(
   }
 }
 
-#' Create Multiple Derived Trait Functions with a Large Language Model
-#'
-#' @description
-#' Create trait functions from multiple natural-language descriptions in one AI
-#' request. The shared prompt is sent once. Descriptions that cannot be
-#' understood, or for which the AI returns an invalid formula, are returned as
-#' `NA` and generate a warning without preventing the remaining traits from
-#' being created.
-#'
-#' @param descriptions A character vector of trait descriptions.
-#' @param custom_mp A named character vector of custom meta-properties.
-#' @param provider AI provider passed to `ellmer`.
-#' @param model Model to use.
-#' @param api_key API key for the selected provider.
-#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
-#'
-#' @returns A list of derived trait functions. Input names are preserved; entries
-#'   that cannot be created are `NA`.
-#'
-#' @examples
-#' \dontrun{
-#' make_traits(c(
-#'   sialylated = "proportion of sialylated glycans",
-#'   galactose = "average number of galactoses"
-#' ))
-#' }
-#'
+#' @rdname make_trait
 #' @export
 make_traits <- function(
   descriptions,

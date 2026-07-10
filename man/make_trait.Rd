@@ -2,13 +2,23 @@
 % Please edit documentation in R/make-trait.R
 \name{make_trait}
 \alias{make_trait}
-\title{Use a Large Language Model (LLM) to create a derived trait function}
+\alias{make_traits}
+\title{Use a Large Language Model (LLM) to Create Derived Trait Functions}
 \usage{
 make_trait(
   description,
   custom_mp = NULL,
   max_retries = 2,
   verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
+
+make_traits(
+  descriptions,
+  custom_mp = NULL,
   provider = getOption("glydet.ai_provider", "deepseek"),
   model = getOption("glydet.ai_model", NULL),
   api_key = getOption("glydet.ai_api_key", NULL),
@@ -48,15 +58,22 @@ specific environment variable is used. Defaults to
 
 \item{base_url}{Optional base URL for custom or OpenAI-compatible endpoints.
 Defaults to \code{getOption("glydet.ai_base_url")}.}
+
+\item{descriptions}{A character vector of trait descriptions.}
 }
 \value{
-A derived trait function.
+\code{make_trait()} returns a derived trait function. \code{make_traits()}
+returns a list of derived trait functions with input names preserved; entries
+that cannot be created are \code{NA}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function allows you to create a derived trait function using natural language.
-Note that LLMs can be unreliable, so the result should be verified manually.
-If the description is not clear, an error will be raised.
+These functions create derived trait functions from natural-language
+descriptions. \code{make_trait()} creates one trait and checks its consistency
+with the requested description. \code{make_traits()} creates a list of traits in
+one request, reducing repeated prompt tokens. For batch creation, descriptions
+that cannot be understood or produce an invalid formula are returned as \code{NA}
+with a warning. LLM-generated traits should always be verified manually.
 Try to read the descriptions of built-in traits to get ideas.
 Currently, only \code{prop()}, \code{ratio()}, and \code{wmean()} are supported.
 To use this feature, you need to install the \code{ellmer} package.
@@ -73,5 +90,12 @@ API key configuration.
 
 # The trait function can then be used in `derive_traits()`:
 # derive_traits(exp, trait_fns = my_traits)
+
+\dontrun{
+make_traits(c(
+  sialylated = "proportion of sialylated glycans",
+  galactose = "average number of galactoses"
+))
+}
 
 }
