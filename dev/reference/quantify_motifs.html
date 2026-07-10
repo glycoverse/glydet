@@ -3,16 +3,18 @@
 For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.
-The function takes a glyexp::experiment() object and returns a new glyexp::experiment()
-object with motif quantifications. Instead of containing quantifications of individual glycans
+The function takes a glyexp::experiment(), glyexp::GlycomicSE, or
+glyexp::GlycoproteomicSE object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data)."><meta property="og:description" content="This function quantifies motifs from glycomic or glycoproteomic profiles.
 For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.
-The function takes a glyexp::experiment() object and returns a new glyexp::experiment()
-object with motif quantifications. Instead of containing quantifications of individual glycans
+The function takes a glyexp::experiment(), glyexp::GlycomicSE, or
+glyexp::GlycoproteomicSE object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data)."><meta property="og:image" content="https://glycoverse.github.io/glydet/logo.png"><meta name="robots" content="noindex"></head><body>
@@ -58,8 +60,9 @@ motif quantifications in each sample (for glycomics data)."><meta property="og:i
 For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.</p>
-<p>The function takes a <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object and returns a new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code>
-object with motif quantifications. Instead of containing quantifications of individual glycans
+<p>The function takes a <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code>, <code><a href="https://glycoverse.github.io/glyexp/reference/GlycomicSE.html" class="external-link">glyexp::GlycomicSE</a></code>, or
+<code><a href="https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html" class="external-link">glyexp::GlycoproteomicSE</a></code> object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data).</p>
@@ -81,7 +84,8 @@ motif quantifications in each sample (for glycomics data).</p>
 
 
 <dl><dt id="arg-exp">exp<a class="anchor" aria-label="anchor" href="#arg-exp"></a></dt>
-<dd><p>A <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object. Before using this function,
+<dd><p>A <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code>, <code><a href="https://glycoverse.github.io/glyexp/reference/GlycomicSE.html" class="external-link">glyexp::GlycomicSE()</a></code>, or
+<code><a href="https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html" class="external-link">glyexp::GlycoproteomicSE()</a></code> object. Before using this function,
 you should preprocess the data using the <code>glyclean</code> package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using <code><a href="https://glycoverse.github.io/glyclean/reference/aggregate.html" class="external-link">glyclean::aggregate()</a></code>.
@@ -122,7 +126,9 @@ See <code><a href="https://glycoverse.github.io/glymotif/reference/have_motif.ht
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object containing motif quantifications.
+    <p>A new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object for legacy <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> input, or a
+<code>SummarizedExperiment</code> object for <code>GlycomicSE</code> or <code>GlycoproteomicSE</code> input,
+containing motif quantifications.
 Instead of containing quantifications of individual glycans on each glycosite in each sample,
 the new experiment contains quantifications of each motif on each glycosite in each sample
 (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).</p>

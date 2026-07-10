@@ -2,6 +2,27 @@
 
 ## glydet (development version)
 
+### New features
+
+- [`add_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/add_meta_properties.md),
+  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
+  and
+  [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
+  now accept
+  [`glyexp::GlycomicSE`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html)
+  and
+  [`glyexp::GlycoproteomicSE`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
+  inputs. The implementation operates natively on
+  `SummarizedExperiment`, while existing
+  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+  inputs retain their previous return type. (#23)
+
+### Breaking changes
+
+- `derive_traits_()` has been removed. Use
+  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
+  with a supported glyexp data container. (#23)
+
 - [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
   now uses a `trait` column in returned `var_info`, matching
   [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
@@ -178,10 +199,8 @@ efficiently with less effort.
 
 - The result of
   [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-  and
-  [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
-  now have an `explanation` column in the output tibble, explaining the
-  derived traits.
+  and `derive_traits_()` now have an `explanation` column in the output
+  tibble, explaining the derived traits.
 
 ## glydet 0.6.5
 
@@ -269,9 +288,7 @@ efficiently with less effort.
 ### Minor improvements and bug fixes
 
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-  and
-  [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
-  now have separate documentations.
+  and `derive_traits_()` now have separate documentations.
 - Update the “Defining Custom Traits” vignette to include the newly
   added `mp_cols` parameter.
 - Better error message when custom derived traits use undefined
@@ -346,20 +363,17 @@ efficiently with less effort.
 
 - Emphasize in the documentation of
   [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-  and
-  [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
-  that the “glycan_structure” column can be either a
+  and `derive_traits_()` that the “glycan_structure” column can be
+  either a
   [`glyrepr::glycan_structure()`](https://glycoverse.github.io/glyrepr/reference/glycan_structure.html)
   vector or a character vector of glycan structure strings supported by
   [`glyparse::auto_parse()`](https://glycoverse.github.io/glyparse/reference/auto_parse.html).
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-  and
-  [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
-  now raise an error if the `trait_fns` parameter is not a named list.
+  and `derive_traits_()` now raise an error if the `trait_fns` parameter
+  is not a named list.
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-  and
-  [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
-  now raise an error if the `trait_fns` parameter is an empty list.
+  and `derive_traits_()` now raise an error if the `trait_fns` parameter
+  is an empty list.
 - A “Working with Glycomics Data” section is added to the “Get Started”
   vignette.
 - A “Validating Trait Definitions” section is added to the “Defining

@@ -148,8 +148,6 @@ Entry points for the package.
 
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
   : Calculate Derived Traits
-- [`derive_traits_()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits_.md)
-  : Calculate Derived Traits from Tidy Data
 - [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
   : Quantify Motifs in an Experiment
 

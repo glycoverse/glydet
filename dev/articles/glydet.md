@@ -189,7 +189,7 @@ sample.
 get_var_info(trait_exp)
 #> # A tibble: 14 × 3
 #>    variable trait explanation                                                   
-#>    <glue>   <chr> <chr>                                                         
+#>    <chr>    <chr> <chr>                                                         
 #>  1 TM       TM    Proportion of high-mannose glycans among all glycans.         
 #>  2 TH       TH    Proportion of hybrid glycans among all glycans.               
 #>  3 TC       TC    Proportion of complex glycans among all glycans.              
@@ -265,7 +265,7 @@ anova_res |>
   filter(p_adj < 0.05)
 #> # A tibble: 8 × 12
 #>   variable trait explanation        term     df  sumsq  meansq statistic   p_val
-#>   <glue>   <chr> <chr>              <chr> <dbl>  <dbl>   <dbl>     <dbl>   <dbl>
+#>   <chr>    <chr> <chr>              <chr> <dbl>  <dbl>   <dbl>     <dbl>   <dbl>
 #> 1 CA2      CA2   Proportion of bi-… group     3 0.0404 0.0135       5.71 1.02e-3
 #> 2 CA3      CA3   Proportion of tri… group     3 1.75   0.584        5.38 1.56e-3
 #> 3 CA4      CA4   Proportion of tet… group     3 1.12   0.372        4.82 3.19e-3
@@ -474,7 +474,7 @@ exp_with_mp <- add_meta_properties(exp)
 get_var_info(exp_with_mp)
 #> # A tibble: 57 × 13
 #>    variable    glycan_composition glycan_structure Tp    B        nA    nF   nFc
-#>    <glue>      <comp>             <struct>         <fct> <lgl> <int> <int> <int>
+#>    <chr>       <comp>             <struct>         <fct> <lgl> <int> <int> <int>
 #>  1 Man(3)GlcN… Man(3)GlcNAc(3)    GlcNAc(?1-?)Man… hybr… FALSE     1     0     0
 #>  2 Man(3)GlcN… Man(3)GlcNAc(7)    GlcNAc(?1-?)[Gl… comp… TRUE      4     0     0
 #>  3 Man(5)GlcN… Man(5)GlcNAc(2)    Man(?1-?)[Man(?… high… FALSE     0     0     0
