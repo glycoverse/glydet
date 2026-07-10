@@ -6,8 +6,9 @@
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and motif quantifications are calculated in a site-specific manner.
 #'
-#' The function takes a `glyexp::experiment()` object and returns a new `glyexp::experiment()`
-#' object with motif quantifications. Instead of containing quantifications of individual glycans
+#' The function takes a `glyexp::experiment()`, `glyexp::GlycomicSE`, or
+#' `glyexp::GlycoproteomicSE` object and returns a new data container with motif
+#' quantifications. Instead of containing quantifications of individual glycans
 #' on each glycosite in each sample, the new experiment contains quantifications
 #' of each motif on each glycosite in each sample (for glycoproteomics data) or
 #' motif quantifications in each sample (for glycomics data).
@@ -131,7 +132,9 @@
 #'   See [glymotif::have_motifs()] for details.
 #'
 #' @returns
-#' A new [glyexp::experiment()] object containing motif quantifications.
+#' A new [glyexp::experiment()] object for legacy `experiment()` input, or a
+#' `SummarizedExperiment` object for `GlycomicSE` or `GlycoproteomicSE` input,
+#' containing motif quantifications.
 #' Instead of containing quantifications of individual glycans on each glycosite in each sample,
 #' the new experiment contains quantifications of each motif on each glycosite in each sample
 #' (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
@@ -188,7 +191,9 @@ quantify_motifs <- function(
   alignments = NULL,
   ignore_linkages = FALSE
 ) {
-  checkmate::assert_class(exp, "glyexp_experiment")
+  .assert_data_container(exp)
+  legacy <- glyexp::is_experiment(exp)
+  exp <- .as_glyco_se(exp)
   checkmate::assert_choice(method, c("absolute", "relative"))
 
   # ----- Create motif lookup tibble -----
@@ -223,8 +228,8 @@ quantify_motifs <- function(
     ignore_linkages = ignore_linkages
   )
   mp_cols <- setdiff(
-    colnames(glyexp::get_var_info(exp2)),
-    colnames(glyexp::get_var_info(exp))
+    colnames(.get_var_info(exp2)),
+    colnames(.get_var_info(exp))
   )
 
   # For motif specs, extract structures from column names (IUPAC strings)
@@ -250,17 +255,15 @@ quantify_motifs <- function(
 
   # Calculate the traits
   trait_exp <- derive_traits(exp2, trait_fns = trait_fns, mp_cols = mp_cols)
-  result <- trait_exp |>
-    # Remove meta-property columns (if any)
-    # `derive_traits()` has a special logic of rescuing columns
-    # that have "many-to-one" relationship with glycosites.
-    # This behavior might result in some meta-property columns being left over.
-    # We remove them here.
-    glyexp::select_var(-dplyr::any_of(mp_cols)) |>
-    glyexp::select_var(-all_of("explanation"))
-
-  # Add motif_structure column via left_join
-  glyexp::left_join_var(result, motif_lookup, by = "trait")
+  # Remove meta-property columns (if any). `derive_traits()` has a special
+  # logic of rescuing columns that have a "many-to-one" relationship with
+  # glycosites, which can leave some meta-property columns in the result.
+  result_var_info <- .get_var_info(trait_exp) |>
+    dplyr::select(-dplyr::any_of(mp_cols)) |>
+    dplyr::select(-dplyr::all_of("explanation")) |>
+    dplyr::left_join(motif_lookup, by = "trait")
+  result <- .set_var_info(trait_exp, result_var_info)
+  .restore_data_container(result, legacy)
 }
 
 #' Add motif count meta-property columns
@@ -279,14 +282,17 @@ quantify_motifs <- function(
   .check_var_info_cols(exp, "glycan_structure")
 
   motif_counts <- glymotif::count_motifs(
-    glyexp::get_var_info(exp)[["glycan_structure"]],
+    .get_var_info(exp)[["glycan_structure"]],
     motifs,
     alignments = alignments,
     ignore_linkages = ignore_linkages
   )
   colnames(motif_counts) <- .motif_count_colnames(motifs, motif_counts)
 
-  glyexp::mutate_var(exp, tibble::as_tibble(motif_counts))
+  .set_var_info(
+    exp,
+    dplyr::bind_cols(.get_var_info(exp), tibble::as_tibble(motif_counts))
+  )
 }
 
 #' Get motif count column names

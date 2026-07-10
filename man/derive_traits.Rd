@@ -7,7 +7,8 @@
 derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
 }
 \arguments{
-\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,
+\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
+\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object. Before using this function,
 you should preprocess the data using the \code{glyclean} package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using \code{glyclean::aggregate()}.
@@ -35,7 +36,8 @@ existing names. In this default mode, meta-properties introduced by \code{mp_fns
 \code{var_info} columns with the same names.}
 }
 \value{
-A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for derived traits.
+A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for legacy \code{experiment()} input, or a
+\code{SummarizedExperiment} object for \code{GlycomicSE} or \code{GlycoproteomicSE} input.
 Instead of "quantification of each glycan on each glycosite in each sample",
 the new \code{experiment()} contains "the value of each derived trait on each glycosite in each sample",
 with the following columns in the \code{var_info} table:
@@ -66,7 +68,8 @@ except that the \code{exp_type} field of \code{meta_data} is set to "traitomics"
 and "traitproteomics" for glycoproteomics data.
 }
 \description{
-This function calculates derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}} object.
+This function calculates derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}},
+\code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or \code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.
 For glycomics data, it calculates the derived traits directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and derived traits are calculated in a site-specific manner.

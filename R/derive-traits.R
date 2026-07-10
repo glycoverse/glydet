@@ -1,12 +1,14 @@
 #' Calculate Derived Traits
 #'
 #' @description
-#' This function calculates derived traits from a [glyexp::experiment()] object.
+#' This function calculates derived traits from a [glyexp::experiment()],
+#' [glyexp::GlycomicSE()], or [glyexp::GlycoproteomicSE()] object.
 #' For glycomics data, it calculates the derived traits directly.
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and derived traits are calculated in a site-specific manner.
 #'
-#' @param exp A [glyexp::experiment()] object. Before using this function,
+#' @param exp A [glyexp::experiment()], [glyexp::GlycomicSE()], or
+#'   [glyexp::GlycoproteomicSE()] object. Before using this function,
 #'   you should preprocess the data using the `glyclean` package.
 #'   For glycoproteomics data, the data should be aggregated to the
 #'   "gfs" (glycoforms with structures) level using `glyclean::aggregate()`.
@@ -31,7 +33,8 @@
 #'   `var_info` columns with the same names.
 #'
 #' @returns
-#' A new [glyexp::experiment()] object for derived traits.
+#' A new [glyexp::experiment()] object for legacy `experiment()` input, or a
+#' `SummarizedExperiment` object for `GlycomicSE` or `GlycoproteomicSE` input.
 #' Instead of "quantification of each glycan on each glycosite in each sample",
 #' the new `experiment()` contains "the value of each derived trait on each glycosite in each sample",
 #' with the following columns in the `var_info` table:
@@ -83,7 +86,8 @@ derive_traits <- function(
   mp_fns = NULL,
   mp_cols = NULL
 ) {
-  checkmate::assert_class(exp, "glyexp_experiment")
+  .assert_data_container(exp)
+  legacy <- glyexp::is_experiment(exp)
   if (is.null(trait_fns)) {
     trait_fns <- traits_basic()
   } else {
@@ -103,7 +107,8 @@ derive_traits <- function(
     ))
   }
   checkmate::assert_character(mp_cols, null.ok = TRUE)
-  var_info <- glyexp::get_var_info(exp)
+  exp <- .as_glyco_se(exp)
+  var_info <- .get_var_info(exp)
   if (!is.null(mp_cols)) {
     invalid_cols <- setdiff(mp_cols, colnames(var_info))
     if (length(invalid_cols) > 0) {
@@ -130,7 +135,7 @@ derive_traits <- function(
     explanation = purrr::map_chr(trait_fns, explain_trait)
   )
 
-  exp_type <- glyexp::get_exp_type(exp)
+  exp_type <- .get_exp_type(exp)
   res_exp <- switch(
     exp_type,
     glycomics = .derive_traits_glycomics(exp, trait_fns, mp_fns, mp_cols),
@@ -149,113 +154,16 @@ derive_traits <- function(
     )
   )
 
-  res_exp |>
-    glyexp::left_join_var(explanations, by = "trait") |>
-    glyexp::standardize_variable()
-}
-
-#' Calculate Derived Traits from Tidy Data
-#'
-#' @description
-#' This function calculates derived traits from a tibble in tidy format.
-#' Use this function if you are not using the `glyexp` package.
-#' For glycomics data, it calculates the derived traits directly.
-#' For glycoproteomics data, each glycosite is treated as a separate glycome,
-#' and derived traits are calculated in a site-specific manner.
-#'
-#' @param tbl
-#'   A tibble in tidy format, with the following columns:
-#'   - `sample`: sample ID
-#'   - `glycan_structure`: glycan structures, either a `glyrepr::glycan_structure()` vector
-#'     or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
-#'   - `value`: the quantification of the glycan in the sample.
-#'
-#'   For glycoproteomics data, additional columns are needed:
-#'   - `protein`: protein ID
-#'   - `protein_site`: the glycosite position on the protein
-#'   The unique combination of `protein` and `protein_site` determines a glycosite.
-#'
-#'   Other columns are ignored.
-#'
-#'   Please make sure that the data has been properly preprocessed,
-#'   including normalization, missing value handling, etc.
-#'   Specifically, for glycoproteomics data, please make sure that the data has been aggregated to the
-#'   "glycoforms with structures" level.
-#'   That is the quantification of each glycan structure on each glycosite in each sample.
-#' @param data_type Either "glycomics" or "glycoproteomics".
-#' @inheritParams derive_traits
-#'
-#' @returns
-#' A tidy tibble containing the following columns:
-#' - `sample`: sample ID
-#' - `trait`: derived trait name
-#' - `value`: the value of the derived trait
-#' - `explanation`: a concise English explanation of the trait
-#'
-#' For glycoproteomics data, with additional columns:
-#' - `protein`: protein ID
-#' - `protein_site`: the glycosite position on the protein
-#'
-#' Other columns in the original tibble are not included.
-#'
-#' @examples
-#' # Create example tidy data
-#' library(dplyr)
-#' library(glyexp)
-#' library(tibble)
-#'
-#' tidy_data <- as_tibble(real_experiment2)
-#'
-#' # Calculate traits
-#' traits <- derive_traits_(tidy_data, data_type = "glycomics")
-#' traits
-#'
-#' @seealso [derive_traits()], [traits_basic()], [traits_detailed()]
-#'
-#' @export
-derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
-  if (is.null(trait_fns)) {
-    trait_fns <- traits_basic()
-  } else {
-    if (length(trait_fns) == 0) {
-      cli::cli_abort(c(
-        "{.arg trait_fns} must be a non-empty named list or NULL.",
-        "x" = "Got an empty list."
-      ))
-    }
-  }
-  if (!checkmate::test_named(trait_fns)) {
-    cli::cli_abort(c(
-      "{.arg trait_fns} must be a non-empty named list or NULL.",
-      "x" = "Got a list with no names.",
-      "i" = "Please add names to the list as the names of the derived traits.",
-      "i" = "Call {.fn traits_basic} to see an example."
-    ))
-  }
-
-  explanations <- tibble::tibble(
-    trait = names(trait_fns),
-    explanation = purrr::map_chr(trait_fns, explain_trait)
-  )
-
-  res_tbl <- switch(
-    data_type,
-    glycomics = .derive_traits_glycomics_(tbl, trait_fns, mp_fns),
-    glycoproteomics = .derive_traits_glycoproteomics_(tbl, trait_fns, mp_fns),
-    cli::cli_abort(c(
-      "{.arg data_type} must be {.val glycomics} or {.val glycoproteomics}.",
-      "x" = "Got {.val {data_type}}."
-    ))
-  )
-
-  res_tbl |>
-    dplyr::left_join(explanations, by = "trait") |>
-    dplyr::relocate(all_of("explanation"), .after = "trait")
+  res_var_info <- .get_var_info(res_exp) |>
+    dplyr::left_join(explanations, by = "trait")
+  res_exp <- .set_var_info(res_exp, res_var_info) |>
+    .standardize_trait_variables()
+  .restore_data_container(res_exp, legacy)
 }
 
 .derive_traits_glycomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, "glycan_structure")
-  expr_mat <- glyexp::get_expr_mat(exp)
+  expr_mat <- .get_expr_mat(exp)
   mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
   var_info <- tibble::tibble(
@@ -268,8 +176,8 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 
 .derive_traits_glycoproteomics <- function(exp, trait_fns, mp_fns, mp_cols) {
   .check_var_info_cols(exp, c("glycan_structure", "protein", "protein_site"))
-  expr_mat <- glyexp::get_expr_mat(exp)
-  var_info <- glyexp::get_var_info(exp)
+  expr_mat <- .get_expr_mat(exp)
+  var_info <- .get_var_info(exp)
   mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   glycosites <- stringr::str_c(
     var_info[["protein"]],
@@ -318,7 +226,7 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
 #'
 #' @noRd
 .get_mps <- function(exp, mp_fns, mp_cols) {
-  var_info <- glyexp::get_var_info(exp)
+  var_info <- .get_var_info(exp)
   if (is.null(mp_cols)) {
     mp_tbl1 <- get_meta_properties(var_info[["glycan_structure"]], mp_fns)
     mp_tbl2 <- var_info |>
@@ -359,42 +267,6 @@ derive_traits_ <- function(tbl, data_type, trait_fns = NULL, mp_fns = NULL) {
   var_info |>
     dplyr::select(dplyr::all_of(c("protein", "protein_site", cols))) |>
     dplyr::distinct()
-}
-
-.derive_traits_glycomics_ <- function(tbl, trait_fns, mp_fns) {
-  data_wide <- tidyr::pivot_wider(
-    tbl,
-    id_cols = "glycan_structure",
-    names_from = "sample",
-    values_from = "value"
-  )
-  expr_mat <- as.matrix(data_wide[, -1])
-  glycans <- data_wide[["glycan_structure"]]
-  mp_tbl <- get_meta_properties(glycans, mp_fns)
-  res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
-  res_mat |>
-    tibble::as_tibble() |>
-    dplyr::mutate(trait = names(trait_fns)) |>
-    tidyr::pivot_longer(
-      -dplyr::all_of("trait"),
-      names_to = "sample",
-      values_to = "value"
-    )
-}
-
-.derive_traits_glycoproteomics_ <- function(tbl, trait_fns, mp_fns) {
-  tbl |>
-    dplyr::nest_by(.data$protein, .data$protein_site) |>
-    dplyr::mutate(
-      trait_data = list(.derive_traits_glycomics_(
-        .data$data,
-        trait_fns,
-        mp_fns
-      ))
-    ) |>
-    dplyr::select(dplyr::all_of(c("protein", "protein_site", "trait_data"))) |>
-    tidyr::unnest("trait_data") |>
-    dplyr::ungroup()
 }
 
 #' Calculate Derived Traits from a Matrix

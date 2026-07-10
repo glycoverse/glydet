@@ -11,7 +11,6 @@ reference:
     Entry points for the package.
   contents:
   - derive_traits
-  - derive_traits_
   - quantify_motifs
 - title: "Out-of-box trait sets"
   desc: >

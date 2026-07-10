@@ -80,15 +80,16 @@ test_that(".add_motif_count_mps adds motif count columns", {
     core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
   )
 
-  result <- .add_motif_count_mps(exp, motifs)
+  result <- .add_motif_count_mps(as_test_se(exp), motifs)
+  result_var_info <- test_var_info(result)
 
-  expect_identical(result$expr_mat, exp$expr_mat)
+  expect_identical(test_expr_mat(result), exp$expr_mat)
   expect_equal(
-    setdiff(colnames(result$var_info), colnames(exp$var_info)),
+    setdiff(colnames(result_var_info), colnames(exp$var_info)),
     c("sia", "core")
   )
-  expect_equal(result$var_info$sia, c(0L, 1L, 2L))
-  expect_equal(result$var_info$core, c(1L, 1L, 1L))
+  expect_equal(result_var_info$sia, c(0L, 1L, 2L))
+  expect_equal(result_var_info$core, c(1L, 1L, 1L))
 })
 
 test_that(".add_motif_count_mps uses motif strings for unnamed columns", {
@@ -98,10 +99,11 @@ test_that(".add_motif_count_mps uses motif strings for unnamed columns", {
     "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
   )
 
-  result <- .add_motif_count_mps(exp, motifs)
+  result <- .add_motif_count_mps(as_test_se(exp), motifs)
+  result_var_info <- test_var_info(result)
 
   expect_equal(
-    setdiff(colnames(result$var_info), colnames(exp$var_info)),
+    setdiff(colnames(result_var_info), colnames(exp$var_info)),
     motifs
   )
 })
@@ -112,7 +114,8 @@ test_that("quantify_motifs works for glycomics data absolutely", {
     sia = "Neu5Ac(a2-3)Gal(b1-", # 0, 1, 2
     core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # 1, 1, 1
   )
-  result <- quantify_motifs(exp, motifs, method = "absolute")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "absolute") |>
+    glyexp::from_se()
   expected_expr_mat <- matrix(
     c(3, 3, 1, 3, 2, 2),
     nrow = 2,
@@ -131,7 +134,8 @@ test_that("quantify_motifs works for glycomics data relatively", {
     sia = "Neu5Ac(a2-3)Gal(b1-", # 0, 1, 2
     core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # 1, 1, 1
   )
-  result <- quantify_motifs(exp, motifs, method = "relative")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "relative") |>
+    glyexp::from_se()
   expected_expr_mat <- matrix(
     c(3 / 3, 3 / 2, 1 / 2, 3 / 3, 2 / 2, 2 / 2),
     nrow = 2,
@@ -152,7 +156,8 @@ test_that("quantify_motifs works for glycoproteomics data absolutely", {
   )
 
   # Perform
-  result <- quantify_motifs(exp, motifs, method = "absolute")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "absolute") |>
+    glyexp::from_se()
 
   # Test
   expected_expr_mat <- matrix(
@@ -201,7 +206,8 @@ test_that("quantify_motifs works for glycoproteomics data relatively", {
   )
 
   # Perform
-  result <- quantify_motifs(exp, motifs, method = "relative")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "relative") |>
+    glyexp::from_se()
 
   # Test
   expected_expr_mat <- matrix(
@@ -261,7 +267,8 @@ test_that("quantify_motifs keeps additional columns for glycoproteomics data", {
   motifs <- c(sia = "Neu5Ac(a2-3)Gal(b1-")
 
   # Perform
-  result <- quantify_motifs(exp, motifs)
+  result <- quantify_motifs(as_test_se(exp), motifs) |>
+    glyexp::from_se()
 
   # Test
   expect_setequal(
@@ -276,7 +283,8 @@ test_that("quantify_motifs adds motif_structure column for glycomics data", {
     sia = "Neu5Ac(a2-3)Gal(b1-", # 0, 1, 2
     core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # 1, 1, 1
   )
-  result <- quantify_motifs(exp, motifs, method = "absolute")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "absolute") |>
+    glyexp::from_se()
 
   # Test motif_structure column exists and has correct type
   expect_true("motif_structure" %in% colnames(result$var_info))
@@ -299,7 +307,8 @@ test_that("quantify_motifs adds motif_structure column for glycoproteomics data"
     sia = "Neu5Ac(a2-3)Gal(b1-", # 0, 1, 2
     core = "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-" # 1, 1, 1
   )
-  result <- quantify_motifs(exp, motifs, method = "absolute")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "absolute") |>
+    glyexp::from_se()
 
   # Test motif_structure column exists and has correct type
   expect_true("motif_structure" %in% colnames(result$var_info))
@@ -328,7 +337,8 @@ test_that("quantify_motifs works with known motif names", {
   exp <- glycomics_exp()
   motifs <- c("N-Glycan core, core-fucosylated", "N-Glycan high mannose")
 
-  result <- quantify_motifs(exp, motifs, method = "absolute")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "absolute") |>
+    glyexp::from_se()
 
   # Test motif_structure column exists
   expect_true("motif_structure" %in% colnames(result$var_info))
@@ -348,7 +358,8 @@ test_that("quantify_motifs works with glycan_structure vector", {
     "Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(b1-"
   ))
 
-  result <- quantify_motifs(exp, motifs, method = "absolute")
+  result <- quantify_motifs(as_test_se(exp), motifs, method = "absolute") |>
+    glyexp::from_se()
 
   # Test motif_structure column exists
   expect_true("motif_structure" %in% colnames(result$var_info))
@@ -367,10 +378,11 @@ test_that("quantify_motifs works with glycan_structure vector", {
 test_that("quantify_motifs works with dynamic_motifs() for glycomics data", {
   exp <- glycomics_exp()
   result <- quantify_motifs(
-    exp,
+    as_test_se(exp),
     glymotif::dynamic_motifs(max_size = 2),
     method = "absolute"
-  )
+  ) |>
+    glyexp::from_se()
 
   # Check that result has motifs extracted
   expect_true(nrow(result$var_info) > 0)
@@ -386,7 +398,12 @@ test_that("quantify_motifs works with dynamic_motifs() for glycomics data", {
 
 test_that("quantify_motifs works with branch_motifs() for glycomics data", {
   exp <- glycomics_exp()
-  result <- quantify_motifs(exp, glymotif::branch_motifs(), method = "absolute")
+  result <- quantify_motifs(
+    as_test_se(exp),
+    glymotif::branch_motifs(),
+    method = "absolute"
+  ) |>
+    glyexp::from_se()
 
   # Check that result has motifs extracted
   expect_true(nrow(result$var_info) > 0)
@@ -403,10 +420,11 @@ test_that("quantify_motifs works with branch_motifs() for glycomics data", {
 test_that("quantify_motifs works with dynamic_motifs() for glycoproteomics data", {
   exp <- glycoproteomics_exp()
   result <- quantify_motifs(
-    exp,
+    as_test_se(exp),
     glymotif::dynamic_motifs(max_size = 2),
     method = "absolute"
-  )
+  ) |>
+    glyexp::from_se()
 
   # Check that result has motifs extracted
   expect_true(nrow(result$var_info) > 0)
@@ -422,7 +440,12 @@ test_that("quantify_motifs works with dynamic_motifs() for glycoproteomics data"
 
 test_that("quantify_motifs works with branch_motifs() for glycoproteomics data", {
   exp <- glycoproteomics_exp()
-  result <- quantify_motifs(exp, glymotif::branch_motifs(), method = "absolute")
+  result <- quantify_motifs(
+    as_test_se(exp),
+    glymotif::branch_motifs(),
+    method = "absolute"
+  ) |>
+    glyexp::from_se()
 
   # Check that result has motifs extracted
   expect_true(nrow(result$var_info) > 0)

@@ -13,7 +13,8 @@ quantify_motifs(
 )
 }
 \arguments{
-\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}} object. Before using this function,
+\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
+\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object. Before using this function,
 you should preprocess the data using the \code{glyclean} package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using \code{glyclean::aggregate()}.
@@ -44,7 +45,9 @@ See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 }
 \value{
-A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object containing motif quantifications.
+A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for legacy \code{experiment()} input, or a
+\code{SummarizedExperiment} object for \code{GlycomicSE} or \code{GlycoproteomicSE} input,
+containing motif quantifications.
 Instead of containing quantifications of individual glycans on each glycosite in each sample,
 the new experiment contains quantifications of each motif on each glycosite in each sample
 (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
@@ -79,8 +82,9 @@ For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.
 
-The function takes a \code{glyexp::experiment()} object and returns a new \code{glyexp::experiment()}
-object with motif quantifications. Instead of containing quantifications of individual glycans
+The function takes a \code{glyexp::experiment()}, \code{glyexp::GlycomicSE}, or
+\code{glyexp::GlycoproteomicSE} object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data).

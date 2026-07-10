@@ -46,12 +46,15 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 
 #' Add Meta-Properties to Experiment
 #'
-#' This function adds meta-properties to the variable information of a [glyexp::experiment()].
+#' This function adds meta-properties to the variable information of a
+#' [glyexp::experiment()], [glyexp::GlycomicSE()], or
+#' [glyexp::GlycoproteomicSE()].
 #' Under the hood, it uses [get_meta_properties()] to calculate the meta-properties
 #' on the "glycan_structure" column (or column specified by `struc_col`) of the variable information tibble,
 #' and then adds the result back as new columns.
 #'
-#' @param exp An [glyexp::experiment()] object.
+#' @param exp A [glyexp::experiment()], [glyexp::GlycomicSE()], or
+#'   [glyexp::GlycoproteomicSE()] object.
 #' @param mp_fns A named list of meta-property functions.
 #'   Names of the list are the names of the meta-properties. Default is [all_mp_fns()].
 #'   A meta-property function should takes a `glyrepr::glycan_structure()` vector,
@@ -62,7 +65,8 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 #' @param overwrite Whether to overwrite the existing meta-property columns.
 #'   Default is FALSE, raising an error if the existing columns are found.
 #'
-#' @return An [glyexp::experiment()] object with meta-properties added to the variable information.
+#' @return The input data container with meta-properties added to its variable
+#'   information. The input container type is preserved.
 #'
 #' @examples
 #' library(glyexp)
@@ -84,12 +88,14 @@ add_meta_properties <- function(
   struc_col = "glycan_structure",
   overwrite = FALSE
 ) {
-  checkmate::assert_class(exp, "glyexp_experiment")
+  .assert_data_container(exp)
+  legacy <- glyexp::is_experiment(exp)
+  exp <- .as_glyco_se(exp)
   checkmate::assert_string(struc_col)
   checkmate::assert_flag(overwrite)
   .check_var_info_cols(exp, struc_col)
 
-  var_info <- glyexp::get_var_info(exp)
+  var_info <- .get_var_info(exp)
   if (is.null(mp_fns)) {
     mp_names <- names(all_mp_fns())
   } else {
@@ -97,8 +103,7 @@ add_meta_properties <- function(
   }
   if (overwrite) {
     # Remove the existing meta-property columns if any
-    exp <- glyexp::select_var(exp, -dplyr::any_of(mp_names))
-    var_info <- glyexp::get_var_info(exp)
+    var_info <- dplyr::select(var_info, -dplyr::any_of(mp_names))
   } else {
     # Check if any existing columns are the same as the new meta-property names
     exist_mp_names <- intersect(mp_names, colnames(var_info))
@@ -111,5 +116,9 @@ add_meta_properties <- function(
   }
 
   meta_properties <- get_meta_properties(var_info[[struc_col]], mp_fns)
-  glyexp::mutate_var(exp, tibble::as_tibble(meta_properties))
+  exp <- .set_var_info(
+    exp,
+    dplyr::bind_cols(var_info, tibble::as_tibble(meta_properties))
+  )
+  .restore_data_container(exp, legacy)
 }

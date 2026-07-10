@@ -12,7 +12,8 @@ add_meta_properties(
 )
 }
 \arguments{
-\item{exp}{An \code{\link[glyexp:experiment]{glyexp::experiment()}} object.}
+\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
+\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.}
 
 \item{mp_fns}{A named list of meta-property functions.
 Names of the list are the names of the meta-properties. Default is \code{\link[=all_mp_fns]{all_mp_fns()}}.
@@ -27,10 +28,13 @@ Default is "glycan_structure".}
 Default is FALSE, raising an error if the existing columns are found.}
 }
 \value{
-An \code{\link[glyexp:experiment]{glyexp::experiment()}} object with meta-properties added to the variable information.
+The input data container with meta-properties added to its variable
+information. The input container type is preserved.
 }
 \description{
-This function adds meta-properties to the variable information of a \code{\link[glyexp:experiment]{glyexp::experiment()}}.
+This function adds meta-properties to the variable information of a
+\code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
+\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}}.
 Under the hood, it uses \code{\link[=get_meta_properties]{get_meta_properties()}} to calculate the meta-properties
 on the "glycan_structure" column (or column specified by \code{struc_col}) of the variable information tibble,
 and then adds the result back as new columns.

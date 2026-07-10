@@ -16,7 +16,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    glyexp (>= 0.12.3),
+    glyexp (>= 0.15.0),
     glyclean (>= 0.12.0),
     glystats (>= 0.6.3),
     missForest,
@@ -37,8 +37,9 @@ Imports:
     purrr,
     rlang,
     stringr,
+    SummarizedExperiment,
+    S4Vectors,
     tibble,
-    tidyr,
     tidyselect
 Depends: 
     R (>= 4.1)
