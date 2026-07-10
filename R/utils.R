@@ -11,8 +11,139 @@
   }
 }
 
+#' Check a glydet data container
+#'
+#' @param exp A `glyexp::experiment()`, `GlycomicSE`, or `GlycoproteomicSE`
+#'   object.
+#'
+#' @returns `NULL` invisibly, or an error if `exp` is unsupported.
+#' @noRd
+.assert_data_container <- function(exp) {
+  if (
+    glyexp::is_experiment(exp) ||
+      glyexp::is_glycomic_se(exp) ||
+      glyexp::is_glycoproteomic_se(exp)
+  ) {
+    return(invisible(NULL))
+  }
+
+  cli::cli_abort(
+    paste0(
+      "{.arg exp} must be a {.cls glyexp_experiment}, ",
+      "{.cls GlycomicSE}, or {.cls GlycoproteomicSE} object."
+    )
+  )
+}
+
+#' Convert a supported data container to a glyco SummarizedExperiment
+#'
+#' @inheritParams .assert_data_container
+#'
+#' @returns A `GlycomicSE` or `GlycoproteomicSE` object.
+#' @noRd
+.as_glyco_se <- function(exp) {
+  if (glyexp::is_glycomic_se(exp) || glyexp::is_glycoproteomic_se(exp)) {
+    return(exp)
+  }
+
+  exp_type <- glyexp::get_exp_type(exp)
+  switch(
+    exp_type,
+    glycomics = glyexp::as_glycomic_se(exp),
+    glycoproteomics = glyexp::as_glycoproteomic_se(exp),
+    cli::cli_abort(
+      c(
+        "{.arg exp} must be of type {.val glycomics} or {.val glycoproteomics}.",
+        "x" = "Got {.val {exp_type}}."
+      ),
+      call = NULL
+    )
+  )
+}
+
+#' Restore the legacy container type
+#'
+#' @param exp A `SummarizedExperiment` object.
+#' @param legacy Whether the original input was a `glyexp::experiment()`.
+#'
+#' @returns `exp`, converted back to `glyexp::experiment()` when `legacy` is
+#'   `TRUE`.
+#' @noRd
+.restore_data_container <- function(exp, legacy) {
+  if (legacy) {
+    return(glyexp::from_se(exp))
+  }
+  exp
+}
+
+#' Extract the abundance matrix
+#'
+#' @param exp A `SummarizedExperiment` object.
+#'
+#' @returns A numeric matrix with variables in rows and samples in columns.
+#' @noRd
+.get_expr_mat <- function(exp) {
+  as.matrix(SummarizedExperiment::assay(exp, 1))
+}
+
+#' Extract variable information
+#'
+#' @param exp A `SummarizedExperiment` object.
+#'
+#' @returns A tibble containing `rowData` columns.
+#' @noRd
+.get_var_info <- function(exp) {
+  row_data <- SummarizedExperiment::rowData(exp)
+  tibble::as_tibble(as.list(row_data), .name_repair = "minimal")
+}
+
+#' Replace variable information
+#'
+#' @param exp A `SummarizedExperiment` object.
+#' @param var_info A data frame containing replacement `rowData`.
+#'
+#' @returns `exp` with updated `rowData`.
+#' @noRd
+.set_var_info <- function(exp, var_info) {
+  variable <- NULL
+  if ("variable" %in% colnames(var_info)) {
+    variable <- var_info[["variable"]]
+    var_info <- dplyr::select(var_info, -dplyr::all_of("variable"))
+  }
+  if (is.null(variable)) {
+    variable <- rownames(exp)
+  }
+
+  SummarizedExperiment::rowData(exp) <- S4Vectors::DataFrame(
+    var_info,
+    row.names = variable,
+    check.names = FALSE
+  )
+  exp
+}
+
+#' Determine the glyco experiment type
+#'
+#' @param exp A `GlycomicSE` or `GlycoproteomicSE` object.
+#'
+#' @returns Either `"glycomics"` or `"glycoproteomics"`.
+#' @noRd
+.get_exp_type <- function(exp) {
+  if (glyexp::is_glycomic_se(exp)) {
+    return("glycomics")
+  }
+  "glycoproteomics"
+}
+
+#' Check variable-information columns
+#'
+#' @param exp A `SummarizedExperiment` object.
+#' @param cols Required column names.
+#'
+#' @returns `NULL` invisibly, or an error if columns are missing.
+#' @noRd
 .check_var_info_cols <- function(exp, cols) {
-  var_info <- glyexp::get_var_info(exp)
+  var_info <- .get_var_info(exp)
   has_cols <- cols %in% colnames(var_info)
   if (!all(has_cols)) {
     missing_cols <- cols[!has_cols]
@@ -23,27 +154,85 @@
   }
 }
 
-#' Rebuild an Experiment with Updated Data
+#' Rebuild a SummarizedExperiment with Updated Data
 #'
-#' @param exp A [glyexp::experiment()] object.
+#' @param exp A `SummarizedExperiment` object.
 #' @param expr_mat A matrix of expression values.
 #' @param var_info A tibble of variable information.
 #' @param exp_type Experiment type for the rebuilt experiment.
 #'
-#' @returns A [glyexp::experiment()] object with the updated data.
+#' @returns A `SummarizedExperiment` object with the updated data.
 #' @noRd
 .rebuild_experiment <- function(exp, expr_mat, var_info, exp_type) {
-  meta_data <- glyexp::get_meta_data(exp)
+  meta_data <- S4Vectors::metadata(exp)
   meta_data[["exp_type"]] <- exp_type
-  args <- c(
-    list(
-      expr_mat = expr_mat,
-      sample_info = glyexp::get_sample_info(exp),
-      var_info = var_info
+
+  variable <- var_info[["variable"]]
+  rownames(expr_mat) <- variable
+  var_info <- dplyr::select(var_info, -dplyr::all_of("variable"))
+  assay_name <- SummarizedExperiment::assayNames(exp)[[1]]
+
+  SummarizedExperiment::SummarizedExperiment(
+    assays = stats::setNames(list(expr_mat), assay_name),
+    rowData = S4Vectors::DataFrame(
+      var_info,
+      row.names = variable,
+      check.names = FALSE
     ),
-    meta_data
+    colData = SummarizedExperiment::colData(exp),
+    metadata = meta_data
   )
-  do.call(glyexp::experiment, args)
+}
+
+#' Standardize trait variable identifiers
+#'
+#' @param exp A derived-trait `SummarizedExperiment` object.
+#'
+#' @returns `exp` with standardized row names.
+#' @noRd
+.standardize_trait_variables <- function(exp) {
+  var_info <- .get_var_info(exp)
+  exp_type <- S4Vectors::metadata(exp)[["exp_type"]]
+
+  variables <- switch(
+    exp_type,
+    traitomics = var_info[["trait"]],
+    traitproteomics = stringr::str_c(
+      var_info[["protein"]],
+      dplyr::if_else(
+        is.na(var_info[["protein_site"]]),
+        "X",
+        as.character(var_info[["protein_site"]])
+      ),
+      var_info[["trait"]],
+      sep = "-"
+    )
+  )
+  rownames(exp) <- .ensure_unique_variables(variables)
+  exp
+}
+
+#' Make variable identifiers unique
+#'
+#' @param variables A character vector of proposed identifiers.
+#'
+#' @returns Unique identifiers, with `-N` suffixes added to every member of a
+#'   duplicated group.
+#' @noRd
+.ensure_unique_variables <- function(variables) {
+  if (length(unique(variables)) == length(variables)) {
+    return(variables)
+  }
+
+  counts <- table(variables)
+  seen <- stats::setNames(rep(0L, length(counts)), names(counts))
+  purrr::map_chr(variables, function(variable) {
+    if (counts[[variable]] == 1L) {
+      return(variable)
+    }
+    seen[[variable]] <<- seen[[variable]] + 1L
+    stringr::str_c(variable, seen[[variable]], sep = "-")
+  })
 }
 
 #' Supported AI provider names

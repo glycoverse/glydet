@@ -46,7 +46,8 @@ test_that("get_meta_properties works with custom meta-property functions", {
 test_that("add_meta_properties works with default meta-property functions", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10)
-  exp <- add_meta_properties(exp)
+  exp <- add_meta_properties(as_test_se(exp)) |>
+    glyexp::from_se()
   expect_true(all(
     c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in%
       colnames(exp$var_info)
@@ -57,12 +58,13 @@ test_that("add_meta_properties works with custom meta-property functions", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10)
   exp <- add_meta_properties(
-    exp,
+    as_test_se(exp),
     list(
       nN = ~ glyrepr::count_mono(.x, "HexNAc"),
       nH = ~ glyrepr::count_mono(.x, "Hex")
     )
-  )
+  ) |>
+    glyexp::from_se()
   expect_true(all(c("nN", "nH") %in% colnames(exp$var_info)))
 })
 
@@ -70,7 +72,8 @@ test_that("add_meta_properties works with custom struc_col", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10) |>
     glyexp::rename_var(struc = glycan_structure)
-  exp <- add_meta_properties(exp, struc_col = "struc")
+  exp <- add_meta_properties(as_test_se(exp), struc_col = "struc") |>
+    glyexp::from_se()
   expect_true(all(
     c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in%
       colnames(exp$var_info)
@@ -81,7 +84,7 @@ test_that("add_meta_properties throws error if struc_col not found", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10)
   expect_error(
-    add_meta_properties(exp, struc_col = "struc"),
+    add_meta_properties(as_test_se(exp), struc_col = "struc"),
     "Variable information must contain the following columns: struc."
   )
 })
@@ -91,7 +94,7 @@ test_that("add_meta_properties throws error if existing columns are the same as 
     glyexp::slice_head_var(n = 10) |>
     glyexp::mutate_var(Tp = "complex")
   expect_error(
-    add_meta_properties(exp, overwrite = FALSE),
+    add_meta_properties(as_test_se(exp), overwrite = FALSE),
     "Variable information tibble must not contain columns with the same names as the meta-properties."
   )
 })
@@ -100,7 +103,8 @@ test_that("add_meta_properties works with overwrite = TRUE", {
   exp <- glyexp::real_experiment |>
     glyexp::slice_head_var(n = 10) |>
     glyexp::mutate_var(Tp = "complex")
-  exp <- add_meta_properties(exp, overwrite = TRUE)
+  exp <- add_meta_properties(as_test_se(exp), overwrite = TRUE) |>
+    glyexp::from_se()
   expect_true(all(
     c("Tp", "B", "nA", "nFc", "nFa", "nG", "nGt", "nS", "nM") %in%
       colnames(exp$var_info)
