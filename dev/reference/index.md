@@ -31,10 +31,12 @@ Curated sets of derived traits for out-of-box use.
 Helper functions for trait interpretation and construction.
 
 - [`explain_trait()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
-  : Explain a Derived Trait
+  [`explain_traits()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
+  : Explain Derived Traits
 - [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
-  **\[experimental\]** : Use a Large Language Model (LLM) to create a
-  derived trait function
+  [`make_traits()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
+  **\[experimental\]** : Use a Large Language Model (LLM) to Create
+  Derived Trait Functions
 
 ## Trait factories
 

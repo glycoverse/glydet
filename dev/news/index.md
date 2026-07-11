@@ -4,6 +4,12 @@
 
 ### New features
 
+- Add
+  [`make_traits()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
+  and
+  [`explain_traits()`](https://glycoverse.github.io/glydet/dev/reference/explain_trait.md)
+  to create or explain multiple traits in a batch while preserving names
+  and marking individual unrecognized entries as `NA`. (#25)
 - [`add_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/add_meta_properties.md),
   [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
   and
