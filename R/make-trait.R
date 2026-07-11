@@ -16,6 +16,15 @@
 #' providers can be selected with `provider`, `model`, and provider-specific
 #' API key configuration.
 #'
+#' @section Batch multi-agent workflow:
+#' `make_traits()` uses one batch writer to generate formulas for all active
+#' descriptions, one batch explainer to describe the generated formulas, and one
+#' batch evaluator to compare those explanations with the original descriptions.
+#' Successful positions are retained. Invalid or mismatched positions are sent
+#' back to the writer with their validation error or generated explanation, and
+#' only those positions are regenerated. This continues until all positions pass
+#' or `max_retries` is reached.
+#'
 #' @param description A description of the trait in natural language.
 #' @param descriptions A character vector of trait descriptions.
 #' @param custom_mp A named character vector of custom meta-properties.
@@ -27,8 +36,9 @@
 #'   You need to define corresponding meta-property functions or specifying meta-property columns.
 #'   For more information about custom meta-properties, see the vignette
 #'   [Custom Meta-Properties](https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait).
-#' @param max_retries Maximum number of reflection retries when the AI-generated
-#'   formula's explanation doesn't match the original description. Default is 2.
+#' @param max_retries Maximum number of retries after an invalid formula or an
+#'   explanation that doesn't match the original description. In batch mode,
+#'   only unresolved descriptions are retried. Default is 2.
 #' @param verbose Whether to print verbose output. Default is FALSE.
 #'   This is useful for inspecting how LLMs generate trait functions.
 #' @param provider AI provider passed to `ellmer`. One of "deepseek",
@@ -183,6 +193,8 @@ make_trait <- function(
 make_traits <- function(
   descriptions,
   custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
   provider = getOption("glydet.ai_provider", "deepseek"),
   model = getOption("glydet.ai_model", NULL),
   api_key = getOption("glydet.ai_api_key", NULL),
@@ -190,6 +202,8 @@ make_traits <- function(
 ) {
   checkmate::assert_character(descriptions, any.missing = TRUE)
   checkmate::assert_character(custom_mp, names = "named", null.ok = TRUE)
+  checkmate::assert_count(max_retries)
+  checkmate::assert_flag(verbose)
   provider <- .normalize_ai_provider(provider)
   model <- .normalize_optional_ai_string(model)
   api_key <- .normalize_optional_ai_string(api_key)
@@ -219,43 +233,103 @@ make_traits <- function(
       model = model,
       base_url = base_url
     )
-    user_prompt <- paste0(
+    current_prompt <- paste0(
       "INPUTS:\n",
       paste0(positions, "\t", descriptions[positions], collapse = "\n"),
       "\nOUTPUT:"
     )
-    formulas <- .parse_batch_response(
-      as.character(chat$chat(user_prompt)),
-      length(descriptions)
-    )
-    trait_fns[positions] <- purrr::map(
-      formulas[positions],
-      ~ {
-        if (is.na(.x)) {
-          return(NA)
-        }
-        result <- .process_trait_response(.x)
-        if (result$valid) result$trait_fn else NA
-      }
-    )
+    active_positions <- positions
+    feedback <- rep(NA_character_, length(descriptions))
 
-    created_positions <- which(purrr::map_lgl(trait_fns, is.function))
-    if (length(created_positions) > 0) {
-      consistent <- .check_traits_consistency(
-        descriptions[created_positions],
-        trait_fns[created_positions],
-        custom_mp = custom_mp,
-        api_key = api_key,
-        model = model,
-        provider = provider,
-        base_url = base_url
-      )
-      inconsistent_positions <- created_positions[
-        is.na(consistent) | !consistent
+    for (attempt in 0:max_retries) {
+      if (attempt > 0 && verbose) {
+        cli::cli_alert_info(
+          "Batch retry {attempt}/{max_retries}: regenerating {length(active_positions)} trait(s)."
+        )
+      }
+
+      output <- as.character(chat$chat(current_prompt))
+      formulas <- .parse_batch_response(output, length(descriptions))
+      candidate_positions <- integer()
+      candidate_formulas <- character()
+      candidate_fns <- list()
+
+      for (position in active_positions) {
+        formula <- formulas[[position]]
+        if (is.na(formula)) {
+          feedback[[position]] <- paste(
+            "The previous response did not contain a valid formula.",
+            "Generate a formula for this description."
+          )
+          next
+        }
+
+        result <- .process_trait_response(formula)
+        if (!result$valid) {
+          feedback[[position]] <- paste0(
+            "The previous formula was invalid: ",
+            result$error,
+            " Generate a corrected formula."
+          )
+          next
+        }
+
+        candidate_positions <- c(candidate_positions, position)
+        candidate_formulas <- c(candidate_formulas, result$formula)
+        candidate_fns <- c(candidate_fns, list(result$trait_fn))
+      }
+
+      if (length(candidate_positions) > 0) {
+        consistency <- .check_traits_consistency(
+          descriptions[candidate_positions],
+          candidate_fns,
+          custom_mp = custom_mp,
+          api_key = api_key,
+          model = model,
+          provider = provider,
+          base_url = base_url
+        )
+
+        for (index in seq_along(candidate_positions)) {
+          position <- candidate_positions[[index]]
+          if (isTRUE(consistency$consistent[[index]])) {
+            trait_fns[[position]] <- candidate_fns[[index]]
+            next
+          }
+
+          explanation <- consistency$explanations[[index]]
+          if (is.na(explanation)) {
+            explanation <- "The generated formula could not be explained."
+          }
+          feedback[[position]] <- paste0(
+            "The previous formula was: ",
+            candidate_formulas[[index]],
+            "\nThe generated explanation was: ",
+            explanation,
+            "\nThis does not match the original description. Generate a corrected formula."
+          )
+        }
+      }
+
+      active_positions <- active_positions[
+        !purrr::map_lgl(trait_fns[active_positions], is.function)
       ]
-      trait_fns[inconsistent_positions] <- rep(
-        list(NA),
-        length(inconsistent_positions)
+      if (length(active_positions) == 0 || attempt == max_retries) {
+        break
+      }
+
+      current_prompt <- paste0(
+        "RETRY INPUTS:\n",
+        paste0(
+          active_positions,
+          "\tOriginal description: ",
+          descriptions[active_positions],
+          "\n\tFeedback: ",
+          feedback[active_positions],
+          collapse = "\n"
+        ),
+        "\nReturn exactly one corrected formula per input using the original ",
+        "index in the form `index<TAB>formula`.\nOUTPUT:"
       )
     }
   }
@@ -355,8 +429,8 @@ make_traits <- function(
 #' @param model Model to use.
 #' @param provider AI provider passed to `ellmer`.
 #' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
-#' @returns A logical vector indicating whether each generated trait matches its
-#'   corresponding description. Unparseable responses are `NA`.
+#' @returns A list containing a logical consistency vector and the generated
+#'   explanations. Unparseable responses are `NA`.
 #' @noRd
 .check_traits_consistency <- function(
   descriptions,
@@ -367,15 +441,22 @@ make_traits <- function(
   provider = getOption("glydet.ai_provider", "deepseek"),
   base_url = getOption("glydet.ai_base_url", NULL)
 ) {
-  explanations <- purrr::map_chr(
-    trait_fns,
-    ~ tryCatch(explain_trait(.x), error = function(error) NA_character_)
+  explanations <- suppressWarnings(
+    explain_traits(
+      trait_fns,
+      use_ai = TRUE,
+      custom_mp = custom_mp,
+      api_key = api_key,
+      model = model,
+      provider = provider,
+      base_url = base_url
+    )
   )
   positions <- which(!is.na(explanations))
   consistent <- rep(NA, length(trait_fns))
 
   if (length(positions) == 0) {
-    return(consistent)
+    return(list(consistent = consistent, explanations = explanations))
   }
 
   custom_mp_lines <- ""
@@ -417,7 +498,7 @@ make_traits <- function(
   )
   answers <- .parse_batch_response(response, length(trait_fns))
   consistent[positions] <- toupper(answers[positions]) == "YES"
-  consistent
+  list(consistent = consistent, explanations = explanations)
 }
 
 .ask_ai_consistency <- function(

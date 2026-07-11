@@ -19,6 +19,8 @@ make_trait(
 make_traits(
   descriptions,
   custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
   provider = getOption("glydet.ai_provider", "deepseek"),
   model = getOption("glydet.ai_model", NULL),
   api_key = getOption("glydet.ai_api_key", NULL),
@@ -38,8 +40,9 @@ You need to define corresponding meta-property functions or specifying meta-prop
 For more information about custom meta-properties, see the vignette
 \href{https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait}{Custom Meta-Properties}.}
 
-\item{max_retries}{Maximum number of reflection retries when the AI-generated
-formula's explanation doesn't match the original description. Default is 2.}
+\item{max_retries}{Maximum number of retries after an invalid formula or an
+explanation that doesn't match the original description. In batch mode,
+only unresolved descriptions are retried. Default is 2.}
 
 \item{verbose}{Whether to print verbose output. Default is FALSE.
 This is useful for inspecting how LLMs generate trait functions.}
@@ -82,6 +85,17 @@ DeepSeek is used by default for backward compatibility. Other \code{ellmer}
 providers can be selected with \code{provider}, \code{model}, and provider-specific
 API key configuration.
 }
+\section{Batch multi-agent workflow}{
+
+\code{make_traits()} uses one batch writer to generate formulas for all active
+descriptions, one batch explainer to describe the generated formulas, and one
+batch evaluator to compare those explanations with the original descriptions.
+Successful positions are retained. Invalid or mismatched positions are sent
+back to the writer with their validation error or generated explanation, and
+only those positions are regenerated. This continues until all positions pass
+or \code{max_retries} is reached.
+}
+
 \examples{
 # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
 # my_traits <- list(
