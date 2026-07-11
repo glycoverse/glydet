@@ -2,6 +2,18 @@
 
 ## glydet (development version)
 
+## glydet 0.12.0
+
+### Breaking changes
+
+- `derive_traits_()` has been removed. Use
+  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
+  with a supported glyexp data container. (#23)
+- [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
+  now uses a `trait` column in returned `var_info`, matching
+  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
+  instead of a separate `motif` column (#22).
+
 ### New features
 
 - Add
@@ -22,17 +34,6 @@
   `SummarizedExperiment`, while existing
   [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
   inputs retain their previous return type. (#23)
-
-### Breaking changes
-
-- `derive_traits_()` has been removed. Use
-  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-  with a supported glyexp data container. (#23)
-
-- [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
-  now uses a `trait` column in returned `var_info`, matching
-  [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
-  instead of a separate `motif` column (#22).
 
 ## glydet 0.11.1
 

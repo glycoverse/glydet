@@ -18,6 +18,8 @@ details.
 library(dplyr)
 library(glydet)
 library(glyexp)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(glyclean)
 library(glyrepr)
 

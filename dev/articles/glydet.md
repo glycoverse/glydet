@@ -49,6 +49,8 @@ sample to be comparable.
 library(glydet)
 library(glyrepr)
 library(glyexp)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(glyclean)
 #> 
 #> Attaching package: 'glyclean'
