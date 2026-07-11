@@ -34,6 +34,159 @@ test_that("make_trait works when AI response is valid and consistent", {
   expect_s3_class(res, "glydet_prop")
 })
 
+test_that("make_traits preserves names and marks invalid descriptions", {
+  captured <- new.env(parent = emptyenv())
+  local_mocked_bindings(
+    .get_api_key = function(...) "mock_key",
+    .check_traits_consistency = function(...) {
+      list(
+        consistent = TRUE,
+        explanations = "Proportion of sialylated glycans among all glycans."
+      )
+    },
+    .create_ai_chat = function(system_prompt, ...) {
+      captured$system_prompt <- system_prompt
+      list(
+        chat = function(user_prompt) {
+          captured$user_prompt <- user_prompt
+          "1\tprop(nS > 0)\n2\t<INVALID>"
+        }
+      )
+    }
+  )
+
+  descriptions <- c(
+    sialylated = "proportion of sialylated glycans",
+    invalid = "the colour of glycans"
+  )
+  expect_warning(
+    trait_fns <- make_traits(descriptions, max_retries = 0),
+    "Could not make trait"
+  )
+
+  expect_named(trait_fns, names(descriptions))
+  expect_s3_class(trait_fns[["sialylated"]], "glydet_prop")
+  expect_true(is.na(trait_fns[["invalid"]]))
+  expect_match(captured$user_prompt, "1\\tproportion of sialylated glycans")
+  expect_match(captured$user_prompt, "2\\tthe colour of glycans")
+})
+
+test_that("make_traits retries inconsistent formulas with batch feedback", {
+  writer_calls <- 0
+  evaluator_calls <- 0
+  prompts <- character()
+
+  local_mocked_bindings(
+    .get_api_key = function(...) "mock_key",
+    .create_ai_chat = function(...) {
+      list(chat = function(prompt) {
+        writer_calls <<- writer_calls + 1
+        prompts[[writer_calls]] <<- prompt
+        if (writer_calls == 1) {
+          "1\tprop(nS > 0)\n2\tprop(nS > 0)"
+        } else {
+          "2\tprop(nF > 0)"
+        }
+      })
+    },
+    .check_traits_consistency = function(...) {
+      evaluator_calls <<- evaluator_calls + 1
+      if (evaluator_calls == 1) {
+        list(
+          consistent = c(TRUE, FALSE),
+          explanations = c(
+            "Proportion of sialylated glycans among all glycans.",
+            "Proportion of sialylated glycans among all glycans."
+          )
+        )
+      } else {
+        list(
+          consistent = TRUE,
+          explanations = "Proportion of fucosylated glycans among all glycans."
+        )
+      }
+    }
+  )
+
+  trait_fns <- make_traits(
+    c(
+      "proportion of sialylated glycans",
+      "proportion of fucosylated glycans"
+    ),
+    max_retries = 2
+  )
+
+  expect_s3_class(trait_fns[[1]], "glydet_prop")
+  expect_s3_class(trait_fns[[2]], "glydet_prop")
+  expect_equal(writer_calls, 2)
+  expect_equal(evaluator_calls, 2)
+  expect_no_match(prompts[[2]], "1\\tOriginal description")
+  expect_match(prompts[[2]], "2\\tOriginal description")
+  expect_match(prompts[[2]], "prop\\(nS > 0\\)")
+  expect_match(prompts[[2]], "Proportion of sialylated glycans")
+})
+
+test_that("make_traits stops retrying after max_retries", {
+  writer_calls <- 0
+  local_mocked_bindings(
+    .get_api_key = function(...) "mock_key",
+    .create_ai_chat = function(...) {
+      list(chat = function(...) {
+        writer_calls <<- writer_calls + 1
+        "1\tprop(nF > 0)"
+      })
+    },
+    .check_traits_consistency = function(...) {
+      list(
+        consistent = FALSE,
+        explanations = "Proportion of fucosylated glycans among all glycans."
+      )
+    }
+  )
+
+  expect_warning(
+    trait_fns <- make_traits(
+      "proportion of sialylated glycans",
+      max_retries = 1
+    ),
+    "Could not make trait"
+  )
+
+  expect_true(is.na(trait_fns[[1]]))
+  expect_equal(writer_calls, 2)
+})
+
+test_that("batch consistency uses an AI explainer and evaluator", {
+  captured <- new.env(parent = emptyenv())
+  local_mocked_bindings(
+    explain_traits = function(trait_fns, use_ai = FALSE, ...) {
+      captured$use_ai <- use_ai
+      c(
+        "Proportion of sialylated glycans among all glycans.",
+        "Proportion of fucosylated glycans among all glycans."
+      )
+    },
+    .ask_ai = function(system_prompt, user_prompt, ...) {
+      captured$system_prompt <- system_prompt
+      captured$user_prompt <- user_prompt
+      "1\tYES\n2\tNO"
+    }
+  )
+
+  result <- .check_traits_consistency(
+    c(
+      "proportion of sialylated glycans",
+      "proportion of sialylated glycans"
+    ),
+    list(prop(nS > 0), prop(nF > 0))
+  )
+
+  expect_true(captured$use_ai)
+  expect_equal(result$consistent, c(TRUE, FALSE))
+  expect_length(result$explanations, 2)
+  expect_match(captured$user_prompt, "Generated explanation")
+})
+
 test_that("make_trait routes explicit provider settings to ellmer", {
   captured <- new.env(parent = emptyenv())
 

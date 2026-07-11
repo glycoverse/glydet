@@ -1,10 +1,14 @@
-#' Use a Large Language Model (LLM) to create a derived trait function
+#' Use a Large Language Model (LLM) to Create Derived Trait Functions
 #'
 #' @description
 #' `r lifecycle::badge("experimental")`
-#' This function allows you to create a derived trait function using natural language.
-#' Note that LLMs can be unreliable, so the result should be verified manually.
-#' If the description is not clear, an error will be raised.
+#' These functions create derived trait functions from natural-language
+#' descriptions. `make_trait()` creates one trait and checks its consistency
+#' with the requested description. `make_traits()` creates and validates a list
+#' of traits in batched requests, reducing repeated prompt tokens. For batch
+#' creation, descriptions that cannot be understood, produce an invalid formula,
+#' or do not match the generated trait are returned as `NA` with a warning.
+#' LLM-generated traits should always be verified manually.
 #' Try to read the descriptions of built-in traits to get ideas.
 #' Currently, only `prop()`, `ratio()`, and `wmean()` are supported.
 #' To use this feature, you need to install the `ellmer` package.
@@ -12,7 +16,17 @@
 #' providers can be selected with `provider`, `model`, and provider-specific
 #' API key configuration.
 #'
+#' @section Batch multi-agent workflow:
+#' `make_traits()` uses one batch writer to generate formulas for all active
+#' descriptions, one batch explainer to describe the generated formulas, and one
+#' batch evaluator to compare those explanations with the original descriptions.
+#' Successful positions are retained. Invalid or mismatched positions are sent
+#' back to the writer with their validation error or generated explanation, and
+#' only those positions are regenerated. This continues until all positions pass
+#' or `max_retries` is reached.
+#'
 #' @param description A description of the trait in natural language.
+#' @param descriptions A character vector of trait descriptions.
 #' @param custom_mp A named character vector of custom meta-properties.
 #'   The names are the meta-property names, and the values are in the format
 #'   "(type) description". For example:
@@ -22,8 +36,9 @@
 #'   You need to define corresponding meta-property functions or specifying meta-property columns.
 #'   For more information about custom meta-properties, see the vignette
 #'   [Custom Meta-Properties](https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait).
-#' @param max_retries Maximum number of reflection retries when the AI-generated
-#'   formula's explanation doesn't match the original description. Default is 2.
+#' @param max_retries Maximum number of retries after an invalid formula or an
+#'   explanation that doesn't match the original description. In batch mode,
+#'   only unresolved descriptions are retried. Default is 2.
 #' @param verbose Whether to print verbose output. Default is FALSE.
 #'   This is useful for inspecting how LLMs generate trait functions.
 #' @param provider AI provider passed to `ellmer`. One of "deepseek",
@@ -38,7 +53,9 @@
 #' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
 #'   Defaults to `getOption("glydet.ai_base_url")`.
 #'
-#' @returns A derived trait function.
+#' @returns `make_trait()` returns a derived trait function. `make_traits()`
+#'   returns a list of derived trait functions with input names preserved; entries
+#'   that cannot be created are `NA`.
 #'
 #' @examples
 #' # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
@@ -49,6 +66,13 @@
 #'
 #' # The trait function can then be used in `derive_traits()`:
 #' # derive_traits(exp, trait_fns = my_traits)
+#'
+#' \dontrun{
+#' make_traits(c(
+#'   sialylated = "proportion of sialylated glycans",
+#'   galactose = "average number of galactoses"
+#' ))
+#' }
 #'
 #' @export
 make_trait <- function(
@@ -76,7 +100,7 @@ make_trait <- function(
 
   model <- .resolve_ai_model(provider, model)
   api_key <- .get_api_key(provider = provider, api_key = api_key)
-  system_prompt <- .make_trait_sys_prompt(description, custom_mp)
+  system_prompt <- .make_trait_sys_prompt(custom_mp = custom_mp)
 
   chat <- .create_ai_chat(
     system_prompt = system_prompt,
@@ -164,6 +188,165 @@ make_trait <- function(
   }
 }
 
+#' @rdname make_trait
+#' @export
+make_traits <- function(
+  descriptions,
+  custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
+  checkmate::assert_character(descriptions, any.missing = TRUE)
+  checkmate::assert_character(custom_mp, names = "named", null.ok = TRUE)
+  checkmate::assert_count(max_retries)
+  checkmate::assert_flag(verbose)
+  provider <- .normalize_ai_provider(provider)
+  model <- .normalize_optional_ai_string(model)
+  api_key <- .normalize_optional_ai_string(api_key)
+  base_url <- .normalize_optional_ai_string(base_url)
+  checkmate::assert_string(model, null.ok = TRUE)
+  checkmate::assert_string(api_key, null.ok = TRUE)
+  checkmate::assert_string(base_url, null.ok = TRUE)
+
+  trait_fns <- rep(list(NA), length(descriptions))
+  names(trait_fns) <- names(descriptions)
+  descriptions <- stringr::str_squish(descriptions)
+  valid <- !is.na(descriptions) & nzchar(descriptions)
+  positions <- which(valid)
+
+  if (length(positions) > 0) {
+    api_key <- .get_api_key(provider = provider, api_key = api_key)
+    system_prompt <- paste0(
+      .make_trait_sys_prompt(custom_mp = custom_mp),
+      "\nCreate every requested trait independently. Return exactly one line per ",
+      "description in the form `index<TAB>formula`. Return `index<TAB><INVALID>` ",
+      "when a description cannot be understood."
+    )
+    chat <- .create_ai_chat(
+      system_prompt = system_prompt,
+      api_key = api_key,
+      provider = provider,
+      model = model,
+      base_url = base_url
+    )
+    current_prompt <- paste0(
+      "INPUTS:\n",
+      paste0(positions, "\t", descriptions[positions], collapse = "\n"),
+      "\nOUTPUT:"
+    )
+    active_positions <- positions
+    feedback <- rep(NA_character_, length(descriptions))
+
+    for (attempt in 0:max_retries) {
+      if (attempt > 0 && verbose) {
+        cli::cli_alert_info(
+          "Batch retry {attempt}/{max_retries}: regenerating {length(active_positions)} trait(s)."
+        )
+      }
+
+      output <- as.character(chat$chat(current_prompt))
+      formulas <- .parse_batch_response(output, length(descriptions))
+      candidate_positions <- integer()
+      candidate_formulas <- character()
+      candidate_fns <- list()
+
+      for (position in active_positions) {
+        formula <- formulas[[position]]
+        if (is.na(formula)) {
+          feedback[[position]] <- paste(
+            "The previous response did not contain a valid formula.",
+            "Generate a formula for this description."
+          )
+          next
+        }
+
+        result <- .process_trait_response(formula)
+        if (!result$valid) {
+          feedback[[position]] <- paste0(
+            "The previous formula was invalid: ",
+            result$error,
+            " Generate a corrected formula."
+          )
+          next
+        }
+
+        candidate_positions <- c(candidate_positions, position)
+        candidate_formulas <- c(candidate_formulas, result$formula)
+        candidate_fns <- c(candidate_fns, list(result$trait_fn))
+      }
+
+      if (length(candidate_positions) > 0) {
+        consistency <- .check_traits_consistency(
+          descriptions[candidate_positions],
+          candidate_fns,
+          custom_mp = custom_mp,
+          api_key = api_key,
+          model = model,
+          provider = provider,
+          base_url = base_url
+        )
+
+        for (index in seq_along(candidate_positions)) {
+          position <- candidate_positions[[index]]
+          if (isTRUE(consistency$consistent[[index]])) {
+            trait_fns[[position]] <- candidate_fns[[index]]
+            next
+          }
+
+          explanation <- consistency$explanations[[index]]
+          if (is.na(explanation)) {
+            explanation <- "The generated formula could not be explained."
+          }
+          feedback[[position]] <- paste0(
+            "The previous formula was: ",
+            candidate_formulas[[index]],
+            "\nThe generated explanation was: ",
+            explanation,
+            "\nThis does not match the original description. Generate a corrected formula."
+          )
+        }
+      }
+
+      active_positions <- active_positions[
+        !purrr::map_lgl(trait_fns[active_positions], is.function)
+      ]
+      if (length(active_positions) == 0 || attempt == max_retries) {
+        break
+      }
+
+      current_prompt <- paste0(
+        "RETRY INPUTS:\n",
+        paste0(
+          active_positions,
+          "\tOriginal description: ",
+          descriptions[active_positions],
+          "\n\tFeedback: ",
+          feedback[active_positions],
+          collapse = "\n"
+        ),
+        "\nReturn exactly one corrected formula per input using the original ",
+        "index in the form `index<TAB>formula`.\nOUTPUT:"
+      )
+    }
+  }
+
+  invalid_positions <- which(purrr::map_lgl(
+    trait_fns,
+    ~ is.atomic(.x) && length(.x) == 1 && is.na(.x)
+  ))
+  if (length(invalid_positions) > 0) {
+    cli::cli_warn(
+      "Could not make trait(s) at position(s): {paste(invalid_positions, collapse = ', ')}."
+    )
+  }
+
+  trait_fns
+}
+
 .process_trait_response <- function(output) {
   # Clean up output
   output <- stringr::str_trim(output)
@@ -237,6 +420,87 @@ make_trait <- function(
   list(consistent = is_consistent, explanation = explanation)
 }
 
+#' Check Multiple Generated Traits Against Their Descriptions
+#'
+#' @param descriptions Character vector of original trait descriptions.
+#' @param trait_fns List of generated trait functions.
+#' @param custom_mp A named character vector of custom meta-properties.
+#' @param api_key API key for the selected provider.
+#' @param model Model to use.
+#' @param provider AI provider passed to `ellmer`.
+#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
+#' @returns A list containing a logical consistency vector and the generated
+#'   explanations. Unparseable responses are `NA`.
+#' @noRd
+.check_traits_consistency <- function(
+  descriptions,
+  trait_fns,
+  custom_mp = NULL,
+  api_key = getOption("glydet.ai_api_key", NULL),
+  model = getOption("glydet.ai_model", NULL),
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
+  explanations <- suppressWarnings(
+    explain_traits(
+      trait_fns,
+      use_ai = TRUE,
+      custom_mp = custom_mp,
+      api_key = api_key,
+      model = model,
+      provider = provider,
+      base_url = base_url
+    )
+  )
+  positions <- which(!is.na(explanations))
+  consistent <- rep(NA, length(trait_fns))
+
+  if (length(positions) == 0) {
+    return(list(consistent = consistent, explanations = explanations))
+  }
+
+  custom_mp_lines <- ""
+  if (!is.null(custom_mp) && length(custom_mp) > 0) {
+    custom_mp_lines <- paste0(
+      "Custom meta-properties:\n",
+      paste0("- ", names(custom_mp), ": ", custom_mp, collapse = "\n"),
+      "\n"
+    )
+  }
+  system_prompt <- paste0(
+    "You are a professional glycobiologist.\n",
+    "Your task is to judge whether each generated explanation is semantically ",
+    "equivalent to its original trait description.\n",
+    custom_mp_lines,
+    "Return exactly one line per input in the form `index<TAB>YES` or ",
+    "`index<TAB>NO`. Use YES only when the meanings are the same; minor wording ",
+    "differences are acceptable."
+  )
+  user_prompt <- paste0(
+    "INPUTS:\n",
+    paste0(
+      positions,
+      "\tDescription: ",
+      descriptions[positions],
+      "\n\tGenerated explanation: ",
+      explanations[positions],
+      collapse = "\n"
+    ),
+    "\nOUTPUT:"
+  )
+  response <- .ask_ai(
+    system_prompt,
+    user_prompt,
+    api_key = api_key,
+    model = model,
+    provider = provider,
+    base_url = base_url
+  )
+  answers <- .parse_batch_response(response, length(trait_fns))
+  consistent[positions] <- toupper(answers[positions]) == "YES"
+  list(consistent = consistent, explanations = explanations)
+}
+
 .ask_ai_consistency <- function(
   description,
   explanation,
@@ -273,7 +537,13 @@ make_trait <- function(
   stringr::str_detect(toupper(response), "YES")
 }
 
-.make_trait_sys_prompt <- function(description, custom_mp = NULL) {
+#' Build the System Prompt for Making Derived Traits
+#'
+#' @param description Deprecated and unused. Kept for internal compatibility.
+#' @param custom_mp A named character vector of custom meta-properties.
+#' @returns A system prompt for an AI chat.
+#' @noRd
+.make_trait_sys_prompt <- function(description = NULL, custom_mp = NULL) {
   # Build custom meta-properties section
   custom_mp_lines <- ""
   if (!is.null(custom_mp) && length(custom_mp) > 0) {

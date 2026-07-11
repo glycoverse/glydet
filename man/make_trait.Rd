@@ -2,10 +2,22 @@
 % Please edit documentation in R/make-trait.R
 \name{make_trait}
 \alias{make_trait}
-\title{Use a Large Language Model (LLM) to create a derived trait function}
+\alias{make_traits}
+\title{Use a Large Language Model (LLM) to Create Derived Trait Functions}
 \usage{
 make_trait(
   description,
+  custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
+
+make_traits(
+  descriptions,
   custom_mp = NULL,
   max_retries = 2,
   verbose = FALSE,
@@ -28,8 +40,9 @@ You need to define corresponding meta-property functions or specifying meta-prop
 For more information about custom meta-properties, see the vignette
 \href{https://glycoverse.github.io/glydet/articles/custom-traits.html#using-make_trait}{Custom Meta-Properties}.}
 
-\item{max_retries}{Maximum number of reflection retries when the AI-generated
-formula's explanation doesn't match the original description. Default is 2.}
+\item{max_retries}{Maximum number of retries after an invalid formula or an
+explanation that doesn't match the original description. In batch mode,
+only unresolved descriptions are retried. Default is 2.}
 
 \item{verbose}{Whether to print verbose output. Default is FALSE.
 This is useful for inspecting how LLMs generate trait functions.}
@@ -48,15 +61,23 @@ specific environment variable is used. Defaults to
 
 \item{base_url}{Optional base URL for custom or OpenAI-compatible endpoints.
 Defaults to \code{getOption("glydet.ai_base_url")}.}
+
+\item{descriptions}{A character vector of trait descriptions.}
 }
 \value{
-A derived trait function.
+\code{make_trait()} returns a derived trait function. \code{make_traits()}
+returns a list of derived trait functions with input names preserved; entries
+that cannot be created are \code{NA}.
 }
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
-This function allows you to create a derived trait function using natural language.
-Note that LLMs can be unreliable, so the result should be verified manually.
-If the description is not clear, an error will be raised.
+These functions create derived trait functions from natural-language
+descriptions. \code{make_trait()} creates one trait and checks its consistency
+with the requested description. \code{make_traits()} creates and validates a list
+of traits in batched requests, reducing repeated prompt tokens. For batch
+creation, descriptions that cannot be understood, produce an invalid formula,
+or do not match the generated trait are returned as \code{NA} with a warning.
+LLM-generated traits should always be verified manually.
 Try to read the descriptions of built-in traits to get ideas.
 Currently, only \code{prop()}, \code{ratio()}, and \code{wmean()} are supported.
 To use this feature, you need to install the \code{ellmer} package.
@@ -64,6 +85,17 @@ DeepSeek is used by default for backward compatibility. Other \code{ellmer}
 providers can be selected with \code{provider}, \code{model}, and provider-specific
 API key configuration.
 }
+\section{Batch multi-agent workflow}{
+
+\code{make_traits()} uses one batch writer to generate formulas for all active
+descriptions, one batch explainer to describe the generated formulas, and one
+batch evaluator to compare those explanations with the original descriptions.
+Successful positions are retained. Invalid or mismatched positions are sent
+back to the writer with their validation error or generated explanation, and
+only those positions are regenerated. This continues until all positions pass
+or \code{max_retries} is reached.
+}
+
 \examples{
 # Sys.setenv(DEEPSEEK_API_KEY = "your_api_key")
 # my_traits <- list(
@@ -73,5 +105,12 @@ API key configuration.
 
 # The trait function can then be used in `derive_traits()`:
 # derive_traits(exp, trait_fns = my_traits)
+
+\dontrun{
+make_traits(c(
+  sialylated = "proportion of sialylated glycans",
+  galactose = "average number of galactoses"
+))
+}
 
 }

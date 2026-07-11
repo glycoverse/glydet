@@ -2,10 +2,21 @@
 % Please edit documentation in R/explain-trait.R
 \name{explain_trait}
 \alias{explain_trait}
-\title{Explain a Derived Trait}
+\alias{explain_traits}
+\title{Explain Derived Traits}
 \usage{
 explain_trait(
   trait_fn,
+  use_ai = FALSE,
+  custom_mp = NULL,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
+
+explain_traits(
+  trait_fns,
   use_ai = FALSE,
   custom_mp = NULL,
   provider = getOption("glydet.ai_provider", "deepseek"),
@@ -44,14 +55,23 @@ specific environment variable is used. Defaults to
 
 \item{base_url}{Optional base URL for custom or OpenAI-compatible endpoints.
 Defaults to \code{getOption("glydet.ai_base_url")}.}
+
+\item{trait_fns}{A list of derived trait functions created by the trait
+factories.}
 }
 \value{
-A character string containing a concise English explanation of the trait.
+\code{explain_trait()} returns a character string containing a concise
+English explanation. \code{explain_traits()} returns a character vector with
+input names preserved; entries that cannot be explained are \code{NA}.
 }
 \description{
-This function provides a human-readable English explanation of what a derived trait represents.
-It works with trait functions created by the trait factories \code{\link[=prop]{prop()}}, \code{\link[=ratio]{ratio()}}, \code{\link[=wmean]{wmean()}},
-\code{\link[=total]{total()}}, and \code{\link[=wsum]{wsum()}}, and works best with traits defined by built-in meta-properties.
+These functions provide human-readable English explanations of derived traits.
+\code{explain_trait()} explains one trait, while \code{explain_traits()} explains a list
+of traits. They work with trait functions created by \code{\link[=prop]{prop()}}, \code{\link[=ratio]{ratio()}},
+\code{\link[=wmean]{wmean()}}, \code{\link[=total]{total()}}, and \code{\link[=wsum]{wsum()}}, and work best with traits defined by
+built-in meta-properties. When \code{use_ai = TRUE}, \code{explain_traits()} sends all
+valid traits in one request so the shared prompt is only sent once. Traits
+that cannot be explained are returned as \code{NA} with a warning.
 }
 \examples{
 # Explain built-in traits
@@ -69,5 +89,8 @@ explain_trait(wmean(nS / nG, within = nA == 4 & nFc > 0))
 explain_trait(total(Tp == "complex"))
 explain_trait(wsum(nS))
 explain_trait(wsum(nS, within = (Tp == "complex")))
+
+# Explain multiple traits
+explain_traits(traits_basic()[c("TM", "GS")])
 
 }
