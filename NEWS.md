@@ -2,10 +2,7 @@
 
 ## New features
 
-* Add `make_traits()` and `explain_traits()` to create or explain multiple
-  traits in a batch while preserving names and marking individual unrecognized
-  entries as `NA`. (#25)
-
+* Add `make_traits()` and `explain_traits()` to create or explain multiple traits in a batch while preserving names and marking individual unrecognized entries as `NA`. (#25)
 * `add_meta_properties()`, `derive_traits()`, and `quantify_motifs()` now accept `glyexp::GlycomicSE` and `glyexp::GlycoproteomicSE` inputs. The implementation operates natively on `SummarizedExperiment`, while existing `glyexp::experiment()` inputs retain their previous return type. (#23)
 
 ## Breaking changes
