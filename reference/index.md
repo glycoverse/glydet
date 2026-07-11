@@ -6,8 +6,6 @@ Entry points for the package.
 
 - [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
   : Calculate Derived Traits
-- [`derive_traits_()`](https://glycoverse.github.io/glydet/reference/derive_traits_.md)
-  : Calculate Derived Traits from Tidy Data
 - [`quantify_motifs()`](https://glycoverse.github.io/glydet/reference/quantify_motifs.md)
   : Quantify Motifs in an Experiment
 
@@ -33,10 +31,12 @@ Curated sets of derived traits for out-of-box use.
 Helper functions for trait interpretation and construction.
 
 - [`explain_trait()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
-  : Explain a Derived Trait
+  [`explain_traits()`](https://glycoverse.github.io/glydet/reference/explain_trait.md)
+  : Explain Derived Traits
 - [`make_trait()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
-  **\[experimental\]** : Use a Large Language Model (LLM) to create a
-  derived trait function
+  [`make_traits()`](https://glycoverse.github.io/glydet/reference/make_trait.md)
+  **\[experimental\]** : Use a Large Language Model (LLM) to Create
+  Derived Trait Functions
 
 ## Trait factories
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,22 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.12.0" id="glydet-0120">glydet 0.12.0<a class="anchor" aria-label="anchor" href="#glydet-0120"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-12-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-12-0"></a></h3>
+<ul><li>
+<code>derive_traits_()</code> has been removed. Use <code><a href="../reference/derive_traits.html">derive_traits()</a></code> with a supported glyexp data container. (#23)</li>
+<li>
+<code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> now uses a <code>trait</code> column in returned <code>var_info</code>, matching <code><a href="../reference/derive_traits.html">derive_traits()</a></code>, instead of a separate <code>motif</code> column (#22).</li>
+</ul></div>
+<div class="section level3">
+<h3 id="new-features-0-12-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-12-0"></a></h3>
+<ul><li>Add <code><a href="../reference/make_trait.html">make_traits()</a></code> and <code><a href="../reference/explain_trait.html">explain_traits()</a></code> to create or explain multiple traits in a batch while preserving names and marking individual unrecognized entries as <code>NA</code>. (#25)</li>
+<li>
+<code><a href="../reference/add_meta_properties.html">add_meta_properties()</a></code>, <code><a href="../reference/derive_traits.html">derive_traits()</a></code>, and <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> now accept <code><a href="https://glycoverse.github.io/glyexp/reference/GlycomicSE.html" class="external-link">glyexp::GlycomicSE</a></code> and <code><a href="https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html" class="external-link">glyexp::GlycoproteomicSE</a></code> inputs. The implementation operates natively on <code>SummarizedExperiment</code>, while existing <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> inputs retain their previous return type. (#23)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.11.1" id="glydet-0111">glydet 0.11.1<a class="anchor" aria-label="anchor" href="#glydet-0111"></a></h2>
 <div class="section level3">
@@ -151,7 +167,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="minor-improvements-and-bug-fixes-0-7-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-7-0"></a></h3>
-<ul><li>The result of <code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits_.html">derive_traits_()</a></code> now have an <code>explanation</code> column in the output tibble, explaining the derived traits.</li>
+<ul><li>The result of <code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code>derive_traits_()</code> now have an <code>explanation</code> column in the output tibble, explaining the derived traits.</li>
 </ul></div>
 </div>
     <div class="section level2">
@@ -223,7 +239,7 @@
 <div class="section level3">
 <h3 id="minor-improvements-and-bug-fixes-0-5-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-5-0"></a></h3>
 <ul><li>
-<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits_.html">derive_traits_()</a></code> now have separate documentations.</li>
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code>derive_traits_()</code> now have separate documentations.</li>
 <li>Update the “Defining Custom Traits” vignette to include the newly added <code>mp_cols</code> parameter.</li>
 <li>Better error message when custom derived traits use undefined meta-properties.</li>
 <li>Add a section about how NAs can appear in the documentations of <code><a href="../reference/prop.html">prop()</a></code>, <code><a href="../reference/ratio.html">ratio()</a></code>, and <code><a href="../reference/wmean.html">wmean()</a></code>.</li>
@@ -271,11 +287,11 @@
 </ul></div>
 <div class="section level3">
 <h3 id="minor-improvements-and-bug-fixes-0-3-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-3-0"></a></h3>
-<ul><li>Emphasize in the documentation of <code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits_.html">derive_traits_()</a></code> that the “glycan_structure” column can be either a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code> vector or a character vector of glycan structure strings supported by <code><a href="https://glycoverse.github.io/glyparse/reference/auto_parse.html" class="external-link">glyparse::auto_parse()</a></code>.</li>
+<ul><li>Emphasize in the documentation of <code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code>derive_traits_()</code> that the “glycan_structure” column can be either a <code><a href="https://glycoverse.github.io/glyrepr/reference/glycan_structure.html" class="external-link">glyrepr::glycan_structure()</a></code> vector or a character vector of glycan structure strings supported by <code><a href="https://glycoverse.github.io/glyparse/reference/auto_parse.html" class="external-link">glyparse::auto_parse()</a></code>.</li>
 <li>
-<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits_.html">derive_traits_()</a></code> now raise an error if the <code>trait_fns</code> parameter is not a named list.</li>
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code>derive_traits_()</code> now raise an error if the <code>trait_fns</code> parameter is not a named list.</li>
 <li>
-<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/derive_traits_.html">derive_traits_()</a></code> now raise an error if the <code>trait_fns</code> parameter is an empty list.</li>
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code>derive_traits_()</code> now raise an error if the <code>trait_fns</code> parameter is an empty list.</li>
 <li>A “Working with Glycomics Data” section is added to the “Get Started” vignette.</li>
 <li>A “Validating Trait Definitions” section is added to the “Defining Custom Traits” vignette.</li>
 </ul></div>
@@ -314,7 +330,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>

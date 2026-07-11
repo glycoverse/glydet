@@ -1,7 +1,10 @@
 # Calculate Derived Traits
 
 This function calculates derived traits from a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
+[`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+or
+[`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
 object. For glycomics data, it calculates the derived traits directly.
 For glycoproteomics data, each glycosite is treated as a separate
 glycome, and derived traits are calculated in a site-specific manner.
@@ -17,7 +20,10 @@ derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
 - exp:
 
   A
-  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
+  [`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+  or
+  [`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
   object. Before using this function, you should preprocess the data
   using the `glyclean` package. For glycoproteomics data, the data
   should be aggregated to the "gfs" (glycoforms with structures) level
@@ -63,7 +69,10 @@ derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
 
 A new
 [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object for derived traits. Instead of "quantification of each glycan on
+object for legacy
+[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+input, or a `SummarizedExperiment` object for `GlycomicSE` or
+`GlycoproteomicSE` input. Instead of "quantification of each glycan on
 each glycosite in each sample", the new
 [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
 contains "the value of each derived trait on each glycosite in each

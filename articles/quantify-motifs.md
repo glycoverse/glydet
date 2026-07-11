@@ -8,6 +8,8 @@ of biologically meaningful glycan substructures across your samples.
 
 library(glydet)
 library(glyexp)
+#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
+#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(glyclean)
 #> 
 #> Attaching package: 'glyclean'
@@ -97,15 +99,15 @@ motif_exp
 #> ── Traitproteomics Experiment ──────────────────────────────────────────────────
 #> ℹ Expression matrix: 12 samples, 552 variables
 #> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, motif <chr>, gene <chr>, motif_structure <struct>
+#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
 ```
 
 ``` r
 
 get_var_info(motif_exp)
 #> # A tibble: 552 × 6
-#>    variable        protein protein_site motif gene   motif_structure            
-#>    <glue>          <chr>          <int> <chr> <chr>  <struct>                   
+#>    variable        protein protein_site trait gene   motif_structure            
+#>    <chr>           <chr>          <int> <chr> <chr>  <struct>                   
 #>  1 A6NJW9-49-Lxa   A6NJW9            49 Lxa   CD8B2  Hex(??-?)[dHex(??-?)]HexNA…
 #>  2 A6NJW9-49-SLxa  A6NJW9            49 SLxa  CD8B2  NeuAc(??-?)Hex(??-?)[dHex(…
 #>  3 O14786-150-Lxa  O14786           150 Lxa   NRP1   Hex(??-?)[dHex(??-?)]HexNA…
@@ -119,10 +121,10 @@ get_var_info(motif_exp)
 #> # ℹ 542 more rows
 ```
 
-Notice how the variable information now includes a `motif` column
-instead of the usual `trait` column. Don’t worry—this is just a cosmetic
-difference. Under the hood, the functionality works exactly the same way
-as
+Notice how the variable information includes a `trait` column, matching
+the output schema of
+[`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md).
+Under the hood, motif quantification works exactly the same way as
 [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md).
 
 ## Absolute vs. relative motif quantification

@@ -1,7 +1,10 @@
 # Add Meta-Properties to Experiment
 
 This function adds meta-properties to the variable information of a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html).
+[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
+[`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+or
+[`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html).
 Under the hood, it uses
 [`get_meta_properties()`](https://glycoverse.github.io/glydet/reference/get_meta_properties.md)
 to calculate the meta-properties on the "glycan_structure" column (or
@@ -23,8 +26,11 @@ add_meta_properties(
 
 - exp:
 
-  An
-  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+  A
+  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
+  [`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+  or
+  [`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
   object.
 
 - mp_fns:
@@ -49,9 +55,8 @@ add_meta_properties(
 
 ## Value
 
-An
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object with meta-properties added to the variable information.
+The input data container with meta-properties added to its variable
+information. The input container type is preserved.
 
 ## See also
 

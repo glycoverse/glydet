@@ -1,10 +1,14 @@
-# Use a Large Language Model (LLM) to create a derived trait function
+# Use a Large Language Model (LLM) to Create Derived Trait Functions
 
-**\[experimental\]** This function allows you to create a derived trait
-function using natural language. Note that LLMs can be unreliable, so
-the result should be verified manually. If the description is not clear,
-an error will be raised. Try to read the descriptions of built-in traits
-to get ideas. Currently, only
+**\[experimental\]** These functions create derived trait functions from
+natural-language descriptions. `make_trait()` creates one trait and
+checks its consistency with the requested description. `make_traits()`
+creates and validates a list of traits in batched requests, reducing
+repeated prompt tokens. For batch creation, descriptions that cannot be
+understood, produce an invalid formula, or do not match the generated
+trait are returned as `NA` with a warning. LLM-generated traits should
+always be verified manually. Try to read the descriptions of built-in
+traits to get ideas. Currently, only
 [`prop()`](https://glycoverse.github.io/glydet/reference/prop.md),
 [`ratio()`](https://glycoverse.github.io/glydet/reference/ratio.md), and
 [`wmean()`](https://glycoverse.github.io/glydet/reference/wmean.md) are
@@ -18,6 +22,17 @@ provider-specific API key configuration.
 ``` r
 make_trait(
   description,
+  custom_mp = NULL,
+  max_retries = 2,
+  verbose = FALSE,
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  model = getOption("glydet.ai_model", NULL),
+  api_key = getOption("glydet.ai_api_key", NULL),
+  base_url = getOption("glydet.ai_base_url", NULL)
+)
+
+make_traits(
+  descriptions,
   custom_mp = NULL,
   max_retries = 2,
   verbose = FALSE,
@@ -49,8 +64,9 @@ make_trait(
 
 - max_retries:
 
-  Maximum number of reflection retries when the AI-generated formula's
-  explanation doesn't match the original description. Default is 2.
+  Maximum number of retries after an invalid formula or an explanation
+  that doesn't match the original description. In batch mode, only
+  unresolved descriptions are retried. Default is 2.
 
 - verbose:
 
@@ -81,9 +97,26 @@ make_trait(
   Optional base URL for custom or OpenAI-compatible endpoints. Defaults
   to `getOption("glydet.ai_base_url")`.
 
+- descriptions:
+
+  A character vector of trait descriptions.
+
 ## Value
 
-A derived trait function.
+`make_trait()` returns a derived trait function. `make_traits()` returns
+a list of derived trait functions with input names preserved; entries
+that cannot be created are `NA`.
+
+## Batch multi-agent workflow
+
+`make_traits()` uses one batch writer to generate formulas for all
+active descriptions, one batch explainer to describe the generated
+formulas, and one batch evaluator to compare those explanations with the
+original descriptions. Successful positions are retained. Invalid or
+mismatched positions are sent back to the writer with their validation
+error or generated explanation, and only those positions are
+regenerated. This continues until all positions pass or `max_retries` is
+reached.
 
 ## Examples
 
@@ -96,4 +129,11 @@ A derived trait function.
 
 # The trait function can then be used in `derive_traits()`:
 # derive_traits(exp, trait_fns = my_traits)
+
+if (FALSE) { # \dontrun{
+make_traits(c(
+  sialylated = "proportion of sialylated glycans",
+  galactose = "average number of galactoses"
+))
+} # }
 ```

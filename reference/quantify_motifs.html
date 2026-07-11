@@ -3,16 +3,18 @@
 For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.
-The function takes a glyexp::experiment() object and returns a new glyexp::experiment()
-object with motif quantifications. Instead of containing quantifications of individual glycans
+The function takes a glyexp::experiment(), glyexp::GlycomicSE, or
+glyexp::GlycoproteomicSE object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data)."><meta property="og:description" content="This function quantifies motifs from glycomic or glycoproteomic profiles.
 For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.
-The function takes a glyexp::experiment() object and returns a new glyexp::experiment()
-object with motif quantifications. Instead of containing quantifications of individual glycans
+The function takes a glyexp::experiment(), glyexp::GlycomicSE, or
+glyexp::GlycoproteomicSE object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data)."><meta property="og:image" content="https://glycoverse.github.io/glydet/logo.png"></head><body>
@@ -23,7 +25,7 @@ motif quantifications in each sample (for glycomics data)."><meta property="og:i
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.11.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -58,8 +60,9 @@ motif quantifications in each sample (for glycomics data)."><meta property="og:i
 For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.</p>
-<p>The function takes a <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object and returns a new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code>
-object with motif quantifications. Instead of containing quantifications of individual glycans
+<p>The function takes a <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code>, <code><a href="https://glycoverse.github.io/glyexp/reference/GlycomicSE.html" class="external-link">glyexp::GlycomicSE</a></code>, or
+<code><a href="https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html" class="external-link">glyexp::GlycoproteomicSE</a></code> object and returns a new data container with motif
+quantifications. Instead of containing quantifications of individual glycans
 on each glycosite in each sample, the new experiment contains quantifications
 of each motif on each glycosite in each sample (for glycoproteomics data) or
 motif quantifications in each sample (for glycomics data).</p>
@@ -81,7 +84,8 @@ motif quantifications in each sample (for glycomics data).</p>
 
 
 <dl><dt id="arg-exp">exp<a class="anchor" aria-label="anchor" href="#arg-exp"></a></dt>
-<dd><p>A <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object. Before using this function,
+<dd><p>A <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code>, <code><a href="https://glycoverse.github.io/glyexp/reference/GlycomicSE.html" class="external-link">glyexp::GlycomicSE()</a></code>, or
+<code><a href="https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html" class="external-link">glyexp::GlycoproteomicSE()</a></code> object. Before using this function,
 you should preprocess the data using the <code>glyclean</code> package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using <code><a href="https://glycoverse.github.io/glyclean/reference/aggregate.html" class="external-link">glyclean::aggregate()</a></code>.
@@ -122,12 +126,15 @@ See <code><a href="https://glycoverse.github.io/glymotif/reference/have_motif.ht
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object containing motif quantifications.
+    <p>A new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object for legacy <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> input, or a
+<code>SummarizedExperiment</code> object for <code>GlycomicSE</code> or <code>GlycoproteomicSE</code> input,
+containing motif quantifications.
 Instead of containing quantifications of individual glycans on each glycosite in each sample,
 the new experiment contains quantifications of each motif on each glycosite in each sample
 (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).</p>
-<p>The <code>var_info</code> table includes a <code>motif_structure</code> column containing the parsed glycan structure
-for each motif, allowing traceability of motif definitions.</p>
+<p>The <code>var_info</code> table includes a <code>trait</code> column with motif names and a
+<code>motif_structure</code> column containing the parsed glycan structure for each motif,
+allowing traceability of motif definitions.</p>
 <p>For glycoproteomics data, with additional columns:</p><ul><li><p><code>protein</code>: protein ID</p></li>
 <li><p><code>protein_site</code>: the glycosite position on the protein</p></li>
 </ul><p>Other columns in the <code>var_info</code> table (e.g., <code>gene</code>) are retained if they have a "many-to-one"
@@ -271,7 +278,7 @@ and everything else remains the same.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">8</span> variables</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using dynamic motifs (auto-extracted from data)</span></span></span>
 <span class="r-in"><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">exp</span>, <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/dynamic_motifs.html" class="external-link">dynamic_motifs</a></span><span class="op">(</span>max_size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -279,7 +286,7 @@ and everything else remains the same.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">80</span> variables</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Using branch motifs (auto-extracted from data)</span></span></span>
 <span class="r-in"><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">exp</span>, <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/branch_motifs.html" class="external-link">branch_motifs</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
@@ -287,7 +294,7 @@ and everything else remains the same.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">20</span> variables</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">motif</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
@@ -300,7 +307,7 @@ and everything else remains the same.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer></div>
