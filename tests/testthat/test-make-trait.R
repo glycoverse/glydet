@@ -38,6 +38,7 @@ test_that("make_traits preserves names and marks invalid descriptions", {
   captured <- new.env(parent = emptyenv())
   local_mocked_bindings(
     .get_api_key = function(...) "mock_key",
+    .ask_ai = function(...) "1\tYES",
     .create_ai_chat = function(system_prompt, ...) {
       captured$system_prompt <- system_prompt
       list(
@@ -63,6 +64,23 @@ test_that("make_traits preserves names and marks invalid descriptions", {
   expect_true(is.na(trait_fns[["invalid"]]))
   expect_match(captured$user_prompt, "1\\tproportion of sialylated glycans")
   expect_match(captured$user_prompt, "2\\tthe colour of glycans")
+})
+
+test_that("make_traits rejects formulas inconsistent with their descriptions", {
+  local_mocked_bindings(
+    .get_api_key = function(...) "mock_key",
+    .create_ai_chat = function(...) {
+      list(chat = function(...) "1\tprop(nF > 0)")
+    },
+    .ask_ai = function(...) "1\tNO"
+  )
+
+  expect_warning(
+    trait_fns <- make_traits("proportion of sialylated glycans"),
+    "Could not make trait"
+  )
+
+  expect_true(is.na(trait_fns[[1]]))
 })
 
 test_that("make_trait routes explicit provider settings to ellmer", {

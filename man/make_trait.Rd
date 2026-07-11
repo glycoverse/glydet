@@ -70,10 +70,11 @@ that cannot be created are \code{NA}.
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#experimental}{\figure{lifecycle-experimental.svg}{options: alt='[Experimental]'}}}{\strong{[Experimental]}}
 These functions create derived trait functions from natural-language
 descriptions. \code{make_trait()} creates one trait and checks its consistency
-with the requested description. \code{make_traits()} creates a list of traits in
-one request, reducing repeated prompt tokens. For batch creation, descriptions
-that cannot be understood or produce an invalid formula are returned as \code{NA}
-with a warning. LLM-generated traits should always be verified manually.
+with the requested description. \code{make_traits()} creates and validates a list
+of traits in batched requests, reducing repeated prompt tokens. For batch
+creation, descriptions that cannot be understood, produce an invalid formula,
+or do not match the generated trait are returned as \code{NA} with a warning.
+LLM-generated traits should always be verified manually.
 Try to read the descriptions of built-in traits to get ideas.
 Currently, only \code{prop()}, \code{ratio()}, and \code{wmean()} are supported.
 To use this feature, you need to install the \code{ellmer} package.

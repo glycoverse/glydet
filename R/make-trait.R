@@ -4,10 +4,11 @@
 #' `r lifecycle::badge("experimental")`
 #' These functions create derived trait functions from natural-language
 #' descriptions. `make_trait()` creates one trait and checks its consistency
-#' with the requested description. `make_traits()` creates a list of traits in
-#' one request, reducing repeated prompt tokens. For batch creation, descriptions
-#' that cannot be understood or produce an invalid formula are returned as `NA`
-#' with a warning. LLM-generated traits should always be verified manually.
+#' with the requested description. `make_traits()` creates and validates a list
+#' of traits in batched requests, reducing repeated prompt tokens. For batch
+#' creation, descriptions that cannot be understood, produce an invalid formula,
+#' or do not match the generated trait are returned as `NA` with a warning.
+#' LLM-generated traits should always be verified manually.
 #' Try to read the descriptions of built-in traits to get ideas.
 #' Currently, only `prop()`, `ratio()`, and `wmean()` are supported.
 #' To use this feature, you need to install the `ellmer` package.
@@ -237,6 +238,26 @@ make_traits <- function(
         if (result$valid) result$trait_fn else NA
       }
     )
+
+    created_positions <- which(purrr::map_lgl(trait_fns, is.function))
+    if (length(created_positions) > 0) {
+      consistent <- .check_traits_consistency(
+        descriptions[created_positions],
+        trait_fns[created_positions],
+        custom_mp = custom_mp,
+        api_key = api_key,
+        model = model,
+        provider = provider,
+        base_url = base_url
+      )
+      inconsistent_positions <- created_positions[
+        is.na(consistent) | !consistent
+      ]
+      trait_fns[inconsistent_positions] <- rep(
+        list(NA),
+        length(inconsistent_positions)
+      )
+    }
   }
 
   invalid_positions <- which(purrr::map_lgl(
@@ -323,6 +344,80 @@ make_traits <- function(
   )
 
   list(consistent = is_consistent, explanation = explanation)
+}
+
+#' Check Multiple Generated Traits Against Their Descriptions
+#'
+#' @param descriptions Character vector of original trait descriptions.
+#' @param trait_fns List of generated trait functions.
+#' @param custom_mp A named character vector of custom meta-properties.
+#' @param api_key API key for the selected provider.
+#' @param model Model to use.
+#' @param provider AI provider passed to `ellmer`.
+#' @param base_url Optional base URL for custom or OpenAI-compatible endpoints.
+#' @returns A logical vector indicating whether each generated trait matches its
+#'   corresponding description. Unparseable responses are `NA`.
+#' @noRd
+.check_traits_consistency <- function(
+  descriptions,
+  trait_fns,
+  custom_mp = NULL,
+  api_key = getOption("glydet.ai_api_key", NULL),
+  model = getOption("glydet.ai_model", NULL),
+  provider = getOption("glydet.ai_provider", "deepseek"),
+  base_url = getOption("glydet.ai_base_url", NULL)
+) {
+  explanations <- purrr::map_chr(
+    trait_fns,
+    ~ tryCatch(explain_trait(.x), error = function(error) NA_character_)
+  )
+  positions <- which(!is.na(explanations))
+  consistent <- rep(NA, length(trait_fns))
+
+  if (length(positions) == 0) {
+    return(consistent)
+  }
+
+  custom_mp_lines <- ""
+  if (!is.null(custom_mp) && length(custom_mp) > 0) {
+    custom_mp_lines <- paste0(
+      "Custom meta-properties:\n",
+      paste0("- ", names(custom_mp), ": ", custom_mp, collapse = "\n"),
+      "\n"
+    )
+  }
+  system_prompt <- paste0(
+    "You are a professional glycobiologist.\n",
+    "Your task is to judge whether each generated explanation is semantically ",
+    "equivalent to its original trait description.\n",
+    custom_mp_lines,
+    "Return exactly one line per input in the form `index<TAB>YES` or ",
+    "`index<TAB>NO`. Use YES only when the meanings are the same; minor wording ",
+    "differences are acceptable."
+  )
+  user_prompt <- paste0(
+    "INPUTS:\n",
+    paste0(
+      positions,
+      "\tDescription: ",
+      descriptions[positions],
+      "\n\tGenerated explanation: ",
+      explanations[positions],
+      collapse = "\n"
+    ),
+    "\nOUTPUT:"
+  )
+  response <- .ask_ai(
+    system_prompt,
+    user_prompt,
+    api_key = api_key,
+    model = model,
+    provider = provider,
+    base_url = base_url
+  )
+  answers <- .parse_batch_response(response, length(trait_fns))
+  consistent[positions] <- toupper(answers[positions]) == "YES"
+  consistent
 }
 
 .ask_ai_consistency <- function(
