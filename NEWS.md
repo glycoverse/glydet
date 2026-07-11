@@ -1,15 +1,14 @@
-# glydet (development version)
+# glydet 0.12.0
+
+## Breaking changes
+
+* `derive_traits_()` has been removed. Use `derive_traits()` with a supported glyexp data container. (#23)
+* `quantify_motifs()` now uses a `trait` column in returned `var_info`, matching `derive_traits()`, instead of a separate `motif` column (#22).
 
 ## New features
 
 * Add `make_traits()` and `explain_traits()` to create or explain multiple traits in a batch while preserving names and marking individual unrecognized entries as `NA`. (#25)
 * `add_meta_properties()`, `derive_traits()`, and `quantify_motifs()` now accept `glyexp::GlycomicSE` and `glyexp::GlycoproteomicSE` inputs. The implementation operates natively on `SummarizedExperiment`, while existing `glyexp::experiment()` inputs retain their previous return type. (#23)
-
-## Breaking changes
-
-* `derive_traits_()` has been removed. Use `derive_traits()` with a supported glyexp data container. (#23)
-
-* `quantify_motifs()` now uses a `trait` column in returned `var_info`, matching `derive_traits()`, instead of a separate `motif` column (#22).
 
 # glydet 0.11.1
 
