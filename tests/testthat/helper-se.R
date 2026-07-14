@@ -4,7 +4,7 @@ as_test_se <- function(exp) {
   }
 
   switch(
-    glyexp::get_exp_type(exp),
+    exp[["meta_data"]][["exp_type"]],
     glycomics = glyexp::as_glycomic_se(exp),
     glycoproteomics = glyexp::as_glycoproteomic_se(exp)
   )

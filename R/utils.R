@@ -20,7 +20,7 @@
 #' @noRd
 .assert_data_container <- function(exp) {
   if (
-    glyexp::is_experiment(exp) ||
+    inherits(exp, "glyexp_experiment") ||
       glyexp::is_glycomic_se(exp) ||
       glyexp::is_glycoproteomic_se(exp)
   ) {
@@ -46,7 +46,7 @@
     return(exp)
   }
 
-  exp_type <- glyexp::get_exp_type(exp)
+  exp_type <- S4Vectors::metadata(glyexp::as_se(exp))[["exp_type"]]
   switch(
     exp_type,
     glycomics = glyexp::as_glycomic_se(exp),

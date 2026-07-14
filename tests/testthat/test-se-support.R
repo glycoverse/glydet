@@ -66,12 +66,13 @@ test_that("container functions accept GlycoproteomicSE natively", {
 })
 
 test_that("legacy experiment support preserves legacy return types", {
-  exp <- glyexp::real_experiment2 |>
-    glyexp::slice_head_var(n = 10) |>
-    glyexp::slice_head_obs(n = 5)
+  se <- as_test_se(glyexp::real_experiment2)[seq_len(10), seq_len(5)]
   motif <- c(
-    observed = as.character(glyexp::get_var_info(exp)$glycan_structure[1])
+    observed = as.character(SummarizedExperiment::rowData(se)$glycan_structure[
+      1
+    ])
   )
+  exp <- suppressWarnings(glyexp::from_se(se))
 
   expect_s3_class(add_meta_properties(exp), "glyexp_experiment")
   expect_s3_class(

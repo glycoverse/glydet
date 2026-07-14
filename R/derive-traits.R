@@ -65,8 +65,12 @@
 #' library(glyclean)
 #'
 #' exp <- real_experiment |>
-#'   auto_clean() |>
-#'   slice_sample_var(n = 100)
+#'   auto_clean()
+#' if (inherits(exp, "glyexp_experiment")) {
+#'   exp <- slice_sample_var(exp, n = 100)
+#' } else {
+#'   exp <- slice_sample_row(exp, n = 100)
+#' }
 #' trait_exp <- derive_traits(exp)
 #' trait_exp
 #'
@@ -87,7 +91,7 @@ derive_traits <- function(
   mp_cols = NULL
 ) {
   .assert_data_container(exp)
-  legacy <- glyexp::is_experiment(exp)
+  legacy <- inherits(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
     trait_fns <- traits_basic()
   } else {

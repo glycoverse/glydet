@@ -79,8 +79,12 @@ library(glyexp)
 library(glyclean)
 
 exp <- real_experiment |>
-  auto_clean() |>
-  slice_sample_var(n = 100)
+  auto_clean()
+if (inherits(exp, "glyexp_experiment")) {
+  exp <- slice_sample_var(exp, n = 100)
+} else {
+  exp <- slice_sample_row(exp, n = 100)
+}
 trait_exp <- derive_traits(exp)
 trait_exp
 

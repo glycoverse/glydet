@@ -88,7 +88,7 @@
 #'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 #' )
 #' exp_with_mps <- exp |>
-#'   glyexp::mutate_var(
+#'   glyexp::mutate_row(
 #'     tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
 #'   )
 #'
@@ -166,8 +166,12 @@
 #' library(glyclean)
 #'
 #' exp <- real_experiment |>
-#'   auto_clean() |>
-#'   slice_head_var(n = 10)
+#'   auto_clean()
+#' if (inherits(exp, "glyexp_experiment")) {
+#'   exp <- slice_head_var(exp, n = 10)
+#' } else {
+#'   exp <- slice_head_row(exp, n = 10)
+#' }
 #'
 #' motifs <- c(
 #'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
@@ -192,7 +196,7 @@ quantify_motifs <- function(
   ignore_linkages = FALSE
 ) {
   .assert_data_container(exp)
-  legacy <- glyexp::is_experiment(exp)
+  legacy <- inherits(exp, "glyexp_experiment")
   exp <- .as_glyco_se(exp)
   checkmate::assert_choice(method, c("absolute", "relative"))
 

@@ -70,14 +70,24 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 #'
 #' @examples
 #' library(glyexp)
+#' library(SummarizedExperiment)
 #'
 #' # Compare the columns in the variable information before and after adding meta-properties
-#' exp <- real_experiment |>
-#'   slice_sample_var(n = 10)
-#' colnames(get_var_info(exp))
+#' exp <- real_experiment
+#' if (inherits(exp, "glyexp_experiment")) {
+#'   exp <- slice_sample_var(exp, n = 10)
+#'   colnames(get_var_info(exp))
+#' } else {
+#'   exp <- slice_sample_row(exp, n = 10)
+#'   colnames(rowData(exp))
+#' }
 #'
 #' exp2 <- add_meta_properties(exp)
-#' colnames(get_var_info(exp2))
+#' if (inherits(exp2, "glyexp_experiment")) {
+#'   colnames(get_var_info(exp2))
+#' } else {
+#'   colnames(rowData(exp2))
+#' }
 #'
 #' @seealso [get_meta_properties()], [glyexp::experiment()]
 #'
@@ -89,7 +99,7 @@ add_meta_properties <- function(
   overwrite = FALSE
 ) {
   .assert_data_container(exp)
-  legacy <- glyexp::is_experiment(exp)
+  legacy <- inherits(exp, "glyexp_experiment")
   exp <- .as_glyco_se(exp)
   checkmate::assert_string(struc_col)
   checkmate::assert_flag(overwrite)

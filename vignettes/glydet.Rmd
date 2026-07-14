@@ -53,9 +53,32 @@ This enables the quantification of different glycopeptides in the same sample to
 library(glydet)
 library(glyrepr)
 library(glyexp)
+library(SummarizedExperiment)
 library(glyclean)
 library(glystats)
 library(dplyr)
+
+row_info <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_var_info(x)
+  } else {
+    tibble::as_tibble(rowData(x), rownames = "variable")
+  }
+}
+col_info <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_sample_info(x)
+  } else {
+    tibble::as_tibble(colData(x), rownames = "sample")
+  }
+}
+abundance <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_expr_mat(x)
+  } else {
+    assay(x)
+  }
+}
 ```
 
 We'll work with `glyexp::real_experiment2`, a real glycomics dataset containing 144 samples and 67 glycans.
@@ -71,15 +94,15 @@ exp
 Let's inspect the dataset before calculating traits:
 
 ```{r}
-get_var_info(exp)
+row_info(exp)
 ```
 
 ```{r}
-get_sample_info(exp)
+col_info(exp)
 ```
 
 ```{r}
-get_expr_mat(exp)[1:5, 1:5]
+abundance(exp)[1:5, 1:5]
 ```
 
 Now let's calculate derived traits:
@@ -94,12 +117,12 @@ Instead of storing the abundance of each glycan in each sample,
 it stores the value of each derived trait in each sample.
 
 ```{r}
-get_var_info(trait_exp)
+row_info(trait_exp)
 ```
 
 ```{r}
 # These are the trait values
-get_expr_mat(trait_exp)[1:5, 1:5]
+abundance(trait_exp)[1:5, 1:5]
 ```
 
 `derive_traits()` calculated the following built-in derived traits:
@@ -206,7 +229,7 @@ You can also work with meta-properties directly through two functions:
 Let's try `get_meta_properties()` with a few glycan structures from the dataset:
 
 ```{r}
-glycans <- unique(get_var_info(exp)$glycan_structure)[1:5]
+glycans <- unique(row_info(exp)$glycan_structure)[1:5]
 glycans
 ```
 
@@ -226,7 +249,7 @@ you can add meta-properties directly to the variable information:
 
 ```{r}
 exp_with_mp <- add_meta_properties(exp)
-get_var_info(exp_with_mp)
+row_info(exp_with_mp)
 ```
 
 The variable information now contains multiple meta-property columns.
@@ -235,8 +258,11 @@ This supports filtering based on structural features.
 For instance, filter for all glycoforms containing high-mannose glycans:
 
 ```{r}
-exp_with_mp |>
-  filter_var(Tp == "highmannose")
+if (inherits(exp_with_mp, "glyexp_experiment")) {
+  filter_var(exp_with_mp, Tp == "highmannose")
+} else {
+  filter_row(exp_with_mp, Tp == "highmannose")
+}
 ```
 
 ### Meta-Property Functions
