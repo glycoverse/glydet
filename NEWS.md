@@ -1,4 +1,6 @@
-# glydet (development version)
+# glydet 0.12.1
+
+* `add_meta_properties()`, `derive_traits()`, and `quantify_motifs()` now work consistently across legacy `glyexp::experiment()` and current `SummarizedExperiment` containers.
 
 # glydet 0.12.0
 
