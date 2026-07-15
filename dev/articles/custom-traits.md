@@ -20,10 +20,19 @@ library(glydet)
 library(glyexp)
 #> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 #> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+library(SummarizedExperiment)
 library(glyclean)
 library(glyrepr)
 
 exp <- auto_clean(real_experiment)
+
+row_info <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_var_info(x)
+  } else {
+    tibble::as_tibble(rowData(x), rownames = "variable")
+  }
+}
 ```
 
 ## Custom Traits
@@ -723,17 +732,24 @@ information tibble, not directly in the glycan structures.
 ``` r
 
 # Here we assume all sialic acids are a2-6
-exp2 <- exp |>
-  mutate_var(
-    n_a26_sia = count_mono(glycan_structure, "NeuAc"),
-    n_a23_sia = 0L
-  )
+if (inherits(exp, "glyexp_experiment")) {
+  exp2 <- exp |>
+    mutate_var(
+      n_a26_sia = count_mono(glycan_structure, "NeuAc"),
+      n_a23_sia = 0L
+    )
+} else {
+  exp2 <- exp |>
+    mutate_row(
+      n_a26_sia = count_mono(glycan_structure, "NeuAc"),
+      n_a23_sia = 0L
+    )
+}
 ```
 
 ``` r
 
-exp2 |>
-  get_var_info() |>
+row_info(exp2) |>
   filter(n_a26_sia > 0) |>
   pull(glycan_structure)
 #> <glycan_structure[2575]>

@@ -51,9 +51,85 @@ library(glyrepr)
 library(glyexp)
 #> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 #> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+library(SummarizedExperiment)
+#> Loading required package: MatrixGenerics
+#> Loading required package: matrixStats
+#> 
+#> Attaching package: 'MatrixGenerics'
+#> The following objects are masked from 'package:matrixStats':
+#> 
+#>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+#>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+#>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+#>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+#>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+#>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+#>     colWeightedMeans, colWeightedMedians, colWeightedSds,
+#>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+#>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+#>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+#>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+#>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+#>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+#>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+#>     rowWeightedSds, rowWeightedVars
+#> Loading required package: GenomicRanges
+#> Loading required package: stats4
+#> Loading required package: BiocGenerics
+#> Loading required package: generics
+#> 
+#> Attaching package: 'generics'
+#> The following objects are masked from 'package:base':
+#> 
+#>     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+#>     setequal, union
+#> 
+#> Attaching package: 'BiocGenerics'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     IQR, mad, sd, var, xtabs
+#> The following objects are masked from 'package:base':
+#> 
+#>     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+#>     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+#>     get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+#>     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+#>     rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
+#>     unsplit, which.max, which.min
+#> Loading required package: S4Vectors
+#> 
+#> Attaching package: 'S4Vectors'
+#> The following object is masked from 'package:utils':
+#> 
+#>     findMatches
+#> The following objects are masked from 'package:base':
+#> 
+#>     expand.grid, I, unname
+#> Loading required package: IRanges
+#> Loading required package: Seqinfo
+#> Loading required package: Biobase
+#> Welcome to Bioconductor
+#> 
+#>     Vignettes contain introductory material; view with
+#>     'browseVignettes()'. To cite Bioconductor, see
+#>     'citation("Biobase")', and for packages 'citation("pkgname")'.
+#> 
+#> Attaching package: 'Biobase'
+#> The following object is masked from 'package:MatrixGenerics':
+#> 
+#>     rowMedians
+#> The following objects are masked from 'package:matrixStats':
+#> 
+#>     anyMissing, rowMedians
+#> The following object is masked from 'package:glyexp':
+#> 
+#>     samples
 library(glyclean)
 #> 
 #> Attaching package: 'glyclean'
+#> The following object is masked from 'package:S4Vectors':
+#> 
+#>     aggregate
 #> The following object is masked from 'package:stats':
 #> 
 #>     aggregate
@@ -61,12 +137,58 @@ library(glystats)
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
+#> The following object is masked from 'package:Biobase':
+#> 
+#>     combine
+#> The following objects are masked from 'package:GenomicRanges':
+#> 
+#>     intersect, setdiff, union
+#> The following object is masked from 'package:Seqinfo':
+#> 
+#>     intersect
+#> The following objects are masked from 'package:IRanges':
+#> 
+#>     collapse, desc, intersect, setdiff, slice, union
+#> The following objects are masked from 'package:S4Vectors':
+#> 
+#>     first, intersect, rename, setdiff, setequal, union
+#> The following objects are masked from 'package:BiocGenerics':
+#> 
+#>     combine, intersect, setdiff, setequal, union
+#> The following object is masked from 'package:generics':
+#> 
+#>     explain
+#> The following object is masked from 'package:matrixStats':
+#> 
+#>     count
 #> The following objects are masked from 'package:stats':
 #> 
 #>     filter, lag
 #> The following objects are masked from 'package:base':
 #> 
 #>     intersect, setdiff, setequal, union
+
+row_info <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_var_info(x)
+  } else {
+    tibble::as_tibble(rowData(x), rownames = "variable")
+  }
+}
+col_info <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_sample_info(x)
+  } else {
+    tibble::as_tibble(colData(x), rownames = "sample")
+  }
+}
+abundance <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_expr_mat(x)
+  } else {
+    assay(x)
+  }
+}
 ```
 
 We’ll work with
@@ -114,7 +236,7 @@ Let’s inspect the dataset before calculating traits:
 
 ``` r
 
-get_var_info(exp)
+row_info(exp)
 #> # A tibble: 57 × 3
 #>    variable                             glycan_composition      glycan_structure
 #>    <glue>                               <comp>                  <struct>        
@@ -133,7 +255,7 @@ get_var_info(exp)
 
 ``` r
 
-get_sample_info(exp)
+col_info(exp)
 #> # A tibble: 144 × 2
 #>    sample group
 #>    <chr>  <fct>
@@ -152,7 +274,7 @@ get_sample_info(exp)
 
 ``` r
 
-get_expr_mat(exp)[1:5, 1:5]
+abundance(exp)[1:5, 1:5]
 #>                                          S1           S2          S3
 #> Man(3)GlcNAc(3)                0.0008620851 0.0010173209 0.001771775
 #> Man(3)GlcNAc(7)                0.0021105912 0.0013498370 0.001590182
@@ -188,7 +310,7 @@ sample.
 
 ``` r
 
-get_var_info(trait_exp)
+row_info(trait_exp)
 #> # A tibble: 14 × 3
 #>    variable trait explanation                                                   
 #>    <chr>    <chr> <chr>                                                         
@@ -211,7 +333,7 @@ get_var_info(trait_exp)
 ``` r
 
 # These are the trait values
-get_expr_mat(trait_exp)[1:5, 1:5]
+abundance(trait_exp)[1:5, 1:5]
 #>             S1         S2         S3         S4         S5
 #> TM  0.03173244 0.02709974 0.02069125 0.01752109 0.02344732
 #> TH  0.02049304 0.01848629 0.02646816 0.01943236 0.01528559
@@ -303,17 +425,17 @@ for glycomics and glycoproteomics data.
 # A glycoproteomics dataset
 gp_exp <- auto_clean(glyexp::real_experiment)
 #> 
-#> ── Normalizing data ──
-#> 
-#> ℹ Normalization method: `normalize_median()`
-#> ℹ Reason: default for "glycoproteomics".
-#> ✔ Normalization completed.
-#> 
 #> ── Removing variables with too many missing values ──
 #> 
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 24 (0.56%) variables.
 #> ✔ Variable removal completed.
+#> 
+#> ── Normalizing data ──
+#> 
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
+#> ✔ Normalization completed.
 #> 
 #> ── Imputing missing values ──
 #> 
@@ -433,7 +555,7 @@ with a few glycan structures from the dataset:
 
 ``` r
 
-glycans <- unique(get_var_info(exp)$glycan_structure)[1:5]
+glycans <- unique(row_info(exp)$glycan_structure)[1:5]
 glycans
 #> <glycan_structure[5]>
 #> [1] GlcNAc(?1-?)Man(?1-?)[Man(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
@@ -473,7 +595,7 @@ information:
 ``` r
 
 exp_with_mp <- add_meta_properties(exp)
-get_var_info(exp_with_mp)
+row_info(exp_with_mp)
 #> # A tibble: 57 × 13
 #>    variable    glycan_composition glycan_structure Tp    B        nA    nF   nFc
 #>    <chr>       <comp>             <struct>         <fct> <lgl> <int> <int> <int>
@@ -498,8 +620,11 @@ For instance, filter for all glycoforms containing high-mannose glycans:
 
 ``` r
 
-exp_with_mp |>
-  filter_var(Tp == "highmannose")
+if (inherits(exp_with_mp, "glyexp_experiment")) {
+  filter_var(exp_with_mp, Tp == "highmannose")
+} else {
+  filter_row(exp_with_mp, Tp == "highmannose")
+}
 #> 
 #> ── Glycomics Experiment ────────────────────────────────────────────────────────
 #> ℹ Expression matrix: 144 samples, 5 variables
