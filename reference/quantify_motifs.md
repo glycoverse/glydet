@@ -214,7 +214,7 @@ meta-properties here):
       nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
     )
     exp_with_mps <- exp |>
-      glyexp::mutate_var(
+      glyexp::mutate_row(
         tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
       )
 
@@ -250,20 +250,19 @@ library(glyexp)
 library(glyclean)
 
 exp <- real_experiment |>
-  auto_clean() |>
-  slice_head_var(n = 10)
-#> 
-#> ── Normalizing data ──
-#> 
-#> ℹ Normalization method: `normalize_median()`
-#> ℹ Reason: default for "glycoproteomics".
-#> ✔ Normalization completed.
+  auto_clean()
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 24 (0.56%) variables.
 #> ✔ Variable removal completed.
+#> 
+#> ── Normalizing data ──
+#> 
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
+#> ✔ Normalization completed.
 #> 
 #> ── Imputing missing values ──
 #> 
@@ -286,6 +285,11 @@ exp <- real_experiment |>
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
+if (inherits(exp, "glyexp_experiment")) {
+  exp <- slice_head_var(exp, n = 10)
+} else {
+  exp <- slice_head_row(exp, n = 10)
+}
 
 motifs <- c(
   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen

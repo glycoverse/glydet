@@ -117,25 +117,27 @@ library(glyexp)
 library(glyclean)
 #> 
 #> Attaching package: ‘glyclean’
+#> The following object is masked from ‘package:S4Vectors’:
+#> 
+#>     aggregate
 #> The following object is masked from ‘package:stats’:
 #> 
 #>     aggregate
 
 exp <- real_experiment |>
-  auto_clean() |>
-  slice_sample_var(n = 100)
-#> 
-#> ── Normalizing data ──
-#> 
-#> ℹ Normalization method: `normalize_median()`
-#> ℹ Reason: default for "glycoproteomics".
-#> ✔ Normalization completed.
+  auto_clean()
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 24 (0.56%) variables.
 #> ✔ Variable removal completed.
+#> 
+#> ── Normalizing data ──
+#> 
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
+#> ✔ Normalization completed.
 #> 
 #> ── Imputing missing values ──
 #> 
@@ -158,6 +160,11 @@ exp <- real_experiment |>
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
+if (inherits(exp, "glyexp_experiment")) {
+  exp <- slice_sample_var(exp, n = 100)
+} else {
+  exp <- slice_sample_row(exp, n = 100)
+}
 trait_exp <- derive_traits(exp)
 trait_exp
 #> 

@@ -10,26 +10,102 @@ library(glydet)
 library(glyexp)
 #> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
 #> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
+library(SummarizedExperiment)
+#> Loading required package: MatrixGenerics
+#> Loading required package: matrixStats
+#> 
+#> Attaching package: 'MatrixGenerics'
+#> The following objects are masked from 'package:matrixStats':
+#> 
+#>     colAlls, colAnyNAs, colAnys, colAvgsPerRowSet, colCollapse,
+#>     colCounts, colCummaxs, colCummins, colCumprods, colCumsums,
+#>     colDiffs, colIQRDiffs, colIQRs, colLogSumExps, colMadDiffs,
+#>     colMads, colMaxs, colMeans2, colMedians, colMins, colOrderStats,
+#>     colProds, colQuantiles, colRanges, colRanks, colSdDiffs, colSds,
+#>     colSums2, colTabulates, colVarDiffs, colVars, colWeightedMads,
+#>     colWeightedMeans, colWeightedMedians, colWeightedSds,
+#>     colWeightedVars, rowAlls, rowAnyNAs, rowAnys, rowAvgsPerColSet,
+#>     rowCollapse, rowCounts, rowCummaxs, rowCummins, rowCumprods,
+#>     rowCumsums, rowDiffs, rowIQRDiffs, rowIQRs, rowLogSumExps,
+#>     rowMadDiffs, rowMads, rowMaxs, rowMeans2, rowMedians, rowMins,
+#>     rowOrderStats, rowProds, rowQuantiles, rowRanges, rowRanks,
+#>     rowSdDiffs, rowSds, rowSums2, rowTabulates, rowVarDiffs, rowVars,
+#>     rowWeightedMads, rowWeightedMeans, rowWeightedMedians,
+#>     rowWeightedSds, rowWeightedVars
+#> Loading required package: GenomicRanges
+#> Loading required package: stats4
+#> Loading required package: BiocGenerics
+#> Loading required package: generics
+#> 
+#> Attaching package: 'generics'
+#> The following objects are masked from 'package:base':
+#> 
+#>     as.difftime, as.factor, as.ordered, intersect, is.element, setdiff,
+#>     setequal, union
+#> 
+#> Attaching package: 'BiocGenerics'
+#> The following objects are masked from 'package:stats':
+#> 
+#>     IQR, mad, sd, var, xtabs
+#> The following objects are masked from 'package:base':
+#> 
+#>     anyDuplicated, aperm, append, as.data.frame, basename, cbind,
+#>     colnames, dirname, do.call, duplicated, eval, evalq, Filter, Find,
+#>     get, grep, grepl, is.unsorted, lapply, Map, mapply, match, mget,
+#>     order, paste, pmax, pmax.int, pmin, pmin.int, Position, rank,
+#>     rbind, Reduce, rownames, sapply, saveRDS, table, tapply, unique,
+#>     unsplit, which.max, which.min
+#> Loading required package: S4Vectors
+#> 
+#> Attaching package: 'S4Vectors'
+#> The following object is masked from 'package:utils':
+#> 
+#>     findMatches
+#> The following objects are masked from 'package:base':
+#> 
+#>     expand.grid, I, unname
+#> Loading required package: IRanges
+#> Loading required package: Seqinfo
+#> Loading required package: Biobase
+#> Welcome to Bioconductor
+#> 
+#>     Vignettes contain introductory material; view with
+#>     'browseVignettes()'. To cite Bioconductor, see
+#>     'citation("Biobase")', and for packages 'citation("pkgname")'.
+#> 
+#> Attaching package: 'Biobase'
+#> The following object is masked from 'package:MatrixGenerics':
+#> 
+#>     rowMedians
+#> The following objects are masked from 'package:matrixStats':
+#> 
+#>     anyMissing, rowMedians
+#> The following object is masked from 'package:glyexp':
+#> 
+#>     samples
 library(glyclean)
 #> 
 #> Attaching package: 'glyclean'
+#> The following object is masked from 'package:S4Vectors':
+#> 
+#>     aggregate
 #> The following object is masked from 'package:stats':
 #> 
 #>     aggregate
 
 exp <- auto_clean(real_experiment)
 #> 
-#> ── Normalizing data ──
-#> 
-#> ℹ Normalization method: `normalize_median()`
-#> ℹ Reason: default for "glycoproteomics".
-#> ✔ Normalization completed.
-#> 
 #> ── Removing variables with too many missing values ──
 #> 
 #> ℹ Applying preset "discovery"...
 #> ℹ Total removed: 24 (0.56%) variables.
 #> ✔ Variable removal completed.
+#> 
+#> ── Normalizing data ──
+#> 
+#> ℹ Normalization method: `normalize_median()`
+#> ℹ Reason: default for "glycoproteomics".
+#> ✔ Normalization completed.
 #> 
 #> ── Imputing missing values ──
 #> 
@@ -52,6 +128,14 @@ exp <- auto_clean(real_experiment)
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
+
+row_info <- function(x) {
+  if (inherits(x, "glyexp_experiment")) {
+    get_var_info(x)
+  } else {
+    tibble::as_tibble(rowData(x), rownames = "variable")
+  }
+}
 ```
 
 ## What is motif quantification?
@@ -104,7 +188,7 @@ motif_exp
 
 ``` r
 
-get_var_info(motif_exp)
+row_info(motif_exp)
 #> # A tibble: 552 × 6
 #>    variable        protein protein_site trait gene   motif_structure            
 #>    <chr>           <chr>          <int> <chr> <chr>  <struct>                   
@@ -239,10 +323,17 @@ motifs <- c(
   nLxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
   nSLxa = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x/a antigen
 )
-exp_with_mps <- exp |>
-  mutate_var(
-    tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
-  )
+if (inherits(exp, "glyexp_experiment")) {
+  exp_with_mps <- exp |>
+    mutate_var(
+      tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+    )
+} else {
+  exp_with_mps <- exp |>
+    mutate_row(
+      tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+    )
+}
 
 # Define the traits using wsum() for absolute quantification
 trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))

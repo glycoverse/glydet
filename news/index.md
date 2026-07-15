@@ -1,5 +1,15 @@
 # Changelog
 
+## glydet 0.12.1
+
+- [`add_meta_properties()`](https://glycoverse.github.io/glydet/reference/add_meta_properties.md),
+  [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md),
+  and
+  [`quantify_motifs()`](https://glycoverse.github.io/glydet/reference/quantify_motifs.md)
+  now work consistently across legacy
+  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+  and current `SummarizedExperiment` containers.
+
 ## glydet 0.12.0
 
 ### Breaking changes
