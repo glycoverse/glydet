@@ -2,6 +2,10 @@
 
 ## glydet (development version)
 
+- Documentation, examples, and vignettes now use `GlycomicSE` and
+  `GlycoproteomicSE` inputs with `SummarizedExperiment` accessors for
+  Stage II of glycoverse/glyexp#15. (#27)
+
 ## glydet 0.12.1
 
 - [`add_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/add_meta_properties.md),

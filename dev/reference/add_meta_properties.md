@@ -1,8 +1,7 @@
-# Add Meta-Properties to Experiment
+# Add Meta-Properties to a Glyco SummarizedExperiment
 
 This function adds meta-properties to the variable information of a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
-[`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+[`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html)
 or
 [`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html).
 Under the hood, it uses
@@ -27,8 +26,7 @@ add_meta_properties(
 - exp:
 
   A
-  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
-  [`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+  [`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html)
   or
   [`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
   object.
@@ -61,7 +59,8 @@ information. The input container type is preserved.
 ## See also
 
 [`get_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/get_meta_properties.md),
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
+[`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+[`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
 
 ## Examples
 
@@ -141,29 +140,20 @@ library(SummarizedExperiment)
 #> 
 #>     samples
 
-# Compare the columns in the variable information before and after adding meta-properties
-exp <- real_experiment
-if (inherits(exp, "glyexp_experiment")) {
-  exp <- slice_sample_var(exp, n = 10)
-  colnames(get_var_info(exp))
-} else {
-  exp <- slice_sample_row(exp, n = 10)
-  colnames(rowData(exp))
-}
-#> [1] "variable"           "peptide"            "peptide_site"      
-#> [4] "protein"            "protein_site"       "gene"              
-#> [7] "glycan_composition" "glycan_structure"  
+# Compare rowData columns before and after adding meta-properties
+gp_se <- real_experiment |>
+  slice_sample_row(n = 10)
+colnames(rowData(gp_se))
+#> [1] "peptide"            "peptide_site"       "protein"           
+#> [4] "protein_site"       "gene"               "glycan_composition"
+#> [7] "glycan_structure"  
 
-exp2 <- add_meta_properties(exp)
-if (inherits(exp2, "glyexp_experiment")) {
-  colnames(get_var_info(exp2))
-} else {
-  colnames(rowData(exp2))
-}
-#>  [1] "variable"           "peptide"            "peptide_site"      
-#>  [4] "protein"            "protein_site"       "gene"              
-#>  [7] "glycan_composition" "glycan_structure"   "Tp"                
-#> [10] "B"                  "nA"                 "nF"                
-#> [13] "nFc"                "nFa"                "nG"                
-#> [16] "nGt"                "nS"                 "nM"                
+gp_se2 <- add_meta_properties(gp_se)
+colnames(rowData(gp_se2))
+#>  [1] "peptide"            "peptide_site"       "protein"           
+#>  [4] "protein_site"       "gene"               "glycan_composition"
+#>  [7] "glycan_structure"   "Tp"                 "B"                 
+#> [10] "nA"                 "nF"                 "nFc"               
+#> [13] "nFa"                "nG"                 "nGt"               
+#> [16] "nS"                 "nM"                
 ```

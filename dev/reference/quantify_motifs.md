@@ -7,15 +7,15 @@ separate glycome, and motif quantifications are calculated in a
 site-specific manner.
 
 The function takes a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
-[`glyexp::GlycomicSE`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+[`glyexp::GlycomicSE`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html)
 or
 [`glyexp::GlycoproteomicSE`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
-object and returns a new data container with motif quantifications.
-Instead of containing quantifications of individual glycans on each
-glycosite in each sample, the new experiment contains quantifications of
-each motif on each glycosite in each sample (for glycoproteomics data)
-or motif quantifications in each sample (for glycomics data).
+object and returns a plain `SummarizedExperiment` with motif
+quantifications. Instead of containing quantifications of individual
+glycans on each glycosite in each sample, the output assay contains
+quantifications of each motif on each glycosite in each sample (for
+glycoproteomics data) or motif quantifications in each sample (for
+glycomics data).
 
 ## Usage
 
@@ -34,8 +34,7 @@ quantify_motifs(
 - exp:
 
   A
-  [`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html),
-  [`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html),
+  [`glyexp::GlycomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycomicSE.html)
   or
   [`glyexp::GlycoproteomicSE()`](https://glycoverse.github.io/glyexp/reference/GlycoproteomicSE.html)
   object. Before using this function, you should preprocess the data
@@ -44,8 +43,10 @@ quantify_motifs(
   using
   [`glyclean::aggregate()`](https://glycoverse.github.io/glyclean/reference/aggregate.html).
   Also, please make sure that the `glycan_structure` column is present
-  in the `var_info` table, as not all glycoproteomics identification
-  softwares provide this information. "glycan_structure" can be a
+  in
+  [`SummarizedExperiment::rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+  as not all glycoproteomics identification softwares provide this
+  information. "glycan_structure" can be a
   [`glyrepr::glycan_structure()`](https://glycoverse.github.io/glyrepr/reference/glycan_structure.html)
   vector, or a character vector of glycan structure strings supported by
   [`glyparse::auto_parse()`](https://glycoverse.github.io/glyparse/reference/auto_parse.html).
@@ -89,20 +90,18 @@ quantify_motifs(
 
 ## Value
 
-A new
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object for legacy
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-input, or a `SummarizedExperiment` object for `GlycomicSE` or
-`GlycoproteomicSE` input, containing motif quantifications. Instead of
-containing quantifications of individual glycans on each glycosite in
-each sample, the new experiment contains quantifications of each motif
-on each glycosite in each sample (for glycoproteomics data) or motif
-quantifications in each sample (for glycomics data).
+New `GlycomicSE` and `GlycoproteomicSE` inputs return a plain
+`SummarizedExperiment`; compatible legacy glyexp inputs preserve their
+legacy container type. The output contains motif quantifications.
+Instead of containing quantifications of individual glycans on each
+glycosite in each sample, the output assay contains quantifications of
+each motif on each glycosite in each sample (for glycoproteomics data)
+or motif quantifications in each sample (for glycomics data).
 
-The `var_info` table includes a `trait` column with motif names and a
-`motif_structure` column containing the parsed glycan structure for each
-motif, allowing traceability of motif definitions.
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+includes a `trait` column with motif names and a `motif_structure`
+column containing the parsed glycan structure for each motif, allowing
+traceability of motif definitions.
 
 For glycoproteomics data, with additional columns:
 
@@ -110,20 +109,22 @@ For glycoproteomics data, with additional columns:
 
 - `protein_site`: the glycosite position on the protein
 
-Other columns in the `var_info` table (e.g., `gene`) are retained if
-they have a "many-to-one" relationship with glycosites (unique
-combinations of `protein`, `protein_site`). That is, each glycosite
-cannot have multiple values for these columns. `gene` is a common
-example, as a glycosite can only be associated with one gene. Glycan
-descriptions are not such columns, as a glycosite can have multiple
-glycans, thus having multiple descriptions. Columns that do not have
-this relationship with glycosites will be dropped. Don't worry if you
-cannot understand this logic— just know that this function will do its
-best to preserve useful information.
+Other columns in
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+(e.g., `gene`) are retained if they have a "many-to-one" relationship
+with glycosites (unique combinations of `protein`, `protein_site`). That
+is, each glycosite cannot have multiple values for these columns. `gene`
+is a common example, as a glycosite can only be associated with one
+gene. Glycan descriptions are not such columns, as a glycosite can have
+multiple glycans, thus having multiple descriptions. Columns that do not
+have this relationship with glycosites will be dropped. Don't worry if
+you cannot understand this logic— just know that this function will do
+its best to preserve useful information.
 
-The `sample_info` and `meta_data` tables are not modified, except that
-the `exp_type` field in `meta_data` is set to "traitomics" for glycomics
-data and "traitproteomics" for glycoproteomics data.
+[`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+and `metadata()` are not modified, except that the `exp_type` field in
+`metadata()` is set to "traitomics" for glycomics data and
+"traitproteomics" for glycoproteomics data.
 
 ## Relative and Absolute Motif Quantification
 
@@ -248,10 +249,12 @@ and everything else remains the same.
 
 ``` r
 library(glyexp)
+library(SummarizedExperiment)
 library(glyclean)
 
-exp <- real_experiment |>
-  auto_clean()
+gp_se <- real_experiment |>
+  auto_clean() |>
+  slice_head_row(n = 10)
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
@@ -286,37 +289,84 @@ exp <- real_experiment |>
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
-if (inherits(exp, "glyexp_experiment")) {
-  exp <- slice_head_var(exp, n = 10)
-} else {
-  exp <- slice_head_row(exp, n = 10)
-}
 
 motifs <- c(
   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 )
 
-quantify_motifs(exp, motifs)
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 8 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
+motif_se <- quantify_motifs(gp_se, motifs)
+rowData(motif_se)
+#> DataFrame with 8 rows and 5 columns
+#>                     protein protein_site       trait        gene
+#>                 <character>    <integer> <character> <character>
+#> P04196-344-nLx       P04196          344         nLx         HRG
+#> P04196-344-nSLx      P04196          344        nSLx         HRG
+#> P04196-345-nLx       P04196          345         nLx         HRG
+#> P04196-345-nSLx      P04196          345        nSLx         HRG
+#> P08185-176-nLx       P08185          176         nLx    SERPINA6
+#> P08185-176-nSLx      P08185          176        nSLx    SERPINA6
+#> P10909-291-nLx       P10909          291         nLx         CLU
+#> P10909-291-nSLx      P10909          291        nSLx         CLU
+#>                        motif_structure
+#>                    <glyrepr_structure>
+#> P04196-344-nLx  dHex(??-?)[Hex(??-?)..
+#> P04196-344-nSLx NeuAc(??-?)Hex(??-?)..
+#> P04196-345-nLx  dHex(??-?)[Hex(??-?)..
+#> P04196-345-nSLx NeuAc(??-?)Hex(??-?)..
+#> P08185-176-nLx  dHex(??-?)[Hex(??-?)..
+#> P08185-176-nSLx NeuAc(??-?)Hex(??-?)..
+#> P10909-291-nLx  dHex(??-?)[Hex(??-?)..
+#> P10909-291-nSLx NeuAc(??-?)Hex(??-?)..
+assay(motif_se)
+#>                 C1 C2 C3 H1 H2 H3 M1 M2 M3 Y1 Y2 Y3
+#> P04196-344-nLx   0  0  0  0  0  0  0  0  0  0  0  0
+#> P04196-344-nSLx  0  0  0  0  0  0  0  0  0  0  0  0
+#> P04196-345-nLx   0  0  0  0  0  0  0  0  0  0  0  0
+#> P04196-345-nSLx  0  0  0  0  0  0  0  0  0  0  0  0
+#> P08185-176-nLx   0  0  0  0  0  0  0  0  0  0  0  0
+#> P08185-176-nSLx  0  0  0  0  0  0  0  0  0  0  0  0
+#> P10909-291-nLx   0  0  0  0  0  0  0  0  0  0  0  0
+#> P10909-291-nSLx  0  0  0  0  0  0  0  0  0  0  0  0
+colData(motif_se)
+#> DataFrame with 12 rows and 1 column
+#>        group
+#>     <factor>
+#> C1         C
+#> C2         C
+#> C3         C
+#> H1         H
+#> H2         H
+#> ...      ...
+#> M2         M
+#> M3         M
+#> Y1         Y
+#> Y2         Y
+#> Y3         Y
 
 # Using dynamic motifs (auto-extracted from data)
-quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 80 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
+quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
+#> class: SummarizedExperiment 
+#> dim: 80 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(80): P04196-344-NeuAc(??- P04196-344-Hex(??- ...
+#>   P10909-291-dHex(??-?)Hex(??- P10909-291-dHex(??-?)Hex(??-?)HexNAc(??-
+#> rowData names(5): protein protein_site trait gene motif_structure
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 
 # Using branch motifs (auto-extracted from data)
-quantify_motifs(exp, glymotif::branch_motifs())
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 20 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
+quantify_motifs(gp_se, glymotif::branch_motifs())
+#> class: SummarizedExperiment 
+#> dim: 20 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(20): P04196-344-NeuAc(??-?)Hex(??-?)HexNAc(??-
+#>   P04196-344-HexNAc(??- ...
+#>   P10909-291-Hex(??-?)HexNAc(??-?)Hex(??-?)HexNAc(??-
+#>   P10909-291-dHex(??-?)Hex(??-?)HexNAc(??-
+#> rowData names(5): protein protein_site trait gene motif_structure
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```

@@ -58,7 +58,7 @@ Functions for constructing custom derived traits.
 Functions for working with glycan meta-properties.
 
 - [`add_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/add_meta_properties.md)
-  : Add Meta-Properties to Experiment
+  : Add Meta-Properties to a Glyco SummarizedExperiment
 - [`all_mp_fns()`](https://glycoverse.github.io/glydet/dev/reference/all_mp_fns.md)
   : Get All Meta-Property Functions
 - [`get_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/get_meta_properties.md)

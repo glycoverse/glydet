@@ -25,14 +25,6 @@ library(glyclean)
 library(glyrepr)
 
 exp <- auto_clean(real_experiment)
-
-row_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_var_info(x)
-  } else {
-    tibble::as_tibble(rowData(x), rownames = "variable")
-  }
-}
 ```
 
 ## Custom Traits
@@ -526,11 +518,15 @@ my_traits <- list(
   A4S = wmean(nS / nA, within = (nA == 4))
 )
 derive_traits(exp, trait_fns = my_traits)
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 828 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
+#> class: SummarizedExperiment 
+#> dim: 828 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(828): A6NJW9-49-A2S A6NJW9-49-A3S ... Q9Y6W6-184-A3S
+#>   Q9Y6W6-184-A4S
+#> rowData names(5): protein protein_site trait gene explanation
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
 The identifiers “A2S”, “A3S”, and “A4S” represent the derived trait
@@ -662,11 +658,15 @@ follows:
 ``` r
 
 derive_traits(exp, trait_fns = my_traits, mp_fns = c(my_mp_fns, all_mp_fns()))
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 552 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
+#> class: SummarizedExperiment 
+#> dim: 552 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(552): A6NJW9-49-LeA A6NJW9-49-Pl ... Q9Y6W6-184-LeA
+#>   Q9Y6W6-184-Pl
+#> rowData names(5): protein protein_site trait gene explanation
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
 Ensure that custom meta-properties are combined with built-in
@@ -705,11 +705,15 @@ And calculate the traits:
 ``` r
 
 derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 552 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
+#> class: SummarizedExperiment 
+#> dim: 552 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(552): A6NJW9-49-GL A6NJW9-49-GE ... Q9Y6W6-184-GL
+#>   Q9Y6W6-184-GE
+#> rowData names(5): protein protein_site trait gene explanation
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
 This is an example of how you can violate the [ambiguity
@@ -732,24 +736,16 @@ information tibble, not directly in the glycan structures.
 ``` r
 
 # Here we assume all sialic acids are a2-6
-if (inherits(exp, "glyexp_experiment")) {
-  exp2 <- exp |>
-    mutate_var(
-      n_a26_sia = count_mono(glycan_structure, "NeuAc"),
-      n_a23_sia = 0L
-    )
-} else {
-  exp2 <- exp |>
-    mutate_row(
-      n_a26_sia = count_mono(glycan_structure, "NeuAc"),
-      n_a23_sia = 0L
-    )
-}
+exp2 <- exp |>
+  mutate_row(
+    n_a26_sia = count_mono(glycan_structure, "NeuAc"),
+    n_a23_sia = 0L
+  )
 ```
 
 ``` r
 
-row_info(exp2) |>
+tibble::as_tibble(rowData(exp2), rownames = "variable") |>
   filter(n_a26_sia > 0) |>
   pull(glycan_structure)
 #> <glycan_structure[2575]>
@@ -792,34 +788,43 @@ can use them directly:
 ``` r
 
 exp3 <- exp2 |>
-  rename_var(nE = n_a26_sia, nL = n_a23_sia)
+  rename_row(nE = n_a26_sia, nL = n_a23_sia)
 
 derive_traits(exp3, trait_fns = sia_traits)
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 552 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, nL <int>, explanation <chr>
+#> class: SummarizedExperiment 
+#> dim: 552 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(552): A6NJW9-49-GL A6NJW9-49-GE ... Q9Y6W6-184-GL
+#>   Q9Y6W6-184-GE
+#> rowData names(6): protein protein_site ... nL explanation
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
-If you want to use different column names in `var_info`, use `mp_cols`
-to map those columns to the meta-property names in the trait
-definitions:
+If you want to use different column names in
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html),
+use `mp_cols` to map those columns to the meta-property names in the
+trait definitions:
 
 ``` r
 
 derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 552 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, n_a23_sia <int>, explanation <chr>
+#> class: SummarizedExperiment 
+#> dim: 552 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(552): A6NJW9-49-GL A6NJW9-49-GE ... Q9Y6W6-184-GL
+#>   Q9Y6W6-184-GE
+#> rowData names(6): protein protein_site ... n_a23_sia explanation
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
 When `mp_cols` is omitted, built-in meta-properties take precedence over
-`var_info` columns with the same names. Use `mp_cols` only when you
-intentionally want selected columns to rename or overwrite
-meta-properties.
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+columns with the same names. Use `mp_cols` only when you intentionally
+want selected columns to rename or overwrite meta-properties.
 
 ## Using `make_trait()`
 

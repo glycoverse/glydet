@@ -167,40 +167,18 @@ library(dplyr)
 #> The following objects are masked from 'package:base':
 #> 
 #>     intersect, setdiff, setequal, union
-
-row_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_var_info(x)
-  } else {
-    tibble::as_tibble(rowData(x), rownames = "variable")
-  }
-}
-col_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_sample_info(x)
-  } else {
-    tibble::as_tibble(colData(x), rownames = "sample")
-  }
-}
-abundance <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_expr_mat(x)
-  } else {
-    assay(x)
-  }
-}
 ```
 
 We’ll work with
 [`glyexp::real_experiment2`](https://glycoverse.github.io/glyexp/reference/real_experiment2.html),
-a real glycomics dataset containing 144 samples and 67 glycans.
+a real `GlycomicSE` dataset containing 144 samples and 67 glycans.
 
 Before calculating derived traits, preprocess your data with `glyclean`.
 This makes the trait analysis use the cleaned abundance data.
 
 ``` r
 
-exp <- auto_clean(real_experiment2)  # Preprocess the data
+glyco_se <- auto_clean(real_experiment2)  # Preprocess the data
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
@@ -224,22 +202,24 @@ exp <- auto_clean(real_experiment2)  # Preprocess the data
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
-exp
+glyco_se
 #> 
-#> ── Glycomics Experiment ────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 144 samples, 57 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: glycan_composition <comp>, glycan_structure <struct>
+#> ── GlycomicSE ──────────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 144 samples, 57 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>
 ```
 
 Let’s inspect the dataset before calculating traits:
 
 ``` r
 
-row_info(exp)
+tibble::as_tibble(rowData(glyco_se), rownames = "variable")
 #> # A tibble: 57 × 3
 #>    variable                             glycan_composition      glycan_structure
-#>    <glue>                               <comp>                  <struct>        
+#>    <chr>                                <comp>                  <struct>        
 #>  1 Man(3)GlcNAc(3)                      Man(3)GlcNAc(3)         GlcNAc(?1-?)Man…
 #>  2 Man(3)GlcNAc(7)                      Man(3)GlcNAc(7)         GlcNAc(?1-?)[Gl…
 #>  3 Man(5)GlcNAc(2)                      Man(5)GlcNAc(2)         Man(?1-?)[Man(?…
@@ -255,7 +235,7 @@ row_info(exp)
 
 ``` r
 
-col_info(exp)
+tibble::as_tibble(colData(glyco_se), rownames = "sample")
 #> # A tibble: 144 × 2
 #>    sample group
 #>    <chr>  <fct>
@@ -274,7 +254,7 @@ col_info(exp)
 
 ``` r
 
-abundance(exp)[1:5, 1:5]
+assay(glyco_se)[1:5, 1:5]
 #>                                          S1           S2          S3
 #> Man(3)GlcNAc(3)                0.0008620851 0.0010173209 0.001771775
 #> Man(3)GlcNAc(7)                0.0021105912 0.0013498370 0.001590182
@@ -293,24 +273,25 @@ Now let’s calculate derived traits:
 
 ``` r
 
-trait_exp <- derive_traits(exp)
-trait_exp
-#> 
-#> ── Traitomics Experiment ───────────────────────────────────────────────────────
-#> ℹ Expression matrix: 144 samples, 14 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: trait <chr>, explanation <chr>
+trait_se <- derive_traits(glyco_se)
+trait_se
+#> class: SummarizedExperiment 
+#> dim: 14 144 
+#> metadata(2): exp_type glycan_type
+#> assays(1): abundance
+#> rownames(14): TM TH ... AG TS
+#> rowData names(2): trait explanation
+#> colnames(144): S1 S2 ... S143 S144
+#> colData names(1): group
 ```
 
-The result is a new
-[`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object with “traitomics” type. Instead of storing the abundance of each
-glycan in each sample, it stores the value of each derived trait in each
-sample.
+The result is a plain `SummarizedExperiment` with “traitomics” type.
+Instead of storing the abundance of each glycan in each sample, it
+stores the value of each derived trait in each sample.
 
 ``` r
 
-row_info(trait_exp)
+tibble::as_tibble(rowData(trait_se), rownames = "variable")
 #> # A tibble: 14 × 3
 #>    variable trait explanation                                                   
 #>    <chr>    <chr> <chr>                                                         
@@ -333,7 +314,7 @@ row_info(trait_exp)
 ``` r
 
 # These are the trait values
-abundance(trait_exp)[1:5, 1:5]
+assay(trait_se)[1:5, 1:5]
 #>             S1         S2         S3         S4         S5
 #> TM  0.03173244 0.02709974 0.02069125 0.01752109 0.02344732
 #> TH  0.02049304 0.01848629 0.02646816 0.01943236 0.01528559
@@ -373,14 +354,12 @@ instead.
 
 Because
 [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
-returns a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object, functions in `glystats` can be applied to the derived traits to
-perform statistical analyses.
+returns a `SummarizedExperiment`, functions in `glystats` can be applied
+to the derived traits to perform statistical analyses.
 
 ``` r
 
-anova_res <- gly_anova(trait_exp)
+anova_res <- gly_anova(trait_se)
 #> ℹ Number of groups: 4
 #> ℹ Groups: "H", "M", "Y", and "C"
 #> ℹ Pairwise comparisons will be performed, with levels coming first as reference groups.
@@ -422,8 +401,8 @@ for glycomics and glycoproteomics data.
 
 ``` r
 
-# A glycoproteomics dataset
-gp_exp <- auto_clean(glyexp::real_experiment)
+# A GlycoproteomicSE dataset
+gp_se <- auto_clean(glyexp::real_experiment)
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
@@ -458,32 +437,37 @@ gp_exp <- auto_clean(glyexp::real_experiment)
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
-gp_exp
+gp_se
 #> 
-#> ── Glycoproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3979 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>
+#> ── GlycoproteomicSE ────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 12 samples, 3979 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
 ```
 
 ``` r
 
-gp_trait_exp <- derive_traits(gp_exp)
-gp_trait_exp
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 3864 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, explanation <chr>
+gp_trait_se <- derive_traits(gp_se)
+gp_trait_se
+#> class: SummarizedExperiment 
+#> dim: 3864 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(3864): A6NJW9-49-TM A6NJW9-49-TH ... Q9Y6W6-184-AG
+#>   Q9Y6W6-184-TS
+#> rowData names(5): protein protein_site trait gene explanation
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
-The result is also a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object but with “traitproteomics” type. The only difference is that the
-variable information now contains a `glycosite` column, which indicates
-the glycosite for each trait variable. The experiment object therefore
-contains the value of each derived trait for each glycosite in each
-sample.
+The result is also a plain `SummarizedExperiment`, now with
+“traitproteomics” type. The only difference is that
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+now contains a `protein_site` column, which indicates the glycosite for
+each trait variable. The result therefore contains the value of each
+derived trait for each glycosite in each sample.
 
 You can again apply `glystats` functions to perform statistical
 analyses. For example, we can identify glycosites with dysregulated core
@@ -491,7 +475,7 @@ fucosylation:
 
 ``` r
 
-gly_anova(gp_trait_exp) |>
+gly_anova(gp_trait_se) |>
   get_tidy_result("main_test") |>
   filter(trait == "TFc", p_adj < 0.05) |>
   select(protein, protein_site)
@@ -543,9 +527,9 @@ You can also work with meta-properties directly through two functions:
 - **[`get_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/get_meta_properties.md)**:
   Calculate meta-properties for any set of glycans
 - **[`add_meta_properties()`](https://glycoverse.github.io/glydet/dev/reference/add_meta_properties.md)**:
-  Add meta-properties to the variable information of an
-  [`experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-  object
+  Add meta-properties to the
+  [`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+  of a `GlycomicSE` or `GlycoproteomicSE` object
 
 ### get_meta_properties()
 
@@ -555,7 +539,7 @@ with a few glycan structures from the dataset:
 
 ``` r
 
-glycans <- unique(row_info(exp)$glycan_structure)[1:5]
+glycans <- unique(rowData(glyco_se)$glycan_structure)[1:5]
 glycans
 #> <glycan_structure[5]>
 #> [1] GlcNAc(?1-?)Man(?1-?)[Man(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
@@ -587,15 +571,14 @@ get_meta_properties(glycans)
 
 ### add_meta_properties()
 
-When working with
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-objects, you can add meta-properties directly to the variable
-information:
+When working with `GlycomicSE` or `GlycoproteomicSE` objects, you can
+add meta-properties directly to
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html):
 
 ``` r
 
-exp_with_mp <- add_meta_properties(exp)
-row_info(exp_with_mp)
+se_with_mp <- add_meta_properties(glyco_se)
+tibble::as_tibble(rowData(se_with_mp), rownames = "variable")
 #> # A tibble: 57 × 13
 #>    variable    glycan_composition glycan_structure Tp    B        nA    nF   nFc
 #>    <chr>       <comp>             <struct>         <fct> <lgl> <int> <int> <int>
@@ -620,16 +603,14 @@ For instance, filter for all glycoforms containing high-mannose glycans:
 
 ``` r
 
-if (inherits(exp_with_mp, "glyexp_experiment")) {
-  filter_var(exp_with_mp, Tp == "highmannose")
-} else {
-  filter_row(exp_with_mp, Tp == "highmannose")
-}
+filter_row(se_with_mp, Tp == "highmannose")
 #> 
-#> ── Glycomics Experiment ────────────────────────────────────────────────────────
-#> ℹ Expression matrix: 144 samples, 5 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: glycan_composition <comp>, glycan_structure <struct>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
+#> ── GlycomicSE ──────────────────────────────────────────────────────────────────
+#> ℹ Abundance assay: 144 samples, 5 variables
+#> ℹ Glycan type: N
+#> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
+#> ℹ Column data fields: group <fct>
+#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>
 ```
 
 ### Meta-Property Functions

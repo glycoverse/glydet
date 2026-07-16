@@ -93,7 +93,7 @@ library(glyclean)
 #> 
 #>     aggregate
 
-exp <- auto_clean(real_experiment)
+gp_se <- auto_clean(real_experiment)
 #> 
 #> ── Removing variables with too many missing values ──
 #> 
@@ -128,14 +128,6 @@ exp <- auto_clean(real_experiment)
 #> 
 #> ℹ Batch column batch not found in sample_info. Skipping batch correction.
 #> ✔ Batch correction completed.
-
-row_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_var_info(x)
-  } else {
-    tibble::as_tibble(rowData(x), rownames = "variable")
-  }
-}
 ```
 
 ## What is motif quantification?
@@ -159,9 +151,9 @@ the true abundance of Lewis x antigens in your dataset.
 Glydet provides the
 [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
 function to handle this complex task seamlessly. This function takes a
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-object along with your motifs of interest and returns a new experiment
-object enriched with motif quantifications. Just like
+`GlycomicSE` or `GlycoproteomicSE` object along with your motifs of
+interest and returns a plain `SummarizedExperiment` containing motif
+quantifications. Just like
 [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md),
 [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)
 works beautifully with both glycomics and glycoproteomics data.
@@ -177,18 +169,22 @@ motifs <- c(
 )
 
 # Quantify the motifs in our dataset
-motif_exp <- quantify_motifs(exp, motifs)
-motif_exp
-#> 
-#> ── Traitproteomics Experiment ──────────────────────────────────────────────────
-#> ℹ Expression matrix: 12 samples, 552 variables
-#> ℹ Sample information fields: group <fct>
-#> ℹ Variable information fields: protein <chr>, protein_site <int>, trait <chr>, gene <chr>, motif_structure <struct>
+motif_se <- quantify_motifs(gp_se, motifs)
+motif_se
+#> class: SummarizedExperiment 
+#> dim: 552 12 
+#> metadata(3): exp_type glycan_type quant_method
+#> assays(1): abundance
+#> rownames(552): A6NJW9-49-Lxa A6NJW9-49-SLxa ... Q9Y6W6-184-Lxa
+#>   Q9Y6W6-184-SLxa
+#> rowData names(5): protein protein_site trait gene motif_structure
+#> colnames(12): C1 C2 ... Y2 Y3
+#> colData names(1): group
 ```
 
 ``` r
 
-row_info(motif_exp)
+tibble::as_tibble(rowData(motif_se), rownames = "variable")
 #> # A tibble: 552 × 6
 #>    variable        protein protein_site trait gene   motif_structure            
 #>    <chr>           <chr>          <int> <chr> <chr>  <struct>                   
@@ -323,23 +319,16 @@ motifs <- c(
   nLxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
   nSLxa = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x/a antigen
 )
-if (inherits(exp, "glyexp_experiment")) {
-  exp_with_mps <- exp |>
-    mutate_var(
-      tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
-    )
-} else {
-  exp_with_mps <- exp |>
-    mutate_row(
-      tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
-    )
-}
+se_with_mps <- gp_se |>
+  mutate_row(
+    tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+  )
 
 # Define the traits using wsum() for absolute quantification
 trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))
 
 # Calculate the traits
-derive_traits(exp_with_mps, trait_fns = trait_fns)
+derive_traits(se_with_mps, trait_fns = trait_fns)
 ```
 
 This code snippet is functionally equivalent to:
@@ -347,7 +336,7 @@ This code snippet is functionally equivalent to:
 ``` r
 
 # The much simpler approach using quantify_motifs()
-quantify_motifs(exp, motifs, method = "absolute")
+quantify_motifs(gp_se, motifs, method = "absolute")
 ```
 
 Pretty neat, right? The
