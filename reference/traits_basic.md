@@ -69,9 +69,10 @@ Four additional sialic acid linkage traits are included if
 
 ## Usage of sialic acid linkage traits
 
-To use these sialic acid linkage traits, `var_info` of the input
-[`glyexp::experiment()`](https://glycoverse.github.io/glyexp/reference/experiment.html)
-must have the following columns:
+To use these sialic acid linkage traits,
+[`rowData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
+of the input `GlycomicSE` or `GlycoproteomicSE` must have the following
+columns:
 
 - `nE`: Number of a2,6-linked sialic acids
 

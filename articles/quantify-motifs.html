@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -162,7 +162,7 @@ samples.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;     aggregate</span></span>
 <span></span>
-<span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span></span>
+<span><span class="va">gp_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Removing variables with too many missing values</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -196,15 +196,7 @@ samples.</p>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Correcting batch effects</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Batch column <span style="color: #00BB00;">batch</span> not found in sample_info. Skipping batch correction.</span></span>
-<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Batch correction completed.</span></span>
-<span></span>
-<span><span class="va">row_info</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"glyexp_experiment"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Batch correction completed.</span></span></code></pre></div>
 <div class="section level2">
 <h2 id="what-is-motif-quantification">What is motif quantification?<a class="anchor" aria-label="anchor" href="#what-is-motif-quantification"></a>
 </h2>
@@ -226,11 +218,11 @@ the true abundance of Lewis x antigens in your dataset.</p>
 </h2>
 <p>Glydet provides the <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> function to handle
 this complex task seamlessly. This function takes a
-<code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object along with your motifs of
-interest and returns a new experiment object enriched with motif
-quantifications. Just like <code><a href="../reference/derive_traits.html">derive_traits()</a></code>,
-<code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> works beautifully with both glycomics and
-glycoproteomics data.</p>
+<code>GlycomicSE</code> or <code>GlycoproteomicSE</code> object along
+with your motifs of interest and returns a plain
+<code>SummarizedExperiment</code> containing motif quantifications. Just
+like <code><a href="../reference/derive_traits.html">derive_traits()</a></code>, <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> works
+beautifully with both glycomics and glycoproteomics data.</p>
 <p>Let’s dive into a practical example:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define our motifs of interest using IUPAC-condensed format</span></span>
@@ -240,15 +232,19 @@ glycoproteomics data.</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Quantify the motifs in our dataset</span></span>
-<span><span class="va">motif_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quantify_motifs.html">quantify_motifs</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">motifs</span><span class="op">)</span></span>
-<span><span class="va">motif_exp</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">552</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">motif_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span></span></code></pre></div>
+<span><span class="va">motif_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/quantify_motifs.html">quantify_motifs</a></span><span class="op">(</span><span class="va">gp_se</span>, <span class="va">motifs</span><span class="op">)</span></span>
+<span><span class="va">motif_se</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 552 12 </span></span>
+<span><span class="co">#&gt; metadata(3): exp_type glycan_type quant_method</span></span>
+<span><span class="co">#&gt; assays(1): abundance</span></span>
+<span><span class="co">#&gt; rownames(552): A6NJW9-49-Lxa A6NJW9-49-SLxa ... Q9Y6W6-184-Lxa</span></span>
+<span><span class="co">#&gt;   Q9Y6W6-184-SLxa</span></span>
+<span><span class="co">#&gt; rowData names(5): protein protein_site trait gene motif_structure</span></span>
+<span><span class="co">#&gt; colnames(12): C1 C2 ... Y2 Y3</span></span>
+<span><span class="co">#&gt; colData names(1): group</span></span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">row_info</span><span class="op">(</span><span class="va">motif_exp</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">motif_se</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 552 × 6</span></span></span>
 <span><span class="co">#&gt;    variable        protein protein_site trait gene   motif_structure            </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                   </span></span>
@@ -383,27 +379,20 @@ quantification.</p>
 <span>  nLxa <span class="op">=</span> <span class="st">"Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>,  <span class="co"># Lewis x/a antigen</span></span>
 <span>  nSLxa <span class="op">=</span> <span class="st">"NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"</span>  <span class="co"># Sialyl Lewis x/a antigen</span></span>
 <span><span class="op">)</span></span>
-<span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">exp</span>, <span class="st">"glyexp_experiment"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">exp_with_mps</span> <span class="op">&lt;-</span> <span class="va">exp</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/mutate_obs.html" class="external-link">mutate_var</a></span><span class="op">(</span></span>
-<span>      <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motifs</a></span><span class="op">(</span><span class="va">glycan_structure</span>, <span class="va">motifs</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>  <span class="va">exp_with_mps</span> <span class="op">&lt;-</span> <span class="va">exp</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">mutate_row</span><span class="op">(</span></span>
-<span>      <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motifs</a></span><span class="op">(</span><span class="va">glycan_structure</span>, <span class="va">motifs</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<span><span class="va">se_with_mps</span> <span class="op">&lt;-</span> <span class="va">gp_se</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/mutate_col.html" class="external-link">mutate_row</a></span><span class="op">(</span></span>
+<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/count_motif.html" class="external-link">count_motifs</a></span><span class="op">(</span><span class="va">glycan_structure</span>, <span class="va">motifs</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Define the traits using wsum() for absolute quantification</span></span>
 <span><span class="va">trait_fns</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>Lxa <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nLxa</span><span class="op">)</span>, SLxa <span class="op">=</span> <span class="fu"><a href="../reference/wsum.html">wsum</a></span><span class="op">(</span><span class="va">nSLxa</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Calculate the traits</span></span>
-<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp_with_mps</span>, trait_fns <span class="op">=</span> <span class="va">trait_fns</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">se_with_mps</span>, trait_fns <span class="op">=</span> <span class="va">trait_fns</span><span class="op">)</span></span></code></pre></div>
 <p>This code snippet is functionally equivalent to:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># The much simpler approach using quantify_motifs()</span></span>
-<span><span class="fu"><a href="../reference/quantify_motifs.html">quantify_motifs</a></span><span class="op">(</span><span class="va">exp</span>, <span class="va">motifs</span>, method <span class="op">=</span> <span class="st">"absolute"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/quantify_motifs.html">quantify_motifs</a></span><span class="op">(</span><span class="va">gp_se</span>, <span class="va">motifs</span>, method <span class="op">=</span> <span class="st">"absolute"</span><span class="op">)</span></span></code></pre></div>
 <p>Pretty neat, right? The <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> function is
 essentially doing all the heavy lifting shown in the manual approach,
 but with additional robustness and user-friendly features.</p>

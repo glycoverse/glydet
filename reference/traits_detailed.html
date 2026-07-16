@@ -11,7 +11,7 @@ detailed within conditions."><meta property="og:image" content="https://glycover
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -136,7 +136,8 @@ detailed <code>within</code> conditions.</p>
     <div class="section level2">
     <h2 id="usage-of-sialic-acid-linkage-traits">Usage of sialic acid linkage traits<a class="anchor" aria-label="anchor" href="#usage-of-sialic-acid-linkage-traits"></a></h2>
     <p>To use these sialic acid linkage traits,
-<code>var_info</code> of the input <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> must have the following columns:</p><ul><li><p><code>nE</code>: Number of a2,6-linked sialic acids</p></li>
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> of the input <code>GlycomicSE</code> or <code>GlycoproteomicSE</code> must have the
+following columns:</p><ul><li><p><code>nE</code>: Number of a2,6-linked sialic acids</p></li>
 <li><p><code>nL</code>: Number of a2,3-linked sialic acids</p></li>
 </ul><p>Note that you have to add these two columns even if the <code>glycan_structure</code> column has intact linkages.
 This is because by convention all traits work with glycan structures with "basic" structure levels

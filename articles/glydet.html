@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -236,36 +236,15 @@ same sample to be comparable.</p>
 <span><span class="co">#&gt;     filter, lag</span></span>
 <span><span class="co">#&gt; The following objects are masked from 'package:base':</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span>
-<span></span>
-<span><span class="va">row_info</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"glyexp_experiment"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_var_info.html" class="external-link">get_var_info</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">col_info</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"glyexp_experiment"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_sample_info.html" class="external-link">get_sample_info</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span>
-<span><span class="va">abundance</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"glyexp_experiment"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/get_expr_mat.html" class="external-link">get_expr_mat</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span><span class="op">}</span></span></code></pre></div>
+<span><span class="co">#&gt;     intersect, setdiff, setequal, union</span></span></code></pre></div>
 <p>We’ll work with <code><a href="https://glycoverse.github.io/glyexp/reference/real_experiment2.html" class="external-link">glyexp::real_experiment2</a></code>, a real
-glycomics dataset containing 144 samples and 67 glycans.</p>
+<code>GlycomicSE</code> dataset containing 144 samples and 67
+glycans.</p>
 <p>Before calculating derived traits, preprocess your data with
 <code>glyclean</code>. This makes the trait analysis use the cleaned
 abundance data.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment2</span><span class="op">)</span>  <span class="co"># Preprocess the data</span></span>
+<code class="sourceCode R"><span><span class="va">glyco_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="va">real_experiment2</span><span class="op">)</span>  <span class="co"># Preprocess the data</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Removing variables with too many missing values</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -289,18 +268,20 @@ abundance data.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Batch column <span style="color: #00BB00;">batch</span> not found in sample_info. Skipping batch correction.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Batch correction completed.</span></span>
-<span><span class="va">exp</span></span>
+<span><span class="va">glyco_se</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycomics Experiment</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">57</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">GlycomicSE</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Abundance assay: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">57</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Glycan type: N</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Row data fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Column data fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Metadata fields: <span style="color: #00BB00;">exp_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <p>Let’s inspect the dataset before calculating traits:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">row_info</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">glyco_se</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 57 × 3</span></span></span>
 <span><span class="co">#&gt;    variable                             glycan_composition      glycan_structure</span></span>
-<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;glue&gt;</span>                               <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>        </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>                  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>        </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Man(3)GlcNAc(3)                      <span style="color: #00AF5F;">Man</span>(3)<span style="color: #0087D7;">GlcNAc</span>(3)         <span style="color: #0087D7;">GlcNAc</span>(?1-?)<span style="color: #00AF5F;">Man</span>…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Man(3)GlcNAc(7)                      <span style="color: #00AF5F;">Man</span>(3)<span style="color: #0087D7;">GlcNAc</span>(7)         <span style="color: #0087D7;">GlcNAc</span>(?1-?)[<span style="color: #0087D7;">Gl</span>…</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Man(5)GlcNAc(2)                      <span style="color: #00AF5F;">Man</span>(5)<span style="color: #0087D7;">GlcNAc</span>(2)         <span style="color: #00AF5F;">Man</span>(?1-?)[<span style="color: #00AF5F;">Man</span>(?…</span></span>
@@ -313,7 +294,7 @@ abundance data.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Man(3)Gal(1)GlcNAc(5)Fuc(1)Neu5Ac(1) <span style="color: #00AF5F;">Man</span>(3)<span style="color: #FFD700;">Gal</span>(1)<span style="color: #0087D7;">GlcNAc</span>(5)<span style="color: #FF0000;">F</span>… <span style="color: #AF5FAF;">Neu5Ac</span>(?2-?)<span style="color: #FFD700;">Gal</span>…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 47 more rows</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">col_info</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData</a></span><span class="op">(</span><span class="va">glyco_se</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"sample"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 144 × 2</span></span></span>
 <span><span class="co">#&gt;    sample group</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span></span></span>
@@ -329,7 +310,7 @@ abundance data.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> S10    M    </span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 134 more rows</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">abundance</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">glyco_se</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt;                                          S1           S2          S3</span></span>
 <span><span class="co">#&gt; Man(3)GlcNAc(3)                0.0008620851 0.0010173209 0.001771775</span></span>
 <span><span class="co">#&gt; Man(3)GlcNAc(7)                0.0021105912 0.0013498370 0.001590182</span></span>
@@ -344,19 +325,22 @@ abundance data.</p>
 <span><span class="co">#&gt; Man(3)Gal(1)GlcNAc(3)          0.0009142087 0.0006549279</span></span></code></pre></div>
 <p>Now let’s calculate derived traits:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
-<span><span class="va">trait_exp</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitomics Experiment</span> <span style="color: #00BBBB;">───────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">14</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
-<p>The result is a new <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> object with
+<code class="sourceCode R"><span><span class="va">trait_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">glyco_se</span><span class="op">)</span></span>
+<span><span class="va">trait_se</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 14 144 </span></span>
+<span><span class="co">#&gt; metadata(2): exp_type glycan_type</span></span>
+<span><span class="co">#&gt; assays(1): abundance</span></span>
+<span><span class="co">#&gt; rownames(14): TM TH ... AG TS</span></span>
+<span><span class="co">#&gt; rowData names(2): trait explanation</span></span>
+<span><span class="co">#&gt; colnames(144): S1 S2 ... S143 S144</span></span>
+<span><span class="co">#&gt; colData names(1): group</span></span></code></pre></div>
+<p>The result is a plain <code>SummarizedExperiment</code> with
 “traitomics” type. Instead of storing the abundance of each glycan in
 each sample, it stores the value of each derived trait in each
 sample.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu">row_info</span><span class="op">(</span><span class="va">trait_exp</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">trait_se</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 14 × 3</span></span></span>
 <span><span class="co">#&gt;    variable trait explanation                                                   </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                                                         </span></span>
@@ -376,7 +360,7 @@ sample.</p>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">14</span> TS       TS    Proportion of sialylated glycans among all glycans.</span></span></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># These are the trait values</span></span>
-<span><span class="fu">abundance</span><span class="op">(</span><span class="va">trait_exp</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">assay</a></span><span class="op">(</span><span class="va">trait_se</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="co">#&gt;             S1         S2         S3         S4         S5</span></span>
 <span><span class="co">#&gt; TM  0.03173244 0.02709974 0.02069125 0.01752109 0.02344732</span></span>
 <span><span class="co">#&gt; TH  0.02049304 0.01848629 0.02646816 0.01943236 0.01528559</span></span>
@@ -436,11 +420,11 @@ traits. For glycan classes with simpler structural patterns than
 N-glycans, such as O-glycans, we recommend using <a href="https://glycoverse.github.io/glydet/articles/quantify-motifs.html">motif
 quantification</a> instead.</p>
 <p>Because <code><a href="../reference/derive_traits.html">derive_traits()</a></code> returns a
-<code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object, functions in
-<code>glystats</code> can be applied to the derived traits to perform
-statistical analyses.</p>
+<code>SummarizedExperiment</code>, functions in <code>glystats</code>
+can be applied to the derived traits to perform statistical
+analyses.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">anova_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glystats/reference/gly_anova.html" class="external-link">gly_anova</a></span><span class="op">(</span><span class="va">trait_exp</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">anova_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glystats/reference/gly_anova.html" class="external-link">gly_anova</a></span><span class="op">(</span><span class="va">trait_se</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Number of groups: <span style="color: #0000BB;">4</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"H"</span>, <span style="color: #0000BB;">"M"</span>, <span style="color: #0000BB;">"Y"</span>, and <span style="color: #0000BB;">"C"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Pairwise comparisons will be performed, with levels coming first as reference groups.</span></span>
@@ -477,8 +461,8 @@ samples.</p>
 <p>Operationally, there is no difference between calculating derived
 traits for glycomics and glycoproteomics data.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># A glycoproteomics dataset</span></span>
-<span><span class="va">gp_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="fu">glyexp</span><span class="fu">::</span><span class="va"><a href="https://glycoverse.github.io/glyexp/reference/real_experiment.html" class="external-link">real_experiment</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="co"># A GlycoproteomicSE dataset</span></span>
+<span><span class="va">gp_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://glycoverse.github.io/glyclean/reference/auto_clean.html" class="external-link">auto_clean</a></span><span class="op">(</span><span class="fu">glyexp</span><span class="fu">::</span><span class="va"><a href="https://glycoverse.github.io/glyexp/reference/real_experiment.html" class="external-link">real_experiment</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Removing variables with too many missing values</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -513,31 +497,37 @@ traits for glycomics and glycoproteomics data.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Batch column <span style="color: #00BB00;">batch</span> not found in sample_info. Skipping batch correction.</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Batch correction completed.</span></span>
-<span><span class="va">gp_exp</span></span>
+<span><span class="va">gp_se</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycoproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3979</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">GlycoproteomicSE</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Abundance assay: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3979</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Glycan type: N</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Row data fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Column data fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Metadata fields: <span style="color: #00BB00;">exp_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">quant_method</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">gp_trait_exp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">gp_exp</span><span class="op">)</span></span>
-<span><span class="va">gp_trait_exp</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Traitproteomics Experiment</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">12</span> samples, <span style="color: #0000BB;">3864</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">protein</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">protein_site</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">trait</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">gene</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">explanation</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
-<p>The result is also a <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> object but
-with “traitproteomics” type. The only difference is that the variable
-information now contains a <code>glycosite</code> column, which
-indicates the glycosite for each trait variable. The experiment object
+<code class="sourceCode R"><span><span class="va">gp_trait_se</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/derive_traits.html">derive_traits</a></span><span class="op">(</span><span class="va">gp_se</span><span class="op">)</span></span>
+<span><span class="va">gp_trait_se</span></span>
+<span><span class="co">#&gt; class: SummarizedExperiment </span></span>
+<span><span class="co">#&gt; dim: 3864 12 </span></span>
+<span><span class="co">#&gt; metadata(3): exp_type glycan_type quant_method</span></span>
+<span><span class="co">#&gt; assays(1): abundance</span></span>
+<span><span class="co">#&gt; rownames(3864): A6NJW9-49-TM A6NJW9-49-TH ... Q9Y6W6-184-AG</span></span>
+<span><span class="co">#&gt;   Q9Y6W6-184-TS</span></span>
+<span><span class="co">#&gt; rowData names(5): protein protein_site trait gene explanation</span></span>
+<span><span class="co">#&gt; colnames(12): C1 C2 ... Y2 Y3</span></span>
+<span><span class="co">#&gt; colData names(1): group</span></span></code></pre></div>
+<p>The result is also a plain <code>SummarizedExperiment</code>, now
+with “traitproteomics” type. The only difference is that
+<code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> now contains a <code>protein_site</code> column,
+which indicates the glycosite for each trait variable. The result
 therefore contains the value of each derived trait for each glycosite in
 each sample.</p>
 <p>You can again apply <code>glystats</code> functions to perform
 statistical analyses. For example, we can identify glycosites with
 dysregulated core fucosylation:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glystats/reference/gly_anova.html" class="external-link">gly_anova</a></span><span class="op">(</span><span class="va">gp_trait_exp</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glystats/reference/gly_anova.html" class="external-link">gly_anova</a></span><span class="op">(</span><span class="va">gp_trait_se</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://glycoverse.github.io/glystats/reference/get_tidy_result.html" class="external-link">get_tidy_result</a></span><span class="op">(</span><span class="st">"main_test"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">trait</span> <span class="op">==</span> <span class="st">"TFc"</span>, <span class="va">p_adj</span> <span class="op">&lt;</span> <span class="fl">0.05</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">protein</span>, <span class="va">protein_site</span><span class="op">)</span></span>
@@ -545,18 +535,21 @@ dysregulated core fucosylation:</p>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Groups: <span style="color: #0000BB;">"H"</span>, <span style="color: #0000BB;">"M"</span>, <span style="color: #0000BB;">"Y"</span>, and <span style="color: #0000BB;">"C"</span></span></span>
 <span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Pairwise comparisons will be performed, with levels coming first as reference groups.</span></span>
 <span><span class="co">#&gt; Warning: <span style="color: #0000BB;">281</span> variables failed to fit the model</span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 9 × 2</span></span></span>
-<span><span class="co">#&gt;   protein protein_site</span></span>
-<span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">1</span> P00748           249</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">2</span> P01591            71</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">3</span> P02765           176</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">4</span> P04004            86</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">5</span> P05090            98</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">6</span> P06681           621</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">7</span> P0C0L4          <span style="text-decoration: underline;">1</span>328</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">8</span> P19652           103</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">9</span> P20851            64</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 12 × 2</span></span></span>
+<span><span class="co">#&gt;    protein protein_site</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> P00748           249</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> P01591            71</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> P02679            78</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> P02765           176</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> P02790           240</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> P04004            86</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> P05090            98</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> P06681           621</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> P0C0L4          <span style="text-decoration: underline;">1</span>328</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> P0C0L4          <span style="text-decoration: underline;">1</span>391</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">11</span> P19652           103</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">12</span> P20851            64</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="understanding-meta-properties">Understanding Meta-Properties<a class="anchor" aria-label="anchor" href="#understanding-meta-properties"></a>
@@ -588,8 +581,8 @@ functions:</p>
 meta-properties for any set of glycans</li>
 <li>
 <strong><code><a href="../reference/add_meta_properties.html">add_meta_properties()</a></code></strong>: Add
-meta-properties to the variable information of an
-<code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">experiment()</a></code> object</li>
+meta-properties to the <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code> of a
+<code>GlycomicSE</code> or <code>GlycoproteomicSE</code> object</li>
 </ul>
 <div class="section level3">
 <h3 id="get_meta_properties">get_meta_properties()<a class="anchor" aria-label="anchor" href="#get_meta_properties"></a>
@@ -597,7 +590,7 @@ meta-properties to the variable information of an
 <p>Let’s try <code><a href="../reference/get_meta_properties.html">get_meta_properties()</a></code> with a few glycan
 structures from the dataset:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">glycans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">row_info</span><span class="op">(</span><span class="va">exp</span><span class="op">)</span><span class="op">$</span><span class="va">glycan_structure</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="va">glycans</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">glyco_se</span><span class="op">)</span><span class="op">$</span><span class="va">glycan_structure</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span></span>
 <span><span class="va">glycans</span></span>
 <span><span class="co">#&gt; &lt;glycan_structure[5]&gt;</span></span>
 <span><span class="co">#&gt; [1] <span style="color: #0087D7;">GlcNAc</span>(?1-?)<span style="color: #00AF5F;">Man</span>(?1-?)[<span style="color: #00AF5F;">Man</span>(?1-?)]<span style="color: #00AF5F;">Man</span>(?1-?)<span style="color: #0087D7;">GlcNAc</span>(?1-?)<span style="color: #0087D7;">GlcNAc</span>(<span style="color: #B2B2B2;">?1-</span></span></span>
@@ -624,11 +617,12 @@ representations of glycan structures.</p>
 <div class="section level3">
 <h3 id="add_meta_properties">add_meta_properties()<a class="anchor" aria-label="anchor" href="#add_meta_properties"></a>
 </h3>
-<p>When working with <code><a href="https://glycoverse.github.io/glyexp/reference/experiment.html" class="external-link">glyexp::experiment()</a></code> objects, you can
-add meta-properties directly to the variable information:</p>
+<p>When working with <code>GlycomicSE</code> or
+<code>GlycoproteomicSE</code> objects, you can add meta-properties
+directly to <code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData()</a></code>:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">exp_with_mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_meta_properties.html">add_meta_properties</a></span><span class="op">(</span><span class="va">exp</span><span class="op">)</span></span>
-<span><span class="fu">row_info</span><span class="op">(</span><span class="va">exp_with_mp</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">se_with_mp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/add_meta_properties.html">add_meta_properties</a></span><span class="op">(</span><span class="va">glyco_se</span><span class="op">)</span></span>
+<span><span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">rowData</a></span><span class="op">(</span><span class="va">se_with_mp</span><span class="op">)</span>, rownames <span class="op">=</span> <span class="st">"variable"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 57 × 13</span></span></span>
 <span><span class="co">#&gt;    variable    glycan_composition glycan_structure Tp    B        nA    nF   nFc</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;comp&gt;</span>             <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span> <span style="color: #949494; font-style: italic;">&lt;lgl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span></span></span>
@@ -649,16 +643,14 @@ This supports filtering based on structural features.</p>
 <p>For instance, filter for all glycoforms containing high-mannose
 glycans:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">inherits</a></span><span class="op">(</span><span class="va">exp_with_mp</span>, <span class="st">"glyexp_experiment"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/filter_obs.html" class="external-link">filter_var</a></span><span class="op">(</span><span class="va">exp_with_mp</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"highmannose"</span><span class="op">)</span></span>
-<span><span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>  <span class="fu">filter_row</span><span class="op">(</span><span class="va">exp_with_mp</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"highmannose"</span><span class="op">)</span></span>
-<span><span class="op">}</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://glycoverse.github.io/glyexp/reference/filter_col.html" class="external-link">filter_row</a></span><span class="op">(</span><span class="va">se_with_mp</span>, <span class="va">Tp</span> <span class="op">==</span> <span class="st">"highmannose"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">Glycomics Experiment</span> <span style="color: #00BBBB;">────────────────────────────────────────────────────────</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Expression matrix: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">5</span> variables</span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Sample information fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Variable information fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">Tp</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nF</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">──</span> <span style="font-weight: bold;">GlycomicSE</span> <span style="color: #00BBBB;">──────────────────────────────────────────────────────────────────</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Abundance assay: <span style="color: #0000BB;">144</span> samples, <span style="color: #0000BB;">5</span> variables</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Glycan type: N</span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Row data fields: <span style="color: #00BB00;">glycan_composition</span> <span style="color: #0000BB;">&lt;comp&gt;</span>, <span style="color: #00BB00;">glycan_structure</span> <span style="color: #0000BB;">&lt;struct&gt;</span>, <span style="color: #00BB00;">Tp</span> <span style="color: #0000BB;">&lt;fct&gt;</span>, <span style="color: #00BB00;">B</span> <span style="color: #0000BB;">&lt;lgl&gt;</span>, <span style="color: #00BB00;">nA</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nF</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFc</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nFa</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nG</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nGt</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nS</span> <span style="color: #0000BB;">&lt;int&gt;</span>, <span style="color: #00BB00;">nM</span> <span style="color: #0000BB;">&lt;int&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Column data fields: <span style="color: #00BB00;">group</span> <span style="color: #0000BB;">&lt;fct&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Metadata fields: <span style="color: #00BB00;">exp_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span>, <span style="color: #00BB00;">glycan_type</span> <span style="color: #0000BB;">&lt;chr&gt;</span></span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="meta-property-functions">Meta-Property Functions<a class="anchor" aria-label="anchor" href="#meta-property-functions"></a>
