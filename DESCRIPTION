@@ -16,7 +16,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    glyexp (>= 0.15.0),
+    glyexp (>= 0.16.0),
     glyclean (>= 0.12.0),
     glystats (>= 0.6.3),
     missForest,

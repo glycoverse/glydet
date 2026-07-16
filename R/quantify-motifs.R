@@ -6,12 +6,12 @@
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and motif quantifications are calculated in a site-specific manner.
 #'
-#' The function takes a `glyexp::experiment()`, `glyexp::GlycomicSE`, or
-#' `glyexp::GlycoproteomicSE` object and returns a new data container with motif
-#' quantifications. Instead of containing quantifications of individual glycans
-#' on each glycosite in each sample, the new experiment contains quantifications
-#' of each motif on each glycosite in each sample (for glycoproteomics data) or
-#' motif quantifications in each sample (for glycomics data).
+#' The function takes a `glyexp::GlycomicSE` or `glyexp::GlycoproteomicSE`
+#' object and returns a plain `SummarizedExperiment` with motif quantifications.
+#' Instead of containing quantifications of individual glycans on each glycosite
+#' in each sample, the output assay contains quantifications of each motif on
+#' each glycosite in each sample (for glycoproteomics data) or motif
+#' quantifications in each sample (for glycomics data).
 #'
 #' @details
 #' # Relative and Absolute Motif Quantification
@@ -132,14 +132,14 @@
 #'   See [glymotif::have_motifs()] for details.
 #'
 #' @returns
-#' A new [glyexp::experiment()] object for legacy `experiment()` input, or a
-#' `SummarizedExperiment` object for `GlycomicSE` or `GlycoproteomicSE` input,
-#' containing motif quantifications.
+#' New `GlycomicSE` and `GlycoproteomicSE` inputs return a plain
+#' `SummarizedExperiment`; compatible legacy glyexp inputs preserve their
+#' legacy container type. The output contains motif quantifications.
 #' Instead of containing quantifications of individual glycans on each glycosite in each sample,
-#' the new experiment contains quantifications of each motif on each glycosite in each sample
+#' the output assay contains quantifications of each motif on each glycosite in each sample
 #' (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
 #'
-#' The `var_info` table includes a `trait` column with motif names and a
+#' `rowData()` includes a `trait` column with motif names and a
 #' `motif_structure` column containing the parsed glycan structure for each motif,
 #' allowing traceability of motif definitions.
 #'
@@ -147,7 +147,7 @@
 #' - `protein`: protein ID
 #' - `protein_site`: the glycosite position on the protein
 #'
-#' Other columns in the `var_info` table (e.g., `gene`) are retained if they have a "many-to-one"
+#' Other columns in `rowData()` (e.g., `gene`) are retained if they have a "many-to-one"
 #' relationship with glycosites (unique combinations of `protein`, `protein_site`).
 #' That is, each glycosite cannot have multiple values for these columns.
 #' `gene` is a common example, as a glycosite can only be associated with one gene.
@@ -157,34 +157,34 @@
 #' Don't worry if you cannot understand this logic—
 #' just know that this function will do its best to preserve useful information.
 #'
-#' The `sample_info` and `meta_data` tables are not modified,
-#' except that the `exp_type` field in `meta_data` is set to "traitomics" for glycomics data
-#' and "traitproteomics" for glycoproteomics data.
+#' `colData()` and `metadata()` are not modified, except that the `exp_type`
+#' field in `metadata()` is set to "traitomics" for glycomics data and
+#' "traitproteomics" for glycoproteomics data.
 #'
 #' @examples
 #' library(glyexp)
+#' library(SummarizedExperiment)
 #' library(glyclean)
 #'
-#' exp <- real_experiment |>
-#'   auto_clean()
-#' if (inherits(exp, "glyexp_experiment")) {
-#'   exp <- slice_head_var(exp, n = 10)
-#' } else {
-#'   exp <- slice_head_row(exp, n = 10)
-#' }
+#' gp_se <- real_experiment |>
+#'   auto_clean() |>
+#'   slice_head_row(n = 10)
 #'
 #' motifs <- c(
 #'   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
 #'   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 #' )
 #'
-#' quantify_motifs(exp, motifs)
+#' motif_se <- quantify_motifs(gp_se, motifs)
+#' rowData(motif_se)
+#' assay(motif_se)
+#' colData(motif_se)
 #'
 #' # Using dynamic motifs (auto-extracted from data)
-#' quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
+#' quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
 #'
 #' # Using branch motifs (auto-extracted from data)
-#' quantify_motifs(exp, glymotif::branch_motifs())
+#' quantify_motifs(gp_se, glymotif::branch_motifs())
 #'
 #' @seealso [derive_traits()], [glymotif::have_motifs()]
 #' @export
@@ -272,10 +272,11 @@ quantify_motifs <- function(
 
 #' Add motif count meta-property columns
 #'
-#' @param exp A [glyexp::experiment()] object.
+#' @param exp A legacy glyexp data container.
 #' @inheritParams quantify_motifs
 #'
-#' @returns A [glyexp::experiment()] object with motif count columns added to `var_info`.
+#' @returns A legacy glyexp data container with motif count columns added to its
+#'   variable information.
 #' @noRd
 .add_motif_count_mps <- function(
   exp,

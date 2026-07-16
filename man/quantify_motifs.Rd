@@ -13,12 +13,13 @@ quantify_motifs(
 )
 }
 \arguments{
-\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
-\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object. Before using this function,
+\item{exp}{A \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}} or \code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.
+Before using this function,
 you should preprocess the data using the \code{glyclean} package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using \code{glyclean::aggregate()}.
-Also, please make sure that the \code{glycan_structure} column is present in the \code{var_info} table,
+Also, please make sure that the \code{glycan_structure} column is present in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}},
 as not all glycoproteomics identification softwares provide this information.
 "glycan_structure" can be a \code{glyrepr::glycan_structure()} vector,
 or a character vector of glycan structure strings supported by \code{glyparse::auto_parse()}.}
@@ -45,14 +46,14 @@ See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 See \code{\link[glymotif:have_motif]{glymotif::have_motifs()}} for details.}
 }
 \value{
-A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for legacy \code{experiment()} input, or a
-\code{SummarizedExperiment} object for \code{GlycomicSE} or \code{GlycoproteomicSE} input,
-containing motif quantifications.
+New \code{GlycomicSE} and \code{GlycoproteomicSE} inputs return a plain
+\code{SummarizedExperiment}; compatible legacy glyexp inputs preserve their
+legacy container type. The output contains motif quantifications.
 Instead of containing quantifications of individual glycans on each glycosite in each sample,
-the new experiment contains quantifications of each motif on each glycosite in each sample
+the output assay contains quantifications of each motif on each glycosite in each sample
 (for glycoproteomics data) or motif quantifications in each sample (for glycomics data).
 
-The \code{var_info} table includes a \code{trait} column with motif names and a
+\code{rowData()} includes a \code{trait} column with motif names and a
 \code{motif_structure} column containing the parsed glycan structure for each motif,
 allowing traceability of motif definitions.
 
@@ -62,7 +63,7 @@ For glycoproteomics data, with additional columns:
 \item \code{protein_site}: the glycosite position on the protein
 }
 
-Other columns in the \code{var_info} table (e.g., \code{gene}) are retained if they have a "many-to-one"
+Other columns in \code{rowData()} (e.g., \code{gene}) are retained if they have a "many-to-one"
 relationship with glycosites (unique combinations of \code{protein}, \code{protein_site}).
 That is, each glycosite cannot have multiple values for these columns.
 \code{gene} is a common example, as a glycosite can only be associated with one gene.
@@ -72,9 +73,9 @@ Columns that do not have this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic—
 just know that this function will do its best to preserve useful information.
 
-The \code{sample_info} and \code{meta_data} tables are not modified,
-except that the \code{exp_type} field in \code{meta_data} is set to "traitomics" for glycomics data
-and "traitproteomics" for glycoproteomics data.
+\code{colData()} and \code{metadata()} are not modified, except that the \code{exp_type}
+field in \code{metadata()} is set to "traitomics" for glycomics data and
+"traitproteomics" for glycoproteomics data.
 }
 \description{
 This function quantifies motifs from glycomic or glycoproteomic profiles.
@@ -82,12 +83,12 @@ For glycomics data, it calculates motif quantifications directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and motif quantifications are calculated in a site-specific manner.
 
-The function takes a \code{glyexp::experiment()}, \code{glyexp::GlycomicSE}, or
-\code{glyexp::GlycoproteomicSE} object and returns a new data container with motif
-quantifications. Instead of containing quantifications of individual glycans
-on each glycosite in each sample, the new experiment contains quantifications
-of each motif on each glycosite in each sample (for glycoproteomics data) or
-motif quantifications in each sample (for glycomics data).
+The function takes a \code{glyexp::GlycomicSE} or \code{glyexp::GlycoproteomicSE}
+object and returns a plain \code{SummarizedExperiment} with motif quantifications.
+Instead of containing quantifications of individual glycans on each glycosite
+in each sample, the output assay contains quantifications of each motif on
+each glycosite in each sample (for glycoproteomics data) or motif
+quantifications in each sample (for glycomics data).
 }
 \section{Relative and Absolute Motif Quantification}{
 Motif quantification can be performed in two ways: absolute and relative.
@@ -191,28 +192,28 @@ and everything else remains the same.
 
 \examples{
 library(glyexp)
+library(SummarizedExperiment)
 library(glyclean)
 
-exp <- real_experiment |>
-  auto_clean()
-if (inherits(exp, "glyexp_experiment")) {
-  exp <- slice_head_var(exp, n = 10)
-} else {
-  exp <- slice_head_row(exp, n = 10)
-}
+gp_se <- real_experiment |>
+  auto_clean() |>
+  slice_head_row(n = 10)
 
 motifs <- c(
   nLx = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x antigen
   nSLx = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x antigen
 )
 
-quantify_motifs(exp, motifs)
+motif_se <- quantify_motifs(gp_se, motifs)
+rowData(motif_se)
+assay(motif_se)
+colData(motif_se)
 
 # Using dynamic motifs (auto-extracted from data)
-quantify_motifs(exp, glymotif::dynamic_motifs(max_size = 3))
+quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
 
 # Using branch motifs (auto-extracted from data)
-quantify_motifs(exp, glymotif::branch_motifs())
+quantify_motifs(gp_se, glymotif::branch_motifs())
 
 }
 \seealso{

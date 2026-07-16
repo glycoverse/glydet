@@ -35,14 +35,6 @@ library(glyclean)
 library(glyrepr)
 
 exp <- auto_clean(real_experiment)
-
-row_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_var_info(x)
-  } else {
-    tibble::as_tibble(rowData(x), rownames = "variable")
-  }
-}
 ```
 
 ## Custom Traits
@@ -549,23 +541,15 @@ not directly in the glycan structures.
 
 ```{r}
 # Here we assume all sialic acids are a2-6
-if (inherits(exp, "glyexp_experiment")) {
-  exp2 <- exp |>
-    mutate_var(
-      n_a26_sia = count_mono(glycan_structure, "NeuAc"),
-      n_a23_sia = 0L
-    )
-} else {
-  exp2 <- exp |>
-    mutate_row(
-      n_a26_sia = count_mono(glycan_structure, "NeuAc"),
-      n_a23_sia = 0L
-    )
-}
+exp2 <- exp |>
+  mutate_row(
+    n_a26_sia = count_mono(glycan_structure, "NeuAc"),
+    n_a23_sia = 0L
+  )
 ```
 
 ```{r}
-row_info(exp2) |>
+tibble::as_tibble(rowData(exp2), rownames = "variable") |>
   filter(n_a26_sia > 0) |>
   pull(glycan_structure)
 ```
@@ -589,19 +573,19 @@ If the column names match the meta-property names used in the trait definitions,
 
 ```{r}
 exp3 <- exp2 |>
-  rename_var(nE = n_a26_sia, nL = n_a23_sia)
+  rename_row(nE = n_a26_sia, nL = n_a23_sia)
 
 derive_traits(exp3, trait_fns = sia_traits)
 ```
 
-If you want to use different column names in `var_info`,
+If you want to use different column names in `rowData()`,
 use `mp_cols` to map those columns to the meta-property names in the trait definitions:
 
 ```{r}
 derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
 ```
 
-When `mp_cols` is omitted, built-in meta-properties take precedence over `var_info` columns
+When `mp_cols` is omitted, built-in meta-properties take precedence over `rowData()` columns
 with the same names. Use `mp_cols` only when you intentionally want selected columns to
 rename or overwrite meta-properties.
 

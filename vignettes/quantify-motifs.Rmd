@@ -24,15 +24,7 @@ library(glyexp)
 library(SummarizedExperiment)
 library(glyclean)
 
-exp <- auto_clean(real_experiment)
-
-row_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_var_info(x)
-  } else {
-    tibble::as_tibble(rowData(x), rownames = "variable")
-  }
-}
+gp_se <- auto_clean(real_experiment)
 ```
 
 ## What is motif quantification?
@@ -51,8 +43,9 @@ Our solution elegantly combines both pieces of information to estimate the true 
 ## The `quantify_motifs()` function
 
 Glydet provides the `quantify_motifs()` function to handle this complex task seamlessly.
-This function takes a `glyexp::experiment()` object along with your motifs of interest
-and returns a new experiment object enriched with motif quantifications.
+This function takes a `GlycomicSE` or `GlycoproteomicSE` object along with your
+motifs of interest and returns a plain `SummarizedExperiment` containing motif
+quantifications.
 Just like `derive_traits()`, `quantify_motifs()` works beautifully with both glycomics and glycoproteomics data.
 
 Let's dive into a practical example:
@@ -65,12 +58,12 @@ motifs <- c(
 )
 
 # Quantify the motifs in our dataset
-motif_exp <- quantify_motifs(exp, motifs)
-motif_exp
+motif_se <- quantify_motifs(gp_se, motifs)
+motif_se
 ```
 
 ```{r}
-row_info(motif_exp)
+tibble::as_tibble(rowData(motif_se), rownames = "variable")
 ```
 
 Notice how the variable information includes a `trait` column, matching the output schema of `derive_traits()`.
@@ -162,30 +155,23 @@ motifs <- c(
   nLxa = "Hex(??-?)[dHex(??-?)]HexNAc(??-",  # Lewis x/a antigen
   nSLxa = "NeuAc(??-?)Hex(??-?)[dHex(??-?)]HexNAc(??-"  # Sialyl Lewis x/a antigen
 )
-if (inherits(exp, "glyexp_experiment")) {
-  exp_with_mps <- exp |>
-    mutate_var(
-      tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
-    )
-} else {
-  exp_with_mps <- exp |>
-    mutate_row(
-      tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
-    )
-}
+se_with_mps <- gp_se |>
+  mutate_row(
+    tibble::as_tibble(glymotif::count_motifs(glycan_structure, motifs))
+  )
 
 # Define the traits using wsum() for absolute quantification
 trait_fns <- list(Lxa = wsum(nLxa), SLxa = wsum(nSLxa))
 
 # Calculate the traits
-derive_traits(exp_with_mps, trait_fns = trait_fns)
+derive_traits(se_with_mps, trait_fns = trait_fns)
 ```
 
 This code snippet is functionally equivalent to:
 
 ```r
 # The much simpler approach using quantify_motifs()
-quantify_motifs(exp, motifs, method = "absolute")
+quantify_motifs(gp_se, motifs, method = "absolute")
 ```
 
 Pretty neat, right?

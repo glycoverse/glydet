@@ -51,7 +51,8 @@ Four additional sialic acid linkage traits are included if \code{sia_link = TRUE
 
 \section{Usage of sialic acid linkage traits}{
 To use these sialic acid linkage traits,
-\code{var_info} of the input \code{glyexp::experiment()} must have the following columns:
+\code{rowData()} of the input \code{GlycomicSE} or \code{GlycoproteomicSE} must have the
+following columns:
 \itemize{
 \item \code{nE}: Number of a2,6-linked sialic acids
 \item \code{nL}: Number of a2,3-linked sialic acids

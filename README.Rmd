@@ -80,32 +80,37 @@ First, let's load necessary packages and get the data ready.
 
 ```{r setup, message = FALSE}
 library(glyexp)
+library(SummarizedExperiment)
 library(glyclean)
 library(glydet)
 
-exp <- auto_clean(real_experiment)
+gp_se <- auto_clean(real_experiment)
 ```
 
 ```{r}
-exp
+gp_se
 ```
 
 Now, let's calculate some derived traits!
 
 ```{r}
-trait_exp <- derive_traits(exp)
-trait_exp
+trait_se <- derive_traits(gp_se)
+trait_se
 ```
 
-Voilà! What you see is a brand new `experiment()` object with "traitomics" type.
+Voilà! What you see is a plain `SummarizedExperiment` with "traitproteomics" type.
 Think of it as your original dataset's sophisticated cousin 🎭 —
 instead of tracking "quantification of each glycan on each glycosite in each sample,"
 it now contains "the value of each derived trait on each glycosite in each sample."
 
 ```{r}
-get_var_info(trait_exp)
+tibble::as_tibble(rowData(trait_se), rownames = "variable")
 ```
 
 ```{r}
-get_expr_mat(trait_exp)[1:5, 1:5]
+assay(trait_se)[1:5, 1:5]
+```
+
+```{r}
+tibble::as_tibble(colData(trait_se), rownames = "sample")
 ```
