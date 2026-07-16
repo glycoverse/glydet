@@ -2,6 +2,11 @@
 
 ## glydet (development version)
 
+- [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
+  and
+  [`make_traits()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
+  now omit `within` when an all-glycan calculation is requested. (#28)
+
 ## glydet 0.12.2
 
 - Documentation, examples, and vignettes now use `GlycomicSE` and
