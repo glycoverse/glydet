@@ -1,5 +1,7 @@
 # glydet (development version)
 
+* `make_trait()` and `make_traits()` now omit `within` when an all-glycan calculation is requested. (#28)
+
 # glydet 0.12.2
 
 * Documentation, examples, and vignettes now use `GlycomicSE` and `GlycoproteomicSE` inputs with `SummarizedExperiment` accessors for Stage II of glycoverse/glyexp#15. (#27)

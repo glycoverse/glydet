@@ -452,6 +452,16 @@ test_that("custom_mp parameter includes custom meta-properties in system prompt"
   expect_match(prompt, "nL: \\(integer\\) number of a2,3-linked sialic acids")
 })
 
+test_that("trait prompt omits within for all-glycan traits", {
+  prompt <- glydet:::.make_trait_sys_prompt()
+
+  expect_match(
+    prompt,
+    "Only include `within` when the description names a subset; otherwise omit it."
+  )
+  expect_match(prompt, "Never use `within = TRUE`.")
+})
+
 test_that("custom_mp works with make_trait", {
   # Mock .get_api_key
   local_mocked_bindings(.get_api_key = function(...) "mock_key")
