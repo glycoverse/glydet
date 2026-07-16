@@ -44,17 +44,15 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
   tibble::as_tibble(purrr::map(mp_fns, ~ .x(glycans)))
 }
 
-#' Add Meta-Properties to Experiment
+#' Add Meta-Properties to a Glyco SummarizedExperiment
 #'
 #' This function adds meta-properties to the variable information of a
-#' [glyexp::experiment()], [glyexp::GlycomicSE()], or
-#' [glyexp::GlycoproteomicSE()].
+#' [glyexp::GlycomicSE()] or [glyexp::GlycoproteomicSE()].
 #' Under the hood, it uses [get_meta_properties()] to calculate the meta-properties
 #' on the "glycan_structure" column (or column specified by `struc_col`) of the variable information tibble,
 #' and then adds the result back as new columns.
 #'
-#' @param exp A [glyexp::experiment()], [glyexp::GlycomicSE()], or
-#'   [glyexp::GlycoproteomicSE()] object.
+#' @param exp A [glyexp::GlycomicSE()] or [glyexp::GlycoproteomicSE()] object.
 #' @param mp_fns A named list of meta-property functions.
 #'   Names of the list are the names of the meta-properties. Default is [all_mp_fns()].
 #'   A meta-property function should takes a `glyrepr::glycan_structure()` vector,
@@ -72,24 +70,16 @@ get_meta_properties <- function(glycans, mp_fns = NULL) {
 #' library(glyexp)
 #' library(SummarizedExperiment)
 #'
-#' # Compare the columns in the variable information before and after adding meta-properties
-#' exp <- real_experiment
-#' if (inherits(exp, "glyexp_experiment")) {
-#'   exp <- slice_sample_var(exp, n = 10)
-#'   colnames(get_var_info(exp))
-#' } else {
-#'   exp <- slice_sample_row(exp, n = 10)
-#'   colnames(rowData(exp))
-#' }
+#' # Compare rowData columns before and after adding meta-properties
+#' gp_se <- real_experiment |>
+#'   slice_sample_row(n = 10)
+#' colnames(rowData(gp_se))
 #'
-#' exp2 <- add_meta_properties(exp)
-#' if (inherits(exp2, "glyexp_experiment")) {
-#'   colnames(get_var_info(exp2))
-#' } else {
-#'   colnames(rowData(exp2))
-#' }
+#' gp_se2 <- add_meta_properties(gp_se)
+#' colnames(rowData(gp_se2))
 #'
-#' @seealso [get_meta_properties()], [glyexp::experiment()]
+#' @seealso [get_meta_properties()], [glyexp::GlycomicSE()],
+#'   [glyexp::GlycoproteomicSE()]
 #'
 #' @export
 add_meta_properties <- function(

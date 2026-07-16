@@ -57,72 +57,51 @@ library(SummarizedExperiment)
 library(glyclean)
 library(glystats)
 library(dplyr)
-
-row_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_var_info(x)
-  } else {
-    tibble::as_tibble(rowData(x), rownames = "variable")
-  }
-}
-col_info <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_sample_info(x)
-  } else {
-    tibble::as_tibble(colData(x), rownames = "sample")
-  }
-}
-abundance <- function(x) {
-  if (inherits(x, "glyexp_experiment")) {
-    get_expr_mat(x)
-  } else {
-    assay(x)
-  }
-}
 ```
 
-We'll work with `glyexp::real_experiment2`, a real glycomics dataset containing 144 samples and 67 glycans.
+We'll work with `glyexp::real_experiment2`, a real `GlycomicSE` dataset
+containing 144 samples and 67 glycans.
 
 Before calculating derived traits, preprocess your data with `glyclean`.
 This makes the trait analysis use the cleaned abundance data.
 
 ```{r}
-exp <- auto_clean(real_experiment2)  # Preprocess the data
-exp
+glyco_se <- auto_clean(real_experiment2)  # Preprocess the data
+glyco_se
 ```
 
 Let's inspect the dataset before calculating traits:
 
 ```{r}
-row_info(exp)
+tibble::as_tibble(rowData(glyco_se), rownames = "variable")
 ```
 
 ```{r}
-col_info(exp)
+tibble::as_tibble(colData(glyco_se), rownames = "sample")
 ```
 
 ```{r}
-abundance(exp)[1:5, 1:5]
+assay(glyco_se)[1:5, 1:5]
 ```
 
 Now let's calculate derived traits:
 
 ```{r}
-trait_exp <- derive_traits(exp)
-trait_exp
+trait_se <- derive_traits(glyco_se)
+trait_se
 ```
 
-The result is a new `experiment()` object with "traitomics" type.
+The result is a plain `SummarizedExperiment` with "traitomics" type.
 Instead of storing the abundance of each glycan in each sample,
 it stores the value of each derived trait in each sample.
 
 ```{r}
-row_info(trait_exp)
+tibble::as_tibble(rowData(trait_se), rownames = "variable")
 ```
 
 ```{r}
 # These are the trait values
-abundance(trait_exp)[1:5, 1:5]
+assay(trait_se)[1:5, 1:5]
 ```
 
 `derive_traits()` calculated the following built-in derived traits:
@@ -149,11 +128,11 @@ to learn how to define your own derived traits.
 For glycan classes with simpler structural patterns than N-glycans, such as O-glycans,
 we recommend using [motif quantification](https://glycoverse.github.io/glydet/articles/quantify-motifs.html) instead.
 
-Because `derive_traits()` returns a `glyexp::experiment()` object,
+Because `derive_traits()` returns a `SummarizedExperiment`,
 functions in `glystats` can be applied to the derived traits to perform statistical analyses.
 
 ```{r}
-anova_res <- gly_anova(trait_exp)
+anova_res <- gly_anova(trait_se)
 anova_res |>
   get_tidy_result("main_test") |>
   filter(p_adj < 0.05)
@@ -176,26 +155,27 @@ This captures site-specific glycosylation patterns and their variations across s
 Operationally, there is no difference between calculating derived traits for glycomics and glycoproteomics data.
 
 ```{r}
-# A glycoproteomics dataset
-gp_exp <- auto_clean(glyexp::real_experiment)
-gp_exp
+# A GlycoproteomicSE dataset
+gp_se <- auto_clean(glyexp::real_experiment)
+gp_se
 ```
 
 ```{r}
-gp_trait_exp <- derive_traits(gp_exp)
-gp_trait_exp
+gp_trait_se <- derive_traits(gp_se)
+gp_trait_se
 ```
 
-The result is also a `glyexp::experiment()` object but with "traitproteomics" type.
-The only difference is that the variable information now contains a `glycosite` column,
+The result is also a plain `SummarizedExperiment`, now with "traitproteomics" type.
+The only difference is that `rowData()` now contains a `protein_site` column,
 which indicates the glycosite for each trait variable.
-The experiment object therefore contains the value of each derived trait for each glycosite in each sample.
+The result therefore contains the value of each derived trait for each glycosite
+in each sample.
 
 You can again apply `glystats` functions to perform statistical analyses.
 For example, we can identify glycosites with dysregulated core fucosylation:
 
 ```{r}
-gly_anova(gp_trait_exp) |>
+gly_anova(gp_trait_se) |>
   get_tidy_result("main_test") |>
   filter(trait == "TFc", p_adj < 0.05) |>
   select(protein, protein_site)
@@ -222,14 +202,15 @@ then uses this information to compute the derived traits you see.
 You can also work with meta-properties directly through two functions:
 
 - **`get_meta_properties()`**: Calculate meta-properties for any set of glycans
-- **`add_meta_properties()`**: Add meta-properties to the variable information of an `experiment()` object
+- **`add_meta_properties()`**: Add meta-properties to the `rowData()` of a
+  `GlycomicSE` or `GlycoproteomicSE` object
 
 ### get_meta_properties()
 
 Let's try `get_meta_properties()` with a few glycan structures from the dataset:
 
 ```{r}
-glycans <- unique(row_info(exp)$glycan_structure)[1:5]
+glycans <- unique(rowData(glyco_se)$glycan_structure)[1:5]
 glycans
 ```
 
@@ -244,12 +225,12 @@ get_meta_properties(glycans)
 
 ### add_meta_properties()
 
-When working with `glyexp::experiment()` objects,
-you can add meta-properties directly to the variable information:
+When working with `GlycomicSE` or `GlycoproteomicSE` objects,
+you can add meta-properties directly to `rowData()`:
 
 ```{r}
-exp_with_mp <- add_meta_properties(exp)
-row_info(exp_with_mp)
+se_with_mp <- add_meta_properties(glyco_se)
+tibble::as_tibble(rowData(se_with_mp), rownames = "variable")
 ```
 
 The variable information now contains multiple meta-property columns.
@@ -258,11 +239,7 @@ This supports filtering based on structural features.
 For instance, filter for all glycoforms containing high-mannose glycans:
 
 ```{r}
-if (inherits(exp_with_mp, "glyexp_experiment")) {
-  filter_var(exp_with_mp, Tp == "highmannose")
-} else {
-  filter_row(exp_with_mp, Tp == "highmannose")
-}
+filter_row(se_with_mp, Tp == "highmannose")
 ```
 
 ### Meta-Property Functions

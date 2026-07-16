@@ -35,7 +35,8 @@
 #' # Usage of sialic acid linkage traits
 #'
 #' To use these sialic acid linkage traits,
-#' `var_info` of the input `glyexp::experiment()` must have the following columns:
+#' `rowData()` of the input `GlycomicSE` or `GlycoproteomicSE` must have the
+#' following columns:
 #'
 #' - `nE`: Number of a2,6-linked sialic acids
 #' - `nL`: Number of a2,3-linked sialic acids

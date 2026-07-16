@@ -1,18 +1,19 @@
 #' Calculate Derived Traits
 #'
 #' @description
-#' This function calculates derived traits from a [glyexp::experiment()],
-#' [glyexp::GlycomicSE()], or [glyexp::GlycoproteomicSE()] object.
+#' This function calculates derived traits from a [glyexp::GlycomicSE()] or
+#' [glyexp::GlycoproteomicSE()] object.
 #' For glycomics data, it calculates the derived traits directly.
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and derived traits are calculated in a site-specific manner.
 #'
-#' @param exp A [glyexp::experiment()], [glyexp::GlycomicSE()], or
-#'   [glyexp::GlycoproteomicSE()] object. Before using this function,
+#' @param exp A [glyexp::GlycomicSE()] or [glyexp::GlycoproteomicSE()] object.
+#'   Before using this function,
 #'   you should preprocess the data using the `glyclean` package.
 #'   For glycoproteomics data, the data should be aggregated to the
 #'   "gfs" (glycoforms with structures) level using `glyclean::aggregate()`.
-#'   Also, please make sure that the `glycan_structure` column is present in the `var_info` table,
+#'   Also, please make sure that the `glycan_structure` column is present in
+#'   [SummarizedExperiment::rowData()],
 #'   as not all glycoproteomics identification softwares provide this information.
 #'   "glycan_structure" can be a `glyrepr::glycan_structure()` vector,
 #'   or a character vector of glycan structure strings supported by `glyparse::auto_parse()`.
@@ -23,22 +24,24 @@
 #'   This parameter is useful if your trait functions use custom meta-properties
 #'   other than those in [all_mp_fns()].
 #'   Default is `NULL`, which means all meta-properties in [all_mp_fns()] are used.
-#' @param mp_cols A character vector of column names in the `var_info` tibble to use as meta-properties.
+#' @param mp_cols A character vector of column names in [SummarizedExperiment::rowData()]
+#'   to use as meta-properties.
 #'   If names are provided, they will be used as names of the meta-properties,
 #'   otherwise the column names will be used.
 #'   When `mp_cols` is specified, the selected columns overwrite meta-properties introduced by `mp_fns`
 #'   with the same names, including built-in meta-properties.
-#'   Default is `NULL`, which means all columns in `var_info` are available as meta-properties by their
-#'   existing names. In this default mode, meta-properties introduced by `mp_fns` take precedence over
-#'   `var_info` columns with the same names.
+#'   Default is `NULL`, which means all columns in `rowData()` are available as
+#'   meta-properties by their existing names. In this default mode,
+#'   meta-properties introduced by `mp_fns` take precedence over `rowData()`
+#'   columns with the same names.
 #'
 #' @returns
-#' A new [glyexp::experiment()] object for legacy `experiment()` input, or a
-#' `SummarizedExperiment` object for `GlycomicSE` or `GlycoproteomicSE` input.
+#' New `GlycomicSE` and `GlycoproteomicSE` inputs return a plain
+#' `SummarizedExperiment`; compatible legacy glyexp inputs preserve their
+#' legacy container type.
 #' Instead of "quantification of each glycan on each glycosite in each sample",
-#' the new `experiment()` contains "the value of each derived trait on each glycosite in each sample",
-#' with the following columns in the `var_info` table:
-#' - `variable`: variable ID
+#' its assay contains "the value of each derived trait on each glycosite in each
+#' sample", with the following columns in `rowData()`:
 #' - `trait`: derived trait name
 #' - `explanation`: a concise English explanation of the trait
 #'
@@ -46,7 +49,7 @@
 #' - `protein`: protein ID
 #' - `protein_site`: the glycosite position on the protein
 #'
-#' Other columns in the `var_info` table (e.g. `gene`) are retained if they have "many-to-one"
+#' Other columns in `rowData()` (e.g. `gene`) are retained if they have "many-to-one"
 #' relationship with glycosites (unique combinations of `protein`, `protein_site`).
 #' That is, each glycosite cannot have multiple values for these columns.
 #' `gene` is a common example, as a glycosite can only be associate with one gene.
@@ -56,30 +59,29 @@
 #' Don't worry if you cannot understand this logic,
 #' as long as you know that this function will try its best to preserve useful information.
 #'
-#' `sample_info` and `meta_data` are not modified,
-#'  except that the `exp_type` field of `meta_data` is set to "traitomics" for glycomics data,
-#'  and "traitproteomics" for glycoproteomics data.
+#' `colData()` and `metadata()` are not modified, except that the `exp_type`
+#' field of `metadata()` is set to "traitomics" for glycomics data and
+#' "traitproteomics" for glycoproteomics data.
 #'
 #' @examples
 #' library(glyexp)
+#' library(SummarizedExperiment)
 #' library(glyclean)
 #'
-#' exp <- real_experiment |>
-#'   auto_clean()
-#' if (inherits(exp, "glyexp_experiment")) {
-#'   exp <- slice_sample_var(exp, n = 100)
-#' } else {
-#'   exp <- slice_sample_row(exp, n = 100)
-#' }
-#' trait_exp <- derive_traits(exp)
-#' trait_exp
+#' gp_se <- real_experiment |>
+#'   auto_clean() |>
+#'   slice_sample_row(n = 100)
+#' trait_se <- derive_traits(gp_se)
+#' rowData(trait_se)
+#' assay(trait_se)[1:5, 1:5]
+#' colData(trait_se)
 #'
 #' # By default, only basic traits are calculated
 #' names(traits_basic())
 #'
 #' # You can calculate detailed traits in `traits_detailed()`
-#' more_trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
-#' more_trait_exp
+#' more_trait_se <- derive_traits(gp_se, trait_fns = traits_detailed())
+#' more_trait_se
 #'
 #' @seealso [traits_basic()], [traits_detailed()]
 #'
@@ -222,7 +224,7 @@ derive_traits <- function(
 
 #' Get Meta-Properties from Experiment
 #'
-#' @param exp An [glyexp::experiment()] object.
+#' @param exp A supported glyexp data container.
 #' @param mp_fns A named list of meta-property functions.
 #' @param mp_cols A character vector of column names in the `var_info` tibble to use as meta-properties.
 #'

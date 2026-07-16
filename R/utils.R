@@ -13,8 +13,8 @@
 
 #' Check a glydet data container
 #'
-#' @param exp A `glyexp::experiment()`, `GlycomicSE`, or `GlycoproteomicSE`
-#'   object.
+#' @param exp A `GlycomicSE`, `GlycoproteomicSE`, or legacy glyexp data
+#'   container.
 #'
 #' @returns `NULL` invisibly, or an error if `exp` is unsupported.
 #' @noRd
@@ -64,10 +64,10 @@
 #' Restore the legacy container type
 #'
 #' @param exp A `SummarizedExperiment` object.
-#' @param legacy Whether the original input was a `glyexp::experiment()`.
+#' @param legacy Whether the original input used the legacy glyexp container.
 #'
-#' @returns `exp`, converted back to `glyexp::experiment()` when `legacy` is
-#'   `TRUE`.
+#' @returns `exp`, converted back to the legacy glyexp container when `legacy`
+#'   is `TRUE`.
 #' @noRd
 .restore_data_container <- function(exp, legacy) {
   if (legacy) {

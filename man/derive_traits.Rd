@@ -7,12 +7,13 @@
 derive_traits(exp, trait_fns = NULL, mp_fns = NULL, mp_cols = NULL)
 }
 \arguments{
-\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
-\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object. Before using this function,
+\item{exp}{A \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}} or \code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.
+Before using this function,
 you should preprocess the data using the \code{glyclean} package.
 For glycoproteomics data, the data should be aggregated to the
 "gfs" (glycoforms with structures) level using \code{glyclean::aggregate()}.
-Also, please make sure that the \code{glycan_structure} column is present in the \code{var_info} table,
+Also, please make sure that the \code{glycan_structure} column is present in
+\code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}},
 as not all glycoproteomics identification softwares provide this information.
 "glycan_structure" can be a \code{glyrepr::glycan_structure()} vector,
 or a character vector of glycan structure strings supported by \code{glyparse::auto_parse()}.}
@@ -26,23 +27,25 @@ This parameter is useful if your trait functions use custom meta-properties
 other than those in \code{\link[=all_mp_fns]{all_mp_fns()}}.
 Default is \code{NULL}, which means all meta-properties in \code{\link[=all_mp_fns]{all_mp_fns()}} are used.}
 
-\item{mp_cols}{A character vector of column names in the \code{var_info} tibble to use as meta-properties.
+\item{mp_cols}{A character vector of column names in \code{\link[SummarizedExperiment:SummarizedExperiment-class]{SummarizedExperiment::rowData()}}
+to use as meta-properties.
 If names are provided, they will be used as names of the meta-properties,
 otherwise the column names will be used.
 When \code{mp_cols} is specified, the selected columns overwrite meta-properties introduced by \code{mp_fns}
 with the same names, including built-in meta-properties.
-Default is \code{NULL}, which means all columns in \code{var_info} are available as meta-properties by their
-existing names. In this default mode, meta-properties introduced by \code{mp_fns} take precedence over
-\code{var_info} columns with the same names.}
+Default is \code{NULL}, which means all columns in \code{rowData()} are available as
+meta-properties by their existing names. In this default mode,
+meta-properties introduced by \code{mp_fns} take precedence over \code{rowData()}
+columns with the same names.}
 }
 \value{
-A new \code{\link[glyexp:experiment]{glyexp::experiment()}} object for legacy \code{experiment()} input, or a
-\code{SummarizedExperiment} object for \code{GlycomicSE} or \code{GlycoproteomicSE} input.
+New \code{GlycomicSE} and \code{GlycoproteomicSE} inputs return a plain
+\code{SummarizedExperiment}; compatible legacy glyexp inputs preserve their
+legacy container type.
 Instead of "quantification of each glycan on each glycosite in each sample",
-the new \code{experiment()} contains "the value of each derived trait on each glycosite in each sample",
-with the following columns in the \code{var_info} table:
+its assay contains "the value of each derived trait on each glycosite in each
+sample", with the following columns in \code{rowData()}:
 \itemize{
-\item \code{variable}: variable ID
 \item \code{trait}: derived trait name
 \item \code{explanation}: a concise English explanation of the trait
 }
@@ -53,7 +56,7 @@ For glycoproteomics data, with additional columns:
 \item \code{protein_site}: the glycosite position on the protein
 }
 
-Other columns in the \code{var_info} table (e.g. \code{gene}) are retained if they have "many-to-one"
+Other columns in \code{rowData()} (e.g. \code{gene}) are retained if they have "many-to-one"
 relationship with glycosites (unique combinations of \code{protein}, \code{protein_site}).
 That is, each glycosite cannot have multiple values for these columns.
 \code{gene} is a common example, as a glycosite can only be associate with one gene.
@@ -63,37 +66,36 @@ Columns not having this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic,
 as long as you know that this function will try its best to preserve useful information.
 
-\code{sample_info} and \code{meta_data} are not modified,
-except that the \code{exp_type} field of \code{meta_data} is set to "traitomics" for glycomics data,
-and "traitproteomics" for glycoproteomics data.
+\code{colData()} and \code{metadata()} are not modified, except that the \code{exp_type}
+field of \code{metadata()} is set to "traitomics" for glycomics data and
+"traitproteomics" for glycoproteomics data.
 }
 \description{
-This function calculates derived traits from a \code{\link[glyexp:experiment]{glyexp::experiment()}},
-\code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or \code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.
+This function calculates derived traits from a \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}} or
+\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.
 For glycomics data, it calculates the derived traits directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and derived traits are calculated in a site-specific manner.
 }
 \examples{
 library(glyexp)
+library(SummarizedExperiment)
 library(glyclean)
 
-exp <- real_experiment |>
-  auto_clean()
-if (inherits(exp, "glyexp_experiment")) {
-  exp <- slice_sample_var(exp, n = 100)
-} else {
-  exp <- slice_sample_row(exp, n = 100)
-}
-trait_exp <- derive_traits(exp)
-trait_exp
+gp_se <- real_experiment |>
+  auto_clean() |>
+  slice_sample_row(n = 100)
+trait_se <- derive_traits(gp_se)
+rowData(trait_se)
+assay(trait_se)[1:5, 1:5]
+colData(trait_se)
 
 # By default, only basic traits are calculated
 names(traits_basic())
 
 # You can calculate detailed traits in `traits_detailed()`
-more_trait_exp <- derive_traits(exp, trait_fns = traits_detailed())
-more_trait_exp
+more_trait_se <- derive_traits(gp_se, trait_fns = traits_detailed())
+more_trait_se
 
 }
 \seealso{

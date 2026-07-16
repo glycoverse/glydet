@@ -2,7 +2,7 @@
 % Please edit documentation in R/meta-properties.R
 \name{add_meta_properties}
 \alias{add_meta_properties}
-\title{Add Meta-Properties to Experiment}
+\title{Add Meta-Properties to a Glyco SummarizedExperiment}
 \usage{
 add_meta_properties(
   exp,
@@ -12,8 +12,7 @@ add_meta_properties(
 )
 }
 \arguments{
-\item{exp}{A \code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
-\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.}
+\item{exp}{A \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}} or \code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}} object.}
 
 \item{mp_fns}{A named list of meta-property functions.
 Names of the list are the names of the meta-properties. Default is \code{\link[=all_mp_fns]{all_mp_fns()}}.
@@ -33,8 +32,7 @@ information. The input container type is preserved.
 }
 \description{
 This function adds meta-properties to the variable information of a
-\code{\link[glyexp:experiment]{glyexp::experiment()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}}, or
-\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}}.
+\code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}} or \code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}}.
 Under the hood, it uses \code{\link[=get_meta_properties]{get_meta_properties()}} to calculate the meta-properties
 on the "glycan_structure" column (or column specified by \code{struc_col}) of the variable information tibble,
 and then adds the result back as new columns.
@@ -43,24 +41,16 @@ and then adds the result back as new columns.
 library(glyexp)
 library(SummarizedExperiment)
 
-# Compare the columns in the variable information before and after adding meta-properties
-exp <- real_experiment
-if (inherits(exp, "glyexp_experiment")) {
-  exp <- slice_sample_var(exp, n = 10)
-  colnames(get_var_info(exp))
-} else {
-  exp <- slice_sample_row(exp, n = 10)
-  colnames(rowData(exp))
-}
+# Compare rowData columns before and after adding meta-properties
+gp_se <- real_experiment |>
+  slice_sample_row(n = 10)
+colnames(rowData(gp_se))
 
-exp2 <- add_meta_properties(exp)
-if (inherits(exp2, "glyexp_experiment")) {
-  colnames(get_var_info(exp2))
-} else {
-  colnames(rowData(exp2))
-}
+gp_se2 <- add_meta_properties(gp_se)
+colnames(rowData(gp_se2))
 
 }
 \seealso{
-\code{\link[=get_meta_properties]{get_meta_properties()}}, \code{\link[glyexp:experiment]{glyexp::experiment()}}
+\code{\link[=get_meta_properties]{get_meta_properties()}}, \code{\link[glyexp:GlycomicSE]{glyexp::GlycomicSE()}},
+\code{\link[glyexp:GlycoproteomicSE]{glyexp::GlycoproteomicSE()}}
 }
