@@ -153,6 +153,28 @@ test_that("n_glycan_type identifies complex correctly", {
   expect_equal(n_glycan_type(glycans), expected)
 })
 
+test_that("n_glycan_type can merge mannose types", {
+  glycans <- c(
+    paucimannose_H3N2(),
+    highmannose_H5N2(),
+    hybrid_H5N3(),
+    complex_H3N4()
+  )
+  expected <- factor(
+    c("oligo-mannose", "oligo-mannose", "hybrid", "complex"),
+    levels = c("oligo-mannose", "hybrid", "complex")
+  )
+  expect_equal(n_glycan_type(glycans, merge_mannose = TRUE), expected)
+})
+
+test_that("n_glycan_type preserves the default mannose types", {
+  glycans <- c(paucimannose_H3N2(), highmannose_H5N2())
+  expect_equal(
+    n_glycan_type(glycans),
+    n_glycan_type(glycans, merge_mannose = FALSE)
+  )
+})
+
 # ========== Bisecting N-glycan ==========
 test_that("has_bisecting identifies bisecting correctly", {
   glycans <- c(

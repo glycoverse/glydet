@@ -62,6 +62,8 @@ all_mp_fns <- function() {
 #' # `n_glycan_type()`: N-Glycan Types
 #'
 #' Four types of N-glycans are recognized: high mannose, hybrid, complex, and paucimannose.
+#' Set `merge_mannose = TRUE` to combine high-mannose and paucimannose glycans
+#' into the "oligo-mannose" category.
 #' For more information about N-glycan types,
 #' see [Essentials of Glycobiology](https://www.ncbi.nlm.nih.gov/books/NBK579964/#_s9_2_).
 #'
@@ -146,10 +148,14 @@ all_mp_fns <- function() {
 #' Finally, for hybrid glycans, all the rightmost (the side without branching HexNAc) are mannoses.
 #'
 #' @param glycans A `glyrepr::glycan_structure()` vector.
+#' @param merge_mannose A boolean indicating whether to merge high-mannose and
+#'   paucimannose glycans into one "oligo-mannose" category. Default is `FALSE`.
 #'
 #' @returns
 #' - `n_glycan_type()`: A factor vector indicating the N-glycan type,
-#'   either "highmannose", "hybrid", "complex", or "paucimannose".
+#'   either "highmannose", "hybrid", "complex", or "paucimannose". If
+#'   `merge_mannose = TRUE`, high-mannose and paucimannose glycans are returned
+#'   as "oligo-mannose".
 #' - `has_bisecting()`: A logical vector indicating if the glycan has a bisecting GlcNAc.
 #' - `n_antennae()`: An integer vector indicating the number of antennae.
 #' - `n_fuc()`: An integer vector indicating the number of fucoses.
@@ -161,7 +167,8 @@ all_mp_fns <- function() {
 #' - `n_man()`: An integer vector indicating the number of mannoses.
 #'
 #' @export
-n_glycan_type <- function(glycans) {
+n_glycan_type <- function(glycans, merge_mannose = FALSE) {
+  checkmate::assert_flag(merge_mannose)
   motif_names <- c("branch", "pauciman", "core")
   motifs <- purrr::map(motif_names, .get_n_glycan_motif)
   motifs <- do.call(c, motifs)
@@ -180,9 +187,16 @@ n_glycan_type <- function(glycans) {
     count_motif_mat[, "branch"] == 1 ~ "hybrid",
     .default = "complex"
   )
+  if (merge_mannose) {
+    res[res %in% c("paucimannose", "highmannose")] <- "oligo-mannose"
+  }
   res <- factor(
     res,
-    levels = c("paucimannose", "hybrid", "highmannose", "complex")
+    levels = if (merge_mannose) {
+      c("oligo-mannose", "hybrid", "complex")
+    } else {
+      c("paucimannose", "hybrid", "highmannose", "complex")
+    }
   )
   res
 }

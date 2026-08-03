@@ -13,7 +13,7 @@
 \alias{n_man}
 \title{Determine N-Glycan Key Properties}
 \usage{
-n_glycan_type(glycans)
+n_glycan_type(glycans, merge_mannose = FALSE)
 
 has_bisecting(glycans)
 
@@ -35,11 +35,16 @@ n_man(glycans)
 }
 \arguments{
 \item{glycans}{A \code{glyrepr::glycan_structure()} vector.}
+
+\item{merge_mannose}{A boolean indicating whether to merge high-mannose and
+paucimannose glycans into one "oligo-mannose" category. Default is \code{FALSE}.}
 }
 \value{
 \itemize{
 \item \code{n_glycan_type()}: A factor vector indicating the N-glycan type,
-either "highmannose", "hybrid", "complex", or "paucimannose".
+either "highmannose", "hybrid", "complex", or "paucimannose". If
+\code{merge_mannose = TRUE}, high-mannose and paucimannose glycans are returned
+as "oligo-mannose".
 \item \code{has_bisecting()}: A logical vector indicating if the glycan has a bisecting GlcNAc.
 \item \code{n_antennae()}: An integer vector indicating the number of antennae.
 \item \code{n_fuc()}: An integer vector indicating the number of fucoses.
@@ -77,6 +82,8 @@ This type of structures are common in glycoproteomics and glycomics studies.
 }
 \section{\code{n_glycan_type()}: N-Glycan Types}{
 Four types of N-glycans are recognized: high mannose, hybrid, complex, and paucimannose.
+Set \code{merge_mannose = TRUE} to combine high-mannose and paucimannose glycans
+into the "oligo-mannose" category.
 For more information about N-glycan types,
 see \href{https://www.ncbi.nlm.nih.gov/books/NBK579964/#_s9_2_}{Essentials of Glycobiology}.
 }
