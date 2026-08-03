@@ -1,5 +1,8 @@
 # glydet (development version)
 
+* `n_glycan_type()` gains a `merge_mannose` parameter to optionally combine
+  high-mannose and paucimannose glycans into an "oligo-mannose" category. (#29, #30)
+
 * `make_trait()` and `make_traits()` now omit `within` when an all-glycan calculation is requested. (#28)
 
 # glydet 0.12.2
