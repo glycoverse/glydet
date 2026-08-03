@@ -34,7 +34,7 @@ glycoproteomics and glycomics studies.
 ## Usage
 
 ``` r
-n_glycan_type(glycans)
+n_glycan_type(glycans, merge_mannose = FALSE)
 
 has_bisecting(glycans)
 
@@ -63,10 +63,17 @@ n_man(glycans)
   [`glyrepr::glycan_structure()`](https://glycoverse.github.io/glyrepr/reference/glycan_structure.html)
   vector.
 
+- merge_mannose:
+
+  A boolean indicating whether to merge high-mannose and paucimannose
+  glycans into one "oligo-mannose" category. Default is `FALSE`.
+
 ## Value
 
 - `n_glycan_type()`: A factor vector indicating the N-glycan type,
-  either "highmannose", "hybrid", "complex", or "paucimannose".
+  either "highmannose", "hybrid", "complex", or "paucimannose". If
+  `merge_mannose = TRUE`, high-mannose and paucimannose glycans are
+  returned as "oligo-mannose".
 
 - `has_bisecting()`: A logical vector indicating if the glycan has a
   bisecting GlcNAc.
@@ -92,8 +99,9 @@ n_man(glycans)
 ## `n_glycan_type()`: N-Glycan Types
 
 Four types of N-glycans are recognized: high mannose, hybrid, complex,
-and paucimannose. For more information about N-glycan types, see
-[Essentials of
+and paucimannose. Set `merge_mannose = TRUE` to combine high-mannose and
+paucimannose glycans into the "oligo-mannose" category. For more
+information about N-glycan types, see [Essentials of
 Glycobiology](https://www.ncbi.nlm.nih.gov/books/NBK579964/#_s9_2_).
 
 ## `has_bisecting()`: Bisecting GlcNAc

@@ -2,6 +2,10 @@
 
 ## glydet (development version)
 
+- [`n_glycan_type()`](https://glycoverse.github.io/glydet/dev/reference/n_glycan_type.md)
+  gains a `merge_mannose` parameter to optionally combine high-mannose
+  and paucimannose glycans into an “oligo-mannose” category. (#29, \#30)
+
 - [`make_trait()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
   and
   [`make_traits()`](https://glycoverse.github.io/glydet/dev/reference/make_trait.md)
