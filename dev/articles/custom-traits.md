@@ -703,6 +703,20 @@ And calculate the traits:
 ``` r
 
 derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
+#> Warning: Matching lower-level `glycans` against higher-level `motifs` usually returns no
+#> matches.
+#> ℹ `glycans` have "topological" structure level, while `motifs` have "partial"
+#>   structure level.
+#> ℹ Use motifs at the same structure level as the glycans, or remove motif
+#>   linkage constraints with `glyrepr::remove_linkages()`.
+#> ℹ See `?get_structure_level` for details.
+#> Matching lower-level `glycans` against higher-level `motifs` usually returns no
+#> matches.
+#> ℹ `glycans` have "topological" structure level, while `motifs` have "partial"
+#>   structure level.
+#> ℹ Use motifs at the same structure level as the glycans, or remove motif
+#>   linkage constraints with `glyrepr::remove_linkages()`.
+#> ℹ See `?get_structure_level` for details.
 #> class: SummarizedExperiment 
 #> dim: 552 12 
 #> metadata(3): exp_type glycan_type quant_method
