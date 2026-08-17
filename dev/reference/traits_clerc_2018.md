@@ -36,9 +36,9 @@ columns:
 
 Note that you have to add these two columns even if the
 `glycan_structure` column has intact linkages. This is because by
-convention all traits work with glycan structures with "basic" structure
-levels (i.e., with generic monosaccharides like "Hex" and "HexNAc" and
-no linkages specified).
+convention these traits use generic monosaccharides like "Hex" and
+"HexNAc" without linkage information, corresponding to the "topological"
+structure level in `glyrepr`.
 
 ## Examples
 
