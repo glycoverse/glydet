@@ -29,9 +29,9 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.16.0),
-    glyparse (>= 0.5.3),
-    glyrepr (>= 0.10.0),
+    glymotif (>= 0.18.1.9000),
+    glyparse (>= 0.7.1.9000),
+    glyrepr (>= 0.14.0.9000),
     lifecycle,
     memoise,
     purrr,
@@ -45,3 +45,7 @@ Depends:
     R (>= 4.1)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
+Remotes:  
+    glycoverse/glyrepr,
+    glycoverse/glyparse,
+    glycoverse/glymotif
