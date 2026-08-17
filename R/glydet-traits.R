@@ -41,9 +41,10 @@
 #' - `nE`: Number of a2,6-linked sialic acids
 #' - `nL`: Number of a2,3-linked sialic acids
 #'
-#' Note that you have to add these two columns even if the `glycan_structure` column has intact linkages.
-#' This is because by convention all traits work with glycan structures with "basic" structure levels
-#' (i.e., with generic monosaccharides like "Hex" and "HexNAc" and no linkages specified).
+#' Note that you have to add these two columns even if the `glycan_structure`
+#' column has intact linkages. This is because by convention these traits use
+#' generic monosaccharides like "Hex" and "HexNAc" without linkage information,
+#' corresponding to the "topological" structure level in `glyrepr`.
 #'
 #' @param sia_link A boolean indicating whether to include sialic acid linkage traits. Default is `FALSE`.
 #'

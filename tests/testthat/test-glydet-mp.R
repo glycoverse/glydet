@@ -175,6 +175,47 @@ test_that("n_glycan_type preserves the default mannose types", {
   )
 })
 
+test_that("built-in meta-properties support mixed residue types", {
+  glycans <- glyparse::parse_iupac_condensed(c(
+    concrete = "Gal(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(a1-",
+    mixed = "Hex(b1-4)GlcNAc(b1-2)Man(a1-3)[Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(a1-"
+  ))
+
+  expected_names <- c("concrete", "mixed")
+  expect_identical(
+    glyrepr::get_mono_type(glycans),
+    stats::setNames(c("concrete", "mixed"), expected_names)
+  )
+  expect_identical(
+    as.character(n_glycan_type(glycans)),
+    c("hybrid", "hybrid")
+  )
+  expect_identical(
+    has_bisecting(glycans),
+    stats::setNames(c(FALSE, FALSE), expected_names)
+  )
+  expect_identical(
+    n_antennae(glycans),
+    stats::setNames(c(1L, 1L), expected_names)
+  )
+  expect_identical(n_fuc(glycans), stats::setNames(c(0L, 0L), expected_names))
+  expect_identical(
+    n_core_fuc(glycans),
+    stats::setNames(c(0L, 0L), expected_names)
+  )
+  expect_identical(
+    n_arm_fuc(glycans),
+    stats::setNames(c(0L, 0L), expected_names)
+  )
+  expect_identical(n_gal(glycans), stats::setNames(c(1L, 1L), expected_names))
+  expect_identical(
+    n_terminal_gal(glycans),
+    stats::setNames(c(1L, 1L), expected_names)
+  )
+  expect_identical(n_sia(glycans), stats::setNames(c(0L, 0L), expected_names))
+  expect_identical(n_man(glycans), stats::setNames(c(3L, 3L), expected_names))
+})
+
 # ========== Bisecting N-glycan ==========
 test_that("has_bisecting identifies bisecting correctly", {
   glycans <- c(

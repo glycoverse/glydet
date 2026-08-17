@@ -375,6 +375,54 @@ test_that("quantify_motifs works with glycan_structure vector", {
   )
 })
 
+test_that("quantify_motifs supports mixed glycans and motifs", {
+  mixed <- glyparse::parse_iupac_condensed(
+    "Hex(b1-4)GlcNAc(b1-2)Man(a1-3)[Gal(b1-4)GlcNAc(b1-2)Man(a1-6)]Man(b1-4)GlcNAc(b1-4)GlcNAc(a1-"
+  )
+  structures <- rep(mixed, 3)
+  abundance <- matrix(
+    c(1, 0, 1, 1, 1, 1, 1, 1, 0),
+    nrow = 3,
+    byrow = TRUE,
+    dimnames = list(c("V1", "V2", "V3"), c("S1", "S2", "S3"))
+  )
+  exp <- glyexp::GlycomicSE(
+    abundance,
+    rowData = S4Vectors::DataFrame(
+      glycan_structure = structures,
+      glycan_composition = glyrepr::as_glycan_composition(structures)
+    ),
+    metadata = list(glycan_type = "N")
+  )
+  motifs <- c(
+    generic = "Hex(??-?)HexNAc(??-",
+    mixed = "Gal(??-?)HexNAc(??-"
+  )
+
+  result <- quantify_motifs(
+    exp,
+    motifs,
+    method = "absolute",
+    ignore_linkages = TRUE
+  )
+
+  expect_equal(
+    SummarizedExperiment::assay(result),
+    matrix(
+      c(9, 6, 6, 3, 2, 2),
+      nrow = 2,
+      byrow = TRUE,
+      dimnames = list(names(motifs), colnames(exp))
+    )
+  )
+  expect_identical(
+    glyrepr::get_mono_type(
+      SummarizedExperiment::rowData(result)$motif_structure
+    ),
+    c("generic", "mixed")
+  )
+})
+
 test_that("quantify_motifs works with dynamic_motifs() for glycomics data", {
   exp <- glycomics_exp()
   result <- quantify_motifs(
