@@ -49,8 +49,6 @@ sample to be comparable.
 library(glydet)
 library(glyrepr)
 library(glyexp)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(SummarizedExperiment)
 #> Loading required package: MatrixGenerics
 #> Loading required package: matrixStats
@@ -183,7 +181,7 @@ glyco_se <- auto_clean(real_experiment2)  # Preprocess the data
 #> ── Removing variables with too many missing values ──
 #> 
 #> ℹ Applying preset "discovery"...
-#> ℹ Total removed: 10 (14.93%) variables.
+#> ℹ Total removed: 10 (15.15%) variables.
 #> ✔ Variable removal completed.
 #> 
 #> ── Imputing missing values ──
@@ -191,6 +189,10 @@ glyco_se <- auto_clean(real_experiment2)  # Preprocess the data
 #> ℹ Imputation method: `impute_miss_forest()`
 #> ℹ Reason: default for "glycomics" with n_samples > 100.
 #> ✔ Imputation completed.
+#> 
+#> ── Aggregating data ──
+#> 
+#> ✔ Aggregation completed.
 #> 
 #> ── Normalizing data ──
 #> 
@@ -205,7 +207,7 @@ glyco_se <- auto_clean(real_experiment2)  # Preprocess the data
 glyco_se
 #> 
 #> ── GlycomicSE ──────────────────────────────────────────────────────────────────
-#> ℹ Abundance assay: 144 samples, 57 variables
+#> ℹ Abundance assay: 144 samples, 56 variables
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>
@@ -217,20 +219,20 @@ Let’s inspect the dataset before calculating traits:
 ``` r
 
 tibble::as_tibble(rowData(glyco_se), rownames = "variable")
-#> # A tibble: 57 × 3
-#>    variable                             glycan_composition      glycan_structure
-#>    <chr>                                <comp>                  <struct>        
-#>  1 Man(3)GlcNAc(3)                      Man(3)GlcNAc(3)         GlcNAc(?1-?)Man…
-#>  2 Man(3)GlcNAc(7)                      Man(3)GlcNAc(7)         GlcNAc(?1-?)[Gl…
-#>  3 Man(5)GlcNAc(2)                      Man(5)GlcNAc(2)         Man(?1-?)[Man(?…
-#>  4 Man(4)Gal(2)GlcNAc(4)Neu5Ac(2)       Man(4)Gal(2)GlcNAc(4)N… Neu5Ac(?2-?)Gal…
-#>  5 Man(3)Gal(1)GlcNAc(3)                Man(3)Gal(1)GlcNAc(3)   Gal(?1-?)GlcNAc…
-#>  6 Man(3)Gal(2)GlcNAc(4)Fuc(2)          Man(3)Gal(2)GlcNAc(4)F… Gal(?1-?)GlcNAc…
-#>  7 Man(3)GlcNAc(3)Fuc(1)                Man(3)GlcNAc(3)Fuc(1)   GlcNAc(?1-?)Man…
-#>  8 Man(3)GlcNAc(4)                      Man(3)GlcNAc(4)         GlcNAc(?1-?)Man…
-#>  9 Man(3)Gal(2)GlcNAc(5)Neu5Ac(1)       Man(3)Gal(2)GlcNAc(5)N… Neu5Ac(?2-?)Gal…
-#> 10 Man(3)Gal(1)GlcNAc(5)Fuc(1)Neu5Ac(1) Man(3)Gal(1)GlcNAc(5)F… Neu5Ac(?2-?)Gal…
-#> # ℹ 47 more rows
+#> # A tibble: 56 × 3
+#>    variable                       glycan_composition            glycan_structure
+#>    <chr>                          <comp>                        <struct>        
+#>  1 Hex(3)HexNAc(3)                Hex(3)HexNAc(3)               GlcNAc(??-?)Man…
+#>  2 Hex(3)HexNAc(7)                Hex(3)HexNAc(7)               GlcNAc(??-?)[Gl…
+#>  3 Hex(5)HexNAc(2)                Hex(5)HexNAc(2)               Man(??-?)[Man(?…
+#>  4 Hex(6)HexNAc(4)NeuAc(2)        Hex(6)HexNAc(4)NeuAc(2)       Neu5Ac(??-?)Gal…
+#>  5 Hex(4)HexNAc(3)                Hex(4)HexNAc(3)               Gal(??-?)GlcNAc…
+#>  6 Hex(5)HexNAc(4)dHex(2)         Hex(5)HexNAc(4)dHex(2)        Fuc(??-?)Gal(??…
+#>  7 Hex(3)HexNAc(3)dHex(1)         Hex(3)HexNAc(3)dHex(1)        GlcNAc(??-?)Man…
+#>  8 Hex(3)HexNAc(4)                Hex(3)HexNAc(4)               GlcNAc(??-?)Man…
+#>  9 Hex(5)HexNAc(5)NeuAc(1)        Hex(5)HexNAc(5)NeuAc(1)       Neu5Ac(??-?)Gal…
+#> 10 Hex(4)HexNAc(5)dHex(1)NeuAc(1) Hex(4)HexNAc(5)dHex(1)NeuAc(… Neu5Ac(??-?)Gal…
+#> # ℹ 46 more rows
 ```
 
 ``` r
@@ -255,18 +257,18 @@ tibble::as_tibble(colData(glyco_se), rownames = "sample")
 ``` r
 
 assay(glyco_se)[1:5, 1:5]
-#>                                          S1           S2          S3
-#> Man(3)GlcNAc(3)                0.0008620851 0.0010173209 0.001771775
-#> Man(3)GlcNAc(7)                0.0021105912 0.0013498370 0.001590182
-#> Man(5)GlcNAc(2)                0.0044181138 0.0031911698 0.002150341
-#> Man(4)Gal(2)GlcNAc(4)Neu5Ac(2) 0.0028248014 0.0040683859 0.002618020
-#> Man(3)Gal(1)GlcNAc(3)          0.0008569431 0.0008980034 0.001330593
-#>                                          S4           S5
-#> Man(3)GlcNAc(3)                0.0010535720 0.0008144561
-#> Man(3)GlcNAc(7)                0.0016065736 0.0016060105
-#> Man(5)GlcNAc(2)                0.0021080114 0.0024060222
-#> Man(4)Gal(2)GlcNAc(4)Neu5Ac(2) 0.0024716069 0.0017383226
-#> Man(3)Gal(1)GlcNAc(3)          0.0009142087 0.0006549279
+#>                                   S1           S2          S3          S4
+#> Hex(3)HexNAc(3)         0.0008653500 0.0010209599 0.001779608 0.001058905
+#> Hex(3)HexNAc(7)         0.0021185844 0.0013546655 0.001597212 0.001614705
+#> Hex(5)HexNAc(2)         0.0044348462 0.0032025850 0.002159848 0.002118681
+#> Hex(6)HexNAc(4)NeuAc(2) 0.0028354996 0.0040829389 0.002629594 0.002484117
+#> Hex(4)HexNAc(3)         0.0008601885 0.0009012157 0.001336475 0.000918836
+#>                                   S5
+#> Hex(3)HexNAc(3)         0.0008165316
+#> Hex(3)HexNAc(7)         0.0016101031
+#> Hex(5)HexNAc(2)         0.0024121534
+#> Hex(6)HexNAc(4)NeuAc(2) 0.0017427524
+#> Hex(4)HexNAc(3)         0.0006565969
 ```
 
 Now let’s calculate derived traits:
@@ -315,12 +317,12 @@ tibble::as_tibble(rowData(trait_se), rownames = "variable")
 
 # These are the trait values
 assay(trait_se)[1:5, 1:5]
-#>             S1         S2         S3         S4         S5
-#> TM  0.03173244 0.02709974 0.02069125 0.01752109 0.02344732
-#> TH  0.02049304 0.01848629 0.02646816 0.01943236 0.01528559
-#> TC  0.94777452 0.95441397 0.95284059 0.96304655 0.96126709
-#> MM  7.12257722 7.37659157 7.43377129 7.41549126 7.43498970
-#> CA2 0.85120989 0.87515334 0.84044661 0.82167357 0.83514565
+#>             S1         S2         S3        S4         S5
+#> TM  0.03468812 0.03127962 0.02341232 0.0200939 0.02524982
+#> TH  0.02338616 0.02149117 0.02942020 0.0221827 0.01791705
+#> TC  0.94192572 0.94722921 0.94716748 0.9577234 0.95683313
+#> MM  6.86732942 6.93584395 7.04810156 6.9932495 7.19790537
+#> CA2 0.85456645 0.87907856 0.84641166 0.8284618 0.83864100
 ```
 
 [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
@@ -363,21 +365,21 @@ anova_res <- gly_anova(trait_se)
 #> ℹ Number of groups: 4
 #> ℹ Groups: "H", "M", "Y", and "C"
 #> ℹ Pairwise comparisons will be performed, with levels coming first as reference groups.
+#> Warning: 1 variables failed to fit the model
 anova_res |>
   get_tidy_result("main_test") |>
   filter(p_adj < 0.05)
-#> # A tibble: 8 × 12
-#>   variable trait explanation        term     df  sumsq  meansq statistic   p_val
-#>   <chr>    <chr> <chr>              <chr> <dbl>  <dbl>   <dbl>     <dbl>   <dbl>
-#> 1 CA2      CA2   Proportion of bi-… group     3 0.0404 0.0135       5.71 1.02e-3
-#> 2 CA3      CA3   Proportion of tri… group     3 1.75   0.584        5.38 1.56e-3
-#> 3 CA4      CA4   Proportion of tet… group     3 1.12   0.372        4.82 3.19e-3
-#> 4 TF       TF    Proportion of fuc… group     3 2.15   0.716        8.45 3.36e-5
-#> 5 TFc      TFc   Proportion of cor… group     3 2.15   0.716        8.45 3.36e-5
-#> 6 TFa      TFa   Proportion of arm… group     3 2.72   0.906        7.46 1.14e-4
-#> 7 TB       TB    Proportion of gly… group     3 1.64   0.545        3.68 1.37e-2
-#> 8 AG       AG    Abundance-weighte… group     3 0.0222 0.00739      3.61 1.51e-2
-#> # ℹ 3 more variables: p_adj <dbl>, effect_size <dbl>, post_hoc <chr>
+#> # A tibble: 7 × 12
+#>   variable trait explanation term     df  sumsq meansq statistic   p_val   p_adj
+#>   <chr>    <chr> <chr>       <chr> <dbl>  <dbl>  <dbl>     <dbl>   <dbl>   <dbl>
+#> 1 CA2      CA2   Proportion… group     3 0.0398 0.0133      5.46 1.40e-3 4.54e-3
+#> 2 CA3      CA3   Proportion… group     3 1.83   0.611       5.13 2.15e-3 5.58e-3
+#> 3 CA4      CA4   Proportion… group     3 1.14   0.381       4.45 5.12e-3 1.11e-2
+#> 4 TF       TF    Proportion… group     3 2.19   0.730       8.49 3.19e-5 1.38e-4
+#> 5 TFc      TFc   Proportion… group     3 2.19   0.730       8.49 3.19e-5 1.38e-4
+#> 6 TFa      TFa   Proportion… group     3 7.34   2.45       11.4  9.27e-7 1.20e-5
+#> 7 TB       TB    Proportion… group     3 1.38   0.459       3.23 2.45e-2 4.55e-2
+#> # ℹ 2 more variables: effect_size <dbl>, post_hoc <chr>
 ```
 
 ## Site-Specific Derived Traits in Glycoproteomics
@@ -424,7 +426,6 @@ gp_se <- auto_clean(glyexp::real_experiment)
 #> 
 #> ── Aggregating data ──
 #> 
-#> ℹ Aggregating to "gfs" level
 #> ✔ Aggregation completed.
 #> 
 #> ── Normalizing data again ──
@@ -542,11 +543,11 @@ with a few glycan structures from the dataset:
 glycans <- unique(rowData(glyco_se)$glycan_structure)[1:5]
 glycans
 #> <glycan_structure[5]>
-#> [1] GlcNAc(?1-?)Man(?1-?)[Man(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
-#> [2] GlcNAc(?1-?)[GlcNAc(?1-?)]Man(?1-?)[GlcNAc(?1-?)[GlcNAc(?1-?)]Man(?1-?)][GlcNAc(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
-#> [3] Man(?1-?)[Man(?1-?)]Man(?1-?)[Man(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
-#> [4] Neu5Ac(?2-?)Gal(?1-?)GlcNAc(?1-?)[Neu5Ac(?2-?)Gal(?1-?)GlcNAc(?1-?)]Man(?1-?)[Man(?1-?)Man(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
-#> [5] Gal(?1-?)GlcNAc(?1-?)Man(?1-?)[Man(?1-?)]Man(?1-?)GlcNAc(?1-?)GlcNAc(?1-
+#> [1] GlcNAc(??-?)Man(??-?)[Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(??-
+#> [2] GlcNAc(??-?)[GlcNAc(??-?)]Man(??-?)[GlcNAc(??-?)[GlcNAc(??-?)]Man(??-?)][GlcNAc(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(??-
+#> [3] Man(??-?)[Man(??-?)]Man(??-?)[Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(??-
+#> [4] Neu5Ac(??-?)Gal(??-?)GlcNAc(??-?)Gal(??-?)GlcNAc(??-?)Man(??-?)[Neu5Ac(??-?)Gal(??-?)GlcNAc(??-?)Man(??-?)]Man(??-?)GlcNAc(??-
+#> [5] Gal(??-?)GlcNAc(??-?)Man(??-?)[Man(??-?)]Man(??-?)GlcNAc(??-?)GlcNAc(??-
 #> # Unique structures: 5
 ```
 
@@ -565,7 +566,7 @@ get_meta_properties(glycans)
 #> 1 hybrid      FALSE     1     0     0     0     0     0     0     3
 #> 2 complex     TRUE      4     0     0     0     0     0     0     3
 #> 3 highmannose FALSE     0     0     0     0     0     0     0     5
-#> 4 complex     FALSE     2     0     0     0     2     0     2     4
+#> 4 highmannose FALSE     0     0     0     0     2     0     2     4
 #> 5 hybrid      FALSE     1     0     0     0     1     1     0     3
 ```
 
@@ -579,20 +580,20 @@ add meta-properties directly to
 
 se_with_mp <- add_meta_properties(glyco_se)
 tibble::as_tibble(rowData(se_with_mp), rownames = "variable")
-#> # A tibble: 57 × 13
+#> # A tibble: 56 × 13
 #>    variable    glycan_composition glycan_structure Tp    B        nA    nF   nFc
 #>    <chr>       <comp>             <struct>         <fct> <lgl> <int> <int> <int>
-#>  1 Man(3)GlcN… Man(3)GlcNAc(3)    GlcNAc(?1-?)Man… hybr… FALSE     1     0     0
-#>  2 Man(3)GlcN… Man(3)GlcNAc(7)    GlcNAc(?1-?)[Gl… comp… TRUE      4     0     0
-#>  3 Man(5)GlcN… Man(5)GlcNAc(2)    Man(?1-?)[Man(?… high… FALSE     0     0     0
-#>  4 Man(4)Gal(… Man(4)Gal(2)GlcNA… Neu5Ac(?2-?)Gal… comp… FALSE     2     0     0
-#>  5 Man(3)Gal(… Man(3)Gal(1)GlcNA… Gal(?1-?)GlcNAc… hybr… FALSE     1     0     0
-#>  6 Man(3)Gal(… Man(3)Gal(2)GlcNA… Gal(?1-?)GlcNAc… comp… FALSE     2     2     1
-#>  7 Man(3)GlcN… Man(3)GlcNAc(3)Fu… GlcNAc(?1-?)Man… hybr… FALSE     1     1     1
-#>  8 Man(3)GlcN… Man(3)GlcNAc(4)    GlcNAc(?1-?)Man… comp… FALSE     2     0     0
-#>  9 Man(3)Gal(… Man(3)Gal(2)GlcNA… Neu5Ac(?2-?)Gal… comp… TRUE      2     0     0
-#> 10 Man(3)Gal(… Man(3)Gal(1)GlcNA… Neu5Ac(?2-?)Gal… comp… TRUE      2     1     1
-#> # ℹ 47 more rows
+#>  1 Hex(3)HexN… Hex(3)HexNAc(3)    GlcNAc(??-?)Man… hybr… FALSE     1     0     0
+#>  2 Hex(3)HexN… Hex(3)HexNAc(7)    GlcNAc(??-?)[Gl… comp… TRUE      4     0     0
+#>  3 Hex(5)HexN… Hex(5)HexNAc(2)    Man(??-?)[Man(?… high… FALSE     0     0     0
+#>  4 Hex(6)HexN… Hex(6)HexNAc(4)Ne… Neu5Ac(??-?)Gal… high… FALSE     0     0     0
+#>  5 Hex(4)HexN… Hex(4)HexNAc(3)    Gal(??-?)GlcNAc… hybr… FALSE     1     0     0
+#>  6 Hex(5)HexN… Hex(5)HexNAc(4)dH… Fuc(??-?)Gal(??… comp… FALSE     2     2     1
+#>  7 Hex(3)HexN… Hex(3)HexNAc(3)dH… GlcNAc(??-?)Man… hybr… FALSE     1     1     1
+#>  8 Hex(3)HexN… Hex(3)HexNAc(4)    GlcNAc(??-?)Man… comp… FALSE     2     0     0
+#>  9 Hex(5)HexN… Hex(5)HexNAc(5)Ne… Neu5Ac(??-?)Gal… comp… TRUE      2     0     0
+#> 10 Hex(4)HexN… Hex(4)HexNAc(5)dH… Neu5Ac(??-?)Gal… comp… TRUE      2     1     1
+#> # ℹ 46 more rows
 #> # ℹ 5 more variables: nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
 ```
 
@@ -606,7 +607,7 @@ For instance, filter for all glycoforms containing high-mannose glycans:
 filter_row(se_with_mp, Tp == "highmannose")
 #> 
 #> ── GlycomicSE ──────────────────────────────────────────────────────────────────
-#> ℹ Abundance assay: 144 samples, 5 variables
+#> ℹ Abundance assay: 144 samples, 6 variables
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
 #> ℹ Column data fields: group <fct>
@@ -646,7 +647,7 @@ Each function can be called directly:
 ``` r
 
 n_glycan_type(glycans)
-#> [1] hybrid      complex     highmannose complex     hybrid     
+#> [1] hybrid      complex     highmannose highmannose hybrid     
 #> Levels: paucimannose hybrid highmannose complex
 ```
 

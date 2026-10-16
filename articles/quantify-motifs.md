@@ -8,8 +8,6 @@ of biologically meaningful glycan substructures across your samples.
 
 library(glydet)
 library(glyexp)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(SummarizedExperiment)
 #> Loading required package: MatrixGenerics
 #> Loading required package: matrixStats
@@ -115,7 +113,6 @@ gp_se <- auto_clean(real_experiment)
 #> 
 #> ── Aggregating data ──
 #> 
-#> ℹ Aggregating to "gfs" level
 #> ✔ Aggregation completed.
 #> 
 #> ── Normalizing data again ──

@@ -102,9 +102,12 @@ you cannot understand this logic, as long as you know that this function
 will try its best to preserve useful information.
 
 [`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
-and `metadata()` are not modified, except that the `exp_type` field of
-`metadata()` is set to "traitomics" for glycomics data and
-"traitproteomics" for glycoproteomics data.
+and
+[`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
+are not modified, except that the `exp_type` field of
+[`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
+is set to "traitomics" for glycomics data and "traitproteomics" for
+glycoproteomics data.
 
 ## See also
 
@@ -150,7 +153,6 @@ gp_se <- real_experiment |>
 #> 
 #> ── Aggregating data ──
 #> 
-#> ℹ Aggregating to "gfs" level
 #> ✔ Aggregation completed.
 #> 
 #> ── Normalizing data again ──
@@ -165,7 +167,7 @@ gp_se <- real_experiment |>
 #> ✔ Batch correction completed.
 trait_se <- derive_traits(gp_se)
 rowData(trait_se)
-#> DataFrame with 798 rows and 5 columns
+#> DataFrame with 826 rows and 5 columns
 #>                     protein protein_site       trait        gene
 #>                 <character>    <integer> <character> <character>
 #> O75882-1073-TM       O75882         1073          TM        ATRN
@@ -174,11 +176,11 @@ rowData(trait_se)
 #> O75882-1073-MM       O75882         1073          MM        ATRN
 #> O75882-1073-CA2      O75882         1073         CA2        ATRN
 #> ...                     ...          ...         ...         ...
-#> Q14624-517-TFa       Q14624          517         TFa       ITIH4
-#> Q14624-517-TB        Q14624          517          TB       ITIH4
-#> Q14624-517-GS        Q14624          517          GS       ITIH4
-#> Q14624-517-AG        Q14624          517          AG       ITIH4
-#> Q14624-517-TS        Q14624          517          TS       ITIH4
+#> Q9NZP8-242-TFa       Q9NZP8          242         TFa        C1RL
+#> Q9NZP8-242-TB        Q9NZP8          242          TB        C1RL
+#> Q9NZP8-242-GS        Q9NZP8          242          GS        C1RL
+#> Q9NZP8-242-AG        Q9NZP8          242          AG        C1RL
+#> Q9NZP8-242-TS        Q9NZP8          242          TS        C1RL
 #>                            explanation
 #>                            <character>
 #> O75882-1073-TM  Proportion of high-m..
@@ -187,18 +189,18 @@ rowData(trait_se)
 #> O75882-1073-MM  Abundance-weighted m..
 #> O75882-1073-CA2 Proportion of bi-ant..
 #> ...                                ...
-#> Q14624-517-TFa  Proportion of arm-fu..
-#> Q14624-517-TB   Proportion of glycan..
-#> Q14624-517-GS   Abundance-weighted m..
-#> Q14624-517-AG   Abundance-weighted m..
-#> Q14624-517-TS   Proportion of sialyl..
+#> Q9NZP8-242-TFa  Proportion of arm-fu..
+#> Q9NZP8-242-TB   Proportion of glycan..
+#> Q9NZP8-242-GS   Abundance-weighted m..
+#> Q9NZP8-242-AG   Abundance-weighted m..
+#> Q9NZP8-242-TS   Proportion of sialyl..
 assay(trait_se)[1:5, 1:5]
 #>                 C1 C2 C3 H1 H2
 #> O75882-1073-TM   0  0  0  0  0
-#> O75882-1073-TH   1  1  1  1  1
-#> O75882-1073-TC   0  0  0  0  0
+#> O75882-1073-TH   0  0  0  0  0
+#> O75882-1073-TC   1  1  1  1  1
 #> O75882-1073-MM  NA NA NA NA NA
-#> O75882-1073-CA2 NA NA NA NA NA
+#> O75882-1073-CA2  1  1  1  1  1
 colData(trait_se)
 #> DataFrame with 12 rows and 1 column
 #>        group
@@ -224,11 +226,11 @@ names(traits_basic())
 more_trait_se <- derive_traits(gp_se, trait_fns = traits_detailed())
 more_trait_se
 #> class: SummarizedExperiment 
-#> dim: 3534 12 
+#> dim: 3658 12 
 #> metadata(3): exp_type glycan_type quant_method
 #> assays(1): abundance
-#> rownames(3534): O75882-1073-TM O75882-1073-TH ... Q14624-517-A3GS
-#>   Q14624-517-A4GS
+#> rownames(3658): O75882-1073-TM O75882-1073-TH ... Q9NZP8-242-A3GS
+#>   Q9NZP8-242-A4GS
 #> rowData names(5): protein protein_site trait gene explanation
 #> colnames(12): C1 C2 ... Y2 Y3
 #> colData names(1): group

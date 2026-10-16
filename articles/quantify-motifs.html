@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.12.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.13.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,8 +77,6 @@ samples.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glydet/">glydet</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://glycoverse.github.io/glyexp/" class="external-link">glyexp</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by</span></span>
-<span><span class="co">#&gt; 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://bioconductor.org/packages/SummarizedExperiment" class="external-link">SummarizedExperiment</a></span><span class="op">)</span></span>
 <span><span class="co">#&gt; Loading required package: MatrixGenerics</span></span>
 <span><span class="co">#&gt; Loading required package: matrixStats</span></span>
@@ -184,7 +182,6 @@ samples.</p>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Aggregating data</span> ──</span></span>
 <span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; <span style="color: #00BBBB;">ℹ</span> Aggregating to <span style="color: #0000BB;">"gfs"</span> level</span></span>
 <span><span class="co">#&gt; <span style="color: #00BB00;">✔</span> Aggregation completed.</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; ── <span style="font-weight: bold;">Normalizing data again</span> ──</span></span>
@@ -248,16 +245,16 @@ beautifully with both glycomics and glycoproteomics data.</p>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 552 × 6</span></span></span>
 <span><span class="co">#&gt;    variable        protein protein_site trait gene   motif_structure            </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>           <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;struct&gt;</span>                   </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> A6NJW9-49-Lxa   A6NJW9            49 Lxa   CD8B2  <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> A6NJW9-49-SLxa  A6NJW9            49 SLxa  CD8B2  <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> O14786-150-Lxa  O14786           150 Lxa   NRP1   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> O14786-150-SLxa O14786           150 SLxa  NRP1   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> O43866-226-Lxa  O43866           226 Lxa   CD5L   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> O43866-226-SLxa O43866           226 SLxa  CD5L   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> O75437-244-Lxa  O75437           244 Lxa   ZNF254 <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> O75437-244-SLxa O75437           244 SLxa  ZNF254 <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> O75581-281-Lxa  O75581           281 Lxa   LRP6   <span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(??-?)]<span style="color: #000000;">HexNA</span>…</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> O75581-281-SLxa O75581           281 SLxa  LRP6   <span style="color: #000000;">NeuAc</span>(??-?)<span style="color: #000000;">Hex</span>(??-?)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> A6NJW9-49-Lxa   A6NJW9            49 Lxa   CD8B2  <span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(<span style="color: #B2B2B2;">??-?</span>)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> A6NJW9-49-SLxa  A6NJW9            49 SLxa  CD8B2  <span style="color: #000000;">NeuAc</span>(<span style="color: #B2B2B2;">??-?</span>)<span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> O14786-150-Lxa  O14786           150 Lxa   NRP1   <span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(<span style="color: #B2B2B2;">??-?</span>)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> O14786-150-SLxa O14786           150 SLxa  NRP1   <span style="color: #000000;">NeuAc</span>(<span style="color: #B2B2B2;">??-?</span>)<span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> O43866-226-Lxa  O43866           226 Lxa   CD5L   <span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(<span style="color: #B2B2B2;">??-?</span>)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> O43866-226-SLxa O43866           226 SLxa  CD5L   <span style="color: #000000;">NeuAc</span>(<span style="color: #B2B2B2;">??-?</span>)<span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> O75437-244-Lxa  O75437           244 Lxa   ZNF254 <span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(<span style="color: #B2B2B2;">??-?</span>)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> O75437-244-SLxa O75437           244 SLxa  ZNF254 <span style="color: #000000;">NeuAc</span>(<span style="color: #B2B2B2;">??-?</span>)<span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> O75581-281-Lxa  O75581           281 Lxa   LRP6   <span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(<span style="color: #B2B2B2;">??-?</span>)]<span style="color: #000000;">HexNA</span>…</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> O75581-281-SLxa O75581           281 SLxa  LRP6   <span style="color: #000000;">NeuAc</span>(<span style="color: #B2B2B2;">??-?</span>)<span style="color: #000000;">Hex</span>(<span style="color: #B2B2B2;">??-?</span>)[<span style="color: #000000;">dHex</span>(…</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># ℹ 542 more rows</span></span></span></code></pre></div>
 <p>Notice how the variable information includes a <code>trait</code>
 column, matching the output schema of <code><a href="../reference/derive_traits.html">derive_traits()</a></code>.
