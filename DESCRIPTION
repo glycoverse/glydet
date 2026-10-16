@@ -1,6 +1,6 @@
 Package: glydet
 Title: Describe Glycosylation Structural Properties in a Site Specific Manner
-Version: 0.12.2.9000
+Version: 0.13.0
 Authors@R: 
     person("Bin", "Fu", , "23110220018@m.fudan.edu.cn", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-8567-2997"))
@@ -29,9 +29,9 @@ Imports:
     checkmate,
     cli,
     dplyr,
-    glymotif (>= 0.18.1.9000),
-    glyparse (>= 0.7.1.9000),
-    glyrepr (>= 0.14.0.9000),
+    glymotif (>= 1.0.0),
+    glyparse (>= 0.8.1),
+    glyrepr (>= 1.1.0),
     lifecycle,
     memoise,
     purrr,
@@ -45,7 +45,3 @@ Depends:
     R (>= 4.1)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
-Remotes:  
-    glycoverse/glyrepr,
-    glycoverse/glyparse,
-    glycoverse/glymotif
