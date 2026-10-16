@@ -122,9 +122,12 @@ you cannot understand this logic— just know that this function will do
 its best to preserve useful information.
 
 [`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
-and `metadata()` are not modified, except that the `exp_type` field in
-`metadata()` is set to "traitomics" for glycomics data and
-"traitproteomics" for glycoproteomics data.
+and
+[`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
+are not modified, except that the `exp_type` field in
+[`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
+is set to "traitomics" for glycomics data and "traitproteomics" for
+glycoproteomics data.
 
 ## Relative and Absolute Motif Quantification
 
@@ -276,7 +279,6 @@ gp_se <- real_experiment |>
 #> 
 #> ── Aggregating data ──
 #> 
-#> ℹ Aggregating to "gfs" level
 #> ✔ Aggregation completed.
 #> 
 #> ── Normalizing data again ──

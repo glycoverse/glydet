@@ -25,7 +25,7 @@ quantifications in each sample (for glycomics data)."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.12.2.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.13.0.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,8 +147,8 @@ thus having multiple descriptions.
 Columns that do not have this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic—
 just know that this function will do its best to preserve useful information.</p>
-<p><code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> and <code>metadata()</code> are not modified, except that the <code>exp_type</code>
-field in <code>metadata()</code> is set to "traitomics" for glycomics data and
+<p><code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> and <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> are not modified, except that the <code>exp_type</code>
+field in <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> is set to "traitomics" for glycomics data and
 "traitproteomics" for glycoproteomics data.</p>
     </div>
     <div class="section level2">
@@ -256,7 +256,6 @@ and everything else remains the same.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Aggregating data</span> ──</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Aggregating to <span style="color: #0000BB;">"gfs"</span> level</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BB00;">✔</span> Aggregation completed.</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> ── <span style="font-weight: bold;">Normalizing data again</span> ──</span>
