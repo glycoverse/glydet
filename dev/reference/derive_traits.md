@@ -102,12 +102,38 @@ you cannot understand this logic, as long as you know that this function
 will try its best to preserve useful information.
 
 [`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
-and
-[`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
-are not modified, except that the `exp_type` field of
+and other metadata are preserved. Output `scale` is set to `"raw"`
+(unlogged trait values), and the `exp_type` field of
 [`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
 is set to "traitomics" for glycomics data and "traitproteomics" for
 glycoproteomics data.
+
+## Input and output scales
+
+Calculations require linear abundances: `metadata(exp)$scale` must be
+`"raw"`. An absent scale field is treated as `"raw"` for compatibility
+with older glyexp objects. Explicitly invalid or missing values are
+rejected. `"log"`, `"log2"`, `"log10"`, and `"logx"` inputs are
+rejected; no inverse transformation is guessed. In particular, `"logx"`
+can describe offsets, centering, or other transformations that cannot be
+reversed from the label. Supply the linear abundance data used before
+transformation, rather than merely relabeling transformed values as
+`"raw"`.
+
+All built-in factories return unlogged values.
+[`prop()`](https://glycoverse.github.io/glydet/dev/reference/prop.md)
+and
+[`ratio()`](https://glycoverse.github.io/glydet/dev/reference/ratio.md)
+return dimensionless fractions and ratios,
+[`wmean()`](https://glycoverse.github.io/glydet/dev/reference/wmean.md)
+returns values in the units of its meta-property,
+[`wsum()`](https://glycoverse.github.io/glydet/dev/reference/wsum.md)
+returns abundance times meta-property units, and
+[`total()`](https://glycoverse.github.io/glydet/dev/reference/total.md)
+retains the input abundance units. Mixed trait lists are allowed: output
+`scale = "raw"` describes the absence of a log transformation, not
+common units or comparability between traits. Custom trait functions
+must also return unlogged values to honor this output metadata contract.
 
 ## See also
 

@@ -124,6 +124,15 @@ However, as all derived traits calculate a ratio of two values,
 NAs will be introduced when:</p><ol><li><p>The denominator is 0. This can happen when the <code>within</code> condition selects no glycans.</p></li>
 <li><p>Both the numerator and denominator are 0.</p></li>
 </ol></div>
+    <div class="section level2">
+    <h2 id="abundance-scale">Abundance scale<a class="anchor" aria-label="anchor" href="#abundance-scale"></a></h2>
+
+
+<p>Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata; <code><a href="derive_traits.html">derive_traits()</a></code>
+checks the input container's scale. See its input and output scale section
+for the units returned by each factory.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

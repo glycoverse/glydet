@@ -147,9 +147,23 @@ thus having multiple descriptions.
 Columns that do not have this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic—
 just know that this function will do its best to preserve useful information.</p>
-<p><code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> and <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> are not modified, except that the <code>exp_type</code>
+<p><code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> and other metadata are preserved. Output <code>scale</code> is set to
+<code>"raw"</code> (unlogged trait values), and the <code>exp_type</code>
 field in <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> is set to "traitomics" for glycomics data and
 "traitproteomics" for glycoproteomics data.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="input-and-output-scales">Input and output scales<a class="anchor" aria-label="anchor" href="#input-and-output-scales"></a></h2>
+
+
+<p>The input scale policy is the same as <code><a href="derive_traits.html">derive_traits()</a></code>: only linear
+(<code>"raw"</code>) abundances are accepted, with an absent scale field treated as
+<code>"raw"</code> for legacy compatibility. Logarithmic and <code>"logx"</code> inputs are
+rejected before motif parsing or counting. No inverse transformation is
+performed. Use the original linear data, not relabeled transformed values.
+Output <code>scale</code> is always <code>"raw"</code>: relative quantification is an unlogged
+abundance-weighted motif count per glycan, while absolute quantification is
+an unlogged abundance-weighted sum in abundance times motif-count units.</p>
     </div>
     <div class="section level2">
     <h2 id="relative-and-absolute-motif-quantification">Relative and Absolute Motif Quantification<a class="anchor" aria-label="anchor" href="#relative-and-absolute-motif-quantification"></a></h2>

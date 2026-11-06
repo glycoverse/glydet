@@ -48,6 +48,14 @@ of the number of sialic acids within complex glycans:
 
     wsum(nS, within = (Tp == "complex"))
 
+## Abundance scale
+
+Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata;
+[`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
+checks the input container's scale. See its input and output scale
+section for the units returned by each factory.
+
 ## Examples
 
 ``` r
