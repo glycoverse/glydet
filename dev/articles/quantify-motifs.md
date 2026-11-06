@@ -8,8 +8,6 @@ of biologically meaningful glycan substructures across your samples.
 
 library(glydet)
 library(glyexp)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(SummarizedExperiment)
 #> Loading required package: MatrixGenerics
 #> Loading required package: matrixStats
@@ -172,7 +170,7 @@ motif_se <- quantify_motifs(gp_se, motifs)
 motif_se
 #> class: SummarizedExperiment 
 #> dim: 552 12 
-#> metadata(3): exp_type glycan_type quant_method
+#> metadata(4): glycan_type quant_method scale exp_type
 #> assays(1): abundance
 #> rownames(552): A6NJW9-49-Lxa A6NJW9-49-SLxa ... Q9Y6W6-184-Lxa
 #>   Q9Y6W6-184-SLxa

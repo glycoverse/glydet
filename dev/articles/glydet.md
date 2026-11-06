@@ -49,8 +49,6 @@ sample to be comparable.
 library(glydet)
 library(glyrepr)
 library(glyexp)
-#> Warning: replacing previous import 'S4Arrays::makeNindexFromArrayViewport' by
-#> 'DelayedArray::makeNindexFromArrayViewport' when loading 'SummarizedExperiment'
 library(SummarizedExperiment)
 #> Loading required package: MatrixGenerics
 #> Loading required package: matrixStats
@@ -213,7 +211,7 @@ glyco_se
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>
+#> ℹ Metadata fields: glycan_type <chr>, scale <chr>
 ```
 
 Let’s inspect the dataset before calculating traits:
@@ -281,7 +279,7 @@ trait_se <- derive_traits(glyco_se)
 trait_se
 #> class: SummarizedExperiment 
 #> dim: 14 144 
-#> metadata(2): exp_type glycan_type
+#> metadata(3): glycan_type scale exp_type
 #> assays(1): abundance
 #> rownames(14): TM TH ... AG TS
 #> rowData names(2): trait explanation
@@ -447,7 +445,7 @@ gp_se
 #> ℹ Glycan type: N
 #> ℹ Row data fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>, quant_method <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
 ```
 
 ``` r
@@ -456,7 +454,7 @@ gp_trait_se <- derive_traits(gp_se)
 gp_trait_se
 #> class: SummarizedExperiment 
 #> dim: 3864 12 
-#> metadata(3): exp_type glycan_type quant_method
+#> metadata(4): glycan_type quant_method scale exp_type
 #> assays(1): abundance
 #> rownames(3864): A6NJW9-49-TM A6NJW9-49-TH ... Q9Y6W6-184-AG
 #>   Q9Y6W6-184-TS
@@ -486,18 +484,4125 @@ gly_anova(gp_trait_se) |>
 #> ℹ Groups: "H", "M", "Y", and "C"
 #> ℹ Pairwise comparisons will be performed, with levels coming first as reference groups.
 #> Warning: 281 variables failed to fit the model
-#> # A tibble: 9 × 2
-#>   protein protein_site
-#>   <chr>          <int>
-#> 1 P00748           249
-#> 2 P01591            71
-#> 3 P02765           176
-#> 4 P04004            86
-#> 5 P05090            98
-#> 6 P06681           621
-#> 7 P0C0L4          1328
-#> 8 P19652           103
-#> 9 P20851            64
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning in summary.aov(x): essentially perfect fit for '1': summary may be
+#> unreliable
+#> Warning: There were 2049 warnings in `dplyr::mutate()`.
+#> The first warning was:
+#> ℹ In argument: `params = purrr::map(...)`.
+#> Caused by warning in `summary.aov()`:
+#> ! essentially perfect fit for '1': summary may be unreliable
+#> ℹ Run `dplyr::last_dplyr_warnings()` to see the 2048 remaining warnings.
+#> # A tibble: 12 × 2
+#>    protein protein_site
+#>    <chr>          <int>
+#>  1 P00748           249
+#>  2 P01591            71
+#>  3 P02679            78
+#>  4 P02765           176
+#>  5 P02790           240
+#>  6 P04004            86
+#>  7 P05090            98
+#>  8 P06681           621
+#>  9 P0C0L4          1328
+#> 10 P0C0L4          1391
+#> 11 P19652           103
+#> 12 P20851            64
 ```
 
 ## Understanding Meta-Properties
@@ -610,7 +4715,7 @@ filter_row(se_with_mp, Tp == "highmannose")
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: exp_type <chr>, glycan_type <chr>
+#> ℹ Metadata fields: glycan_type <chr>, scale <chr>
 ```
 
 ### Meta-Property Functions

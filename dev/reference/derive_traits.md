@@ -227,7 +227,7 @@ more_trait_se <- derive_traits(gp_se, trait_fns = traits_detailed())
 more_trait_se
 #> class: SummarizedExperiment 
 #> dim: 3658 12 
-#> metadata(3): exp_type glycan_type quant_method
+#> metadata(4): glycan_type quant_method scale exp_type
 #> assays(1): abundance
 #> rownames(3658): O75882-1073-TM O75882-1073-TH ... Q9NZP8-242-A3GS
 #>   Q9NZP8-242-A4GS

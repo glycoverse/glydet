@@ -2,6 +2,10 @@
 
 ## glydet (development version)
 
+- Derived trait identifiers skip occupied numeric suffixes so
+  standardizing colliding protein-site-trait labels cannot create new
+  duplicate row names.
+
 ## glydet 0.13.0
 
 ### New features
