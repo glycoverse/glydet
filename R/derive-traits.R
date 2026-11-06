@@ -7,6 +7,24 @@
 #' For glycoproteomics data, each glycosite is treated as a separate glycome,
 #' and derived traits are calculated in a site-specific manner.
 #'
+#' @section Input and output scales:
+#' Calculations require linear abundances: `metadata(exp)$scale` must be
+#' `"raw"`. An absent scale field is treated as `"raw"` for compatibility
+#' with older glyexp objects. Explicitly invalid or missing values are rejected.
+#' `"log"`, `"log2"`, `"log10"`, and `"logx"` inputs are rejected; no inverse
+#' transformation is guessed. In particular, `"logx"` can describe offsets,
+#' centering, or other transformations that cannot be reversed from the label.
+#' Supply the linear abundance data used before transformation, rather than
+#' merely relabeling transformed values as `"raw"`.
+#'
+#' All built-in factories return unlogged values. [prop()] and [ratio()] return
+#' dimensionless fractions and ratios, [wmean()] returns values in the units of
+#' its meta-property, [wsum()] returns abundance times meta-property units, and
+#' [total()] retains the input abundance units. Mixed trait lists are allowed:
+#' output `scale = "raw"` describes the absence of a log transformation, not
+#' common units or comparability between traits. Custom trait functions must
+#' also return unlogged values to honor this output metadata contract.
+#'
 #' @param exp A [glyexp::GlycomicSE()] or [glyexp::GlycoproteomicSE()] object.
 #'   Before using this function,
 #'   you should preprocess the data using the `glyclean` package.
@@ -59,7 +77,8 @@
 #' Don't worry if you cannot understand this logic,
 #' as long as you know that this function will try its best to preserve useful information.
 #'
-#' `colData()` and `metadata()` are not modified, except that the `exp_type`
+#' `colData()` and other metadata are preserved. Output `scale` is set to
+#' `"raw"` (unlogged trait values), and the `exp_type`
 #' field of `metadata()` is set to "traitomics" for glycomics data and
 #' "traitproteomics" for glycoproteomics data.
 #'
@@ -93,6 +112,7 @@ derive_traits <- function(
   mp_cols = NULL
 ) {
   .assert_data_container(exp)
+  .assert_linear_abundance_scale(exp)
   legacy <- inherits(exp, "glyexp_experiment")
   if (is.null(trait_fns)) {
     trait_fns <- traits_basic()

@@ -35,6 +35,14 @@ total(nA == 4)
 }\if{html}{\out{</div>}}
 }
 
+\section{Abundance scale}{
+
+Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata; \code{\link[=derive_traits]{derive_traits()}}
+checks the input container's scale. See its input and output scale section
+for the units returned by each factory.
+}
+
 \examples{
 # Total abundance of all complex glycans
 total(Tp == "complex")

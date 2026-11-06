@@ -13,6 +13,16 @@
 #' each glycosite in each sample (for glycoproteomics data) or motif
 #' quantifications in each sample (for glycomics data).
 #'
+#' @section Input and output scales:
+#' The input scale policy is the same as [derive_traits()]: only linear
+#' (`"raw"`) abundances are accepted, with an absent scale field treated as
+#' `"raw"` for legacy compatibility. Logarithmic and `"logx"` inputs are
+#' rejected before motif parsing or counting. No inverse transformation is
+#' performed. Use the original linear data, not relabeled transformed values.
+#' Output `scale` is always `"raw"`: relative quantification is an unlogged
+#' abundance-weighted motif count per glycan, while absolute quantification is
+#' an unlogged abundance-weighted sum in abundance times motif-count units.
+#'
 #' @details
 #' # Relative and Absolute Motif Quantification
 #'
@@ -157,7 +167,8 @@
 #' Don't worry if you cannot understand this logic—
 #' just know that this function will do its best to preserve useful information.
 #'
-#' `colData()` and `metadata()` are not modified, except that the `exp_type`
+#' `colData()` and other metadata are preserved. Output `scale` is set to
+#' `"raw"` (unlogged trait values), and the `exp_type`
 #' field in `metadata()` is set to "traitomics" for glycomics data and
 #' "traitproteomics" for glycoproteomics data.
 #'
@@ -196,6 +207,7 @@ quantify_motifs <- function(
   ignore_linkages = FALSE
 ) {
   .assert_data_container(exp)
+  .assert_linear_abundance_scale(exp)
   legacy <- inherits(exp, "glyexp_experiment")
   exp <- .as_glyco_se(exp)
   checkmate::assert_choice(method, c("absolute", "relative"))

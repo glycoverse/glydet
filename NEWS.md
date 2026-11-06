@@ -1,5 +1,7 @@
 # glydet (development version)
 
+* `derive_traits()` and `quantify_motifs()` now reject non-raw or invalid scale metadata before calculation instead of silently treating transformed values as linear abundances. Absent scale metadata remains compatible with older objects and is treated as raw. Outputs explicitly use `scale = "raw"`; documentation describes the different units of proportion, ratio, weighted mean, weighted sum, and total traits.
+
 * Derived trait identifiers skip occupied numeric suffixes so standardizing colliding protein-site-trait labels cannot create new duplicate row names.
 
 # glydet 0.13.0
