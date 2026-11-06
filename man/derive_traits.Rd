@@ -66,7 +66,8 @@ Columns not having this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic,
 as long as you know that this function will try its best to preserve useful information.
 
-\code{colData()} and \code{metadata()} are not modified, except that the \code{exp_type}
+\code{colData()} and other metadata are preserved. Output \code{scale} is set to
+\code{"raw"} (unlogged trait values), and the \code{exp_type}
 field of \code{metadata()} is set to "traitomics" for glycomics data and
 "traitproteomics" for glycoproteomics data.
 }
@@ -77,6 +78,26 @@ For glycomics data, it calculates the derived traits directly.
 For glycoproteomics data, each glycosite is treated as a separate glycome,
 and derived traits are calculated in a site-specific manner.
 }
+\section{Input and output scales}{
+
+Calculations require linear abundances: \code{metadata(exp)$scale} must be
+\code{"raw"}. An absent scale field is treated as \code{"raw"} for compatibility
+with older glyexp objects. Explicitly invalid or missing values are rejected.
+\code{"log"}, \code{"log2"}, \code{"log10"}, and \code{"logx"} inputs are rejected; no inverse
+transformation is guessed. In particular, \code{"logx"} can describe offsets,
+centering, or other transformations that cannot be reversed from the label.
+Supply the linear abundance data used before transformation, rather than
+merely relabeling transformed values as \code{"raw"}.
+
+All built-in factories return unlogged values. \code{\link[=prop]{prop()}} and \code{\link[=ratio]{ratio()}} return
+dimensionless fractions and ratios, \code{\link[=wmean]{wmean()}} returns values in the units of
+its meta-property, \code{\link[=wsum]{wsum()}} returns abundance times meta-property units, and
+\code{\link[=total]{total()}} retains the input abundance units. Mixed trait lists are allowed:
+output \code{scale = "raw"} describes the absence of a log transformation, not
+common units or comparability between traits. Custom trait functions must
+also return unlogged values to honor this output metadata contract.
+}
+
 \examples{
 library(glyexp)
 library(SummarizedExperiment)

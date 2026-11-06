@@ -69,6 +69,12 @@
 #'   - "keep" (default): keep the missing values as NA.
 #'   - "zero": set the missing values to 0.
 #'
+#' @section Abundance scale:
+#' Trait functions expect a matrix of linear abundances and return unlogged
+#' values. The matrix itself carries no scale metadata; [derive_traits()]
+#' checks the input container's scale. See its input and output scale section
+#' for the units returned by each factory.
+#'
 #' @returns A derived trait function.
 #'
 #' @examples
@@ -177,6 +183,12 @@ print.glydet_prop <- function(x, ...) {
 #' @param na_action How to handle missing values.
 #'   - "keep" (default): keep the missing values as NA.
 #'   - "zero": set the missing values to 0.
+#'
+#' @section Abundance scale:
+#' Trait functions expect a matrix of linear abundances and return unlogged
+#' values. The matrix itself carries no scale metadata; [derive_traits()]
+#' checks the input container's scale. See its input and output scale section
+#' for the units returned by each factory.
 #'
 #' @returns A derived trait function.
 #'
@@ -287,6 +299,12 @@ print.glydet_ratio <- function(x, ...) {
 #'   - "keep" (default): keep the missing values as NA.
 #'   - "zero": set the missing values to 0.
 #'
+#' @section Abundance scale:
+#' Trait functions expect a matrix of linear abundances and return unlogged
+#' values. The matrix itself carries no scale metadata; [derive_traits()]
+#' checks the input container's scale. See its input and output scale section
+#' for the units returned by each factory.
+#'
 #' @returns A derived trait function.
 #'
 #' @examples
@@ -392,6 +410,12 @@ print.glydet_wmean <- function(x, ...) {
 #'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
 #'   can be used in the expression.
 #'
+#' @section Abundance scale:
+#' Trait functions expect a matrix of linear abundances and return unlogged
+#' values. The matrix itself carries no scale metadata; [derive_traits()]
+#' checks the input container's scale. See its input and output scale section
+#' for the units returned by each factory.
+#'
 #' @returns A derived trait function.
 #'
 #' @examples
@@ -463,6 +487,12 @@ print.glydet_total <- function(x, ...) {
 #'   The names of all built-in meta-properties (see [all_mp_fns()]) and custom meta-properties
 #'   can be used in the expression.
 #' @param within Condition to set a restriction for the glycans. Same format as `val`.
+#'
+#' @section Abundance scale:
+#' Trait functions expect a matrix of linear abundances and return unlogged
+#' values. The matrix itself carries no scale metadata; [derive_traits()]
+#' checks the input container's scale. See its input and output scale section
+#' for the units returned by each factory.
 #'
 #' @returns A derived trait function.
 #'

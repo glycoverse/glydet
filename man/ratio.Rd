@@ -58,6 +58,14 @@ i.e., \code{prop(cond, within)} is equivalent to \code{ratio(cond & within, with
 We recommend using \code{prop()} instead of \code{ratio()} for clarity if possible.
 }
 
+\section{Abundance scale}{
+
+Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata; \code{\link[=derive_traits]{derive_traits()}}
+checks the input container's scale. See its input and output scale section
+for the units returned by each factory.
+}
+
 \section{Note about NA}{
 
 

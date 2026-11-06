@@ -166,6 +166,7 @@
 .rebuild_experiment <- function(exp, expr_mat, var_info, exp_type) {
   meta_data <- S4Vectors::metadata(exp)
   meta_data[["exp_type"]] <- exp_type
+  meta_data[["scale"]] <- "raw"
 
   variable <- var_info[["variable"]]
   rownames(expr_mat) <- variable
@@ -491,4 +492,24 @@
   })
 
   values
+}
+
+# Validate before conversion so invalid legacy metadata is not defaulted away.
+.assert_linear_abundance_scale <- function(exp) {
+  meta_data <- if (inherits(exp, "glyexp_experiment")) {
+    exp$meta_data
+  } else {
+    S4Vectors::metadata(exp)
+  }
+  if (!"scale" %in% names(meta_data)) {
+    return(invisible(NULL))
+  }
+  if (!identical(meta_data[["scale"]], "raw")) {
+    cli::cli_abort(c(
+      "Trait and motif calculations require linear abundances with metadata {.field scale} = {.val raw}.",
+      "i" = "Logarithmic, logx, and invalid scale metadata are not supported.",
+      "i" = "Supply the original linear abundances; do not just relabel transformed data as raw."
+    ))
+  }
+  invisible(NULL)
 }

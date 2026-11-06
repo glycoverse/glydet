@@ -73,7 +73,8 @@ Columns that do not have this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic—
 just know that this function will do its best to preserve useful information.
 
-\code{colData()} and \code{metadata()} are not modified, except that the \code{exp_type}
+\code{colData()} and other metadata are preserved. Output \code{scale} is set to
+\code{"raw"} (unlogged trait values), and the \code{exp_type}
 field in \code{metadata()} is set to "traitomics" for glycomics data and
 "traitproteomics" for glycoproteomics data.
 }
@@ -90,6 +91,18 @@ in each sample, the output assay contains quantifications of each motif on
 each glycosite in each sample (for glycoproteomics data) or motif
 quantifications in each sample (for glycomics data).
 }
+\section{Input and output scales}{
+
+The input scale policy is the same as \code{\link[=derive_traits]{derive_traits()}}: only linear
+(\code{"raw"}) abundances are accepted, with an absent scale field treated as
+\code{"raw"} for legacy compatibility. Logarithmic and \code{"logx"} inputs are
+rejected before motif parsing or counting. No inverse transformation is
+performed. Use the original linear data, not relabeled transformed values.
+Output \code{scale} is always \code{"raw"}: relative quantification is an unlogged
+abundance-weighted motif count per glycan, while absolute quantification is
+an unlogged abundance-weighted sum in abundance times motif-count units.
+}
+
 \section{Relative and Absolute Motif Quantification}{
 Motif quantification can be performed in two ways: absolute and relative.
 Do not confuse this with the absolute and relative quantification of glycans or glycopeptides.
