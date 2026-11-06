@@ -72,7 +72,7 @@ test_that("legacy experiment support preserves legacy return types", {
       1
     ])
   )
-  exp <- suppressWarnings(glyexp::from_se(se))
+  exp <- suppressWarnings(glyexp::from_se(se, exp_type = "glycomics"))
 
   expect_s3_class(add_meta_properties(exp), "glyexp_experiment")
   expect_s3_class(

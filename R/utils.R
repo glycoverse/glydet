@@ -226,12 +226,20 @@
 
   counts <- table(variables)
   seen <- stats::setNames(rep(0L, length(counts)), names(counts))
+  used <- unique(variables)
   purrr::map_chr(variables, function(variable) {
     if (counts[[variable]] == 1L) {
       return(variable)
     }
-    seen[[variable]] <<- seen[[variable]] + 1L
-    stringr::str_c(variable, seen[[variable]], sep = "-")
+    repeat {
+      seen[[variable]] <<- seen[[variable]] + 1L
+      candidate <- stringr::str_c(variable, seen[[variable]], sep = "-")
+      if (!candidate %in% used) {
+        break
+      }
+    }
+    used <<- c(used, candidate)
+    candidate
   })
 }
 
