@@ -42,8 +42,11 @@
 #' @returns A `GlycomicSE` or `GlycoproteomicSE` object.
 #' @noRd
 .as_glyco_se <- function(exp) {
-  if (glyexp::is_glycomic_se(exp) || glyexp::is_glycoproteomic_se(exp)) {
-    return(exp)
+  if (glyexp::is_glycomic_se(exp)) {
+    return(glyexp::as_glycomic_se(exp))
+  }
+  if (glyexp::is_glycoproteomic_se(exp)) {
+    return(glyexp::as_glycoproteomic_se(exp))
   }
 
   exp_type <- S4Vectors::metadata(glyexp::as_se(exp))[["exp_type"]]
@@ -105,18 +108,9 @@
 #' @returns `exp` with updated `rowData`.
 #' @noRd
 .set_var_info <- function(exp, var_info) {
-  variable <- NULL
-  if ("variable" %in% colnames(var_info)) {
-    variable <- var_info[["variable"]]
-    var_info <- dplyr::select(var_info, -dplyr::all_of("variable"))
-  }
-  if (is.null(variable)) {
-    variable <- rownames(exp)
-  }
-
   SummarizedExperiment::rowData(exp) <- S4Vectors::DataFrame(
     var_info,
-    row.names = variable,
+    row.names = rownames(exp),
     check.names = FALSE
   )
   exp
@@ -168,16 +162,13 @@
   meta_data[["exp_type"]] <- exp_type
   meta_data[["scale"]] <- "raw"
 
-  variable <- var_info[["variable"]]
-  rownames(expr_mat) <- variable
-  var_info <- dplyr::select(var_info, -dplyr::all_of("variable"))
   assay_name <- SummarizedExperiment::assayNames(exp)[[1]]
 
   SummarizedExperiment::SummarizedExperiment(
     assays = stats::setNames(list(expr_mat), assay_name),
     rowData = S4Vectors::DataFrame(
       var_info,
-      row.names = variable,
+      row.names = rownames(expr_mat),
       check.names = FALSE
     ),
     colData = SummarizedExperiment::colData(exp),

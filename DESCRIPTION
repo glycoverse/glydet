@@ -16,7 +16,7 @@ Suggests:
     knitr,
     rmarkdown,
     testthat (>= 3.0.0),
-    glyexp (>= 0.16.0),
+    glyexp (>= 0.19.0.9000),
     glyclean (>= 0.12.0),
     glystats (>= 0.6.3),
     missForest,
@@ -45,3 +45,5 @@ Depends:
     R (>= 4.1)
 VignetteBuilder: knitr
 RoxygenNote: 7.3.3
+Remotes:
+    glycoverse/glyexp@cb24f10236c3cb3cc56b762e77de5e2b3e54cd47

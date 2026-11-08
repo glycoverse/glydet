@@ -193,10 +193,9 @@ derive_traits <- function(
   mp_tbl <- .get_mps(exp, mp_fns, mp_cols)
   res_mat <- .derive_traits_mat(expr_mat, trait_fns, mp_tbl)
   var_info <- tibble::tibble(
-    variable = paste0("V", seq_len(nrow(res_mat))),
     trait = names(trait_fns)
   )
-  rownames(res_mat) <- var_info$variable
+  rownames(res_mat) <- paste0("V", seq_len(nrow(res_mat)))
   .rebuild_experiment(exp, res_mat, var_info, exp_type = "traitomics")
 }
 
@@ -218,7 +217,6 @@ derive_traits <- function(
 
     res_mat <- .derive_traits_mat(site_expr_mat, trait_fns, site_mp_tbl)
     res_var_info <- tibble::tibble(
-      variable = NA_character_, # Placeholder, will be replaced later
       protein = unique(var_info[["protein"]][site_idx]),
       protein_site = unique(var_info[["protein_site"]][site_idx]),
       trait = names(trait_fns)
@@ -230,8 +228,7 @@ derive_traits <- function(
   res_list <- purrr::map(splits, derive_one_site)
   res_mat <- do.call(rbind, purrr::map(res_list, ~ .x$res_mat))
   res_var_info <- do.call(rbind, purrr::map(res_list, ~ .x$res_var_info))
-  res_var_info$variable <- paste0("V", seq_len(nrow(res_var_info)))
-  rownames(res_mat) <- res_var_info$variable
+  rownames(res_mat) <- paste0("V", seq_len(nrow(res_mat)))
   glycosite_descriptions <- .get_glycosite_var_info(var_info)
   res_var_info <- dplyr::left_join(
     res_var_info,
