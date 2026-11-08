@@ -2,6 +2,11 @@
 
 ## glydet (development version)
 
+- SE metadata enrichment preserves ordinary `variable` and `sample`
+  annotations and keeps axis identifiers separate. Existing glyco SE
+  inputs are normalized with public glyexp conversions, so missing scale
+  metadata defaults to raw before component updates. (#34)
+
 - [`derive_traits()`](https://glycoverse.github.io/glydet/dev/reference/derive_traits.md)
   and
   [`quantify_motifs()`](https://glycoverse.github.io/glydet/dev/reference/quantify_motifs.md)

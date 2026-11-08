@@ -211,7 +211,7 @@ glyco_se
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: glycan_type <chr>, scale <chr>
+#> ℹ Metadata fields: glycan_type <chr>, scale <chr>, pipeline <glycln_p>
 ```
 
 Let’s inspect the dataset before calculating traits:
@@ -279,7 +279,7 @@ trait_se <- derive_traits(glyco_se)
 trait_se
 #> class: SummarizedExperiment 
 #> dim: 14 144 
-#> metadata(3): glycan_type scale exp_type
+#> metadata(4): glycan_type scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(14): TM TH ... AG TS
 #> rowData names(2): trait explanation
@@ -445,7 +445,7 @@ gp_se
 #> ℹ Glycan type: N
 #> ℹ Row data fields: protein <chr>, glycan_composition <comp>, glycan_structure <struct>, protein_site <int>, gene <chr>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>
+#> ℹ Metadata fields: glycan_type <chr>, quant_method <chr>, scale <chr>, pipeline <glycln_p>
 ```
 
 ``` r
@@ -454,7 +454,7 @@ gp_trait_se <- derive_traits(gp_se)
 gp_trait_se
 #> class: SummarizedExperiment 
 #> dim: 3864 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(3864): A6NJW9-49-TM A6NJW9-49-TH ... Q9Y6W6-184-AG
 #>   Q9Y6W6-184-TS
@@ -4712,7 +4712,7 @@ filter_row(se_with_mp, Tp == "highmannose")
 #> ℹ Glycan type: N
 #> ℹ Row data fields: glycan_composition <comp>, glycan_structure <struct>, Tp <fct>, B <lgl>, nA <int>, nF <int>, nFc <int>, nFa <int>, nG <int>, nGt <int>, nS <int>, nM <int>
 #> ℹ Column data fields: group <fct>
-#> ℹ Metadata fields: glycan_type <chr>, scale <chr>
+#> ℹ Metadata fields: glycan_type <chr>, scale <chr>, pipeline <glycln_p>
 ```
 
 ### Meta-Property Functions

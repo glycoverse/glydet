@@ -170,7 +170,7 @@ motif_se <- quantify_motifs(gp_se, motifs)
 motif_se
 #> class: SummarizedExperiment 
 #> dim: 552 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(552): A6NJW9-49-Lxa A6NJW9-49-SLxa ... Q9Y6W6-184-Lxa
 #>   Q9Y6W6-184-SLxa

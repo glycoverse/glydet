@@ -38,7 +38,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="glydet-development-version">glydet (development version)<a class="anchor" aria-label="anchor" href="#glydet-development-version"></a></h2>
-<ul><li><p><code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> now reject non-raw or invalid scale metadata before calculation instead of silently treating transformed values as linear abundances. Absent scale metadata remains compatible with older objects and is treated as raw. Outputs explicitly use <code>scale = "raw"</code>; documentation describes the different units of proportion, ratio, weighted mean, weighted sum, and total traits.</p></li>
+<ul><li><p>SE metadata enrichment preserves ordinary <code>variable</code> and <code>sample</code> annotations and keeps axis identifiers separate. Existing glyco SE inputs are normalized with public glyexp conversions, so missing scale metadata defaults to raw before component updates. (#34)</p></li>
+<li><p><code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> now reject non-raw or invalid scale metadata before calculation instead of silently treating transformed values as linear abundances. Absent scale metadata remains compatible with older objects and is treated as raw. Outputs explicitly use <code>scale = "raw"</code>; documentation describes the different units of proportion, ratio, weighted mean, weighted sum, and total traits.</p></li>
 <li><p>Derived trait identifiers skip occupied numeric suffixes so standardizing colliding protein-site-trait labels cannot create new duplicate row names.</p></li>
 </ul></div>
     <div class="section level2">

@@ -362,7 +362,7 @@ colData(motif_se)
 quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
 #> class: SummarizedExperiment 
 #> dim: 80 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(80): P04196-344-NeuAc(??- P04196-344-Hex(??- ...
 #>   P10909-291-dHex(??-?)Hex(??- P10909-291-dHex(??-?)Hex(??-?)HexNAc(??-
@@ -374,7 +374,7 @@ quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
 quantify_motifs(gp_se, glymotif::branch_motifs())
 #> class: SummarizedExperiment 
 #> dim: 20 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(20): P04196-344-NeuAc(??-?)Hex(??-?)HexNAc(??-
 #>   P04196-344-HexNAc(??- ...

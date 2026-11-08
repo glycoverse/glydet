@@ -518,7 +518,7 @@ my_traits <- list(
 derive_traits(exp, trait_fns = my_traits)
 #> class: SummarizedExperiment 
 #> dim: 828 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(828): A6NJW9-49-A2S A6NJW9-49-A3S ... Q9Y6W6-184-A3S
 #>   Q9Y6W6-184-A4S
@@ -658,7 +658,7 @@ follows:
 derive_traits(exp, trait_fns = my_traits, mp_fns = c(my_mp_fns, all_mp_fns()))
 #> class: SummarizedExperiment 
 #> dim: 552 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(552): A6NJW9-49-LeA A6NJW9-49-Pl ... Q9Y6W6-184-LeA
 #>   Q9Y6W6-184-Pl
@@ -719,7 +719,7 @@ derive_traits(exp, trait_fns = sia_traits, mp_fns = c(sia_mp_fns, all_mp_fns()))
 #> ℹ See `?get_structure_level` for details.
 #> class: SummarizedExperiment 
 #> dim: 552 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(552): A6NJW9-49-GL A6NJW9-49-GE ... Q9Y6W6-184-GL
 #>   Q9Y6W6-184-GE
@@ -805,7 +805,7 @@ exp3 <- exp2 |>
 derive_traits(exp3, trait_fns = sia_traits)
 #> class: SummarizedExperiment 
 #> dim: 552 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(552): A6NJW9-49-GL A6NJW9-49-GE ... Q9Y6W6-184-GL
 #>   Q9Y6W6-184-GE
@@ -824,7 +824,7 @@ trait definitions:
 derive_traits(exp2, trait_fns = sia_traits, mp_cols = c(nL = "n_a23_sia", nE = "n_a26_sia"))
 #> class: SummarizedExperiment 
 #> dim: 552 12 
-#> metadata(4): glycan_type quant_method scale exp_type
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(552): A6NJW9-49-GL A6NJW9-49-GE ... Q9Y6W6-184-GL
 #>   Q9Y6W6-184-GE
