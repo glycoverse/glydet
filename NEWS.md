@@ -1,10 +1,13 @@
-# glydet (development version)
+# glydet 0.14.0
 
-* SE metadata enrichment preserves ordinary `variable` and `sample` annotations and keeps axis identifiers separate. Existing glyco SE inputs are normalized with public glyexp conversions, so missing scale metadata defaults to raw before component updates. (#34)
+## Breaking changes
 
-* `derive_traits()` and `quantify_motifs()` now reject non-raw or invalid scale metadata before calculation instead of silently treating transformed values as linear abundances. Absent scale metadata remains compatible with older objects and is treated as raw. Outputs explicitly use `scale = "raw"`; documentation describes the different units of proportion, ratio, weighted mean, weighted sum, and total traits.
+* `derive_traits()` and `quantify_motifs()` reject non-raw or invalid scale metadata instead of treating transformed values as linear abundances. Supply raw abundances; missing scale metadata remains compatible with older objects and is treated as raw. Outputs explicitly use `scale = "raw"`, and documentation explains trait units.
 
-* Derived trait identifiers skip occupied numeric suffixes so standardizing colliding protein-site-trait labels cannot create new duplicate row names.
+## Minor improvements and bug fixes
+
+* Derived trait identifiers skip occupied numeric suffixes so standardizing colliding protein-site-trait labels cannot create duplicate row names.
+* SE metadata enrichment preserves ordinary `variable` and `sample` annotations and keeps axis identifiers separate. Older glyco SE inputs without scale metadata are treated as raw before component updates. (#34)
 
 # glydet 0.13.0
 
