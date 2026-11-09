@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.13.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.14.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,6 +36,19 @@
 
     </div>
 
+    <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.14.0" id="glydet-0140">glydet 0.14.0<a class="anchor" aria-label="anchor" href="#glydet-0140"></a></h2>
+<div class="section level3">
+<h3 id="breaking-changes-0-14-0">Breaking changes<a class="anchor" aria-label="anchor" href="#breaking-changes-0-14-0"></a></h3>
+<ul><li>
+<code><a href="../reference/derive_traits.html">derive_traits()</a></code> and <code><a href="../reference/quantify_motifs.html">quantify_motifs()</a></code> reject non-raw or invalid scale metadata instead of treating transformed values as linear abundances. Supply raw abundances; missing scale metadata remains compatible with older objects and is treated as raw. Outputs explicitly use <code>scale = "raw"</code>, and documentation explains trait units.</li>
+</ul></div>
+<div class="section level3">
+<h3 id="minor-improvements-and-bug-fixes-0-14-0">Minor improvements and bug fixes<a class="anchor" aria-label="anchor" href="#minor-improvements-and-bug-fixes-0-14-0"></a></h3>
+<ul><li>Derived trait identifiers skip occupied numeric suffixes so standardizing colliding protein-site-trait labels cannot create duplicate row names.</li>
+<li>SE metadata enrichment preserves ordinary <code>variable</code> and <code>sample</code> annotations and keeps axis identifiers separate. Older glyco SE inputs without scale metadata are treated as raw before component updates. (#34)</li>
+</ul></div>
+</div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.13.0" id="glydet-0130">glydet 0.13.0<a class="anchor" aria-label="anchor" href="#glydet-0130"></a></h2>
 <div class="section level3">

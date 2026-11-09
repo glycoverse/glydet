@@ -1,5 +1,28 @@
 # Changelog
 
+## glydet 0.14.0
+
+### Breaking changes
+
+- [`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
+  and
+  [`quantify_motifs()`](https://glycoverse.github.io/glydet/reference/quantify_motifs.md)
+  reject non-raw or invalid scale metadata instead of treating
+  transformed values as linear abundances. Supply raw abundances;
+  missing scale metadata remains compatible with older objects and is
+  treated as raw. Outputs explicitly use `scale = "raw"`, and
+  documentation explains trait units.
+
+### Minor improvements and bug fixes
+
+- Derived trait identifiers skip occupied numeric suffixes so
+  standardizing colliding protein-site-trait labels cannot create
+  duplicate row names.
+- SE metadata enrichment preserves ordinary `variable` and `sample`
+  annotations and keeps axis identifiers separate. Older glyco SE inputs
+  without scale metadata are treated as raw before component updates.
+  (#34)
+
 ## glydet 0.13.0
 
 ### New features

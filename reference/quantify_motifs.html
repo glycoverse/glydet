@@ -25,7 +25,7 @@ quantifications in each sample (for glycomics data)."><meta property="og:image" 
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.13.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.14.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -147,9 +147,23 @@ thus having multiple descriptions.
 Columns that do not have this relationship with glycosites will be dropped.
 Don't worry if you cannot understand this logic—
 just know that this function will do its best to preserve useful information.</p>
-<p><code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> and <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> are not modified, except that the <code>exp_type</code>
+<p><code><a href="https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html" class="external-link">colData()</a></code> and other metadata are preserved. Output <code>scale</code> is set to
+<code>"raw"</code> (unlogged trait values), and the <code>exp_type</code>
 field in <code><a href="https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html" class="external-link">metadata()</a></code> is set to "traitomics" for glycomics data and
 "traitproteomics" for glycoproteomics data.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="input-and-output-scales">Input and output scales<a class="anchor" aria-label="anchor" href="#input-and-output-scales"></a></h2>
+
+
+<p>The input scale policy is the same as <code><a href="derive_traits.html">derive_traits()</a></code>: only linear
+(<code>"raw"</code>) abundances are accepted, with an absent scale field treated as
+<code>"raw"</code> for legacy compatibility. Logarithmic and <code>"logx"</code> inputs are
+rejected before motif parsing or counting. No inverse transformation is
+performed. Use the original linear data, not relabeled transformed values.
+Output <code>scale</code> is always <code>"raw"</code>: relative quantification is an unlogged
+abundance-weighted motif count per glycan, while absolute quantification is
+an unlogged abundance-weighted sum in abundance times motif-count units.</p>
     </div>
     <div class="section level2">
     <h2 id="relative-and-absolute-motif-quantification">Relative and Absolute Motif Quantification<a class="anchor" aria-label="anchor" href="#relative-and-absolute-motif-quantification"></a></h2>
@@ -327,7 +341,7 @@ and everything else remains the same.</p>
 <span class="r-in"><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">gp_se</span>, <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/dynamic_motifs.html" class="external-link">dynamic_motifs</a></span><span class="op">(</span>max_size <span class="op">=</span> <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 80 12 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): exp_type glycan_type quant_method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(5): glycan_type quant_method scale pipeline exp_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): abundance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rownames(80): P04196-344-NeuAc(??- P04196-344-Hex(??- ...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   P10909-291-dHex(??-?)Hex(??- P10909-291-dHex(??-?)Hex(??-?)HexNAc(??-</span>
@@ -339,7 +353,7 @@ and everything else remains the same.</p>
 <span class="r-in"><span><span class="fu">quantify_motifs</span><span class="op">(</span><span class="va">gp_se</span>, <span class="fu">glymotif</span><span class="fu">::</span><span class="fu"><a href="https://glycoverse.github.io/glymotif/reference/branch_motifs.html" class="external-link">branch_motifs</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> class: SummarizedExperiment </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> dim: 20 12 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(3): exp_type glycan_type quant_method</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> metadata(5): glycan_type quant_method scale pipeline exp_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> assays(1): abundance</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> rownames(20): P04196-344-NeuAc(??-?)Hex(??-?)HexNAc(??-</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   P04196-344-HexNAc(??- ...</span>

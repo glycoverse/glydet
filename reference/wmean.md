@@ -60,6 +60,14 @@ sialylation per antenna within only complex glycans, you can use
     # Average number of antennae within complex glycans
     wmean(nA, within = (Tp == "complex"))
 
+## Abundance scale
+
+Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata;
+[`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
+checks the input container's scale. See its input and output scale
+section for the units returned by each factory.
+
 ## Note about NA
 
 All the internal summation operations ignore NAs by default. Therefore,

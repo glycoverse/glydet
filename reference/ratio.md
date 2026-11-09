@@ -69,6 +69,14 @@ special case of `ratio()`, i.e., `prop(cond, within)` is equivalent to
 [`prop()`](https://glycoverse.github.io/glydet/reference/prop.md)
 instead of `ratio()` for clarity if possible.
 
+## Abundance scale
+
+Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata;
+[`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md)
+checks the input container's scale. See its input and output scale
+section for the units returned by each factory.
+
 ## Note about NA
 
 All the internal summation operations ignore NAs by default. Therefore,

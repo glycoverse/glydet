@@ -11,7 +11,7 @@ or the ratio of bisecting and unbisecting glycans."><meta property="og:image" co
 
     <a class="navbar-brand me-2" href="../index.html">glydet</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.13.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Released version">0.14.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,6 +104,15 @@ Actually, you can use any logical operator in the expression in R (e.g., <code>|
 <p><code><a href="prop.html">prop()</a></code> is a special case of <code>ratio()</code>,
 i.e., <code>prop(cond, within)</code> is equivalent to <code>ratio(cond &amp; within, within)</code>.
 We recommend using <code><a href="prop.html">prop()</a></code> instead of <code>ratio()</code> for clarity if possible.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="abundance-scale">Abundance scale<a class="anchor" aria-label="anchor" href="#abundance-scale"></a></h2>
+
+
+<p>Trait functions expect a matrix of linear abundances and return unlogged
+values. The matrix itself carries no scale metadata; <code><a href="derive_traits.html">derive_traits()</a></code>
+checks the input container's scale. See its input and output scale section
+for the units returned by each factory.</p>
     </div>
     <div class="section level2">
     <h2 id="note-about-na">Note about NA<a class="anchor" aria-label="anchor" href="#note-about-na"></a></h2>

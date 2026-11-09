@@ -122,12 +122,24 @@ you cannot understand this logic— just know that this function will do
 its best to preserve useful information.
 
 [`colData()`](https://rdrr.io/pkg/SummarizedExperiment/man/SummarizedExperiment-class.html)
-and
-[`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
-are not modified, except that the `exp_type` field in
+and other metadata are preserved. Output `scale` is set to `"raw"`
+(unlogged trait values), and the `exp_type` field in
 [`metadata()`](https://rdrr.io/pkg/S4Vectors/man/Annotated-class.html)
 is set to "traitomics" for glycomics data and "traitproteomics" for
 glycoproteomics data.
+
+## Input and output scales
+
+The input scale policy is the same as
+[`derive_traits()`](https://glycoverse.github.io/glydet/reference/derive_traits.md):
+only linear (`"raw"`) abundances are accepted, with an absent scale
+field treated as `"raw"` for legacy compatibility. Logarithmic and
+`"logx"` inputs are rejected before motif parsing or counting. No
+inverse transformation is performed. Use the original linear data, not
+relabeled transformed values. Output `scale` is always `"raw"`: relative
+quantification is an unlogged abundance-weighted motif count per glycan,
+while absolute quantification is an unlogged abundance-weighted sum in
+abundance times motif-count units.
 
 ## Relative and Absolute Motif Quantification
 
@@ -349,7 +361,7 @@ colData(motif_se)
 quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
 #> class: SummarizedExperiment 
 #> dim: 80 12 
-#> metadata(3): exp_type glycan_type quant_method
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(80): P04196-344-NeuAc(??- P04196-344-Hex(??- ...
 #>   P10909-291-dHex(??-?)Hex(??- P10909-291-dHex(??-?)Hex(??-?)HexNAc(??-
@@ -361,7 +373,7 @@ quantify_motifs(gp_se, glymotif::dynamic_motifs(max_size = 3))
 quantify_motifs(gp_se, glymotif::branch_motifs())
 #> class: SummarizedExperiment 
 #> dim: 20 12 
-#> metadata(3): exp_type glycan_type quant_method
+#> metadata(5): glycan_type quant_method scale pipeline exp_type
 #> assays(1): abundance
 #> rownames(20): P04196-344-NeuAc(??-?)Hex(??-?)HexNAc(??-
 #>   P04196-344-HexNAc(??- ...
